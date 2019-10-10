@@ -69,4 +69,12 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    public function get_all_users(){
+        // $UserModel = new User;
+        // $UserModel->setConnection('mysql2');
+        // $users = $UserModel->select('username')->where('id', '1');
+        $users =  User::latest()->paginate(5);
+        return $users;
+    }
 }

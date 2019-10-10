@@ -4,7 +4,7 @@
  <div class="sidebar-menu">
     <div class="sidebar-header">
         <div class="logo">
-        <a href="#"><h6>E-Wallet</h6></a>
+        <router-link to="/dashboard"><h6>E-Wallet</h6></router-link>
         </div>
     </div>
     <div class="main-menu">
@@ -12,14 +12,38 @@
             <nav>
                 <ul class="metismenu" id="menu">
                     <li class="active">
-                        <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Dashboard</span></a>
-                        <ul class="collapse">
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-bell"></i><span>Notification Template</span></a>
+                        {{-- <ul class="collapse">
                             <li class="active"><a href="#">Active Menu Item</a></li>
                             <li><a href="#">Menuitem 2</a></li>
                             <li><a href="#">Menuitem 3</a></li>
-                        </ul>
+                        </ul> --}}
                     </li>
-                    <li><a href="#"><i class="ti-map-alt"></i><span>Not expanding</span></a></li>
+                    <li>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Wallet Account Types</span></a>
+                    </li>
+                    <li>
+                        <router-link to="/walletaccounts" aria-expanded="true"><i class="ti-wallet"></i><span>Wallet Accounts</span></router-link>
+                    </li>
+                    <li>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Wallet Service Types</span></a>
+                    </li>
+                    <li>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Wallet Services</span></a>
+                    </li>
+                    <li>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Prepaid Service Gateway</span></a>
+                    </li>
+                    <li>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Service Rates</span></a>
+                    </li>
+                    <li>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Admin Reports</span></a>
+                    </li>
+                    <li>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Service Matrix</span></a>
+                    </li>
+                    {{-- <li><a href="#"><i class="ti-map-alt"></i><span>Not expanding</span></a></li>
                     <li>
                         <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-align-left"></i>
                             <span>Multi
@@ -36,7 +60,7 @@
                             </li>
                             <li><a href="#">Item level (1)</a></li>
                         </ul>
-                    </li>
+                    </li> --}}
                 </ul>
             </nav>
         </div>
@@ -65,7 +89,7 @@
                 <!-- profile info & task notification -->
                 <div class="col-md-6 col-sm-4 clearfix">
                     <ul class="notification-area pull-right">
-                        <li id="full-view"><i class="ti-fullscreen"></i></li>
+                        {{-- <li id="full-view"><i class="ti-fullscreen"></i></li> --}}
                         <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
                         <li class="dropdown">
                             <i class="ti-bell dropdown-toggle" data-toggle="dropdown">
@@ -105,7 +129,7 @@
                                 <div class="nofity-list">
                                     <a href="#" class="notify-item">
                                         <div class="notify-thumb">
-                                            <img src="assets/images/author/author-img1.jpg" alt="image">
+                                        <img src="{{ asset('str_dash/images/author/author-img1.jpg') }}" alt="image">
                                         </div>
                                         <div class="notify-text">
                                             <p>Aglae Mayer</p>
@@ -116,9 +140,9 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="settings-btn">
+                        {{-- <li class="settings-btn">
                             <i class="ti-settings"></i>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
             </div>
