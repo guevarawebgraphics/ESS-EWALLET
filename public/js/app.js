@@ -2036,35 +2036,8 @@ __webpack_require__.r(__webpack_exports__);
       users: {}
     };
   },
-  methods: {
-    createDatatable: function createDatatable() {//$('#dataTable2').DataTable();
-      // setTimeout(function(){
-      //     $('#dataTable2').DataTable();
-      // },0);
-    },
-    getResults: function getResults() {
-      var _this = this;
-
-      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get('api/users?page=' + page).then(function (response) {
-        _this.users = response.data;
-      });
-    },
-    loadUsers: function loadUsers() {
-      var _this2 = this;
-
-      axios.get("api/users").then(function (_ref) {
-        var data = _ref.data;
-        return _this2.users = data;
-      });
-    }
-  },
-  created: function created() {
-    //console.log('test');
-    this.createDatatable();
-    this.loadUsers();
-    this.getResults();
-  }
+  methods: {},
+  created: function created() {}
 });
 
 /***/ }),
@@ -39893,31 +39866,7 @@ var render = function() {
             _vm._v("Elektronik Pitaka")
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "card-body table-responsive p-0" }, [
-            _c("table", { staticClass: "table table-hover" }, [
-              _vm._m(0),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.users.data, function(user) {
-                  return _c("tr", { key: user.id }, [
-                    _c("td", [_vm._v("Admin")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("Admin")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("111-222-333")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(user.name))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(user.username))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("Active")])
-                  ])
-                }),
-                0
-              )
-            ])
-          ]),
+          _vm._m(0),
           _vm._v(" "),
           _c(
             "div",
@@ -39940,19 +39889,39 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", { staticClass: "thead-dark" }, [
-      _c("tr", [
-        _c("th", [_vm._v("Wallet Type")]),
+    return _c("div", { staticClass: "card-body table-responsive p-0" }, [
+      _c("table", { staticClass: "table table-hover" }, [
+        _c("thead", { staticClass: "thead-dark" }, [
+          _c("tr", [
+            _c("th", [_vm._v("Wallet Type")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Account Type")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Account No")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Account Name")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("ESS USER ID")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Status")])
+          ])
+        ]),
         _vm._v(" "),
-        _c("th", [_vm._v("Account Type")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Account No")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Account Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("ESS USER ID")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Status")])
+        _c("tbody", [
+          _c("tr", [
+            _c("td", [_vm._v("Admin")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("Admin")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("111-222-333")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("admin")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("admin")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("Active")])
+          ])
+        ])
       ])
     ])
   }

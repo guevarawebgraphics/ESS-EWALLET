@@ -59,12 +59,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="user in users.data" :key="user.id">
+                                    <tr>
                                         <td>Admin</td>
                                         <td>Admin</td>
                                         <td>111-222-333</td>
-                                        <td>{{user.name}}</td>
-                                        <td>{{user.username}}</td>
+                                        <td>admin</td>
+                                        <td>admin</td>
                                         <td>Active</td>
                                     </tr>
                                 </tbody>
@@ -89,27 +89,10 @@ export default {
         }
     },
     methods: {
-        createDatatable() {
-            //$('#dataTable2').DataTable();
-            // setTimeout(function(){
-            //     $('#dataTable2').DataTable();
-            // },0);
-        },
-        getResults(page = 1) {
-            axios.get('api/users?page=' + page)
-                .then(response => {
-                this.users = response.data;
-            });
-        },
-        loadUsers(){
-            axios.get("api/users").then(({ data }) => (this.users = data)); 
-        },
+
     },
     created() {
-        //console.log('test');
-        this.createDatatable();
-        this.loadUsers();
-        this.getResults();
+
     }
 }
 </script>
