@@ -8,6 +8,21 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+
+import router from './router/index'
+import { Form, HasError, AlertError } from 'vform';
+//global registration
+import VueFormWizard from 'vue-form-wizard'
+import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+Vue.use(VueFormWizard)
+
+window.Form = Form;
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
+
+Vue.component('pagination', require('laravel-vue-pagination'));
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -29,4 +44,5 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+    router
 });

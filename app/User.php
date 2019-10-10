@@ -9,7 +9,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
-
+    /**
+     * ESS Connection Database 
+     **/
+    protected $connection = 'mysql2';
     /**
      * The attributes that are mass assignable.
      *
