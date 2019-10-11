@@ -1990,45 +1990,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2036,8 +1997,28 @@ __webpack_require__.r(__webpack_exports__);
       users: {}
     };
   },
-  methods: {},
-  created: function created() {}
+  methods: {
+    loadusers: function loadusers() {
+      var _this = this;
+
+      axios({
+        method: 'get',
+        url: 'http://127.0.0.1:8080/api/users',
+        dataType: 'json',
+        contentType: 'application/json',
+        secure: true,
+        headers: {
+          "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MDY4NDY5OSwiZXhwIjoxNTcwNzcxMDk5LCJuYmYiOjE1NzA2ODQ2OTksImp0aSI6IjUxRFV4WjdXU3BvcDVnWEUiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.K6nZjrbGHhdy6OQfxSKliwegvHfV26g59TdPHqxteLM'
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        return _this.users = data;
+      });
+    }
+  },
+  created: function created() {
+    this.loadusers();
+  }
 });
 
 /***/ }),
@@ -2051,20 +2032,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -39866,19 +39833,33 @@ var render = function() {
             _vm._v("Elektronik Pitaka")
           ]),
           _vm._v(" "),
-          _vm._m(0),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "card-footer" },
-            [
-              _c("pagination", {
-                attrs: { data: _vm.users },
-                on: { "pagination-change-page": _vm.getResults }
-              })
-            ],
-            1
-          )
+          _c("div", { staticClass: "data-tables datatable-dark" }, [
+            _c("table", { staticClass: "table table-hover" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.users, function(user) {
+                  return _c("tr", { key: user.id }, [
+                    _c("td", [_vm._v("PREPAID")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(user.type_name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v("111-222-333")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(user.accountname))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(user.username))]),
+                    _vm._v(" "),
+                    (user.AccountStatuts = 1)
+                      ? _c("td", [_vm._v("Active")])
+                      : _c("td", [_vm._v("Deactivated")])
+                  ])
+                }),
+                0
+              )
+            ])
+          ])
         ])
       ])
     ])
@@ -39889,39 +39870,19 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body table-responsive p-0" }, [
-      _c("table", { staticClass: "table table-hover" }, [
-        _c("thead", { staticClass: "thead-dark" }, [
-          _c("tr", [
-            _c("th", [_vm._v("Wallet Type")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Account Type")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Account No")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Account Name")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("ESS USER ID")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Status")])
-          ])
-        ]),
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Wallet Type")]),
         _vm._v(" "),
-        _c("tbody", [
-          _c("tr", [
-            _c("td", [_vm._v("Admin")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Admin")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("111-222-333")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("admin")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("admin")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Active")])
-          ])
-        ])
+        _c("th", [_vm._v("Account Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Account No")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Account Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("ESS USER ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Status")])
       ])
     ])
   }
@@ -40055,7 +40016,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "login-form-head" }, [
-      _c("h4", [_vm._v("Sign In")])
+      _c("h4", [_vm._v("Elektronik Pitaka")])
     ])
   },
   function() {
