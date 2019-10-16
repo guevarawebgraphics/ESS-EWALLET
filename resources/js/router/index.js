@@ -12,6 +12,8 @@ const routes = [
     { path: '/createwalletaccounts', component: require('../components/WalletAccounts/CreateWalletAccount.vue').default},
     { path: '/servicetypes', component: require('../components/WalletServiceTypes/ServiceTypeTable.vue').default}, 
     { path: '/editservicetype/:id', name: '/test', component: require('../components/WalletServiceTypes/EditServiceType.vue').default}
+    { path: '/createwalletaccounts/:id', name: '/test', component: require('../components/WalletAccounts/CreateWalletAccount.vue').default},
+    { path: '*', component: require('../components/ErrorPages/404.vue') }
   ]
 
 export default new VueRouter({
