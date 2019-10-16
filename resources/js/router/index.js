@@ -9,7 +9,11 @@ const routes = [
     { path: '/login', component: require('../components/auth/Login.vue').default },
     { path: '/dashboard', component: require('../components/General/Dashboard.vue').default},
     { path: '/walletaccounts', component: require('../components/WalletAccounts/WalletAccounts.vue').default},
-    { path: '/createwalletaccounts', component: require('../components/WalletAccounts/CreateWalletAccount.vue').default}
+
+
+    
+    { path: '/createwalletaccounts/:id', name: '/test', component: require('../components/WalletAccounts/CreateWalletAccount.vue').default},
+    { path: '*', component: require('../components/ErrorPages/404.vue') }
   ]
 
 export default new VueRouter({

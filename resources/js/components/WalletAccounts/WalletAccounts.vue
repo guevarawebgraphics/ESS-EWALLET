@@ -11,7 +11,7 @@
             </div>
                 <h4 class="header-title mt-3">Elektronik Pitaka</h4>
                 <div class="data-tables datatable-dark">
-                <table class="table table-hover">
+                <table class="table table-hover" id="table_id">
                 <thead>
                     <tr>
                         <th>Wallet Type</th>
@@ -24,12 +24,13 @@
                 </thead>
                 <tbody>
                     <tr v-for="user in users" :key="user.id">
-                        <td>PREPAID</td>
+                        <!-- <td>PREPAID</td> -->
+                        <td><router-link :to="{ name: '/test', params: { id: 1 }}" :key="$route.fullPath">User</router-link></td>
                         <td>{{user.type_name}}</td>
                         <td>111-222-333</td>
                         <td>{{user.accountname}}</td>
                         <td>{{user.username}}</td>
-                        <td v-if="user.AccountStatuts = 1">Active</td>
+                        <td v-if="user.AccountStatus = 1">Active</td>
                         <td v-else>Deactivated</td>
                     </tr>
                 </tbody>
@@ -46,7 +47,7 @@ export default {
     data() {
         return {
             editmode: false,
-            users : {},
+            users : [],
         }
     },
     methods: {
@@ -58,14 +59,23 @@ export default {
                 contentType: 'application/json',
                 secure: true,
                 headers: {
-                "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MDY4NDY5OSwiZXhwIjoxNTcwNzcxMDk5LCJuYmYiOjE1NzA2ODQ2OTksImp0aSI6IjUxRFV4WjdXU3BvcDVnWEUiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.K6nZjrbGHhdy6OQfxSKliwegvHfV26g59TdPHqxteLM',
+                "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MTIwMjM3OCwiZXhwIjoxNTcxMjg4Nzc4LCJuYmYiOjE1NzEyMDIzNzgsImp0aSI6IkV2NURxdHoxdzlTTzBkeUQiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.-as4VP-DL3akZjvMVmKaU_OnB3jFOgEplRmtN9IT5hA',
                 },
             })
             .then(({ data }) => (this.users = data));
+        },
+        datatable() {
+            setTimeout(function(){
+                $('#table_id').DataTable({
+                    responsive: true
+                });
+            },1000);
         }
     },
-    created() {
+    mounted() {
         this.loadusers();
+        this.datatable();
+       
     }
 }
 </script>
