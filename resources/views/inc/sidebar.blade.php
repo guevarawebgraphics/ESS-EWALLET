@@ -26,7 +26,7 @@
                         <router-link to="/walletaccounts" aria-expanded="true"><i class="ti-wallet"></i><span>Wallet Accounts</span></router-link>
                     </li>
                     <li>
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Wallet Service Types</span></a>
+                        <router-link to="/servicetypes" aria-expanded="true"><i class="ti-wallet"></i><span>Wallet Service Types</span></router-link>
                     </li>
                     <li>
                         <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Wallet Services</span></a>
