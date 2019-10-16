@@ -59,7 +59,7 @@ export default {
                 contentType: 'application/json',
                 secure: true,
                 headers: {
-                "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MTIwMjM3OCwiZXhwIjoxNTcxMjg4Nzc4LCJuYmYiOjE1NzEyMDIzNzgsImp0aSI6IkV2NURxdHoxdzlTTzBkeUQiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.-as4VP-DL3akZjvMVmKaU_OnB3jFOgEplRmtN9IT5hA',
+                    "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MDc2NTkxMywiZXhwIjoxNTcwODUyMzEzLCJuYmYiOjE1NzA3NjU5MTMsImp0aSI6IkE4dFBKWU9iZTVjamcxeFgiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.H1uOMS_JnI1Ev_9fUExWOTAEudk75KJ3AnD-clZQqKc',
                 },
             })
             .then(({ data }) => (this.users = data));
