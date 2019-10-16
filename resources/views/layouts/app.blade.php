@@ -11,6 +11,11 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    @auth
+    <script>
+        window.user = @json(auth()->user())
+    </script>
+    @endauth
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
