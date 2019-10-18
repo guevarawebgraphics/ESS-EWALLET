@@ -23,6 +23,8 @@ Vue.component(AlertError.name, AlertError)
 Vue.component('pagination', require('laravel-vue-pagination'));
 
 
+import VeeValidate from 'vee-validate';
+Vue.use(VeeValidate);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
