@@ -1,18 +1,18 @@
  <!-- page container area start -->
  <div class="page-container">
  <!-- sidebar menu area start -->
- <div class="sidebar-menu">
-    <div class="sidebar-header">
+ <div class="sidebar-menu nav-custom">
+    <div class="sidebar-header nav-custom">
         <div class="logo">
-        <router-link to="/dashboard"><h6>E-Wallet</h6></router-link>
+        <router-link to="/dashboard"><h6 class="text-white">E-Wallet</h6></router-link>
         </div>
     </div>
-    <div class="main-menu">
+    <div class="main-menu side-custom">
         <div class="menu-inner">
             <nav>
                 <ul class="metismenu" id="menu">
-                    <li class="active">
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-bell"></i><span>Notification Template</span></a>
+                    <li>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-bell text-blue"></i><span>Notification Template</span></a>
                         {{-- <ul class="collapse">
                             <li class="active"><a href="#">Active Menu Item</a></li>
                             <li><a href="#">Menuitem 2</a></li>
@@ -20,28 +20,28 @@
                         </ul> --}}
                     </li>
                     <li>
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Wallet Account Types</span></a>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Account Types</span></a>
                     </li>
                     <li>
-                        <router-link to="/walletaccounts" aria-expanded="true"><i class="ti-wallet"></i><span>Wallet Accounts</span></router-link>
+                        <router-link to="/walletaccounts" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Accounts</span></router-link>
                     </li>
                     <li>
-                        <router-link to="/servicetypes" aria-expanded="true"><i class="ti-wallet"></i><span>Wallet Service Types</span></router-link>
+                        <router-link to="/servicetypes" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Service Types</span></router-link>
                     </li>
                     <li>
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Wallet Services</span></a>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Services</span></a>
                     </li>
                     <li>
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Prepaid Service Gateway</span></a>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Prepaid Service Gateway</span></a>
                     </li>
                     <li>
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Service Rates</span></a>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Rates</span></a>
                     </li>
                     <li>
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Admin Reports</span></a>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Admin Reports</span></a>
                     </li>
                     <li>
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet"></i><span>Service Matrix</span></a>
+                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Matrix</span></a>
                     </li>
                     {{-- <li><a href="#"><i class="ti-map-alt"></i><span>Not expanding</span></a></li>
                     <li>
@@ -70,7 +70,7 @@
  <!-- main content area start -->
  <div class="main-content">
         <!-- header area start -->
-        <div class="header-area">
+        <div class="header-area nav-custom">
             <div class="row align-items-center">
                 <!-- nav and search button -->
                 <div class="col-md-6 col-sm-8 clearfix">
@@ -92,7 +92,7 @@
                         {{-- <li id="full-view"><i class="ti-fullscreen"></i></li> --}}
                         <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
                         <li class="dropdown">
-                            <i class="ti-bell dropdown-toggle" data-toggle="dropdown">
+                            <i class="ti-bell dropdown-toggle text-white" data-toggle="dropdown">
                                 <span>2</span>
                             </i>
                             <div class="dropdown-menu bell-notify-box notify-box">
@@ -123,7 +123,7 @@
                             </div>
                         </li>
                         <li class="dropdown">
-                            <i class="fa fa-envelope-o dropdown-toggle" data-toggle="dropdown"><span>3</span></i>
+                            <i class="fa fa-envelope-o dropdown-toggle text-white" data-toggle="dropdown"><span>3</span></i>
                             <div class="dropdown-menu notify-box nt-enveloper-box">
                                 <span class="notify-title">You have 3 new notifications <a href="#">view all</a></span>
                                 <div class="nofity-list">

@@ -2012,6 +2012,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2101,11 +2102,7 @@ __webpack_require__.r(__webpack_exports__);
         contentType: 'application/json',
         secure: true,
         headers: {
-<<<<<<< HEAD
-          "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MDc2NTkxMywiZXhwIjoxNTcwODUyMzEzLCJuYmYiOjE1NzA3NjU5MTMsImp0aSI6IkE4dFBKWU9iZTVjamcxeFgiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.H1uOMS_JnI1Ev_9fUExWOTAEudk75KJ3AnD-clZQqKc'
-=======
-          "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MTIwMjM3OCwiZXhwIjoxNTcxMjg4Nzc4LCJuYmYiOjE1NzEyMDIzNzgsImp0aSI6IkV2NURxdHoxdzlTTzBkeUQiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.-as4VP-DL3akZjvMVmKaU_OnB3jFOgEplRmtN9IT5hA'
->>>>>>> 5bf0b629920bd9adeca3ffd22d70d4a51f8fc900
+          "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MTM4MDE4NywiZXhwIjoxNTcxNDY2NTg3LCJuYmYiOjE1NzEzODAxODcsImp0aSI6Ikw5WnNXbXhkdFdLYm9pR1IiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.S4k-b9vxwPtwbEBONyT1yxvK5-LYyrzGq0r5C0GJBsk'
         }
       }).then(function (_ref) {
         var data = _ref.data;
@@ -2128,6 +2125,197 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServiceTypes/CreateServiceType.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServiceTypes/CreateServiceType.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      loadingWizard: false,
+      errorMsg: null,
+      count: 0
+    };
+  },
+  methods: {
+    onComplete: function onComplete() {
+      console.log('Setup Complete');
+    }
+  },
+  created: function created() {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServiceTypes/EditServiceType.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServiceTypes/EditServiceType.vue?vue&type=script&lang=js& ***!
@@ -2137,6 +2325,99 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2154,6 +2435,102 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+  methods: {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServiceTypes/ServiceTypeTable.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServiceTypes/ServiceTypeTable.vue?vue&type=script&lang=js& ***!
@@ -2163,6 +2540,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2214,22 +2596,22 @@ __webpack_require__.r(__webpack_exports__);
         contentType: 'application/json',
         secure: true,
         headers: {
-          "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MTEwNDcxMiwiZXhwIjoxNTcxMTkxMTEyLCJuYmYiOjE1NzExMDQ3MTIsImp0aSI6Ikg4Z2N1dFF6RWdjZUw5R28iLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.Gz7-Y1FCGiXh39Suz7osIeJ0EV-5979bsRjizUEPfSI'
+          "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MTIwMzk1MCwiZXhwIjoxNTcxMjkwMzUwLCJuYmYiOjE1NzEyMDM5NTAsImp0aSI6IlRRSVRjdlJBWVAxOHB6TjEiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.K0Hv250k94ksZl_ba3V6M2pIIrKsfoNKNpuIJ6cWepk'
         }
       }).then(function (_ref) {
         var data = _ref.data;
         return _this.services = data;
       });
     },
-    loaddd: function loaddd() {
+    loadDataTable: function loadDataTable() {
       setTimeout(function () {
-        $('#chugug').DataTable();
+        $('#table-service-type').DataTable();
       }, 1000);
     }
   },
   created: function created() {
-    this.loaddd();
     this.loadServices();
+    this.loadDataTable();
   }
 });
 
@@ -40333,6 +40715,564 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServiceTypes/CreateServiceType.vue?vue&type=template&id=5ac511e8&":
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServiceTypes/CreateServiceType.vue?vue&type=template&id=5ac511e8& ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { attrs: { id: "CreateWalletAccount" } },
+    [
+      _c(
+        "form-wizard",
+        {
+          attrs: {
+            title: "Create Service Type",
+            subtitle: "Details",
+            color: "#0077B5"
+          },
+          on: { "on-complete": _vm.onComplete }
+        },
+        [
+          _c("tab-content", { attrs: { title: "Service Type Details" } }, [
+            _c("div", { staticClass: "box ptb--100" }, [
+              _c("div", { staticClass: "card shadow-custom" }, [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "col-sm-12" }, [
+                    _c("h4", { staticClass: "header-title" }, [
+                      _vm._v("Service Type Details")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label",
+                          attrs: { for: "inputEmail3" }
+                        },
+                        [_vm._v("Service Type Code:")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c("input", {
+                          staticClass: "form-control mb-4 col-sm-4",
+                          attrs: {
+                            type: "email",
+                            id: "inputEmail3",
+                            placeholder: "Code"
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label",
+                          attrs: { for: "inputEmail3" }
+                        },
+                        [_vm._v("Service Type Name:")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c("input", {
+                          staticClass: "form-control mb-4 col-sm-4",
+                          attrs: {
+                            type: "email",
+                            id: "inputEmail3",
+                            placeholder: "Name"
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label",
+                          attrs: { for: "inputEmail3" }
+                        },
+                        [_vm._v("Service Type Description:")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c("input", {
+                          staticClass: "form-control mb-4 col-sm-4",
+                          attrs: {
+                            type: "email",
+                            id: "inputEmail3",
+                            placeholder: "Description"
+                          }
+                        })
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tab-content", { attrs: { title: "Behavior" } }, [
+            _c("div", { staticClass: "card shadow-custom" }, [
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "col-sm-7" }, [
+                  _c("h4", { staticClass: "header-title" }, [
+                    _vm._v("Behavior")
+                  ]),
+                  _vm._v(" "),
+                  _c("form", { attrs: { action: "#" } }, [
+                    _c("ul", { staticClass: "list-group list-group-flush" }, [
+                      _c("li", { staticClass: "list-group-item" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-check custom-control custom-checkbox "
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "form-check-input",
+                              attrs: { type: "checkbox", id: "exampleCheck1" }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in single source wallet, added to single destination wallet"
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-check custom-control custom-checkbox"
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "form-check-input",
+                              attrs: { type: "checkbox", id: "exampleCheck1" }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer intiated in single source wallet, added to multiple destination wallets"
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-check custom-control custom-checkbox"
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "form-check-input",
+                              attrs: { type: "checkbox", id: "exampleCheck1" }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in multiple source wallets, added to single destination wallet"
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-check custom-control custom-checkbox"
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "form-check-input",
+                              attrs: { type: "checkbox", id: "exampleCheck1" }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in multiple source wallets, added to multiple destination wallets"
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-check custom-control custom-checkbox"
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "form-check-input",
+                              attrs: { type: "checkbox", id: "exampleCheck1" }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer intiated in single destination wallets, deducted from single source wallet"
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-check custom-control custom-checkbox"
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "form-check-input",
+                              attrs: { type: "checkbox", id: "exampleCheck1" }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in single destination wallet, deducted from multiple source wallets"
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-check custom-control custom-checkbox"
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "form-check-input",
+                              attrs: { type: "checkbox", id: "exampleCheck1" }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in multiple destination wallets, deducted from single source wallet"
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-check custom-control custom-checkbox"
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "form-check-input",
+                              attrs: { type: "checkbox", id: "exampleCheck1" }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets"
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tab-content", { attrs: { title: "Template" } }, [
+            _c("div", { staticClass: "card shadow-custom" }, [
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "col-sm-5" }, [
+                  _c("h4", { staticClass: "header-title" }, [
+                    _vm._v("List of Services using this service type")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "single-table" }, [
+                    _c("div", { staticClass: "table-responsive" }, [
+                      _c(
+                        "table",
+                        { staticClass: "table table-bordered text-center" },
+                        [
+                          _c("thead", { staticClass: "text-uppercase" }, [
+                            _c("tr", [
+                              _c("th", { attrs: { scope: "col" } }, [
+                                _vm._v("Service Code")
+                              ]),
+                              _vm._v(" "),
+                              _c("th", { attrs: { scope: "col" } }, [
+                                _vm._v("Service Name")
+                              ]),
+                              _vm._v(" "),
+                              _c("th", { attrs: { scope: "col" } }, [
+                                _vm._v("Service Gateway")
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tbody", [
+                            _c("tr", [
+                              _c("th", { attrs: { scope: "row" } }, [
+                                _vm._v("0001")
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v("Smart Unli")]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v("ECPay")])
+                            ])
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-6 mt-5" }, [
+                  _c("ul", { staticClass: "list-group list-group-flush" }, [
+                    _c("li", { staticClass: "list-group-item" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-check custom-control custom-checkbox "
+                        },
+                        [
+                          _c("input", {
+                            staticClass: "form-check-input",
+                            attrs: { type: "checkbox", id: "exampleCheck1" }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-check-label",
+                              attrs: { for: "exampleCheck1" }
+                            },
+                            [_vm._v("Transaction Acknowledgement Template:  ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "custom-file" }, [
+                            _c("input", {
+                              staticClass: "custom-file-input",
+                              attrs: { type: "file", id: "inputGroupFile03" }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-file-label",
+                                attrs: { for: "inputGroupFile03" }
+                              },
+                              [_vm._v("Choose file")]
+                            )
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("li", { staticClass: "list-group-item" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-check custom-control custom-checkbox "
+                        },
+                        [
+                          _c("input", {
+                            staticClass: "form-check-input",
+                            attrs: { type: "checkbox", id: "exampleCheck1" }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-check-label",
+                              attrs: { for: "exampleCheck1" }
+                            },
+                            [_vm._v("Transaction Approval Template:")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "custom-file" }, [
+                            _c("input", {
+                              staticClass: "custom-file-input",
+                              attrs: { type: "file", id: "inputGroupFile03" }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-file-label",
+                                attrs: { for: "inputGroupFile03" }
+                              },
+                              [_vm._v("Choose file")]
+                            )
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("li", { staticClass: "list-group-item" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-check custom-control custom-checkbox "
+                        },
+                        [
+                          _c("input", {
+                            staticClass: "form-check-input",
+                            attrs: { type: "checkbox", id: "exampleCheck1" }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-check-label",
+                              attrs: { for: "exampleCheck1" }
+                            },
+                            [_vm._v("Transaction Confirmation Template:")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "custom-file" }, [
+                            _c("input", {
+                              staticClass: "custom-file-input",
+                              attrs: { type: "file", id: "inputGroupFile03" }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-file-label",
+                                attrs: { for: "inputGroupFile03" }
+                              },
+                              [_vm._v("Choose file")]
+                            )
+                          ])
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom",
+                      attrs: { type: "button" }
+                    },
+                    [_vm._v("Save Service Type")]
+                  )
+                ])
+              ])
+            ])
+          ])
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServiceTypes/EditServiceType.vue?vue&type=template&id=5997787e&":
 /*!*************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServiceTypes/EditServiceType.vue?vue&type=template&id=5997787e& ***!
@@ -40349,10 +41289,552 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "editservicetype" } }, [
-    _c("h1", [_vm._v(" Edit Service Type " + _vm._s(_vm.id_value))])
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-sm-12 mt-5" }, [
+      _c("div", { staticClass: "card" }, [
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                staticClass: "btn btn-primary float-right btn-lg btn-custom",
+                attrs: {
+                  to: { name: "/st-setup", params: { id: _vm.id_value } }
+                }
+              },
+              [_vm._v("Next")]
+            )
+          ],
+          1
+        )
+      ])
+    ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12 mt-5" }, [
+      _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "col-sm-7" }, [
+            _c("h4", { staticClass: "header-title" }, [
+              _vm._v("Service Type Details")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-sm-2 col-form-label",
+                  attrs: { for: "inputEmail3" }
+                },
+                [_vm._v("Service Type Code")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-10" }, [
+                _c("input", {
+                  staticClass: "form-control mb-4 col-sm-4",
+                  attrs: {
+                    type: "email",
+                    id: "inputEmail3",
+                    placeholder: "Code"
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-sm-2 col-form-label",
+                  attrs: { for: "inputEmail3" }
+                },
+                [_vm._v("Service Type Name")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-10" }, [
+                _c("input", {
+                  staticClass: "form-control mb-4 col-sm-4",
+                  attrs: {
+                    type: "email",
+                    id: "inputEmail3",
+                    placeholder: "Name"
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-sm-2 col-form-label",
+                  attrs: { for: "inputEmail3" }
+                },
+                [_vm._v("Service Type Description")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-10" }, [
+                _c("input", {
+                  staticClass: "form-control mb-4 col-sm-4",
+                  attrs: {
+                    type: "email",
+                    id: "inputEmail3",
+                    placeholder: "Description"
+                  }
+                })
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-7" }, [
+      _c("h4", { staticClass: "header-title" }, [_vm._v("Behavior")]),
+      _vm._v(" "),
+      _c("form", { attrs: { action: "#" } }, [
+        _c("ul", { staticClass: "list-group list-group-flush" }, [
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              { staticClass: "form-check custom-control custom-checkbox " },
+              [
+                _c("input", {
+                  staticClass: "form-check-input",
+                  attrs: { type: "checkbox", id: "exampleCheck1" }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-check-label",
+                    attrs: { for: "exampleCheck1" }
+                  },
+                  [
+                    _vm._v(
+                      "Balance transfer initiated in single source wallet, added to single destination wallet"
+                    )
+                  ]
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              { staticClass: "form-check custom-control custom-checkbox" },
+              [
+                _c("input", {
+                  staticClass: "form-check-input",
+                  attrs: { type: "checkbox", id: "exampleCheck1" }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-check-label",
+                    attrs: { for: "exampleCheck1" }
+                  },
+                  [
+                    _vm._v(
+                      "Balance transfer intiated in single source wallet, added to multiple destination wallets"
+                    )
+                  ]
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              { staticClass: "form-check custom-control custom-checkbox" },
+              [
+                _c("input", {
+                  staticClass: "form-check-input",
+                  attrs: { type: "checkbox", id: "exampleCheck1" }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-check-label",
+                    attrs: { for: "exampleCheck1" }
+                  },
+                  [
+                    _vm._v(
+                      "Balance transfer initiated in multiple source wallets, added to single destination wallet"
+                    )
+                  ]
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              { staticClass: "form-check custom-control custom-checkbox" },
+              [
+                _c("input", {
+                  staticClass: "form-check-input",
+                  attrs: { type: "checkbox", id: "exampleCheck1" }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-check-label",
+                    attrs: { for: "exampleCheck1" }
+                  },
+                  [
+                    _vm._v(
+                      "Balance transfer initiated in multiple source wallets, added to multiple destination wallets"
+                    )
+                  ]
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              { staticClass: "form-check custom-control custom-checkbox" },
+              [
+                _c("input", {
+                  staticClass: "form-check-input",
+                  attrs: { type: "checkbox", id: "exampleCheck1" }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-check-label",
+                    attrs: { for: "exampleCheck1" }
+                  },
+                  [
+                    _vm._v(
+                      "Balance transfer intiated in single destination wallets, deducted from single source wallet"
+                    )
+                  ]
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              { staticClass: "form-check custom-control custom-checkbox" },
+              [
+                _c("input", {
+                  staticClass: "form-check-input",
+                  attrs: { type: "checkbox", id: "exampleCheck1" }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-check-label",
+                    attrs: { for: "exampleCheck1" }
+                  },
+                  [
+                    _vm._v(
+                      "Balance transfer initiated in single destination wallet, deducted from multiple source wallets"
+                    )
+                  ]
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              { staticClass: "form-check custom-control custom-checkbox" },
+              [
+                _c("input", {
+                  staticClass: "form-check-input",
+                  attrs: { type: "checkbox", id: "exampleCheck1" }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-check-label",
+                    attrs: { for: "exampleCheck1" }
+                  },
+                  [
+                    _vm._v(
+                      "Balance transfer initiated in multiple destination wallets, deducted from single source wallet"
+                    )
+                  ]
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              { staticClass: "form-check custom-control custom-checkbox" },
+              [
+                _c("input", {
+                  staticClass: "form-check-input",
+                  attrs: { type: "checkbox", id: "exampleCheck1" }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-check-label",
+                    attrs: { for: "exampleCheck1" }
+                  },
+                  [
+                    _vm._v(
+                      "Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets"
+                    )
+                  ]
+                )
+              ]
+            )
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue?vue&type=template&id=7a20bac5&":
+/*!**************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue?vue&type=template&id=7a20bac5& ***!
+  \**************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("div", { staticClass: "col-lg-12 mt-5" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "col-sm-5" }, [
+              _c("h4", { staticClass: "header-title" }, [
+                _vm._v("List of Services using this service type")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "single-table" }, [
+                _c("div", { staticClass: "table-responsive" }, [
+                  _c(
+                    "table",
+                    { staticClass: "table table-bordered text-center" },
+                    [
+                      _c("thead", { staticClass: "text-uppercase" }, [
+                        _c("tr", [
+                          _c("th", { attrs: { scope: "col" } }, [
+                            _vm._v("Service Code")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { scope: "col" } }, [
+                            _vm._v("Service Name")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { scope: "col" } }, [
+                            _vm._v("Service Gateway")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tbody", [
+                        _c("tr", [
+                          _c("th", { attrs: { scope: "row" } }, [
+                            _vm._v("0001")
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Smart Unli")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("ECPay")])
+                        ])
+                      ])
+                    ]
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-6 mt-5" }, [
+              _c("ul", { staticClass: "list-group list-group-flush" }, [
+                _c("li", { staticClass: "list-group-item" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-check custom-control custom-checkbox "
+                    },
+                    [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: { type: "checkbox", id: "exampleCheck1" }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "exampleCheck1" }
+                        },
+                        [_vm._v("Transaction Acknowledgement Template:  ")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "custom-file" }, [
+                        _c("input", {
+                          staticClass: "custom-file-input",
+                          attrs: { type: "file", id: "inputGroupFile03" }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass: "custom-file-label",
+                            attrs: { for: "inputGroupFile03" }
+                          },
+                          [_vm._v("Choose file")]
+                        )
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "list-group-item" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-check custom-control custom-checkbox "
+                    },
+                    [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: { type: "checkbox", id: "exampleCheck1" }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "exampleCheck1" }
+                        },
+                        [_vm._v("Transaction Approval Template:")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "custom-file" }, [
+                        _c("input", {
+                          staticClass: "custom-file-input",
+                          attrs: { type: "file", id: "inputGroupFile03" }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass: "custom-file-label",
+                            attrs: { for: "inputGroupFile03" }
+                          },
+                          [_vm._v("Choose file")]
+                        )
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "list-group-item" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-check custom-control custom-checkbox "
+                    },
+                    [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: { type: "checkbox", id: "exampleCheck1" }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "exampleCheck1" }
+                        },
+                        [_vm._v("Transaction Confirmation Template:")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "custom-file" }, [
+                        _c("input", {
+                          staticClass: "custom-file-input",
+                          attrs: { type: "file", id: "inputGroupFile03" }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass: "custom-file-label",
+                            attrs: { for: "inputGroupFile03" }
+                          },
+                          [_vm._v("Choose file")]
+                        )
+                      ])
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom",
+                  attrs: { type: "button" }
+                },
+                [_vm._v("Save Service Type")]
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -40376,18 +41858,37 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "col-12 mt-5" }, [
-      _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card shadow-custom" }, [
+        _c("div", { staticClass: "col-md-12" }, [
+          _c(
+            "h4",
+            { staticClass: "header-title mt-3" },
+            [
+              _vm._v("E-Wallet Service Type  \n                    "),
+              _c(
+                "router-link",
+                {
+                  staticClass: "btn btn-primary float-right btn-custom",
+                  attrs: { to: "/createservicetype" }
+                },
+                [
+                  _vm._v("Create New Service Type "),
+                  _c("i", { staticClass: "ti-arrow-right" })
+                ]
+              )
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "col-md-4" }),
-          _vm._v(" "),
-          _c("h4", { staticClass: "header-title mt-3" }, [
-            _vm._v("E-Wallet Service Type")
-          ]),
-          _vm._v(" "),
           _c("div", { staticClass: "data-tables datatable-dark" }, [
             _c(
               "table",
-              { staticClass: "table table-hover", attrs: { id: "chugug" } },
+              {
+                staticClass: "table table-hover",
+                attrs: { id: "table-service-type" }
+              },
               [
                 _vm._m(0),
                 _vm._v(" "),
@@ -40405,6 +41906,7 @@ var render = function() {
                           _c(
                             "router-link",
                             {
+                              staticClass: "btn btn-primary btn-custom",
                               attrs: {
                                 to: {
                                   name: "/test",
@@ -40412,7 +41914,7 @@ var render = function() {
                                 }
                               }
                             },
-                            [_vm._v("Link")]
+                            [_vm._v("Update")]
                           )
                         ],
                         1
@@ -40435,7 +41937,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("tr", [
+      _c("tr", { staticClass: "th-table" }, [
         _c("th", [_vm._v("Service Type Code")]),
         _vm._v(" "),
         _c("th", [_vm._v("Service Type Name")]),
@@ -56075,6 +57577,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/WalletServiceTypes/CreateServiceType.vue":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/WalletServiceTypes/CreateServiceType.vue ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CreateServiceType_vue_vue_type_template_id_5ac511e8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateServiceType.vue?vue&type=template&id=5ac511e8& */ "./resources/js/components/WalletServiceTypes/CreateServiceType.vue?vue&type=template&id=5ac511e8&");
+/* harmony import */ var _CreateServiceType_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateServiceType.vue?vue&type=script&lang=js& */ "./resources/js/components/WalletServiceTypes/CreateServiceType.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CreateServiceType_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CreateServiceType_vue_vue_type_template_id_5ac511e8___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CreateServiceType_vue_vue_type_template_id_5ac511e8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/WalletServiceTypes/CreateServiceType.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/WalletServiceTypes/CreateServiceType.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/WalletServiceTypes/CreateServiceType.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateServiceType_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateServiceType.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServiceTypes/CreateServiceType.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateServiceType_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/WalletServiceTypes/CreateServiceType.vue?vue&type=template&id=5ac511e8&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/js/components/WalletServiceTypes/CreateServiceType.vue?vue&type=template&id=5ac511e8& ***!
+  \*********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateServiceType_vue_vue_type_template_id_5ac511e8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateServiceType.vue?vue&type=template&id=5ac511e8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServiceTypes/CreateServiceType.vue?vue&type=template&id=5ac511e8&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateServiceType_vue_vue_type_template_id_5ac511e8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateServiceType_vue_vue_type_template_id_5ac511e8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/WalletServiceTypes/EditServiceType.vue":
 /*!************************************************************************!*\
   !*** ./resources/js/components/WalletServiceTypes/EditServiceType.vue ***!
@@ -56139,6 +57710,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditServiceType_vue_vue_type_template_id_5997787e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditServiceType_vue_vue_type_template_id_5997787e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ServiceTypeSetUp_vue_vue_type_template_id_7a20bac5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ServiceTypeSetUp.vue?vue&type=template&id=7a20bac5& */ "./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue?vue&type=template&id=7a20bac5&");
+/* harmony import */ var _ServiceTypeSetUp_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ServiceTypeSetUp.vue?vue&type=script&lang=js& */ "./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ServiceTypeSetUp_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ServiceTypeSetUp_vue_vue_type_template_id_7a20bac5___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ServiceTypeSetUp_vue_vue_type_template_id_7a20bac5___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceTypeSetUp_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ServiceTypeSetUp.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceTypeSetUp_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue?vue&type=template&id=7a20bac5&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue?vue&type=template&id=7a20bac5& ***!
+  \********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceTypeSetUp_vue_vue_type_template_id_7a20bac5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ServiceTypeSetUp.vue?vue&type=template&id=7a20bac5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue?vue&type=template&id=7a20bac5&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceTypeSetUp_vue_vue_type_template_id_7a20bac5___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceTypeSetUp_vue_vue_type_template_id_7a20bac5___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -56308,21 +57948,30 @@ var routes = [{
   path: '/walletaccounts',
   component: __webpack_require__(/*! ../components/WalletAccounts/WalletAccounts.vue */ "./resources/js/components/WalletAccounts/WalletAccounts.vue")["default"]
 }, {
-  path: '/createwalletaccounts/:id',
-  name: '/test',
+  path: '/createwalletaccounts',
   component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"]
-}, {
-<<<<<<< HEAD
+},
+/**
+ * @ CHUGUG EARPHONES SIRA
+ **/
+{
   path: '/servicetypes',
   component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeTable.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeTable.vue")["default"]
 }, {
   path: '/editservicetype/:id',
   name: '/test',
   component: __webpack_require__(/*! ../components/WalletServiceTypes/EditServiceType.vue */ "./resources/js/components/WalletServiceTypes/EditServiceType.vue")["default"]
-=======
+}, {
+  path: '/servicetypesetup/:id',
+  name: '/st-setup',
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeSetUp.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue")["default"]
+}, {
+  path: '/createservicetype',
+  name: '/st-create-new',
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/CreateServiceType.vue */ "./resources/js/components/WalletServiceTypes/CreateServiceType.vue")["default"]
+}, {
   path: '*',
   component: __webpack_require__(/*! ../components/ErrorPages/404.vue */ "./resources/js/components/ErrorPages/404.vue")
->>>>>>> 5bf0b629920bd9adeca3ffd22d70d4a51f8fc900
 }];
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history',

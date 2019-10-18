@@ -92,7 +92,8 @@
         </tab-content>
         <tab-content title="E-Wallet Acount Setup">
             Yuhuuu! This seems pretty damn simple
-        </tab-content>
+        </tab-content> 
+        
     </form-wizard>
   </div>
 </template>
