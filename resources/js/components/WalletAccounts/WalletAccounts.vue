@@ -20,18 +20,20 @@
                         <th>Account Name</th>
                         <th>ESS USER ID</th>
                         <th>Status</th>
+                        <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                     <tr v-for="user in users" :key="user.id">
-                        <!-- <td>PREPAID</td> -->
-                        <td><router-link :to="{ name: '/test', params: { id: 1 }}" :key="$route.fullPath">User</router-link></td>
+                        <td>PREPAID</td>
+                        <!-- <td><router-link :to="{ name: '/test', params: { id: 1 }}" :key="$route.fullPath">User</router-link></td> -->
                         <td>{{user.type_name}}</td>
                         <td>111-222-333</td>
                         <td>{{user.accountname}}</td>
                         <td>{{user.username}}</td>
                         <td v-if="user.AccountStatus = 1">Active</td>
                         <td v-else>Deactivated</td>
+                        <td>UPDATE</td>
                     </tr>
                 </tbody>
                 </table>
@@ -80,6 +82,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+th {
+    text-align:  center;
+}
+td {
+    text-align: center;
+}
 </style>

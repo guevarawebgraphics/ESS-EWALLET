@@ -27,6 +27,7 @@
         "datatables.net": "^1.10.20",
         "datatables.net-dt": "^1.10.20",
         "laravel-vue-pagination": "^2.3.1",
+        "vee-validate": "^2.2.15",
         "vform": "^1.0.1",
         "vue-form-wizard": "^0.8.4",
         "vue-router": "^3.1.3"

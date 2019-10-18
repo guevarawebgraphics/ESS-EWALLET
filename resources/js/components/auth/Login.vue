@@ -9,13 +9,13 @@
                         <div class="form-group">
                         <input v-model="form.username" type="text" name="username"
                             placeholder="Username"
-                            class="form-control input-rounded" :class="{ 'is-invalid': form.errors.has('username') }">
+                            class="form-control" :class="{ 'is-invalid': form.errors.has('username') }">
                             <has-error :form="form" field="username"></has-error>
                         </div>
                         <div class="form-group">
                         <input v-model="form.password" type="password" name="password"
                             placeholder="Password"
-                            class="form-control input-rounded" :class="{ 'is-invalid': form.errors.has('password') }">
+                            class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
                             <has-error :form="form" field="password"></has-error>
                         </div>
                         <div class="submit-btn-area">
@@ -55,3 +55,13 @@
     }
 </script>
 
+<style scoped>
+input {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #d9dadc;
+    border-radius: 0;
+    background-color: #fff;
+    background-image: none;
+}
+</style>
