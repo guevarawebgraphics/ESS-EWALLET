@@ -21,3 +21,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/users', 'Auth\\RegisterController@get_all_users');
 
 Route::post('/ValidateFirstStep', 'Api\\WalletAccount\WalletAccountController@ValidateFirstStep');
+
+/**
+ *  @ Get Account
+ **/
+Route::get('/account/{essid}', [
+    'uses' => 'Api\\Account\AccountController@GetAccountViaEssId'
+]);
