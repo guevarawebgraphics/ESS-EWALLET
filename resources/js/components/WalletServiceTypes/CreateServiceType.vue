@@ -2,12 +2,20 @@
   <div id="CreateWalletAccount">
       <!-- <h1>Create Wallet Accounts</h1> -->
       <form-wizard @on-complete="onComplete" title="Create Service Type" subtitle="Details" color="#0077B5">
-        <tab-content title="Service Type Details">
+        <wizard-step 
+        slot-scope="props"
+        slot="step"
+        :tab="props.tab"
+        :transition="props.transition"
+        :index="props.index">
+        </wizard-step>
+        <tab-content title="Service Type Details" :before-change="validateTab">
             <div class="box ptb--100">
                 <div class="card shadow-custom">
                     <div class="card-body"> 
                     <div class="col-sm-12">
                     <h4 class="header-title">Service Type Details</h4> 
+                        <form @change="addServiceTypeDetails">
                         <div class="form-group row"> 
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Code:</label>
                         <div class="col-sm-10">
@@ -17,15 +25,19 @@
                         <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Name:</label>
                         <div class="col-sm-10">
-                        <input type="email" class="form-control mb-4 col-sm-4" id="inputEmail3" placeholder="Name">
+                        <input type="text" class="form-control mb-4 col-sm-4" id="inputEmail3" placeholder="Name" v-model="stname"  v-validate="'min:5'" name="stname"> 
+                             <p class="alert" v-if="errors.has('stname')"> {{errors.first('stname')}} </p> 
                         </div>
                         </div> 
                         <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Description:</label>
                         <div class="col-sm-10">
-                        <input type="email" class="form-control mb-4 col-sm-4" id="inputEmail3" placeholder="Description">
+                        <input type="text" class="form-control mb-4 col-sm-4" id="inputEmail3" placeholder="Description" v-model="stdesc"  v-validate="'min:5'"  name="stdesc">
+                           <p class="alert" v-if="errors.has('stdesc')"> {{errors.first('stdesc')}} </p> 
                         </div>
-                        </div>
+                        </div> 
+        
+                        </form>
                     </div>
                     </div>
                 </div>
@@ -37,54 +49,12 @@
             <div class="col-sm-7">
             <h4 class="header-title">Behavior</h4>
                 <form action="#">
-                <ul class="list-group list-group-flush"> 
+                <ul class="list-group list-group-flush"  v-for="behavior in behaviors" :key="behavior.id"> 
                 <li class="list-group-item">
                     <div class="form-check custom-control custom-checkbox ">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in single source wallet, added to single destination wallet</label>
+                        <label class="form-check-label" for="exampleCheck1">{{behavior.item}}</label>
                     </div> 
-                </li>
-                <li class="list-group-item">
-                    <div class="form-check custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Balance transfer intiated in single source wallet, added to multiple destination wallets</label>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="form-check custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple source wallets, added to single destination wallet</label>
-                    </div>
-                </li> 
-                <li class="list-group-item">
-                    <div class="form-check custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple source wallets, added to multiple destination wallets</label>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="form-check custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Balance transfer intiated in single destination wallets, deducted from single source wallet</label>
-                    </div> 
-                </li>
-                <li class="list-group-item">
-                    <div class="form-check custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in single destination wallet, deducted from multiple source wallets</label>
-                    </div> 
-                </li>
-                <li class="list-group-item">
-                    <div class="form-check custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple destination wallets, deducted from single source wallet</label>
-                    </div> 
-                </li>
-                <li class="list-group-item">
-                    <div class="form-check custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets</label>
-                    </div>
                 </li>
                 </ul>
                 </form>
@@ -157,7 +127,18 @@
                     </div>     
             </div> 
             </div> 
-        </tab-content> 
+        </tab-content>   
+        <template slot="footer" slot-scope="props">
+            <div class="wizard-footer-left">
+            <wizard-button v-if="props.activeTabIndex > 0 && !props.isLastStep" @click.native="props.prevTab()" :style="props.fillButtonStyle">Previous</wizard-button>
+            </div>
+            <div class="wizard-footer-right">
+            <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" class="wizard-footer-right" :style="props.fillButtonStyle">Next</wizard-button>
+
+            <wizard-button v-else @click.native="alert('Done')" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">{{props.isLastStep ? 'Done' : 'Next'}}</wizard-button>
+            </div>
+        </template> 
+        
     </form-wizard>
   </div>
 </template>
@@ -166,18 +147,50 @@
 export default {
     data() {
         return {
-        loadingWizard: false,
-         errorMsg: null,
-         count: 0
+        loadingWizard: false, 
+         tabone: false,
+         stname :'',
+         stdesc : '' ,
+         behaviors :
+            [
+            {item :'Balance transfer initiated in single source wallet, added to single destination wallet'}, 
+            {item :'Balance transfer intiated in single source wallet, added to multiple destination wallets'},
+            {item :'Balance transfer initiated in multiple source wallets, added to single destination wallet'},
+            {item :'Balance transfer initiated in multiple source wallets, added to multiple destination wallets'},
+            {item :'Balance transfer initiated in multiple destination wallets, deducted from single source wallet'},
+            {item :'Balance transfer initiated in single destination wallet, deducted from multiple source wallets'},
+            {item :'Balance transfer initiated in multiple destination wallets, deducted from single source wallet'}, 
+            {item :'Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets'}
+            ]
         }
-    },
+    }, 
     methods: {
+        validateTab:function(){
+            return this.tabone;
+            this.tabone = false;
+        }, 
         onComplete: function(){
             console.log('Setup Complete');
-        }
+        },
+        addServiceTypeDetails(){
+            this.$validator.validateAll().then((result)=> {
+            if(result) {
+                this.tabone = true;
+            }
+            else {
+                this.tabone = false;
+            } 
+                    
+        }) 
+ 
+        },
+   
     },
 
-    created() {},
+    created() {
+
+
+    },
 }
 </script>
 

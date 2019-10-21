@@ -35,54 +35,12 @@
                       <div class="col-sm-7">
             <h4 class="header-title">Behavior</h4>
             <form action="#">
-            <ul class="list-group list-group-flush"> 
+            <ul class="list-group list-group-flush"  v-for="behavior in behaviors" :key="behavior.id"> 
             <li class="list-group-item">
                 <div class="form-check custom-control custom-checkbox ">
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in single source wallet, added to single destination wallet</label>
+                    <label class="form-check-label" for="exampleCheck1">{{behavior.item}}</label>
                 </div> 
-            </li>
-            <li class="list-group-item">
-                <div class="form-check custom-control custom-checkbox">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Balance transfer intiated in single source wallet, added to multiple destination wallets</label>
-                </div>
-            </li>
-            <li class="list-group-item">
-                <div class="form-check custom-control custom-checkbox">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple source wallets, added to single destination wallet</label>
-                </div>
-            </li> 
-            <li class="list-group-item">
-                <div class="form-check custom-control custom-checkbox">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple source wallets, added to multiple destination wallets</label>
-                </div>
-            </li>
-            <li class="list-group-item">
-                <div class="form-check custom-control custom-checkbox">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Balance transfer intiated in single destination wallets, deducted from single source wallet</label>
-                </div> 
-             </li>
-            <li class="list-group-item">
-                <div class="form-check custom-control custom-checkbox">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in single destination wallet, deducted from multiple source wallets</label>
-                </div> 
-            </li>
-            <li class="list-group-item">
-                <div class="form-check custom-control custom-checkbox">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple destination wallets, deducted from single source wallet</label>
-                </div> 
-            </li>
-            <li class="list-group-item">
-                <div class="form-check custom-control custom-checkbox">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets</label>
-                </div>
             </li>
             </ul>
             </form>
@@ -101,11 +59,25 @@
 export default {
 data(){
     return{
-        id_value : this.$route.params.id
+        id_value : this.$route.params.id,
+        behaviors :[
+        {item :'Balance transfer initiated in single source wallet, added to single destination wallet'}, 
+        {item :'Balance transfer intiated in single source wallet, added to multiple destination wallets'},
+        {item :'Balance transfer initiated in multiple source wallets, added to single destination wallet'},
+        {item :'Balance transfer initiated in multiple source wallets, added to multiple destination wallets'},
+        {item :'Balance transfer initiated in multiple destination wallets, deducted from single source wallet'},
+        {item :'Balance transfer initiated in single destination wallet, deducted from multiple source wallets'},
+        {item :'Balance transfer initiated in multiple destination wallets, deducted from single source wallet'}, 
+        {item :'Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets'}
+    ]
     }
+
 },
 methods : {
-    
+
+},
+created(){
+
 }
 
 
