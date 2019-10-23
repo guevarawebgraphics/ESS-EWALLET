@@ -28,6 +28,7 @@ class ServiceGroupController extends Controller
      **/
     public function __construct(ServiceGroupRepository $ServiceGroupRepository){
         $this->serviceGroupRepository = $ServiceGroupRepository;
+        $this->middleware('auth:api');
     }
 
     /**
@@ -51,8 +52,8 @@ class ServiceGroupController extends Controller
     /**
      * @ Update Service Group
      **/
-    public function UpdateServiceGroup(StoreServiceGroup $request){
-        $service_group = $this->serviceGroupRepository->update_service_group($request);
+    public function UpdateServiceGroup(StoreServiceGroup $request, $id){
+        $service_group = $this->serviceGroupRepository->update_service_group($request, $id);
 
         return response()->json([
             'status' => 'success'

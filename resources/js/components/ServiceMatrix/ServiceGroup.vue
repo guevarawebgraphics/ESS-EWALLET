@@ -103,10 +103,9 @@ export default {
             editmode: false,
             serviceGroups: {},
             form: new Form({
+                id: '',
                 group_code: '',
-                group_description: '',
-                created_by: window.user.id,
-                updated_by: window.user.id
+                group_description: ''
             })
         }
     },
@@ -137,7 +136,7 @@ export default {
             this.form.fill(sg)
         },
         updateGroup(){
-            this.form.put('api/servicematrix/UpdateServiceGroup')
+            this.form.put('api/servicematrix/UpdateServiceGroup/'+this.form.id)
             .then((response) => {
                  $('#serviceGroupModal').modal('hide')
                 $(document.body).removeAttr('class')
