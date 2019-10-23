@@ -362,19 +362,16 @@ export default {
                 });
                 return false;
             }
-            // this.form.post('api/ValidateFirstStep')
-            //     .then(()=>{
-            //         console.log('asf');
-            //     })
-            //     .catch(()=>{
-            //         console.clear()
-            //     });
         },
         /**
          *@ Search For Account ESS ID 
          **/
         SearchESSID(){
-            axios.get('/api/account/' + this.form.username)
+            if(!this.form.username){
+                $('#nextTab').attr('disabled', true)
+            }
+            else {
+                axios.get('/api/account/' + this.form.username)
                 .then(response => {
                     if(response.data.length > 0){
                         this.errors.clear()
@@ -396,8 +393,9 @@ export default {
                     this.form.presentaddress = response.data[0]['address_unit'] + response.data[0]['address_unit'];
                 })
                 .catch(() => {
-                    console.log('err');
+                    
                 });
+            }
         }
     },
 
