@@ -41,7 +41,12 @@
                         <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Admin Reports</span></a>
                     </li>
                     <li>
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Matrix</span></a>
+                        
+                        <a href="javascript:void(0)" aria-expanded="true"><i class="ti-wallet text-blue"></i>
+                            <span>Service Matrix</span></a>
+                        <ul class="collapse">
+                            <router-link to="/servicematrix" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Grouping</span></router-link>
+                        </ul>
                     </li>
                     {{-- <li><a href="#"><i class="ti-map-alt"></i><span>Not expanding</span></a></li>
                     <li>

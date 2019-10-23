@@ -17,7 +17,11 @@ const routes = [
     { path: '/editservicetype/:id', name: '/test', component: require('../components/WalletServiceTypes/EditServiceType.vue').default},
     { path: '/servicetypesetup/:id', name: '/st-setup', component: require('../components/WalletServiceTypes/ServiceTypeSetUp.vue').default},
     { path: '/createservicetype', name: '/st-create-new', component: require('../components/WalletServiceTypes/CreateServiceType.vue').default},
-    { path: '*', component: require('../components/ErrorPages/404.vue') }
+    { path: '*', component: require('../components/ErrorPages/404.vue') },
+    /**
+     * @ Routes For Service Matrix 
+     **/
+    { path: '/servicematrix', component: require('../components/ServiceMatrix/ServiceGroup.vue').default},
   ]
 
 export default new VueRouter({
