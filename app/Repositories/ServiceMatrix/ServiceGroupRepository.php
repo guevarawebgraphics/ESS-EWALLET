@@ -24,13 +24,13 @@ class ServiceGroupRepository
      * @return string
      * Store Service Group
      */
-    public function store_service_group($servicedata)
-    {
+    public function store_service_group($servicedata){
+        $user = auth('api')->user();
         $service_group = ServiceGroup::create([
             'group_code' => $servicedata->group_code,
             'group_description' => $servicedata->group_description,
-            'created_by' => $servicedata->created_by,
-            'updated_by' => $servicedata->updated_by
+            'created_by' => $user->id,
+            'updated_by' => $user->id
         ]);
         return $service_group;
     }
@@ -38,14 +38,15 @@ class ServiceGroupRepository
     /**
      * Update Service Group
      **/
-    public function update_service_group($servicedata){
+    public function update_service_group($servicedata, $id){
         $user = auth('api')->user();
         $service_group = ServiceGroup::where('created_by', '=', $user->id)
+            ->where('id', '=', $id)
             ->update([
             'group_code' => $servicedata->group_code,
             'group_description' => $servicedata->group_description,
-            'created_by' => $servicedata->created_by,
-            'updated_by' => $servicedata->updated_by
+            'created_by' => $user->id,
+            'updated_by' => $user->id
         ]);
         return $service_group;
     }

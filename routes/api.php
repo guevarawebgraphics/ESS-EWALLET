@@ -30,7 +30,7 @@ Route::prefix('servicematrix')->group(function(){
     Route::post('/StoreServiceGroup', [
         'uses' => 'Api\\ServiceMatrix\ServiceGroupController@StoreServiceGroup'
     ]);
-    Route::put  ('/UpdateServiceGroup', [
+    Route::put  ('/UpdateServiceGroup/{id}', [
         'uses' => 'Api\\ServiceMatrix\ServiceGroupController@UpdateServiceGroup'
     ]);
     // api/servicematrix/GetServices
