@@ -23,8 +23,8 @@
                 </thead>
                 <tbody>
                        <tr v-for="service in services" :key="service.id">
-                        <td>{{service.title}}</td>
-                        <td>{{service.body}}</td>
+                        <td>{{service.st_code}}</td>
+                        <td>{{service.st_name}}</td>
                         <td> <router-link :to="{ name: '/test', params: { id: service.id }}" class="btn btn-primary btn-custom">Update</router-link></td>
                     </tr>
                 </tbody>
@@ -48,15 +48,17 @@
         loadServices(){
              axios({
                 method: 'get',
-                url: 'https://jsonplaceholder.typicode.com/posts/',
+                url: '/api/servicetypetable',
                 dataType: 'json',
                 contentType: 'application/json',
                 secure: true,
                 headers: {
-                "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MTIwMzk1MCwiZXhwIjoxNTcxMjkwMzUwLCJuYmYiOjE1NzEyMDM5NTAsImp0aSI6IlRRSVRjdlJBWVAxOHB6TjEiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.K0Hv250k94ksZl_ba3V6M2pIIrKsfoNKNpuIJ6cWepk',
+                "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MTcyMzc0MywiZXhwIjoxNTcxODEwMTQzLCJuYmYiOjE1NzE3MjM3NDMsImp0aSI6Ikp4S2Y4UFA1NnpvQWJqODgiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.vYSQ3ILsFwRoD2RV3vitwGPraIrArnBk9zMyw8dVr3w',
                 },
             })
-            .then(({ data }) => (this.services = data));
+            .then(({ data }) => (
+                this.services = data
+                ));
             },
         loadDataTable(){
                 setTimeout(function(){ 
