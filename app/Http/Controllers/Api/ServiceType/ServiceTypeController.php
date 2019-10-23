@@ -21,4 +21,8 @@ class ServiceTypeController extends Controller
         $STSetUp = $this->serviceType->get_service_details_and_behavior($st_id);
         return response()->json($STSetUp);
     }
+    public function SaveServiceDetailsBehavior(Request $request,$st_id){
+        $SaveDetailsBehavior = $this->serviceType->update_service_details_and_behavior($st_id);
+        
+    }
 }

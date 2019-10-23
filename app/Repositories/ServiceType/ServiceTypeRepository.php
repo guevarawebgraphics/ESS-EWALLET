@@ -38,7 +38,27 @@ class ServiceTypeRepository
                                         ->where('stbehavior.st_id','=',$st_id)
                                         ->first();  
                                         return $behavior_details;
-
     }
+    public function update_service_details_and_behavior($st_id){
+                $update_details = DB::connection('mysql') 
+                                        ->table('servicetypedetails')->where('id','=',$st_id)
+                                        ->update(array(
+                                                'st_name' => "test",
+                                                'st_description' => "test"
+                                        )); 
+                $update_behavior = DB::connection('mysql') 
+                                        ->table('stbehavior')->where('st_id','=',$st_id)
+                                        ->update(array(
+                                                'added_ssw_sdw' => 0,
+                                                'added_ssw_mdw' => 0,
+                                                'added_msw_sdw' => 0,
+                                                'added_msw_mdw' => 0,
+                                                'deducted_sdw_ssw' => 0,
+                                                'deducted_sdw_msw' => 0,
+                                                'deducted_mdw_ssw' => 0,
+                                                'deducted_mdw_msw' => 0
+                                        ));
+
+              }
 
 }
