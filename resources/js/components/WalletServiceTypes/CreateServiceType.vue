@@ -15,7 +15,7 @@
                     <div class="card-body"> 
                     <div class="col-sm-12">
                     <h4 class="header-title">Service Type Details</h4> 
-                        <form @change="addServiceTypeDetails">
+                        <form >
                         <div class="form-group row"> 
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Code:</label>
                         <div class="col-sm-10">
@@ -25,15 +25,15 @@
                         <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Name:</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control mb-4 col-sm-4" id="inputEmail3" placeholder="Name" v-model="stname"  v-validate="'min:5'" name="stname"> 
-                             <p class="alert" v-if="errors.has('stname')"> {{errors.first('stname')}} </p> 
+                        <input type="text" class="form-control mb-4 col-sm-4" id="inputEmail3" placeholder="Name" v-model="stname"  v-validate="'required'" name="stname"> 
+                             <p class="alert text=danger" v-if="errors.has('stname')"> {{errors.first('stname')}} </p> 
                         </div>
                         </div> 
                         <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Description:</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control mb-4 col-sm-4" id="inputEmail3" placeholder="Description" v-model="stdesc"  v-validate="'min:5'"  name="stdesc">
-                           <p class="alert" v-if="errors.has('stdesc')"> {{errors.first('stdesc')}} </p> 
+                        <input type="text" class="form-control mb-4 col-sm-4" id="inputEmail3" placeholder="Description" v-model="stdesc"  v-validate="'required'"  name="stdesc">
+                           <p class="alert text=danger" v-if="errors.has('stdesc')"> {{errors.first('stdesc')}} </p> 
                         </div>
                         </div> 
         
@@ -133,7 +133,7 @@
             <wizard-button v-if="props.activeTabIndex > 0 && !props.isLastStep" @click.native="props.prevTab()" :style="props.fillButtonStyle">Previous</wizard-button>
             </div>
             <div class="wizard-footer-right">
-            <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" class="wizard-footer-right" :style="props.fillButtonStyle">Next</wizard-button>
+            <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" :disabled="errors.items.length>0" v-on:click="nextTabTwo" class="wizard-footer-right" :style="props.fillButtonStyle">Next</wizard-button>
 
             <wizard-button v-else @click.native="alert('Done')" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">{{props.isLastStep ? 'Done' : 'Next'}}</wizard-button>
             </div>
@@ -148,7 +148,6 @@ export default {
     data() {
         return {
         loadingWizard: false, 
-         tabone: false,
          stname :'',
          stdesc : '' ,
          behaviors :
@@ -166,8 +165,20 @@ export default {
     }, 
     methods: {
         validateTab:function(){
-            return this.tabone;
-            this.tabone = false;
+            if(!this.stname && !this.stdesc){
+                this.$validator.validateAll().then(result => {
+                        if (result) {
+                        alert("Form Submitted!");
+                        return;
+                        } 
+                });
+                return false;
+            }
+            else {
+                return true;
+            }
+            
+        
         }, 
         onComplete: function(){
             console.log('Setup Complete');
@@ -184,6 +195,18 @@ export default {
         }) 
  
         },
+        nextTabTwo(){
+            this.tabone ==false;
+        },
+        IsDisabled(){
+            if(errors.items.length>0)
+            {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
    
     },
 
