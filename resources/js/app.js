@@ -22,6 +22,18 @@ Vue.component(AlertError.name, AlertError)
 
 Vue.component('pagination', require('laravel-vue-pagination'));
 
+import swal from 'sweetalert2'
+window.swal = swal;
+
+const toast = swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000
+});
+
+window.toast = toast;
+
 
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
