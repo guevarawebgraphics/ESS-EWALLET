@@ -34,7 +34,7 @@
             <div class="card-body">
                       <div class="col-sm-7">
             <h4 class="header-title">Behavior</h4>
-            <form action="#">
+            <form>
                   <ul class="list-group list-group-flush"> 
             <li class="list-group-item">
                 <div class="form-check custom-control custom-checkbox ">
@@ -85,10 +85,12 @@
                 </div>
             </li>
             </ul>
+        
             </form>
                       </div> 
                      <router-link :to="{ name: '/st-setup', params: { id: id_value }}" class="btn btn-primary float-right btn-lg btn-custom" @click.native="updateDetailsBehavior()">Save & Next</router-link>
             </div> 
+
             
             </div> 
             
@@ -107,6 +109,7 @@ data(){
          */
         DetailsBehavior : [],
         form : new Form({
+        id: this.$route.params.id,
         service_code : null,
         service_name : null,
         service_description : null,
@@ -183,9 +186,14 @@ methods : {
         changeValue == 0 ? this.form.deducted_mdw_msw  = 1 : this.form.deducted_mdw_msw  = 0 
     },    
     updateDetailsBehavior() {
-         console.log("soon");
+        this.form.put('/api/updateservicetype/'+ this.form.id)
+        .then((response) =>{
+           
+        })
+        .catch(() => {
+            console.log('rrrr')
+        })
     }
-
 },
 
   

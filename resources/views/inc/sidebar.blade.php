@@ -29,7 +29,7 @@
                         <router-link to="/servicetypes" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Service Types</span></router-link>
                     </li>
                     <li>
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Services</span></a>
+                        <router-link to="/serviceslist" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Services List</span></router-link>
                     </li>
                     <li>
                         <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Prepaid Service Gateway</span></a>
