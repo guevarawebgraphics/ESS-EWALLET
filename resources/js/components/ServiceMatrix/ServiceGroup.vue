@@ -123,7 +123,7 @@ export default {
                     responsive: true,
                     fixedColumns: true,
                 });
-            }, 900);
+            }, 500);
         },
         get_service_group(){
             axios.get("api/servicematrix/GetServices").then(({ data }) => (this.serviceGroups = data));
