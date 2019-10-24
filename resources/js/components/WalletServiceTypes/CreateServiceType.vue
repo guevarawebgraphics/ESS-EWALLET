@@ -19,21 +19,22 @@
                         <div class="form-group row"> 
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Code:</label>
                         <div class="col-sm-10">
-                        <input type="email" class="form-control mb-4 col-sm-4" id="inputEmail3" placeholder="Code">
+                        <input type="number" class="form-control mb-4 col-sm-4" v-model="form.servicetype_code" id="inputEmail3" placeholder="Code"  v-validate="'required'" name="servicetype_code"> 
+                          <p class="alert text=danger" v-if="errors.has('servicetype_code')"> {{errors.first('servicetype_code')}} </p> 
                         </div>
                         </div> 
                         <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Name:</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control mb-4 col-sm-4" id="inputEmail3" placeholder="Name" v-model="stname"  v-validate="'required'" name="stname"> 
-                             <p class="alert text=danger" v-if="errors.has('stname')"> {{errors.first('stname')}} </p> 
+                        <input type="text" class="form-control mb-4 col-sm-4" id="inputEmail3" placeholder="Name" v-model="form.servicetype_name"  v-validate="'required'" name="servicetype_name"> 
+                             <p class="alert text=danger" v-if="errors.has('servicetype_name')"> {{errors.first('servicetype_name')}} </p> 
                         </div>
                         </div> 
                         <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Description:</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control mb-4 col-sm-4" id="inputEmail3" placeholder="Description" v-model="stdesc"  v-validate="'required'"  name="stdesc">
-                           <p class="alert text=danger" v-if="errors.has('stdesc')"> {{errors.first('stdesc')}} </p> 
+                        <input type="text" class="form-control mb-4 col-sm-4" id="inputEmail3" placeholder="Description" v-model="form.servicetype_description"  v-validate="'required'"  name="servicetype_description">
+                           <p class="alert text=danger" v-if="errors.has('servicetype_description')"> {{errors.first('servicetype_description')}} </p> 
                         </div>
                         </div> 
         
@@ -48,16 +49,59 @@
             <div class="card-body" >
             <div class="col-sm-7">
             <h4 class="header-title">Behavior</h4>
-                <form action="#">
-                <ul class="list-group list-group-flush"  v-for="behavior in behaviors" :key="behavior.id"> 
-                <li class="list-group-item">
-                    <div class="form-check custom-control custom-checkbox ">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">{{behavior.item}}</label>
-                    </div> 
-                </li>
-                </ul>
-                </form>
+         <form>
+                  <ul class="list-group list-group-flush"> 
+            <li class="list-group-item">
+                <div class="form-check custom-control custom-checkbox ">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1" v-bind="form.added_ssw_sdw" v-on:click="added_ssw_sdw(form.added_ssw_sdw)">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in single source wallet, added to single destination wallet</label>
+                </div> 
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control custom-checkbox">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1" v-bind="form.added_ssw_mdw" v-on:click="added_ssw_mdw(form.added_ssw_mdw)">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer intiated in single source wallet, added to multiple destination wallets</label>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control custom-checkbox">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1" v-bind="form.added_msw_sdw" v-on:click="added_msw_sdw(form.added_msw_sdw)">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple source wallets, added to single destination wallet</label>
+                </div>
+            </li> 
+            <li class="list-group-item">
+                <div class="form-check custom-control custom-checkbox">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1" v-bind="form.added_msw_mdw" v-on:click="added_msw_mdw(form.added_msw_mdw)">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple source wallets, added to multiple destination wallets</label>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control custom-checkbox">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1"  v-bind="form.deducted_sdw_ssw" v-on:click="deducted_sdw_ssw(form.deducted_sdw_ssw)">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer intiated in single destination wallets, deducted from single source wallet</label>
+                </div> 
+             </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control custom-checkbox">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1" v-bind="form.deducted_sdw_msw" v-on:click="deducted_sdw_msw(form.deducted_sdw_msw)">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in single destination wallet, deducted from multiple source wallets</label>
+                </div> 
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control custom-checkbox">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1"  v-bind="form.deducted_mdw_ssw"  v-on:click="deducted_mdw_ssw(form.deducted_mdw_ssw)">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple destination wallets, deducted from single source wallet</label>
+                </div> 
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control custom-checkbox"> 
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1"  v-on:click="deducted_mdw_msw(form.deducted_mdw_msw)"> 
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets</label>
+                </div>
+            </li>
+            </ul>
+        
+            </form>
             </div>
             </div> 
             </div> 
@@ -123,7 +167,7 @@
                     </li>
 
                     </ul> 
-                        <button type="button" class="btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom">Save Service Type</button>
+                      <!--  <button type="button" class="btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom">Save Service Type</button> -->
                     </div>     
             </div> 
             </div> 
@@ -135,7 +179,7 @@
             <div class="wizard-footer-right">
             <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" :disabled="errors.items.length>0" v-on:click="nextTabTwo" class="wizard-footer-right" :style="props.fillButtonStyle">Next</wizard-button>
 
-            <wizard-button v-else @click.native="alert('Done')" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">{{props.isLastStep ? 'Done' : 'Next'}}</wizard-button>
+            <wizard-button v-else @click.native="onComplete()" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">{{props.isLastStep ? 'Save Service Type' : 'Next'}}</wizard-button>
             </div>
         </template> 
         
@@ -148,24 +192,24 @@ export default {
     data() {
         return {
         loadingWizard: false, 
-         stname :'',
-         stdesc : '' ,
-         behaviors :
-            [
-            {item :'Balance transfer initiated in single source wallet, added to single destination wallet'}, 
-            {item :'Balance transfer intiated in single source wallet, added to multiple destination wallets'},
-            {item :'Balance transfer initiated in multiple source wallets, added to single destination wallet'},
-            {item :'Balance transfer initiated in multiple source wallets, added to multiple destination wallets'},
-            {item :'Balance transfer initiated in multiple destination wallets, deducted from single source wallet'},
-            {item :'Balance transfer initiated in single destination wallet, deducted from multiple source wallets'},
-            {item :'Balance transfer initiated in multiple destination wallets, deducted from single source wallet'}, 
-            {item :'Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets'}
-            ]
+        form  : new Form({
+            servicetype_code : null,
+            servicetype_name : null,
+            servicetype_description: null,
+            added_ssw_sdw: 0,
+            added_ssw_mdw: 0,
+            added_msw_sdw: 0, 
+            added_msw_mdw: 0,
+            deducted_sdw_ssw: 0,
+            deducted_sdw_msw: 0,
+            deducted_mdw_ssw:0,
+            deducted_mdw_msw:0,
+        })
         }
     }, 
     methods: {
         validateTab:function(){
-            if(!this.stname && !this.stdesc){
+            if(!this.form.servicetype_name && !this.form.servicetype_description && !this.servicetype_code){
                 this.$validator.validateAll().then(result => {
                         if (result) {
                         alert("Form Submitted!");
@@ -176,12 +220,16 @@ export default {
             }
             else {
                 return true;
-            }
-            
-        
+            }     
         }, 
         onComplete: function(){
-            console.log('Setup Complete');
+           this.form.post("/api/createservicetype")
+           .then((response) =>{
+               this.$router.push('servicetypes') 
+           })
+           .catch(() => {
+             console.log("error");  
+           })
         },
         addServiceTypeDetails(){
             this.$validator.validateAll().then((result)=> {
@@ -190,10 +238,8 @@ export default {
             }
             else {
                 this.tabone = false;
-            } 
-                    
+            }      
         }) 
- 
         },
         nextTabTwo(){
             this.tabone ==false;
@@ -206,12 +252,38 @@ export default {
             else {
                 return true;
             }
-        }
+        },
+         /***
+     * These methods are for changing the value of the form data
+     */
+    added_ssw_sdw(changeValue){
+        changeValue == 0 ? this.form.added_ssw_sdw = 1 : this.form.added_ssw_sdw = 0 
+    }, 
+    added_ssw_mdw(changeValue){
+        changeValue == 0 ? this.form.added_ssw_mdw = 1 : this.form.added_ssw_mdw = 0 
+    },
+    added_msw_sdw(changeValue){
+        changeValue == 0 ? this.form.added_msw_sdw = 1 : this.form.added_msw_sdw = 0 
+    }, 
+    added_msw_mdw(changeValue){
+        changeValue == 0 ? this.form.added_msw_mdw = 1 : this.form.added_msw_mdw = 0 
+    }, 
+    deducted_sdw_ssw(changeValue){
+        changeValue == 0 ? this.form.deducted_sdw_ssw = 1 : this.form.deducted_sdw_ssw = 0 
+    },  
+    deducted_sdw_msw(changeValue){
+        changeValue == 0 ? this.form.deducted_sdw_msw = 1 : this.form.deducted_sdw_msw = 0 
+    },   
+    deducted_mdw_ssw(changeValue){
+        changeValue == 0 ? this.form.deducted_mdw_ssw  = 1 : this.form.deducted_mdw_ssw  = 0 
+    },    
+    deducted_mdw_msw(changeValue){
+        changeValue == 0 ? this.form.deducted_mdw_msw  = 1 : this.form.deducted_mdw_msw  = 0 
+    },    
    
     },
 
     created() {
-
 
     },
 }
