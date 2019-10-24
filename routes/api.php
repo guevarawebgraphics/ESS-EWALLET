@@ -37,6 +37,9 @@ Route::prefix('servicematrix')->group(function(){
     Route::get('/GetServices', [
         'uses' => 'Api\\ServiceMatrix\ServiceGroupController@get_all_service'
     ]);
+    Route::post('/StoreServiceMatrix', [
+        'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@StoreServiceMatrix'
+    ]);
 });
 /**
  *  @ Get Account
@@ -51,4 +54,19 @@ Route::get('/servicetypetable',[
 
 Route::get('/behavior/{st_id}',[
     'uses' => 'Api\\ServiceType\ServiceTypeController@ServiceTypeSetUp'
+]);
+
+Route::put('/updateservicetype/{st_id}', [
+    'uses' => 'Api\\ServiceType\ServiceTypeController@SaveServiceDetailsBehavior'
+]);
+
+Route::post('/createservicetype',[
+    'uses' => 'Api\\ServiceType\ServiceTypeController@SaveServiceType'
+]); 
+
+/***
+ * Services
+ */
+Route::post('/createservice',[
+    'uses' => 'Api\\Services\ServiceController@InsertService' 
 ]);

@@ -21,7 +21,14 @@ const routes = [
     /**
      * @ Routes For Service Matrix 
      **/
-    { path: '/servicematrix', component: require('../components/ServiceMatrix/ServiceGroup.vue').default},
+    { path: '/ServiceGroup', component: require('../components/ServiceMatrix/ServiceGroup.vue').default},
+    { path: '/ServiceMatrix', component: require('../components/ServiceMatrix/ServiceMatrix.vue').default},
+    /**
+     * @ Services  
+     */
+    {path:'/serviceslist',component: require('../components/WalletServices/ServicesListTable.vue').default},
+    {path:'/createservice',component: require('../components/WalletServices/CreateWalletServices.vue').default},
+
   ]
 
 export default new VueRouter({
