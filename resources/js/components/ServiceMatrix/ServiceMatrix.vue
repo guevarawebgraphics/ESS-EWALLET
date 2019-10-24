@@ -1,0 +1,153 @@
+<template>
+    <div id="ServiceMatrix">
+        <!-- Box -->
+        <div class="box ptb--100">
+            <!-- Form -->
+            <form @submit.prevent="SaveChanges()">
+                <!-- Card -->
+                <div class="card shadow-custom">
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <!-- Row Table -->
+                        <div class="form-group row">
+                            <!-- Cold lg 6 -->
+                            <div class="col-md-10">
+                                <div class="header-title">Services Matrix Setup</div>
+                                <div class="data-tables datatable-dark">
+                                    <!-- Table -->
+                                    <table class="table table-hover table-bordered text-center" id="service_matrix">
+                                        <thead class="text-capitalize">
+                                            <tr sp>
+                                                <th colspan="3"><h3>Service Matrix</h3></th>
+                                                <th>Applies To:</th>
+                                                <th colspan="2">Admin</th>
+                                                <th colspan="2">Merchant</th>
+                                                <th colspan="2">Branch</th>
+                                                <th colspan="2">Agent</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Service Type</th>
+                                                <th>Service Name</th>
+                                                <th>Group</th>
+                                                <th>Inc. Redeem</th>
+                                                <th>All</th>
+                                                <th>Some</th>
+                                                <th>All</th>
+                                                <th>Some</th>
+                                                <th>All</th>
+                                                <th>Some</th>
+                                                <th>All</th>
+                                                <th>Some</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Test</td>
+                                                <td>Test</td>
+                                                <td>Test</td>
+                                                <td>Test</td>
+                                                <td><input type="checkbox" name="admin_all" class="form-check-input"  v-model="form.admin_all" id="admin_all"></td>
+                                                <td><input type="checkbox" name="admin_some" class="form-check-input" v-model="form.admin_some" id="admin_some"></td>
+                                                <td><input type="checkbox" name="merchant_all" class="form-check-input" v-model="form.merchant_all" id="merchant_all"></td>
+                                                <td><input type="checkbox" name="merchant_some" class="form-check-input" v-model="form.merchant_some" id="merchant_some"></td>
+                                                <td><input type="checkbox" name="branch_all" class="form-check-input" v-model="form.branch_all" id="branch_all"></td>
+                                                <td><input type="checkbox" name="branch_some" class="form-check-input" v-model="form.branch_some" id="branch_some"></td>
+                                                <td><input type="checkbox" name="agent_all" class="form-check-input" v-model="form.agent_all" id="agent_all"></td>
+                                                <td><input type="checkbox" name="agent_some" class="form-check-input" v-model="form.agent_some" id="agent_some"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- ./ Table -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ./ Row Table -->
+                        <!-- Row Button -->
+                        <div class="form-group row">
+                            <div class="col-md-10">
+                                <button type="submit" class="btn btn-primary btn-flat float-right"><i class="ti-save"></i> Save Changes</button>
+                            </div>
+                        </div>
+                        <!-- ./ Row button -->
+                    </div>
+                </div>
+                <!-- ./ Card -->
+            </form>
+            <!-- ./ Form -->
+        </div>
+        <!-- ./ Box -->
+    </div>
+</template>
+
+<script>
+export default {
+    data(){
+        return {
+            form: new Form({
+                admin_all: false,
+                admin_some: false,
+                merchant_all: false,
+                merchant_some: false,
+                branch_all: false,
+                branch_some: false,
+                agent_all: false,
+                agent_some: false,
+            })
+        }
+    },
+    methods: {
+        datatable(){
+            setTimeout(function(){
+                let table = $('#service_matrix').DataTable({
+                    // "searching": false,
+                    "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+                    "paging": true,
+                    "pageLength": 10,
+                    //scrollX: true,
+                    "autoWidth": true,
+                    lengthChange: true,
+                    responsive: true,
+                    fixedColumns: false,
+                });
+            }, 300);
+        },
+        SaveChanges(){
+            swal.fire({
+                title: 'Are you sure?',
+                text: "Save Service Matrix Configuration Setup",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Save'
+            }).then((result) => {
+                if (result.value) {
+                    this.form.post('api/servicematrix/StoreServiceMatrix')
+                    .then((response) => {
+                        toast.fire({
+                            type: 'success',
+                            title: 'Saved!'
+                            })
+                        
+                    })
+                    .catch((err) => {
+                        swal.fire(
+                        'Something Went Wrong!',
+                        'Something Went Wrong!',
+                        'error'
+                        )
+                    })
+                    
+                }
+            })
+        }
+    },
+    created(){
+        this.datatable();
+    }
+}
+</script>
+
+<style>
+
+</style>

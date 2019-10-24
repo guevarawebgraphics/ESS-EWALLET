@@ -45,7 +45,8 @@
                         <a href="javascript:void(0)" aria-expanded="true"><i class="ti-wallet text-blue"></i>
                             <span>Service Matrix</span></a>
                         <ul class="collapse">
-                            <router-link to="/servicematrix" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Grouping</span></router-link>
+                            <li><router-link to="/ServiceGroup" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Grouping</span></router-link></li>
+                            <li><router-link to="/ServiceMatrix" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Matrix</span></router-link></li>
                         </ul>
                     </li>
                     {{-- <li><a href="#"><i class="ti-map-alt"></i><span>Not expanding</span></a></li>
