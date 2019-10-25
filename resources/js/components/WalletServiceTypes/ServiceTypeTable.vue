@@ -46,24 +46,12 @@
         },
         methods: {
         loadServices(){
-             axios({
-                method: 'get',
-                url: '/api/servicetypetable',
-                dataType: 'json',
-                contentType: 'application/json',
-                secure: true,
-                headers: {
-                "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MTcyMzc0MywiZXhwIjoxNTcxODEwMTQzLCJuYmYiOjE1NzE3MjM3NDMsImp0aSI6Ikp4S2Y4UFA1NnpvQWJqODgiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.vYSQ3ILsFwRoD2RV3vitwGPraIrArnBk9zMyw8dVr3w',
-                },
-            })
-            .then(({ data }) => (
-                this.services = data
-                ));
-            },
+              axios.get("/api/servicetypetable").then(({ data }) => (this.services = data));
+        },
         loadDataTable(){
                 setTimeout(function(){ 
                   $('#table-service-type').DataTable();
-                }, 1000);
+                }, 300);
             }
         },
         created(){ 
