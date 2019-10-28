@@ -31,6 +31,7 @@
     export default {
        data() {
            return {
+               user: window.user,
                form: new Form({
                    username: '',
                    password: '',
@@ -50,6 +51,11 @@
                 console.clear();
                 console.log('Error');
             });
+           }
+       },
+       created(){
+           if(this.user){
+               this.$router.push('/dashboard')
            }
        }
     }
