@@ -30,6 +30,7 @@ Route::prefix('servicematrix')->group(function(){
     Route::post('/StoreServiceGroup', [
         'uses' => 'Api\\ServiceMatrix\ServiceGroupController@StoreServiceGroup'
     ]);
+    // api/servicematrix/UpdateServiceGroup/{id}
     Route::put  ('/UpdateServiceGroup/{id}', [
         'uses' => 'Api\\ServiceMatrix\ServiceGroupController@UpdateServiceGroup'
     ]);
@@ -37,6 +38,7 @@ Route::prefix('servicematrix')->group(function(){
     Route::get('/GetServices', [
         'uses' => 'Api\\ServiceMatrix\ServiceGroupController@get_all_service'
     ]);
+    // api/servicematrix/StoreServiceMatrix
     Route::post('/StoreServiceMatrix', [
         'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@StoreServiceMatrix'
     ]);
@@ -46,6 +48,11 @@ Route::prefix('servicematrix')->group(function(){
  **/
 Route::get('/account/{essid}', [
     'uses' => 'Api\\Account\AccountController@GetAccountViaEssId'
+]);
+
+// api/servicematrix/GenerateAccountNo
+Route::get('/GenerateAccountNo', [
+    'uses' => 'Api\\Account\AccountController@GenerateAccountNo'
 ]);
 
 Route::get('/servicetypetable',[
