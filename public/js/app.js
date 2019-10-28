@@ -2573,6 +2573,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2618,6 +2645,10 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.form.username == null) {
+        toast.fire({
+          type: 'info',
+          title: 'Please fill required fields'
+        });
         this.$validator.validateAll().then(function (result) {
           if (result) {
             alert("Form Submitted!");
@@ -2642,24 +2673,51 @@ __webpack_require__.r(__webpack_exports__);
             _this.errors.clear();
 
             $('#nextTab').removeAttr('disabled');
+
+            _this.GenerateAccountNo();
+
+            _this.account = response.data;
+            /**
+             * @ Fill Form 
+             **/
+
+            _this.form.lastname = response.data[0]['lastname'];
+            _this.form.firstname = response.data[0]['firstname'];
+            _this.form.middlename = response.data[0]['middlename'];
+            _this.form.emailaddress = response.data[0]['email_add'];
+            _this.form.BusinessName = response.data[0]['accountname'];
+            _this.form.EmployerName = response.data[0]['business_name'];
+            _this.form.birthdate = response.data[0]['birthdate'];
+            _this.form.WalletAccountName = response.data[0]['accountname'];
+            _this.form.tin = response.data[0]['tin'];
+            _this.form.sss = response.data[0]['sss'];
+            _this.form.nationality = 'Filipino';
+            _this.form.presentaddress = '#' + response.data[0]['address_unit'] + ' ' + response.data[0]['brgyDesc'] + ' ' + response.data[0]['citymunDesc'] + ' ' + response.data[0]['provDesc'];
+            _this.form.permanentaddress = '#' + response.data[0]['address_unit'] + ' ' + response.data[0]['brgyDesc'] + ' ' + response.data[0]['citymunDesc'] + ' ' + response.data[0]['provDesc'];
           } else {
+            _this.form.reset();
+
             $('#nextTab').attr('disabled', true);
+            toast.fire({
+              type: 'info',
+              title: 'ESSID/Username not found'
+            });
           }
-
-          _this.account = response.data;
-          /**
-           * @ Fill Form 
-           **/
-
-          _this.form.BusinessName = response.data[0]['accountname'];
-          _this.form.EmployerName = response.data[0]['business_name'];
-          _this.form.emailaddress = response.data[0]['contact_email'];
-          _this.form.tin = response.data[0]['tin'];
-          _this.form.sss = response.data[0]['sss'];
-          _this.form.nationality = response.data[0]['Filipino'];
-          _this.form.presentaddress = response.data[0]['address_unit'] + response.data[0]['address_unit'];
         })["catch"](function () {});
       }
+    },
+
+    /**
+     * @ Generate Account No 
+     **/
+    GenerateAccountNo: function GenerateAccountNo() {
+      var _this2 = this;
+
+      axios.get('/api/GenerateAccountNo').then(function (response) {
+        _this2.form.WalletAccountNo = response.data;
+      })["catch"](function (err) {
+        console.log(err);
+      });
     }
   },
   created: function created() {}
@@ -3051,6 +3109,219 @@ __webpack_require__.r(__webpack_exports__);
     },
     deducted_mdw_msw: function deducted_mdw_msw(changeValue) {
       changeValue == 0 ? this.form.deducted_mdw_msw = 1 : this.form.deducted_mdw_msw = 0;
+    }
+  },
+  created: function created() {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServiceTypes/EditServiceType.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServiceTypes/EditServiceType.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      loadingWizard: false,
+      form: new Form({
+        id: this.$route.params.id,
+        service_code: null,
+        service_name: null,
+        service_description: null,
+        added_ssw_sdw: null,
+        added_ssw_mdw: null,
+        added_msw_sdw: null,
+        added_msw_mdw: null,
+        deducted_sdw_ssw: null,
+        deducted_sdw_msw: null,
+        deducted_mdw_ssw: null,
+        deducted_mdw_msw: null
+      })
+    };
+  },
+  methods: {
+    validateTab: function validateTab() {
+      if (!this.form.servicetype_name && !this.form.servicetype_description && !this.servicetype_code) {
+        this.$validator.validateAll().then(function (result) {
+          if (result) {
+            alert("Form Submitted!");
+            return;
+          }
+        });
+        return false;
+      } else {
+        return true;
+      }
+    },
+    onComplete: function onComplete() {
+      var _this = this;
+
+      this.form.post("/api/createservicetype").then(function (response) {
+        _this.$router.push('servicetypes');
+      })["catch"](function () {
+        console.log("error");
+      });
+    },
+    addServiceTypeDetails: function addServiceTypeDetails() {
+      var _this2 = this;
+
+      this.$validator.validateAll().then(function (result) {
+        if (result) {
+          _this2.tabone = true;
+        } else {
+          _this2.tabone = false;
+        }
+      });
+    },
+    nextTabTwo: function nextTabTwo() {
+      this.tabone == false;
+    },
+    IsDisabled: function IsDisabled() {
+      if (errors.items.length > 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+
+    /***
+    * These methods are for changing the value of the form data
+    */
+    added_ssw_sdw: function added_ssw_sdw(changeValue) {
+      changeValue == 0 ? this.form.added_ssw_sdw = 1 : this.form.added_ssw_sdw = 0;
+    },
+    added_ssw_mdw: function added_ssw_mdw(changeValue) {
+      changeValue == 0 ? this.form.added_ssw_mdw = 1 : this.form.added_ssw_mdw = 0;
+    },
+    added_msw_sdw: function added_msw_sdw(changeValue) {
+      changeValue == 0 ? this.form.added_msw_sdw = 1 : this.form.added_msw_sdw = 0;
+    },
+    added_msw_mdw: function added_msw_mdw(changeValue) {
+      changeValue == 0 ? this.form.added_msw_mdw = 1 : this.form.added_msw_mdw = 0;
+    },
+    deducted_sdw_ssw: function deducted_sdw_ssw(changeValue) {
+      changeValue == 0 ? this.form.deducted_sdw_ssw = 1 : this.form.deducted_sdw_ssw = 0;
+    },
+    deducted_sdw_msw: function deducted_sdw_msw(changeValue) {
+      changeValue == 0 ? this.form.deducted_sdw_msw = 1 : this.form.deducted_sdw_msw = 0;
+    },
+    deducted_mdw_ssw: function deducted_mdw_ssw(changeValue) {
+      changeValue == 0 ? this.form.deducted_mdw_ssw = 1 : this.form.deducted_mdw_ssw = 0;
+    },
+    deducted_mdw_msw: function deducted_mdw_msw(changeValue) {
+      changeValue == 0 ? this.form.deducted_mdw_msw = 1 : this.form.deducted_mdw_msw = 0;
+    },
+    updateDetailsBehavior: function updateDetailsBehavior() {
+      this.form.put('/api/updateservicetype/' + this.form.id).then(function (response) {})["catch"](function () {
+        console.log('rrrr');
+      });
     }
   },
   created: function created() {}
@@ -56479,7 +56750,7 @@ var render = function() {
             attrs: {
               title: "Create Wallet Account",
               subtitle: "Details",
-              color: "#3498db"
+              color: "#0077B5"
             },
             on: { "on-complete": _vm.onComplete },
             scopedSlots: _vm._u([
@@ -56544,7 +56815,10 @@ var render = function() {
                                   }
                                 }
                               },
-                              [_vm._v("Next")]
+                              [
+                                _vm._v("Next "),
+                                _c("span", { staticClass: "ti-arrow-right" })
+                              ]
                             )
                           : _c(
                               "wizard-button",
@@ -56561,8 +56835,10 @@ var render = function() {
                               [
                                 _vm._v(
                                   "  " +
-                                    _vm._s(props.isLastStep ? "Done" : "Next")
-                                )
+                                    _vm._s(props.isLastStep ? "Done" : "Next") +
+                                    " "
+                                ),
+                                _c("span", { staticClass: "ti-saves" })
                               ]
                             )
                       ],
@@ -56589,12 +56865,19 @@ var render = function() {
                     _c("div", { staticClass: "card-body" }, [
                       _c("div", { staticClass: "row" }, [
                         _c("div", { staticClass: "col-md-4 offset-md-1" }, [
-                          _c("hr"),
-                          _vm._v(" "),
                           _c(
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "username" }
+                                },
+                                [_vm._v("ESSID/Username")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -56652,6 +56935,15 @@ var render = function() {
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "lastname" }
+                                },
+                                [_vm._v("Lastname")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -56709,6 +57001,15 @@ var render = function() {
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "firstname" }
+                                },
+                                [_vm._v("Firstname")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -56768,6 +57069,15 @@ var render = function() {
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "middlename" }
+                                },
+                                [_vm._v("Middlename")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -56829,6 +57139,15 @@ var render = function() {
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "presentaddress" }
+                                },
+                                [_vm._v("Present Address")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -56893,6 +57212,15 @@ var render = function() {
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "permanentaddress" }
+                                },
+                                [_vm._v("Permanent Address")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -56981,7 +57309,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "input-group mb-3" }, [
+                            _c("div", { staticClass: "input-group" }, [
                               _c("div", { staticClass: "custom-file" }, [
                                 _c("input", {
                                   staticClass: "custom-file-input",
@@ -57005,12 +57333,19 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-4 offset-md-1" }, [
-                          _c("hr"),
-                          _vm._v(" "),
                           _c(
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "birthdate" }
+                                },
+                                [_vm._v("Birthdate")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -57070,6 +57405,15 @@ var render = function() {
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "placeofbirth" }
+                                },
+                                [_vm._v("Place of Birth")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -57131,6 +57475,15 @@ var render = function() {
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "nationality" }
+                                },
+                                [_vm._v("Nationality")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -57190,8 +57543,17 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "div",
-                            { staticClass: "form-group mb-3" },
+                            { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "emailaddress" }
+                                },
+                                [_vm._v("Email Address")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -57257,6 +57619,15 @@ var render = function() {
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "tin" }
+                                },
+                                [_vm._v("Tin")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -57314,6 +57685,15 @@ var render = function() {
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "sss" }
+                                },
+                                [_vm._v("SSS")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -57371,6 +57751,15 @@ var render = function() {
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "NationalIdNo" }
+                                },
+                                [_vm._v("National Id No")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -57432,6 +57821,15 @@ var render = function() {
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "EmployerName" }
+                                },
+                                [_vm._v("Employer Name")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -57493,6 +57891,15 @@ var render = function() {
                             "div",
                             { staticClass: "form-group" },
                             [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "BusinessName" }
+                                },
+                                [_vm._v("Business Name")]
+                              ),
+                              _vm._v(" "),
                               _c("input", {
                                 directives: [
                                   {
@@ -57567,11 +57974,32 @@ var render = function() {
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group" }, [
                           _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.username,
+                                expression: "form.username"
+                              }
+                            ],
                             staticClass: "form-control",
                             attrs: {
                               type: "text",
                               placeholder: "ESSID/Username",
                               disabled: ""
+                            },
+                            domProps: { value: _vm.form.username },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "username",
+                                  $event.target.value
+                                )
+                              }
                             }
                           })
                         ]),
@@ -57584,6 +58012,15 @@ var render = function() {
                           "div",
                           { staticClass: "form-group mt-3" },
                           [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "WalletType" }
+                              },
+                              [_vm._v("Wallet Type")]
+                            ),
+                            _vm._v(" "),
                             _c(
                               "select",
                               {
@@ -57663,6 +58100,15 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "WalletAccountType" }
+                              },
+                              [_vm._v("Wallet Account Type")]
+                            ),
+                            _vm._v(" "),
                             _c(
                               "select",
                               {
@@ -57751,6 +58197,15 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "WalletAccountNo" }
+                              },
+                              [_vm._v("Wallet Account No")]
+                            ),
+                            _vm._v(" "),
                             _c("input", {
                               directives: [
                                 {
@@ -57773,7 +58228,8 @@ var render = function() {
                               attrs: {
                                 name: "WalletAccountNo",
                                 type: "text",
-                                placeholder: "WalletAccountNo"
+                                placeholder: "WalletAccountNo",
+                                disabled: "disabled"
                               },
                               domProps: { value: _vm.form.WalletAccountNo },
                               on: {
@@ -57812,6 +58268,15 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "WalletAccountName" }
+                              },
+                              [_vm._v("Wallet Account Name")]
+                            ),
+                            _vm._v(" "),
                             _c("input", {
                               directives: [
                                 {
@@ -57836,7 +58301,8 @@ var render = function() {
                               attrs: {
                                 name: "WalletAccountName",
                                 type: "text",
-                                placeholder: "WalletAccountName"
+                                placeholder: "WalletAccountName",
+                                disabled: "disabled"
                               },
                               domProps: { value: _vm.form.WalletAccountName },
                               on: {
@@ -57877,6 +58343,15 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "Wallettitle" }
+                              },
+                              [_vm._v("Wallet Title")]
+                            ),
+                            _vm._v(" "),
                             _c("input", {
                               directives: [
                                 {
@@ -57899,7 +58374,7 @@ var render = function() {
                               attrs: {
                                 name: "Wallettitle",
                                 type: "text",
-                                placeholder: "Wallettitle"
+                                placeholder: "Wallet Title"
                               },
                               domProps: { value: _vm.form.Wallettitle },
                               on: {
@@ -57947,6 +58422,15 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "WalletAccountName" }
+                              },
+                              [_vm._v("Wallet Account Name")]
+                            ),
+                            _vm._v(" "),
                             _c("input", {
                               directives: [
                                 {
@@ -57971,7 +58455,8 @@ var render = function() {
                               attrs: {
                                 name: "WalletAccountName",
                                 type: "text",
-                                placeholder: "WalletAccountName"
+                                placeholder: "WalletAccountName",
+                                disabled: ""
                               },
                               domProps: { value: _vm.form.WalletAccountName },
                               on: {
@@ -58012,6 +58497,15 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "WalletAccountNo" }
+                              },
+                              [_vm._v("Wallet Account No")]
+                            ),
+                            _vm._v(" "),
                             _c("input", {
                               directives: [
                                 {
@@ -58034,7 +58528,8 @@ var render = function() {
                               attrs: {
                                 name: "WalletAccountNo",
                                 type: "text",
-                                placeholder: "WalletAccountNo"
+                                placeholder: "WalletAccountNo",
+                                disabled: ""
                               },
                               domProps: { value: _vm.form.WalletAccountNo },
                               on: {
@@ -58089,6 +58584,15 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "NameOfBank" }
+                              },
+                              [_vm._v("Name of Bank")]
+                            ),
+                            _vm._v(" "),
                             _c("input", {
                               directives: [
                                 {
@@ -58145,6 +58649,15 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "Branch" }
+                              },
+                              [_vm._v("Branch")]
+                            ),
+                            _vm._v(" "),
                             _c("input", {
                               directives: [
                                 {
@@ -58199,6 +58712,15 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "WalletType" }
+                              },
+                              [_vm._v("Wallet Type")]
+                            ),
+                            _vm._v(" "),
                             _c("input", {
                               directives: [
                                 {
@@ -58255,6 +58777,15 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "WalletAccountName" }
+                              },
+                              [_vm._v("Wallet Account Name")]
+                            ),
+                            _vm._v(" "),
                             _c("input", {
                               directives: [
                                 {
@@ -58320,6 +58851,15 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "WalletAccountNo" }
+                              },
+                              [_vm._v("Wallet Account No")]
+                            ),
+                            _vm._v(" "),
                             _c("input", {
                               directives: [
                                 {
