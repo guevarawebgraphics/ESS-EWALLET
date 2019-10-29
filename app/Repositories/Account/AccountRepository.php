@@ -113,7 +113,12 @@ class AccountRepository
      * @ Generate Wallet Account No
      **/
     public function generate_account_no(){
-        $account_no = Keygen::length(11)->numeric()->generate();
+        $account_no = Keygen::length(9)->numeric()->generate(
+            function($key) {
+                // Add a (-) after every fourth character in the key
+                return join('-', str_split($key, 3));
+            },
+        );
         return $account_no;
     }
 }
