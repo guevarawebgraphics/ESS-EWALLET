@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Service;
 
+use DB;
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 use App\Models\Services\WService;
 use App\Models\Services\WDetails;
@@ -28,10 +29,7 @@ class ServiceRepository
         $wservice_id = $wservice->id;
         $wdetails = WDetails::create([
             'wservice_id' =>  $wservice_id,
-            'pr_wallet_type' => $service_data->wallet_type,
-            'pr_wallet_account_no'=> $service_data->pr_wallet_acc_no,
-            'ir_wallet_account_no'=> $service_data->ir_wallet_acc_no,
-            'ir_wallet_account_name' => $service_data->ir_wallet_acc_name,
+            'wdetails_id' => "1",
         ]);
 
         $service_and_st = ServiceAndServiceType::create([
@@ -39,6 +37,13 @@ class ServiceRepository
             'service_type_id' => '1' //example
         ]); 
         return $wservice;
+    }
+    public function FillServiceTypeMethod(){
+         $test = DB::connection('mysql')
+                ->table('servicetypedetails')
+                ->where('st_code', '=', 124)
+                ->first();
+        return $test;
     }
 
 }
