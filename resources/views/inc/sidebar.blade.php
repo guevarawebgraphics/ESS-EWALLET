@@ -20,7 +20,7 @@
                         </ul> --}}
                     </li>
                     <li>
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Account Types</span></a>
+                        <router-link to="/walletaccounttype" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Account Types</span></router-link>
                     </li>
                     <li>
                         <router-link to="/walletaccounts" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Accounts</span></router-link>
