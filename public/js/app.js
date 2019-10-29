@@ -3830,6 +3830,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       form: new Form({
+        service_type_id: null,
         wallet_type: null,
         servicetype_code: null,
         servicetype_name: null,
@@ -3855,6 +3856,21 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function () {
         console.log('error');
       });
+    },
+    showServiceTypeDetails: function showServiceTypeDetails() {
+      var _this2 = this;
+
+      axios.get('/api/getservicetype/' + this.form.servicetype_code).then(function (response) {
+        _this2.form.servicetype_name = response.data['st_name'];
+        _this2.form.servicetype_id = response.data['id'];
+
+        if (response.data['st_name'] == undefined) {
+          toast.fire({
+            type: 'info',
+            title: 'Service Code not found'
+          });
+        }
+      })["catch"](function () {});
     }
   }
 });
@@ -61399,6 +61415,7 @@ var render = function() {
                               },
                               domProps: { value: _vm.form.servicetype_code },
                               on: {
+                                change: _vm.showServiceTypeDetails,
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
@@ -61688,7 +61705,7 @@ var render = function() {
                                 ]),
                                 _vm._v(" "),
                                 _c("option", { attrs: { value: "Credit" } }, [
-                                  _vm._v("Credit")
+                                  _vm._v("Dragon Pay")
                                 ])
                               ]
                             ),
