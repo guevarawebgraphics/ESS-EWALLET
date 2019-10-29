@@ -44,6 +44,23 @@ Route::prefix('servicematrix')->group(function(){
     ]);
 });
 /**
+ *  @ Wallet Account
+ **/
+Route::prefix('walletaccount')->group(function(){
+    // api/walletaccount/StoreWalletAccountType
+    Route::post('/StoreWalletAccountType', [
+        'uses' => 'Api\\WalletAccountType\WalletAccountTypeController@StoreWalletAccountType'
+    ]);
+     // api/walletaccount/StoreWalletAccountType
+     Route::get('/GetAllWalletAccountType', [
+        'uses' => 'Api\\WalletAccountType\WalletAccountTypeController@GetAllWalletAccountType'
+    ]);
+     // api/walletaccount/UpdateWalletAccountType
+     Route::put('/UpdateWalletAccountType', [
+        'uses' => 'Api\\WalletAccountType\WalletAccountTypeController@UpdateWalletAccountType'
+    ]);
+});
+/**
  *  @ Get Account
  **/
 Route::get('/account/{essid}', [
@@ -76,4 +93,8 @@ Route::post('/createservicetype',[
  */
 Route::post('/createservice',[
     'uses' => 'Api\\Services\ServiceController@InsertService' 
+]);
+
+Route::get('/getservicetype/{st_code}',[
+    'uses' => 'Api\\Services\ServiceController@fillServiceType'
 ]);
