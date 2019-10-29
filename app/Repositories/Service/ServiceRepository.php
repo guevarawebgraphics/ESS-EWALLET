@@ -38,10 +38,10 @@ class ServiceRepository
         ]); 
         return $wservice;
     }
-    public function FillServiceTypeMethod(){
+    public function FillServiceTypeMethod($service_type_code){
          $test = DB::connection('mysql')
                 ->table('servicetypedetails')
-                ->where('st_code', '=', 124)
+                ->where('st_code', '=', $service_type_code)
                 ->first();
         return $test;
     }
