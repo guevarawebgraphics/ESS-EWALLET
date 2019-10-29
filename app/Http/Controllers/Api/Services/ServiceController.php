@@ -30,10 +30,8 @@ class ServiceController extends Controller
         ]);    
     }
     public function fillServiceType(Request $request,$service_type_code){
-        $fill_service_type = $this->services->FillServiceTypeMethod();
-        return response()->json([
-            'status' => 'success'
-        ]);
+        $fill_service_type = $this->services->FillServiceTypeMethod($service_type_code);
+        return response()->json($fill_service_type);
     } 
 
 }
