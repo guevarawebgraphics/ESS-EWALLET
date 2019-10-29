@@ -18,7 +18,7 @@ class ServiceController extends Controller
     protected $services; 
     public function __construct(ServiceRepository $ServiceRepository){
         $this->services =  $ServiceRepository; 
-        $this->middleware('auth:api');
+      //  $this->middleware('auth:api');
     }
     /**
      * For inserting Service , Wallet Details and Service & Service Type ID
@@ -29,5 +29,11 @@ class ServiceController extends Controller
             'status' => 'success'
         ]);    
     }
+    public function fillServiceType(Request $request,$service_type_code){
+        $fill_service_type = $this->services->FillServiceTypeMethod();
+        return response()->json([
+            'status' => 'success'
+        ]);
+    } 
 
 }
