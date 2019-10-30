@@ -1906,6 +1906,167 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      editmode: false,
+      ServiceGateway: {},
+      form: new Form({
+        id: null,
+        gateway_code: null,
+        gateway_name: null
+      })
+    };
+  },
+  methods: {
+    getServiceGateway: function getServiceGateway() {
+      var _this = this;
+
+      axios.get('/api/getservicegateway').then(function (response) {
+        _this.ServiceGateway = response.data;
+      });
+    },
+    datatable: function datatable() {
+      setTimeout(function () {
+        var table = $('#table-service-gateway').DataTable({
+          // "searching": false,
+          //"sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+          "paging": true,
+          "pageLength": 10,
+          scrollY: true,
+          "autoWidth": true,
+          //lengthChange: false,
+          responsive: true,
+          fixedColumns: true
+        });
+      }, 500);
+    },
+    openModal: function openModal() {
+      this.form.clear();
+      this.editmode = false;
+      this.form.reset();
+      $('#serviceGatewayModal').modal('show');
+    },
+    createGateway: function createGateway() {
+      var _this2 = this;
+
+      this.form.post('/api/createservicegateway').then(function (response) {
+        console.log("ho");
+        $('#serviceGatewayModal').modal('hide');
+
+        _this2.getServiceGateway();
+      })["catch"](function () {
+        console.log("eerrrrr");
+      });
+    },
+    ShowServiceGateway: function ShowServiceGateway(sw) {
+      $('#serviceGatewayModal').modal('show');
+      this.editmode = true;
+      this.form.fill(sw);
+    },
+    updateGateway: function updateGateway() {
+      var _this3 = this;
+
+      this.form.put('/api/updateservicegateway/' + this.form.id).then(function (response) {
+        $('#serviceGatewayModal').modal('hide');
+
+        _this3.getServiceGateway();
+      })["catch"](function () {
+        console.log('err');
+      });
+    }
+  },
+  created: function created() {
+    this.datatable();
+    this.getServiceGateway();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ServiceMatrix/ServiceGroup.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ServiceMatrix/ServiceGroup.vue?vue&type=script&lang=js& ***!
@@ -4141,11 +4302,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      ServiceGateway: {},
       form: new Form({
         service_type_id: null,
+        pr_wallet_id: null,
+        ir_wallet_id: null,
         wallet_type: null,
         servicetype_code: null,
         servicetype_name: null,
@@ -4156,8 +4321,8 @@ __webpack_require__.r(__webpack_exports__);
         pr_wallet_acc_no: null,
         pr_wallet_acc_name: null,
         ir_wallet_acc_no: null,
-        ir_wallet_acc_name: null,
-        service_template: null
+        ir_wallet_acc_name: null //  service_template: null,
+
       })
     };
   },
@@ -4186,7 +4351,42 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       })["catch"](function () {});
+    },
+    showPRWallletAccountName: function showPRWallletAccountName() {
+      var _this3 = this;
+
+      axios.get('/api/getprwalletdetails/' + this.form.pr_wallet_acc_no).then(function (response) {
+        _this3.form.pr_wallet_acc_name = response.data['wallet_account_name'];
+        _this3.form.pr_wallet_id = response.data['id'];
+
+        if (response.data['wallet_account_name'] == undefined) {
+          toast.fire({
+            type: 'info',
+            title: 'Principal Redeem Wallet No not found'
+          });
+        }
+      })["catch"](function () {});
+    },
+    showIRWalletName: function showIRWalletName() {
+      var _this4 = this;
+
+      axios.get('/api/getirwalletdetails/' + this.form.ir_wallet_acc_no).then(function (response) {
+        _this4.form.ir_wallet_acc_name = response.data['wallet_account_name'];
+        _this4.form.ir_wallet_id = response.data['id'];
+      })["catch"](function () {
+        console.log('err');
+      });
+    },
+    getServiceGateway: function getServiceGateway() {
+      var _this5 = this;
+
+      axios.get('/api/getservicegateway').then(function (response) {
+        _this5.ServiceGateway = response.data;
+      });
     }
+  },
+  created: function created() {
+    this.getServiceGateway();
   }
 });
 
@@ -56174,6 +56374,305 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=template&id=449c170a&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=template&id=449c170a& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "container" } }, [
+    _c("div", { staticClass: "col-12 mt-5" }, [
+      _c("div", { staticClass: "card shadow-custom" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "data-tables datatable-dark" }, [
+              _c(
+                "table",
+                {
+                  staticClass: "table table-hover",
+                  attrs: { id: "table-service-gateway" }
+                },
+                [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.ServiceGateway, function(sw) {
+                      return _c("tr", { key: sw.id }, [
+                        _c("td", [_vm._v(_vm._s(sw.gateway_code))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(sw.gateway_name))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "btn btn-primary btn-xs",
+                              attrs: { href: "#EditServiceGroup" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.ShowServiceGateway(sw)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", { staticClass: "fa fa-edit blue" }),
+                              _vm._v(" "),
+                              _c("span", [_vm._v("Update")])
+                            ]
+                          )
+                        ])
+                      ])
+                    }),
+                    0
+                  )
+                ]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group row" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-flat btn-primary mb-3",
+                attrs: { type: "button" },
+                on: { click: _vm.openModal }
+              },
+              [
+                _c("i", { staticClass: "ti-plus text-white" }),
+                _vm._v(" Create New")
+              ]
+            )
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "serviceGatewayModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "serviceGatewayModal",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      _vm.editmode ? _vm.updateGateway() : _vm.createGateway()
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.gateway_code,
+                            expression: "form.gateway_code"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          name: "gateway_code",
+                          placeholder: "Service Gateway Code"
+                        },
+                        domProps: { value: _vm.form.gateway_code },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "gateway_code",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.gateway_name,
+                            expression: "form.gateway_name"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          name: "gateway_name",
+                          placeholder: "Service Gateway Name"
+                        },
+                        domProps: { value: _vm.form.gateway_name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "gateway_name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary btn-flat",
+                        attrs: { type: "button", "data-dismiss": "modal" }
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.editmode,
+                            expression: "editmode"
+                          }
+                        ],
+                        staticClass: "btn btn-primary btn-flat",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Update")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.editmode,
+                            expression: "!editmode"
+                          }
+                        ],
+                        staticClass: "btn btn-primary btn-flat",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Save changes")]
+                    )
+                  ])
+                ]
+              )
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-12" }, [
+      _c("h4", { staticClass: "header-title mt-3" }, [
+        _vm._v("Prepaid Service Gateway ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", { staticClass: "th-table" }, [
+        _c("th", [_vm._v("Gateway Code")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Gateway Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        {
+          staticClass: "modal-title",
+          attrs: { id: "exampleModalCenterTitle" }
+        },
+        [_vm._v("Create Service")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ServiceMatrix/ServiceGroup.vue?vue&type=template&id=21c5f8ae&":
 /*!*****************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ServiceMatrix/ServiceGroup.vue?vue&type=template&id=21c5f8ae& ***!
@@ -63412,12 +63911,6 @@ var render = function() {
                                     rawName: "v-model",
                                     value: _vm.form.service_gateway,
                                     expression: "form.service_gateway"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
                                   }
                                 ],
                                 staticClass: "custom-select",
@@ -63455,14 +63948,15 @@ var render = function() {
                                   [_vm._v("Select")]
                                 ),
                                 _vm._v(" "),
-                                _c("option", { attrs: { value: "EC Pay" } }, [
-                                  _vm._v("EC Pay")
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "Credit" } }, [
-                                  _vm._v("Dragon Pay")
-                                ])
-                              ]
+                                _vm._l(_vm.ServiceGateway, function(sg) {
+                                  return _c(
+                                    "option",
+                                    { key: sg.id, domProps: { value: sg.id } },
+                                    [_vm._v(_vm._s(sg.gateway_name))]
+                                  )
+                                })
+                              ],
+                              2
                             ),
                             _vm._v(" "),
                             _c("small", {
@@ -63510,6 +64004,7 @@ var render = function() {
                               },
                               domProps: { value: _vm.form.pr_wallet_acc_no },
                               on: {
+                                change: _vm.showPRWallletAccountName,
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
@@ -63611,11 +64106,11 @@ var render = function() {
                                 "aria-describedby": "emailHelp",
                                 placeholder:
                                   "Enter Income Reddem Wallet Account No",
-                                name: "ir_wallet_acc_no",
-                                disabled: ""
+                                name: "ir_wallet_acc_no"
                               },
                               domProps: { value: _vm.form.ir_wallet_acc_no },
                               on: {
+                                change: _vm.showIRWalletName,
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
@@ -63695,48 +64190,26 @@ var render = function() {
                               [_vm._v("Service Template")]
                             ),
                             _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.service_template,
-                                  expression: "form.service_template"
-                                },
-                                {
-                                  name: "validate",
-                                  rawName: "v-validate",
-                                  value: "required",
-                                  expression: "'required'"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "text",
-                                id: "exampleInputEmail1",
-                                "aria-describedby": "emailHelp",
-                                placeholder: "Enter Service Template",
-                                name: "service_template"
-                              },
-                              domProps: { value: _vm.form.service_template },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
+                            _c("div", { staticClass: "input-group" }, [
+                              _c("div", { staticClass: "custom-file" }, [
+                                _c("input", {
+                                  staticClass: "custom-file-input",
+                                  attrs: {
+                                    type: "file",
+                                    id: "inputGroupFile04"
                                   }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "service_template",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("small", {
-                              staticClass: "form-text text-muted",
-                              attrs: { id: "emailHelp" }
-                            })
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile04" }
+                                  },
+                                  [_vm._v("Choose file")]
+                                )
+                              ])
+                            ])
                           ])
                         ])
                       ])
@@ -79385,6 +79858,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/ServiceGateway/ServiceGatewayTable.vue ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ServiceGatewayTable_vue_vue_type_template_id_449c170a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ServiceGatewayTable.vue?vue&type=template&id=449c170a& */ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=template&id=449c170a&");
+/* harmony import */ var _ServiceGatewayTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ServiceGatewayTable.vue?vue&type=script&lang=js& */ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ServiceGatewayTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ServiceGatewayTable_vue_vue_type_template_id_449c170a___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ServiceGatewayTable_vue_vue_type_template_id_449c170a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ServiceGateway/ServiceGatewayTable.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceGatewayTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ServiceGatewayTable.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceGatewayTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=template&id=449c170a&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=template&id=449c170a& ***!
+  \*******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceGatewayTable_vue_vue_type_template_id_449c170a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ServiceGatewayTable.vue?vue&type=template&id=449c170a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=template&id=449c170a&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceGatewayTable_vue_vue_type_template_id_449c170a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceGatewayTable_vue_vue_type_template_id_449c170a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/ServiceMatrix/ServiceGroup.vue":
 /*!****************************************************************!*\
   !*** ./resources/js/components/ServiceMatrix/ServiceGroup.vue ***!
@@ -80353,7 +80895,8 @@ var routes = [{
  */
 {
   path: '/servicegatewaylist',
-  component: __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module '../components/ServiceGateway/ServiceGatewayTable.vue'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()))["default"]
+  component: __webpack_require__(/*! ../components/ServiceGateway/ServiceGatewayTable.vue */ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue")["default"]
+
 },
 /**
  *@ Return Error 404 Page 

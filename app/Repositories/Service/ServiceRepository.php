@@ -24,12 +24,13 @@ class ServiceRepository
             'service_name'=> $service_data->service_name,
             'service_description' => $service_data->service_description,
             'service_gateway'=> $service_data->service_gateway,
-            'service_template' => $service_data->service_template,
+            'service_template' => "sameple.template",
         ]);
         $wservice_id = $wservice->id;
         $wdetails = WDetails::create([
             'wservice_id' =>  $wservice_id,
-            'wdetails_id' => "1",
+            'pr_wdetails_id' => "1", 
+            'ir_wdetails_id' => "1",
         ]);
 
         $service_and_st = ServiceAndServiceType::create([
@@ -39,11 +40,26 @@ class ServiceRepository
         return $wservice;
     }
     public function FillServiceTypeMethod($service_type_code){
-         $test = DB::connection('mysql')
+         $service_type = DB::connection('mysql')
                 ->table('servicetypedetails')
                 ->where('st_code', '=', $service_type_code)
                 ->first();
-        return $test;
+        return $service_type;
+    }
+    public function FillPrAccountNameMethod($pr_wallet_acc_no){
+        
+        $account_name = DB::connection('mysql')
+                        ->table('wallet_account')
+                        ->where('wallet_account_no','=',$pr_wallet_acc_no)
+                        ->first();
+                        return $account_name;
+    }
+    public function FillIrAccountNameMethod($ir_wallet_acc_no){
+        $account_name = DB::connection('mysql')
+                        ->table('wallet_account')
+                        ->where('wallet_account_no','=',$ir_wallet_acc_no)
+                        ->first();
+                        return $account_name;
     }
 
 }
