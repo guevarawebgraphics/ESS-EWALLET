@@ -34,6 +34,10 @@ const routes = [
      **/
     {path:'/walletaccounttype',component: require('../components/WalletAccountTypes/WalletAccountType.vue').default},
     /**
+     * Service Gateway
+     */
+    {path:'/servicegatewaylist',component: require('../components/ServiceGateway/ServiceGatewayTable.vue').default},
+    /**
      *@ Return Error 404 Page 
      * @param /* 
      **/
