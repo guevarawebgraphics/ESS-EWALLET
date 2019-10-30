@@ -29,9 +29,23 @@ class ServiceController extends Controller
             'status' => 'success'
         ]);    
     }
+    /**
+     * For getting Service Name using service code 
+     */
     public function fillServiceType(Request $request,$service_type_code){
         $fill_service_type = $this->services->FillServiceTypeMethod($service_type_code);
         return response()->json($fill_service_type);
     } 
+    /**
+     * Fill principal redeem account name
+     */
+    public function FillPrWalletMethod($pr_wallet_acc_no){
+        $fill_pr_account_name = $this->services->FillPrAccountNameMethod($pr_wallet_acc_no);
+        return response()->json($fill_pr_account_name);
+    } 
+    public function FillIrWalletMethod($ir_wallet_acc_no){
+        $fill_ir_account_name = $this->services->FillIrAccountNameMethod($ir_wallet_acc_no);
+        return response()->json($fill_ir_account_name);
+    }
 
 }

@@ -13,11 +13,11 @@ class CreateWalletDetailsTable extends Migration
      */
     public function up()
     {
-        
         Schema::connection('mysql')->create('wdetails', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('wservice_id');
-            $table->integer('wdetails_id');
+            $table->integer('pr_wdetails_id'); 
+            $table->integer('ir_wdetails_id');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateWalletDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wdetails');
+        Schema::connection('mysql')->dropIfExists('wallet_details');
     }
 }
