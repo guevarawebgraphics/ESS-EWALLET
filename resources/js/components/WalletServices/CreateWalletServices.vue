@@ -48,10 +48,10 @@
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Service Gateway:</label>
-                      <select class="custom-select"  v-model="form.service_gateway" name="service_gateway"  v-validate="'required'">
+                      <select class="custom-select"  v-model="form.service_gateway" name="service_gateway">
                       <option selected="selected" disabled>Select</option>
-                      <option value="EC Pay">EC Pay</option>
-                      <option value="Credit">Dragon Pay</option>
+                      <option v-bind:value="sg.id" v-for="sg in ServiceGateway" :key="sg.id">{{sg.gateway_name}}</option>
+                  
                       </select>
                       <small id="emailHelp" class="form-text text-muted"></small>
                     </div>
@@ -60,7 +60,7 @@
                     <h4 class="header-title mt-3">Wallet Detailss </h4>   
                     <div class="form-group">
                       <label for="exampleInputEmail1">Principal Redeem Wallet Account No:</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Principal Redeem Wallet Account No:"  v-model="form.pr_wallet_acc_no" name="pr_wallet_acc_no"  v-validate="'required'">
+                      <input type="text" class="form-control" id="exampleInputEmail1" v-on:change="showPRWallletAccountName" aria-describedby="emailHelp" placeholder="Enter Principal Redeem Wallet Account No:"  v-model="form.pr_wallet_acc_no" name="pr_wallet_acc_no"  v-validate="'required'">
                       <small id="emailHelp" class="form-text text-muted"></small>
                     </div>
                     <div class="form-group">
@@ -70,7 +70,7 @@
                     </div> 
                     <div class="form-group">
                       <label for="exampleInputEmail1">Income Reddem Wallet Account No:</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Income Reddem Wallet Account No"  v-model="form.ir_wallet_acc_no" name="ir_wallet_acc_no"  v-validate="'required'" disabled>
+                      <input type="text" class="form-control" id="exampleInputEmail1" v-on:change="showIRWalletName" aria-describedby="emailHelp" placeholder="Enter Income Reddem Wallet Account No"  v-model="form.ir_wallet_acc_no" name="ir_wallet_acc_no"  v-validate="'required'">
                       <small id="emailHelp" class="form-text text-muted"></small>
                     </div> 
                     <div class="form-group">
@@ -78,12 +78,13 @@
                       <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Income Reddem Wallet Account Name" v-model="form.ir_wallet_acc_name" name="ir_wallet_acc_name" v-validate="'required'" disabled>
                       <small id="emailHelp" class="form-text text-muted"></small>
                     </div> 
+                        <!-- 
                     <div class="form-group">
                       <label for="exampleInputEmail1">Service Template</label>
                       <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Service Template"  v-model="form.service_template" name="service_template"  v-validate="'required'" >
                       <small id="emailHelp" class="form-text text-muted"></small>
                     </div>  
-                    <!-- 
+                        -->
                     <div class="form-group">
                       <label for="exampleInputEmail1">Service Template</label>
                       <div class="input-group">
@@ -93,7 +94,7 @@
                       </div>
                       </div>
                     </div>
-                    -->
+                    
                    </div>
               </div>
               </form>
@@ -119,8 +120,11 @@
 export default {
 data() {
   return{
+    ServiceGateway : {},
     form : new Form({
       service_type_id :null,
+      pr_wallet_id: null,
+      ir_wallet_id:null,
       wallet_type : null,
       servicetype_code : null,
       servicetype_name: null,
@@ -132,7 +136,7 @@ data() {
       pr_wallet_acc_name: null,
       ir_wallet_acc_no: null,
       ir_wallet_acc_name:null,
-      service_template: null,
+    //  service_template: null,
       
     })
   }
@@ -168,7 +172,46 @@ methods:{
       })
 
      },
+     showPRWallletAccountName(){
+       axios.get('/api/getprwalletdetails/'+ this.form.pr_wallet_acc_no)
+       .then(response => {
+            this.form.pr_wallet_acc_name = response.data['wallet_account_name']; 
+            this.form.pr_wallet_id = response.data['id'];
+            if(response.data['wallet_account_name'] == undefined){
+                     toast.fire({
+                              type: 'info',
+                              title: 'Principal Redeem Wallet No not found'
+                          })
+            }
 
+       })
+       .catch(() => {
+
+       }
+
+       )
+       
+     },
+     showIRWalletName(){
+       axios.get('/api/getirwalletdetails/'+ this.form.ir_wallet_acc_no)
+       .then(response => { 
+          this.form.ir_wallet_acc_name = response.data['wallet_account_name'];
+          this.form.ir_wallet_id = response.data['id'];
+
+       })
+       .catch(() =>{
+          console.log('err');
+       })
+     },  
+     getServiceGateway(){
+            axios.get('/api/getservicegateway')
+            .then((response) => {
+                this.ServiceGateway = response.data;
+            })
+    }
+},
+created() {
+    this.getServiceGateway();
 }
 }
 </script>
