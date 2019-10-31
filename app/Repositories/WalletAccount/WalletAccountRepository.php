@@ -18,13 +18,24 @@ use Carbon\Carbon;
  */
 class WalletAccountRepository
 {
+    /**
+     * @ connection 
+     **/
+    protected $connection;
+    /**
+     * @ constructor
+     **/
+    public function __construct(){
+        // E-Wallet Connection
+        $this->connection = DB::connection('mysql');
+    }
 
     /**
      * @ Get All E-Wallet Account 
      **/
     public function get_all_wallet_account(){
         $user = auth('api')->user();
-        $wallet_account = DB::connection('mysql')
+        $wallet_account = $this->connection
                             ->table('wallet_account')
                             ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
                             ->select(

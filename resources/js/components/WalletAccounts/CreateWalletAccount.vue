@@ -250,7 +250,7 @@
             </tab-content>
             <!--./ End E-Wallet Account Setup Step 3-->
             <!-- E-Wallet Account Setup Step 4 -->
-            <tab-content title="E-Wallet Acount Setup">
+            <tab-content title="E-Wallet Acount Setup" :before-change="ValidateFourthStep">
                 <div class="box">
                     <div class="card shadow-custom">
                         <div class="card-body">
@@ -261,14 +261,14 @@
                                     <!-- Name of Bank -->
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="NameOfBank">Name of Bank</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('NameOfBank') } "  name="NameOfBank" v-validate="'required'" type="text" v-model="form.NameOfBank" placeholder="Name Of Bank">
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('NameOfBank') } "  name="NameOfBank" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="form.NameOfBank" placeholder="Name Of Bank">
                                             <has-error :form="form" field="NameOfBank"></has-error>
                                             <p class="text-danger" v-if="errors.has('NameOfBank')">{{errors.first('NameOfBank')}}</p>
                                     </div>
                                     <!-- Branch -->
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="Branch">Branch</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('Branch') } "  name="Branch" v-validate="'required'" type="text" v-model="form.Branch" placeholder="Branch">
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('Branch') } "  name="Branch" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="form.Branch" placeholder="Branch">
                                             <has-error :form="form" field="Branch"></has-error>
                                             <p class="text-danger" v-if="errors.has('Branch')">{{errors.first('Branch')}}</p>
                                     </div>
@@ -276,7 +276,7 @@
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="account_type">Wallet Type</label>
                                         <!-- <input class="form-control" :class="{ 'is-invalid': errors.has('WalletType') } "  name="WalletType" v-validate="'required'" type="text" v-model="form.WalletType" placeholder="Account Type"> -->
-                                        <select class="custom-select" :class="{ 'is-invalid': errors.has('account_type') } "  name="account_type" v-validate="'required'" v-model="form.account_type">
+                                        <select class="custom-select" :class="{ 'is-invalid': errors.has('account_type') } "  name="account_type" v-validate="'required'" v-on:change="ValidateFourthStep" v-model="form.account_type">
                                                 <option value="" selected disabled>Select</option>
                                                 <option>Credit</option>
                                                 <option>Prepaid</option>
@@ -287,14 +287,14 @@
                                     <!-- Account Name -->
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="WalletAccountName">Wallet Account Name</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('account_name') } "  name="account_name" v-validate="'required'" type="text" v-model="form.account_name" placeholder="Account Name">
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('account_name') } "  name="account_name" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="form.account_name" placeholder="Account Name">
                                             <has-error :form="form" field="account_name"></has-error>
                                             <p class="text-danger" v-if="errors.has('account_name')">{{errors.first('account_name')}}</p>
                                     </div>
                                     <!-- Account No -->
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="account_no">Wallet Account No</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('account_no') } "  name="account_no" v-validate="'required'" type="text" v-model="form.account_no" placeholder="Account No">
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('account_no') } "  name="account_no" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="form.account_no" placeholder="Account No">
                                             <has-error :form="form" field="account_no"></has-error>
                                             <p class="text-danger" v-if="errors.has('account_no')">{{errors.first('account_no')}}</p>
                                     </div>
@@ -524,7 +524,7 @@ export default {
         return {
          editmode: false,
          switching: false,
-         step: 1,
+         step: 0,
          account: [],
          walletAccountTypes: [],
          form: new Form({
@@ -594,8 +594,16 @@ export default {
         },
         ValidateFirstStep(){
             if(this.form.emailaddress != null){
-                this.errors.clear()
-                return true;
+                if(this.step == 1){
+                    this.errors.clear()
+                    return true;
+                }
+                else {
+                    this.form.reset()
+                    $('#nextTab').attr('disabled', true)
+                    this.step = 0;
+                    return false;
+                }
             }
             if(this.form.username == null){
                 toast.fire({
@@ -608,6 +616,7 @@ export default {
                     return;
                     }
                 });
+                this.step = 0;
                 return false;
             }
         },
@@ -617,22 +626,7 @@ export default {
                 $('#nextTab').removeAttr('disabled')
                 return true;
             }
-            if(this.form.WalletType == null){
-                toast.fire({
-                    type: 'info',
-                    title: 'Please fill required fields'
-                })
-                this.$validator.validateAll().then(result => {
-                    if (result) {
-                        return;
-                    }
-                });
-                return false;
-            }
-            else {
-                return true;
-            }
-            if(this.form.WalletAccountType == null){
+            if(this.form.WalletType == null || this.form.WalletAccountType == null){
                 toast.fire({
                     type: 'info',
                     title: 'Please fill required fields'
@@ -649,19 +643,38 @@ export default {
             }
         },
         ValidateFourthStep(){
-
+            if(this.form.NameOfBank == null || this.form.Branch == null || this.form.account_type == null || this.form.account_name == null || this.form.account_no == null){
+                toast.fire({
+                    type: 'info',
+                    title: 'Please fill required fields'
+                })
+                this.$validator.validateAll().then(result => {
+                    if (result) {
+                        return;
+                    }
+                });
+                return false;
+            }
+            else {
+                this.errors.clear();
+                $('#nextTab').removeAttr('disabled')
+                return true;
+            }
         },
         /**
          *@ Search For Account ESS ID 
          **/
         SearchESSID(){
             if(!this.form.username){
-                $('#nextTab').attr('disabled', true)
+                if(this.step == 1){
+                    $('#nextTab').attr('disabled', true)
+                }
             }
             else {
                 axios.get('/api/account/' + this.form.username)
                 .then(response => {
-                    if(response.data.length > 0){
+                    if(response.data.length > 0 && this.form.username != null){
+                        this.step = 1;
                         this.errors.clear()
                         $('#nextTab').removeAttr('disabled')
                         this.GenerateAccountNo()
@@ -684,6 +697,7 @@ export default {
                         this.form.permanentaddress = '#' + response.data[0]['address_unit'] + ' ' + response.data[0]['brgyDesc'] + ' ' + response.data[0]['citymunDesc'] + ' ' + response.data[0]['provDesc'];
                     }
                     else {
+                        this.step = 0;
                         this.form.reset()
                         $('#nextTab').attr('disabled', true)
                         toast.fire({
