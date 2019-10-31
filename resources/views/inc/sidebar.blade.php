@@ -20,7 +20,7 @@
                         </ul> --}}
                     </li>
                     <li>
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Account Types</span></a>
+                        <router-link to="/walletaccounttype" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Account Types</span></router-link>
                     </li>
                     <li>
                         <router-link to="/walletaccounts" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Accounts</span></router-link>
@@ -29,10 +29,10 @@
                         <router-link to="/servicetypes" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Service Types</span></router-link>
                     </li>
                     <li>
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Services</span></a>
+                        <router-link to="/serviceslist" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Services List</span></router-link>
                     </li>
                     <li>
-                        <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Prepaid Service Gateway</span></a>
+                        <router-link to="/servicegatewaylist" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Prepaid Service Gateway</span></router-link>
                     </li>
                     <li>
                         <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Rates</span></a>

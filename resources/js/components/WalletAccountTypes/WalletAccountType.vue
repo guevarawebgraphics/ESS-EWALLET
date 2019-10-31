@@ -1,0 +1,184 @@
+<template>
+    <div id="WalletAccountType">
+        <!-- Box -->
+        <div class="box ptb--100">
+            <!-- Card -->
+            <div class="card shadow-custom">
+                <!-- Card Body -->
+                <div class="card-body">
+                    <!-- Row Table -->
+                    <div class="form-group row">
+                        <!-- Col md 6 -->
+                        <div class="col-md-6">
+                            <div class="header-title">Wallet Account Types</div>
+                            <div class="data-tables datatable-dark">
+                                <!-- Table -->
+                                <table class="table table-hover text-center" id="wallet_account_types">
+                                    <thead>
+                                        <tr>
+                                            <th>Type Code</th>
+                                            <th>Wallet Account Type</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="wat in walletAccountTypes" :key="wat.id">
+                                            <td>{{ wat.type_code}}</td>
+                                            <td>{{ wat.wallet_account_type}}</td>
+                                            <td v-if="wat.status == 1"><div class="badge badge-primary">Active</div></td>
+                                            <td v-if="wat.status == 0"><div class="badge badge-info">Disabled</div></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-xs" href="#EditServiceGroup" @click="editWalletAccountType(wat)">
+                                                    <i class="fa fa-edit blue"></i>
+                                                    <span>Update</span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- ./ Table -->
+                            </div>
+                        </div>
+                        <!-- ./ Col -->
+                    </div>
+                    <!-- ./ Row Table -->
+                    <!-- Row Button -->
+                    <div class="form-group row">
+                        <button type="button" class="btn btn-flat btn-primary mb-3" @click="openModal"><i class="ti-plus text-white"></i> Create New</button>
+                    </div>
+                    <!-- ./Row Button -->
+                </div>
+                <!-- ./ Card bobdy -->
+            </div>
+            <!-- ./ Card -->
+        </div>
+        <!-- ./ Box -->
+        <!-- Create Wallet Type Account -->
+        <div class="modal fade" id="walletAccountType" tabindex="-1" role="dialog" aria-labelledby="walletAccountType" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Wallet Account Type</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- Form -->
+                <form @submit.prevent="editmode ? updateWalletType() : createWalletAccountType()">
+                    <!-- <input type="hidden" name="_token" :value="csrf"> -->
+                    <div class="modal-body">
+                        <div v-if="editmode" class="form-group">
+                            <label class="custom-label" for="type_code">Type code</label>
+                            <input type="text" v-model="form.type_code"  class="form-control" :class="{ 'is-invalid': form.errors.has('wallet_account_type') }" name="type_code" placeholder="Wallet Account Type" disabled="true">
+                            <has-error :form="form" field="wallet_account_type"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label class="custom-label" for="wallet_account_type">Wallet Account Type</label>
+                            <input type="text" v-model="form.wallet_account_type"  class="form-control" :class="{ 'is-invalid': form.errors.has('wallet_account_type') }" name="wallet_account_type"  placeholder="Wallet Account Type">
+                            <has-error :form="form" field="wallet_account_type"></has-error>
+                        </div>
+                        <div v-if="editmode" class="form-group">
+                            <label class="custom-label" for="status">Status</label>
+                            <select v-model="form.status" class="form-control">
+                                <option selected value="">Select</option>
+                                <option value="1">Active</option>
+                                <option value="0">Disabled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
+                        <button v-show="editmode" type="submit" class="btn btn-primary btn-flat">Update</button>
+                        <button v-show="!editmode" type="submit" class="btn btn-primary btn-flat">Save changes</button>
+                    </div>
+                </form>
+            <!-- ./Form -->
+            </div>
+        </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return{
+            editmode: false,
+            walletAccountTypes: {},
+            form: new Form({
+                id: '',
+                type_code: '',
+                wallet_account_type: '',
+                status
+            })
+        }
+    },
+    methods:{
+        datatable() {
+            setTimeout(function(){
+                $('#wallet_account_types').DataTable({
+                    "paging": true,
+                    "pageLength": 10,
+                    scrollY: true,
+                    "autoWidth": true,
+                    //lengthChange: false,
+                    responsive: true,
+                    fixedColumns: true,
+                    "order": [1, "desc"]
+                });
+            },900);
+        },
+        get_walle_account_type(){
+            axios.get('api/walletaccount/GetAllWalletAccountType').then(({ data}) => (this.walletAccountTypes = data));
+        },
+        editWalletAccountType(wat){
+            this.form.clear()
+            this.editmode = true;
+            this.form.reset()
+            $('#walletAccountType').modal('show')
+            this.form.fill(wat)
+        },
+        openModal(){
+            this.form.clear()
+            this.editmode = false;
+            this.form.reset();
+            $('#walletAccountType').modal('show')
+        },
+        updateWalletType(){
+            this.form.put('api/walletaccount/UpdateWalletAccountType')
+            .then(res => {
+                $('#walletAccountType').modal('hide')
+                $(document.body).removeAttr('class')
+                $("#wallet_account_types").DataTable().destroy()
+                this.get_walle_account_type()
+                this.datatable()
+            })
+            .then(() => {
+                console.clear()
+            })
+        },
+        createWalletAccountType(){
+            this.form.post('api/walletaccount/StoreWalletAccountType')
+            .then(res => {
+                console.log(res)
+                $('#walletAccountType').modal('hide')
+                $(document.body).removeAttr('class')
+                $("#wallet_account_types").DataTable().destroy()
+                this.get_walle_account_type()
+                this.datatable()
+            })
+            .catch(() => {
+                console.clear()
+            })
+        },
+    },
+    created(){
+        this.datatable()
+        this.get_walle_account_type()
+    }
+}
+</script>
+
+<style scoped>
+</style>

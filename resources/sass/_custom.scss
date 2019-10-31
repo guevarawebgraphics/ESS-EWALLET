@@ -22,3 +22,17 @@
     box-shadow: 5px 5px $palet3-gray;
     
 }
+
+
+/**
+* @ Custom Style
+**/
+.custom-label {
+    font-size: 12px;
+    line-height: 14px;
+    color: #66696a;
+    z-index: 2;
+    display: block;
+    position: relative;
+    width: 100%;
+}

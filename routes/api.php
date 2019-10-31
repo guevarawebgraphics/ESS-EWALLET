@@ -30,6 +30,7 @@ Route::prefix('servicematrix')->group(function(){
     Route::post('/StoreServiceGroup', [
         'uses' => 'Api\\ServiceMatrix\ServiceGroupController@StoreServiceGroup'
     ]);
+    // api/servicematrix/UpdateServiceGroup/{id}
     Route::put  ('/UpdateServiceGroup/{id}', [
         'uses' => 'Api\\ServiceMatrix\ServiceGroupController@UpdateServiceGroup'
     ]);
@@ -37,8 +38,34 @@ Route::prefix('servicematrix')->group(function(){
     Route::get('/GetServices', [
         'uses' => 'Api\\ServiceMatrix\ServiceGroupController@get_all_service'
     ]);
+    // api/servicematrix/StoreServiceMatrix
     Route::post('/StoreServiceMatrix', [
         'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@StoreServiceMatrix'
+    ]);
+});
+/**
+ *  @ Wallet Account
+ **/
+Route::prefix('walletaccount')->group(function(){
+    // api/walletaccount/StoreWalletAccountType
+    Route::post('/StoreWalletAccountType', [
+        'uses' => 'Api\\WalletAccountType\WalletAccountTypeController@StoreWalletAccountType'
+    ]);
+     // api/walletaccount/StoreWalletAccountType
+     Route::get('/GetAllWalletAccountType', [
+        'uses' => 'Api\\WalletAccountType\WalletAccountTypeController@GetAllWalletAccountType'
+    ]);
+     // api/walletaccount/UpdateWalletAccountType
+     Route::put('/UpdateWalletAccountType', [
+        'uses' => 'Api\\WalletAccountType\WalletAccountTypeController@UpdateWalletAccountType'
+    ]);
+    // api/walletaccount/StoreWalletAccount
+    Route::post('/StoreWalletAccount', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@store_wallet_account'
+    ]);
+    // api/walletaccount/GetWalletAccount
+    Route::get('/GetWalletAccount', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@get_all_wallet_account'
     ]);
 });
 /**
@@ -46,6 +73,11 @@ Route::prefix('servicematrix')->group(function(){
  **/
 Route::get('/account/{essid}', [
     'uses' => 'Api\\Account\AccountController@GetAccountViaEssId'
+]);
+
+// api/servicematrix/GenerateAccountNo
+Route::get('/GenerateAccountNo', [
+    'uses' => 'Api\\Account\AccountController@GenerateAccountNo'
 ]);
 
 Route::get('/servicetypetable',[
@@ -69,4 +101,39 @@ Route::post('/createservicetype',[
  */
 Route::post('/createservice',[
     'uses' => 'Api\\Services\ServiceController@InsertService' 
+]);
+
+Route::get('/getservicetype/{st_code}',[
+    'uses' => 'Api\\Services\ServiceController@fillServiceType'
+]);
+
+/***
+* Services Module
+*/
+Route::post('/createservice',[
+    'uses' => 'Api\\Services\ServiceController@InsertService' 
+]);
+
+Route::get('/getservicetype/{st_code}',[
+    'uses' => 'Api\\Services\ServiceController@FillServiceType'
+]);
+
+Route::get('/getprwalletdetails/{pr_no}',[
+    'uses' => 'Api\\Services\ServiceController@FillPrWalletMethod'
+]);
+
+Route::get('/getirwalletdetails/{ir_no}',[
+    'uses' => 'Api\\Services\ServiceController@FillIrWalletMethod'
+]);
+
+Route::post('/createservicegateway',[
+    'uses' => 'Api\\ServiceGateway\ServiceGatewayController@CreateServiceGateway'
+]);
+
+Route::get('/getservicegateway' ,[
+    'uses' => 'Api\\ServiceGateway\ServiceGatewayController@GetServiceGateway'
+]);
+
+Route::put('/updateservicegateway/{gw_id}',[
+    'uses' => 'Api\\ServiceGateway\ServiceGatewayController@UpdateServiceGateway'
 ]);
