@@ -34,7 +34,7 @@
             <div class="card-body">
                       <div class="col-sm-7">
             <h4 class="header-title">Behavior</h4>
-            <form>
+           <!-- <form>
                   <ul class="list-group list-group-flush"> 
             <li class="list-group-item">
                 <div class="form-check custom-control custom-checkbox ">
@@ -86,7 +86,61 @@
             </li>
             </ul>
         
-            </form>
+            </form> 
+            --> 
+                    <form>
+            <ul class="list-group list-group-flush"> 
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="added_ssw_sdw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in single source wallet, added to single destination wallet</label>
+                </div> 
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="added_ssw_mdw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer intiated in single source wallet, added to multiple destination wallets</label>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="added_msw_sdw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple source wallets, added to single destination wallet</label>
+                </div>
+            </li> 
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="added_msw_mdw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple source wallets, added to multiple destination wallets</label>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="deducted_sdw_ssw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer intiated in single destination wallets, deducted from single source wallet</label>
+                </div> 
+             </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="deducted_sdw_msw"  v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in single destination wallet, deducted from multiple source wallets</label>
+                </div> 
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="deducted_mdw_ssw"  v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple destination wallets, deducted from single source wallet</label>
+                </div> 
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1"  value="deducted_mdw_msw" v-model="form.behavior_value"> 
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets</label>
+                </div>
+            </li>
+            </ul>
+        
+            </form> 
                       </div> 
                      <router-link :to="{ name: '/st-setup', params: { id: id_value }}" class="btn btn-primary float-right btn-lg btn-custom" @click.native="updateDetailsBehavior()">Save & Next</router-link>
             </div> 
@@ -113,14 +167,15 @@ data(){
         service_code : null,
         service_name : null,
         service_description : null,
-        added_ssw_sdw : null,
+        behavior_value : null,
+      /*  added_ssw_sdw : null,
         added_ssw_mdw : null,
         added_msw_sdw : null,
         added_msw_mdw : null,
         deducted_sdw_ssw : null,
         deducted_sdw_msw : null,
         deducted_mdw_ssw : null,
-        deducted_mdw_msw : null,
+        deducted_mdw_msw : null,*/
         }), 
     }
 
@@ -135,15 +190,18 @@ methods : {
                     this.DetailsBehavior = response.data; 
                     this.form.service_code = response.data['st_code'];
                     this.form.service_name = response.data['st_name'];
-                    this.form.service_description = response.data['st_description'];
-                    this.form.added_ssw_sdw =response.data['added_ssw_sdw'];
+                    this.form.service_description = response.data['st_description']; 
+                    this.form.behavior_value = response.data['behavior_value']; 
+                  /* this.form.added_ssw_sdw =response.data['added_ssw_sdw'];
                     this.form.added_ssw_mdw = response.data['added_ssw_mdw'];
                     this.form.added_msw_sdw = response.data['added_msw_sdw'];
                     this.form.added_msw_mdw = response.data['added_msw_mdw'];
                     this.form.deducted_sdw_ssw = response.data['deducted_sdw_ssw'];
                     this.form.deducted_sdw_msw = response.data['deducted_sdw_msw']; 
                     this.form.deducted_mdw_ssw = response.data['deducted_mdw_ssw']; 
-                    this.form.deducted_mdw_msw =response.data['deducted_mdw_msw']; 
+                    this.form.deducted_mdw_msw =response.data['deducted_mdw_msw']; */ 
+                    this.form.behavior_value = response.data['behavior_value']; 
+
                     $('.form-check-label').click(false);  
                 }) 
     },
@@ -161,7 +219,7 @@ methods : {
     /***
      * These methods are for changing the value of the form data
      */
-    added_ssw_sdw(changeValue){
+   /* added_ssw_sdw(changeValue){
         changeValue == 0 ? this.form.added_ssw_sdw = 1 : this.form.added_ssw_sdw = 0 
     }, 
     added_ssw_mdw(changeValue){
@@ -185,6 +243,7 @@ methods : {
     deducted_mdw_msw(changeValue){
         changeValue == 0 ? this.form.deducted_mdw_msw  = 1 : this.form.deducted_mdw_msw  = 0 
     },    
+    */
     updateDetailsBehavior() {
         this.form.put('/api/updateservicetype/'+ this.form.id)
         .then((response) =>{

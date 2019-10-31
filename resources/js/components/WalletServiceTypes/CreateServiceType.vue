@@ -49,7 +49,7 @@
             <div class="card-body" >
             <div class="col-sm-7">
             <h4 class="header-title">Behavior</h4>
-         <form>
+         <!--<form>
                   <ul class="list-group list-group-flush"> 
             <li class="list-group-item">
                 <div class="form-check custom-control custom-checkbox ">
@@ -101,7 +101,61 @@
             </li>
             </ul>
         
-            </form>
+            </form> 
+        --> 
+        <form>
+            <ul class="list-group list-group-flush"> 
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="added_ssw_sdw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in single source wallet, added to single destination wallet</label>
+                </div> 
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="added_ssw_mdw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer intiated in single source wallet, added to multiple destination wallets</label>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="added_msw_sdw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple source wallets, added to single destination wallet</label>
+                </div>
+            </li> 
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="added_msw_mdw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple source wallets, added to multiple destination wallets</label>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="deducted_sdw_ssw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer intiated in single destination wallets, deducted from single source wallet</label>
+                </div> 
+             </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="deducted_sdw_msw"  v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in single destination wallet, deducted from multiple source wallets</label>
+                </div> 
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="deducted_mdw_ssw"  v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple destination wallets, deducted from single source wallet</label>
+                </div> 
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1"  value="deducted_mdw_msw" v-model="form.behavior_value"> 
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets</label>
+                </div>
+            </li>
+            </ul>
+        
+            </form> 
             </div>
             </div> 
             </div> 
@@ -110,8 +164,8 @@
             <div class="card shadow-custom">
             <div class="card-body">
             <div class="col-sm-5">
-            <h4 class="header-title">List of Services using this service type</h4>
-                    <div class="single-table">
+           <!--    <h4 class="header-title">List of Services using this service type</h4>
+                 <div class="single-table">
                         <div class="table-responsive">
                         <table class="table table-bordered text-center">
                         <thead class="text-uppercase">
@@ -131,7 +185,7 @@
                         </tbody>
                         </table>
                         </div>
-                    </div>
+                    </div> -->
             </div> 
                     <div class="col-md-6 mt-5">
                     <ul class="list-group list-group-flush">
@@ -191,24 +245,28 @@
 export default {
     data() {
         return {
-        loadingWizard: false, 
+        loadingWizard: false,
         form  : new Form({
             servicetype_code : null,
             servicetype_name : null,
-            servicetype_description: null,
-            added_ssw_sdw: 0,
+            servicetype_description: null, 
+            behavior_value : null,
+         /*   added_ssw_sdw: 0,
             added_ssw_mdw: 0,
             added_msw_sdw: 0, 
             added_msw_mdw: 0,
             deducted_sdw_ssw: 0,
             deducted_sdw_msw: 0,
             deducted_mdw_ssw:0,
-            deducted_mdw_msw:0,
+            deducted_mdw_msw:0,*/
         })
         }
     }, 
     methods: {
-        validateTab:function(){
+        validateTab:function(){ 
+        /**
+        * Form Validation 
+        */
             if(!this.form.servicetype_name && !this.form.servicetype_description && !this.servicetype_code){
                 this.$validator.validateAll().then(result => {
                         if (result) {
@@ -221,8 +279,11 @@ export default {
             else {
                 return true;
             }     
-        }, 
-        onComplete: function(){
+        },  
+        onComplete: function(){ 
+        /**
+        * For creating service type
+        */
            this.form.post("/api/createservicetype")
            .then((response) =>{
                this.$router.push('servicetypes') 
@@ -232,6 +293,9 @@ export default {
            })
         },
         addServiceTypeDetails(){
+        /**
+        * Form Validation 
+        */
             this.$validator.validateAll().then((result)=> {
             if(result) {
                 this.tabone = true;
@@ -256,7 +320,7 @@ export default {
          /***
      * These methods are for changing the value of the form data
      */
-    added_ssw_sdw(changeValue){
+   /* added_ssw_sdw(changeValue){
         changeValue == 0 ? this.form.added_ssw_sdw = 1 : this.form.added_ssw_sdw = 0 
     }, 
     added_ssw_mdw(changeValue){
@@ -280,8 +344,9 @@ export default {
     deducted_mdw_msw(changeValue){
         changeValue == 0 ? this.form.deducted_mdw_msw  = 1 : this.form.deducted_mdw_msw  = 0 
     },    
-   
+       */
     },
+
 
     created() {
 

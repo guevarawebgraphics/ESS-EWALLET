@@ -23,19 +23,19 @@ class ServiceRepository
             'service_code'=> $service_data->service_code,
             'service_name'=> $service_data->service_name,
             'service_description' => $service_data->service_description,
-            'service_gateway'=> $service_data->service_gateway,
+            'service_gateway_id'=> $service_data->service_gateway,
             'service_template' => "sameple.template",
         ]);
         $wservice_id = $wservice->id;
         $wdetails = WDetails::create([
             'wservice_id' =>  $wservice_id,
-            'pr_wdetails_id' => "1", 
-            'ir_wdetails_id' => "1",
+            'pr_wdetails_id' => $service_data->pr_wallet_id , 
+            'ir_wdetails_id' => $service_data->ir_wallet_id ,
         ]);
 
         $service_and_st = ServiceAndServiceType::create([
             'service_id' => $wservice_id,
-            'service_type_id' => '1' //example
+            'service_type_id' => $service_data->service_type_id 
         ]); 
         return $wservice;
     }
