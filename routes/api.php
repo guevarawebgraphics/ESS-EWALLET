@@ -108,10 +108,14 @@ Route::get('/getservicetype/{st_code}',[
 ]);
 
 /***
-* Services Module
+* Services Type Module
 */
 Route::post('/createservice',[
     'uses' => 'Api\\Services\ServiceController@InsertService' 
+]);
+
+Route::get('/showservices/{st_id}',[
+    'uses' => 'Api\\ServiceType\ServiceTypeController@ShowServices'
 ]);
 
 Route::get('/getservicetype/{st_code}',[
