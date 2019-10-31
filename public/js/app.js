@@ -3711,6 +3711,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3719,19 +3773,24 @@ __webpack_require__.r(__webpack_exports__);
         servicetype_code: null,
         servicetype_name: null,
         servicetype_description: null,
-        added_ssw_sdw: 0,
-        added_ssw_mdw: 0,
-        added_msw_sdw: 0,
-        added_msw_mdw: 0,
-        deducted_sdw_ssw: 0,
-        deducted_sdw_msw: 0,
-        deducted_mdw_ssw: 0,
-        deducted_mdw_msw: 0
+        behavior_value: null
+        /*   added_ssw_sdw: 0,
+           added_ssw_mdw: 0,
+           added_msw_sdw: 0, 
+           added_msw_mdw: 0,
+           deducted_sdw_ssw: 0,
+           deducted_sdw_msw: 0,
+           deducted_mdw_ssw:0,
+           deducted_mdw_msw:0,*/
+
       })
     };
   },
   methods: {
     validateTab: function validateTab() {
+      /**
+      * Form Validation 
+      */
       if (!this.form.servicetype_name && !this.form.servicetype_description && !this.servicetype_code) {
         this.$validator.validateAll().then(function (result) {
           if (result) {
@@ -3747,6 +3806,9 @@ __webpack_require__.r(__webpack_exports__);
     onComplete: function onComplete() {
       var _this = this;
 
+      /**
+      * For creating service type
+      */
       this.form.post("/api/createservicetype").then(function (response) {
         _this.$router.push('servicetypes');
       })["catch"](function () {
@@ -3756,6 +3818,9 @@ __webpack_require__.r(__webpack_exports__);
     addServiceTypeDetails: function addServiceTypeDetails() {
       var _this2 = this;
 
+      /**
+      * Form Validation 
+      */
       this.$validator.validateAll().then(function (result) {
         if (result) {
           _this2.tabone = true;
@@ -3773,35 +3838,37 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         return true;
       }
-    },
-
+    }
     /***
     * These methods are for changing the value of the form data
     */
-    added_ssw_sdw: function added_ssw_sdw(changeValue) {
-      changeValue == 0 ? this.form.added_ssw_sdw = 1 : this.form.added_ssw_sdw = 0;
-    },
-    added_ssw_mdw: function added_ssw_mdw(changeValue) {
-      changeValue == 0 ? this.form.added_ssw_mdw = 1 : this.form.added_ssw_mdw = 0;
-    },
-    added_msw_sdw: function added_msw_sdw(changeValue) {
-      changeValue == 0 ? this.form.added_msw_sdw = 1 : this.form.added_msw_sdw = 0;
-    },
-    added_msw_mdw: function added_msw_mdw(changeValue) {
-      changeValue == 0 ? this.form.added_msw_mdw = 1 : this.form.added_msw_mdw = 0;
-    },
-    deducted_sdw_ssw: function deducted_sdw_ssw(changeValue) {
-      changeValue == 0 ? this.form.deducted_sdw_ssw = 1 : this.form.deducted_sdw_ssw = 0;
-    },
-    deducted_sdw_msw: function deducted_sdw_msw(changeValue) {
-      changeValue == 0 ? this.form.deducted_sdw_msw = 1 : this.form.deducted_sdw_msw = 0;
-    },
-    deducted_mdw_ssw: function deducted_mdw_ssw(changeValue) {
-      changeValue == 0 ? this.form.deducted_mdw_ssw = 1 : this.form.deducted_mdw_ssw = 0;
-    },
-    deducted_mdw_msw: function deducted_mdw_msw(changeValue) {
-      changeValue == 0 ? this.form.deducted_mdw_msw = 1 : this.form.deducted_mdw_msw = 0;
-    }
+
+    /* added_ssw_sdw(changeValue){
+         changeValue == 0 ? this.form.added_ssw_sdw = 1 : this.form.added_ssw_sdw = 0 
+     }, 
+     added_ssw_mdw(changeValue){
+         changeValue == 0 ? this.form.added_ssw_mdw = 1 : this.form.added_ssw_mdw = 0 
+     },
+     added_msw_sdw(changeValue){
+         changeValue == 0 ? this.form.added_msw_sdw = 1 : this.form.added_msw_sdw = 0 
+     }, 
+     added_msw_mdw(changeValue){
+         changeValue == 0 ? this.form.added_msw_mdw = 1 : this.form.added_msw_mdw = 0 
+     }, 
+     deducted_sdw_ssw(changeValue){
+         changeValue == 0 ? this.form.deducted_sdw_ssw = 1 : this.form.deducted_sdw_ssw = 0 
+     },  
+     deducted_sdw_msw(changeValue){
+         changeValue == 0 ? this.form.deducted_sdw_msw = 1 : this.form.deducted_sdw_msw = 0 
+     },   
+     deducted_mdw_ssw(changeValue){
+         changeValue == 0 ? this.form.deducted_mdw_ssw  = 1 : this.form.deducted_mdw_ssw  = 0 
+     },    
+     deducted_mdw_msw(changeValue){
+         changeValue == 0 ? this.form.deducted_mdw_msw  = 1 : this.form.deducted_mdw_msw  = 0 
+     },    
+        */
+
   },
   created: function created() {}
 });
@@ -3918,6 +3985,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3933,14 +4054,16 @@ __webpack_require__.r(__webpack_exports__);
         service_code: null,
         service_name: null,
         service_description: null,
-        added_ssw_sdw: null,
-        added_ssw_mdw: null,
-        added_msw_sdw: null,
-        added_msw_mdw: null,
-        deducted_sdw_ssw: null,
-        deducted_sdw_msw: null,
-        deducted_mdw_ssw: null,
-        deducted_mdw_msw: null
+        behavior_value: null
+        /*  added_ssw_sdw : null,
+          added_ssw_mdw : null,
+          added_msw_sdw : null,
+          added_msw_mdw : null,
+          deducted_sdw_ssw : null,
+          deducted_sdw_msw : null,
+          deducted_mdw_ssw : null,
+          deducted_mdw_msw : null,*/
+
       })
     };
   },
@@ -3956,14 +4079,17 @@ __webpack_require__.r(__webpack_exports__);
         _this.form.service_code = response.data['st_code'];
         _this.form.service_name = response.data['st_name'];
         _this.form.service_description = response.data['st_description'];
-        _this.form.added_ssw_sdw = response.data['added_ssw_sdw'];
-        _this.form.added_ssw_mdw = response.data['added_ssw_mdw'];
-        _this.form.added_msw_sdw = response.data['added_msw_sdw'];
-        _this.form.added_msw_mdw = response.data['added_msw_mdw'];
-        _this.form.deducted_sdw_ssw = response.data['deducted_sdw_ssw'];
-        _this.form.deducted_sdw_msw = response.data['deducted_sdw_msw'];
-        _this.form.deducted_mdw_ssw = response.data['deducted_mdw_ssw'];
-        _this.form.deducted_mdw_msw = response.data['deducted_mdw_msw'];
+        _this.form.behavior_value = response.data['behavior_value'];
+        /* this.form.added_ssw_sdw =response.data['added_ssw_sdw'];
+          this.form.added_ssw_mdw = response.data['added_ssw_mdw'];
+          this.form.added_msw_sdw = response.data['added_msw_sdw'];
+          this.form.added_msw_mdw = response.data['added_msw_mdw'];
+          this.form.deducted_sdw_ssw = response.data['deducted_sdw_ssw'];
+          this.form.deducted_sdw_msw = response.data['deducted_sdw_msw']; 
+          this.form.deducted_mdw_ssw = response.data['deducted_mdw_ssw']; 
+          this.form.deducted_mdw_msw =response.data['deducted_mdw_msw']; */
+
+        _this.form.behavior_value = response.data['behavior_value'];
         $('.form-check-label').click(false);
       });
     },
@@ -3982,30 +4108,32 @@ __webpack_require__.r(__webpack_exports__);
     /***
      * These methods are for changing the value of the form data
      */
-    added_ssw_sdw: function added_ssw_sdw(changeValue) {
-      changeValue == 0 ? this.form.added_ssw_sdw = 1 : this.form.added_ssw_sdw = 0;
-    },
-    added_ssw_mdw: function added_ssw_mdw(changeValue) {
-      changeValue == 0 ? this.form.added_ssw_mdw = 1 : this.form.added_ssw_mdw = 0;
-    },
-    added_msw_sdw: function added_msw_sdw(changeValue) {
-      changeValue == 0 ? this.form.added_msw_sdw = 1 : this.form.added_msw_sdw = 0;
-    },
-    added_msw_mdw: function added_msw_mdw(changeValue) {
-      changeValue == 0 ? this.form.added_msw_mdw = 1 : this.form.added_msw_mdw = 0;
-    },
-    deducted_sdw_ssw: function deducted_sdw_ssw(changeValue) {
-      changeValue == 0 ? this.form.deducted_sdw_ssw = 1 : this.form.deducted_sdw_ssw = 0;
-    },
-    deducted_sdw_msw: function deducted_sdw_msw(changeValue) {
-      changeValue == 0 ? this.form.deducted_sdw_msw = 1 : this.form.deducted_sdw_msw = 0;
-    },
-    deducted_mdw_ssw: function deducted_mdw_ssw(changeValue) {
-      changeValue == 0 ? this.form.deducted_mdw_ssw = 1 : this.form.deducted_mdw_ssw = 0;
-    },
-    deducted_mdw_msw: function deducted_mdw_msw(changeValue) {
-      changeValue == 0 ? this.form.deducted_mdw_msw = 1 : this.form.deducted_mdw_msw = 0;
-    },
+
+    /* added_ssw_sdw(changeValue){
+         changeValue == 0 ? this.form.added_ssw_sdw = 1 : this.form.added_ssw_sdw = 0 
+     }, 
+     added_ssw_mdw(changeValue){
+         changeValue == 0 ? this.form.added_ssw_mdw = 1 : this.form.added_ssw_mdw = 0 
+     },
+     added_msw_sdw(changeValue){
+         changeValue == 0 ? this.form.added_msw_sdw = 1 : this.form.added_msw_sdw = 0 
+     }, 
+     added_msw_mdw(changeValue){
+         changeValue == 0 ? this.form.added_msw_mdw = 1 : this.form.added_msw_mdw = 0 
+     }, 
+     deducted_sdw_ssw(changeValue){
+         changeValue == 0 ? this.form.deducted_sdw_ssw = 1 : this.form.deducted_sdw_ssw = 0 
+     },  
+     deducted_sdw_msw(changeValue){
+         changeValue == 0 ? this.form.deducted_sdw_msw = 1 : this.form.deducted_sdw_msw = 0 
+     },   
+     deducted_mdw_ssw(changeValue){
+         changeValue == 0 ? this.form.deducted_mdw_ssw  = 1 : this.form.deducted_mdw_ssw  = 0 
+     },    
+     deducted_mdw_msw(changeValue){
+         changeValue == 0 ? this.form.deducted_mdw_msw  = 1 : this.form.deducted_mdw_msw  = 0 
+     },    
+     */
     updateDetailsBehavior: function updateDetailsBehavior() {
       this.form.put('/api/updateservicetype/' + this.form.id).then(function (response) {})["catch"](function () {
         console.log('rrrr');
@@ -4105,12 +4233,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      Services: {},
+      showList: true,
+      id: this.$route.params.id
+    };
   },
-  methods: {}
+  methods: {
+    showServices: function showServices() {
+      var _this = this;
+
+      axios.get('/api/showservices/' + this.id).then(function (response) {
+        _this.Services = response.data;
+
+        if (response.data.length > 0) {
+          _this.Services = response.data;
+          console.log('true');
+        } else {}
+      })["catch"](function () {});
+    },
+    saveServiceType: function saveServiceType() {
+      this.$router.push('/servicetypes');
+      console.log("ho");
+    }
+  },
+  created: function created() {
+    this.showServices();
+  }
 });
 
 /***/ }),
@@ -4358,7 +4509,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/api/getservicetype/' + this.form.servicetype_code).then(function (response) {
         _this2.form.servicetype_name = response.data['st_name'];
-        _this2.form.servicetype_id = response.data['id'];
+        _this2.form.service_type_id = response.data['id'];
 
         if (response.data['st_name'] == undefined) {
           toast.fire({
@@ -62192,33 +62343,39 @@ var render = function() {
                       _c("li", { staticClass: "list-group-item" }, [
                         _c(
                           "div",
-                          {
-                            staticClass:
-                              "form-check custom-control custom-checkbox "
-                          },
+                          { staticClass: "form-check custom-control" },
                           [
-                            _c(
-                              "input",
-                              _vm._b(
+                            _c("input", {
+                              directives: [
                                 {
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    id: "exampleCheck1"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.added_ssw_sdw(
-                                        _vm.form.added_ssw_sdw
-                                      )
-                                    }
-                                  }
-                                },
-                                "input",
-                                _vm.form.added_ssw_sdw,
-                                false
-                              )
-                            ),
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "added_ssw_sdw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "added_ssw_sdw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "added_ssw_sdw"
+                                  )
+                                }
+                              }
+                            }),
                             _vm._v(" "),
                             _c(
                               "label",
@@ -62239,33 +62396,39 @@ var render = function() {
                       _c("li", { staticClass: "list-group-item" }, [
                         _c(
                           "div",
-                          {
-                            staticClass:
-                              "form-check custom-control custom-checkbox"
-                          },
+                          { staticClass: "form-check custom-control" },
                           [
-                            _c(
-                              "input",
-                              _vm._b(
+                            _c("input", {
+                              directives: [
                                 {
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    id: "exampleCheck1"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.added_ssw_mdw(
-                                        _vm.form.added_ssw_mdw
-                                      )
-                                    }
-                                  }
-                                },
-                                "input",
-                                _vm.form.added_ssw_mdw,
-                                false
-                              )
-                            ),
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "added_ssw_mdw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "added_ssw_mdw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "added_ssw_mdw"
+                                  )
+                                }
+                              }
+                            }),
                             _vm._v(" "),
                             _c(
                               "label",
@@ -62286,33 +62449,39 @@ var render = function() {
                       _c("li", { staticClass: "list-group-item" }, [
                         _c(
                           "div",
-                          {
-                            staticClass:
-                              "form-check custom-control custom-checkbox"
-                          },
+                          { staticClass: "form-check custom-control" },
                           [
-                            _c(
-                              "input",
-                              _vm._b(
+                            _c("input", {
+                              directives: [
                                 {
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    id: "exampleCheck1"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.added_msw_sdw(
-                                        _vm.form.added_msw_sdw
-                                      )
-                                    }
-                                  }
-                                },
-                                "input",
-                                _vm.form.added_msw_sdw,
-                                false
-                              )
-                            ),
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "added_msw_sdw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "added_msw_sdw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "added_msw_sdw"
+                                  )
+                                }
+                              }
+                            }),
                             _vm._v(" "),
                             _c(
                               "label",
@@ -62333,33 +62502,39 @@ var render = function() {
                       _c("li", { staticClass: "list-group-item" }, [
                         _c(
                           "div",
-                          {
-                            staticClass:
-                              "form-check custom-control custom-checkbox"
-                          },
+                          { staticClass: "form-check custom-control" },
                           [
-                            _c(
-                              "input",
-                              _vm._b(
+                            _c("input", {
+                              directives: [
                                 {
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    id: "exampleCheck1"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.added_msw_mdw(
-                                        _vm.form.added_msw_mdw
-                                      )
-                                    }
-                                  }
-                                },
-                                "input",
-                                _vm.form.added_msw_mdw,
-                                false
-                              )
-                            ),
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "added_msw_mdw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "added_msw_mdw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "added_msw_mdw"
+                                  )
+                                }
+                              }
+                            }),
                             _vm._v(" "),
                             _c(
                               "label",
@@ -62380,33 +62555,39 @@ var render = function() {
                       _c("li", { staticClass: "list-group-item" }, [
                         _c(
                           "div",
-                          {
-                            staticClass:
-                              "form-check custom-control custom-checkbox"
-                          },
+                          { staticClass: "form-check custom-control" },
                           [
-                            _c(
-                              "input",
-                              _vm._b(
+                            _c("input", {
+                              directives: [
                                 {
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    id: "exampleCheck1"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.deducted_sdw_ssw(
-                                        _vm.form.deducted_sdw_ssw
-                                      )
-                                    }
-                                  }
-                                },
-                                "input",
-                                _vm.form.deducted_sdw_ssw,
-                                false
-                              )
-                            ),
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "deducted_sdw_ssw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "deducted_sdw_ssw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "deducted_sdw_ssw"
+                                  )
+                                }
+                              }
+                            }),
                             _vm._v(" "),
                             _c(
                               "label",
@@ -62427,33 +62608,39 @@ var render = function() {
                       _c("li", { staticClass: "list-group-item" }, [
                         _c(
                           "div",
-                          {
-                            staticClass:
-                              "form-check custom-control custom-checkbox"
-                          },
+                          { staticClass: "form-check custom-control" },
                           [
-                            _c(
-                              "input",
-                              _vm._b(
+                            _c("input", {
+                              directives: [
                                 {
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    id: "exampleCheck1"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.deducted_sdw_msw(
-                                        _vm.form.deducted_sdw_msw
-                                      )
-                                    }
-                                  }
-                                },
-                                "input",
-                                _vm.form.deducted_sdw_msw,
-                                false
-                              )
-                            ),
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "deducted_sdw_msw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "deducted_sdw_msw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "deducted_sdw_msw"
+                                  )
+                                }
+                              }
+                            }),
                             _vm._v(" "),
                             _c(
                               "label",
@@ -62474,33 +62661,39 @@ var render = function() {
                       _c("li", { staticClass: "list-group-item" }, [
                         _c(
                           "div",
-                          {
-                            staticClass:
-                              "form-check custom-control custom-checkbox"
-                          },
+                          { staticClass: "form-check custom-control" },
                           [
-                            _c(
-                              "input",
-                              _vm._b(
+                            _c("input", {
+                              directives: [
                                 {
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    id: "exampleCheck1"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.deducted_mdw_ssw(
-                                        _vm.form.deducted_mdw_ssw
-                                      )
-                                    }
-                                  }
-                                },
-                                "input",
-                                _vm.form.deducted_mdw_ssw,
-                                false
-                              )
-                            ),
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "deducted_mdw_ssw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "deducted_mdw_ssw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "deducted_mdw_ssw"
+                                  )
+                                }
+                              }
+                            }),
                             _vm._v(" "),
                             _c(
                               "label",
@@ -62521,18 +62714,35 @@ var render = function() {
                       _c("li", { staticClass: "list-group-item" }, [
                         _c(
                           "div",
-                          {
-                            staticClass:
-                              "form-check custom-control custom-checkbox"
-                          },
+                          { staticClass: "form-check custom-control" },
                           [
                             _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
                               staticClass: "form-check-input",
-                              attrs: { type: "checkbox", id: "exampleCheck1" },
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "deducted_mdw_msw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "deducted_mdw_msw"
+                                )
+                              },
                               on: {
-                                click: function($event) {
-                                  return _vm.deducted_mdw_msw(
-                                    _vm.form.deducted_mdw_msw
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "deducted_mdw_msw"
                                   )
                                 }
                               }
@@ -62563,49 +62773,7 @@ var render = function() {
           _c("tab-content", { attrs: { title: "Template" } }, [
             _c("div", { staticClass: "card shadow-custom" }, [
               _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "col-sm-5" }, [
-                  _c("h4", { staticClass: "header-title" }, [
-                    _vm._v("List of Services using this service type")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "single-table" }, [
-                    _c("div", { staticClass: "table-responsive" }, [
-                      _c(
-                        "table",
-                        { staticClass: "table table-bordered text-center" },
-                        [
-                          _c("thead", { staticClass: "text-uppercase" }, [
-                            _c("tr", [
-                              _c("th", { attrs: { scope: "col" } }, [
-                                _vm._v("Service Code")
-                              ]),
-                              _vm._v(" "),
-                              _c("th", { attrs: { scope: "col" } }, [
-                                _vm._v("Service Name")
-                              ]),
-                              _vm._v(" "),
-                              _c("th", { attrs: { scope: "col" } }, [
-                                _vm._v("Service Gateway")
-                              ])
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tbody", [
-                            _c("tr", [
-                              _c("th", { attrs: { scope: "row" } }, [
-                                _vm._v("0001")
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v("Smart Unli")]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v("ECPay")])
-                            ])
-                          ])
-                        ]
-                      )
-                    ])
-                  ])
-                ]),
+                _c("div", { staticClass: "col-sm-5" }),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-md-6 mt-5" }, [
                   _c("ul", { staticClass: "list-group list-group-flush" }, [
@@ -62912,300 +63080,395 @@ var render = function() {
               _c("form", [
                 _c("ul", { staticClass: "list-group list-group-flush" }, [
                   _c("li", { staticClass: "list-group-item" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "form-check custom-control custom-checkbox "
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "form-check-input",
-                          attrs: { type: "checkbox", id: "exampleCheck1" },
-                          domProps: {
-                            checked: _vm.checkItem(_vm.form.added_ssw_sdw)
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.added_ssw_sdw(_vm.form.added_ssw_sdw)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
+                    _c("div", { staticClass: "form-check custom-control" }, [
+                      _c("input", {
+                        directives: [
                           {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
-                          [
-                            _vm._v(
-                              "Balance transfer initiated in single source wallet, added to single destination wallet"
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.behavior_value,
+                            expression: "form.behavior_value"
+                          }
+                        ],
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "radio",
+                          id: "exampleCheck1",
+                          value: "added_ssw_sdw"
+                        },
+                        domProps: {
+                          checked: _vm._q(
+                            _vm.form.behavior_value,
+                            "added_ssw_sdw"
+                          )
+                        },
+                        on: {
+                          change: function($event) {
+                            return _vm.$set(
+                              _vm.form,
+                              "behavior_value",
+                              "added_ssw_sdw"
                             )
-                          ]
-                        )
-                      ]
-                    )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "exampleCheck1" }
+                        },
+                        [
+                          _vm._v(
+                            "Balance transfer initiated in single source wallet, added to single destination wallet"
+                          )
+                        ]
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("li", { staticClass: "list-group-item" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "form-check custom-control custom-checkbox"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "form-check-input",
-                          attrs: { type: "checkbox", id: "exampleCheck1" },
-                          domProps: {
-                            checked: _vm.checkItem(_vm.form.added_ssw_mdw)
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.added_ssw_mdw(_vm.form.added_ssw_mdw)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
+                    _c("div", { staticClass: "form-check custom-control" }, [
+                      _c("input", {
+                        directives: [
                           {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
-                          [
-                            _vm._v(
-                              "Balance transfer intiated in single source wallet, added to multiple destination wallets"
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.behavior_value,
+                            expression: "form.behavior_value"
+                          }
+                        ],
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "radio",
+                          id: "exampleCheck1",
+                          value: "added_ssw_mdw"
+                        },
+                        domProps: {
+                          checked: _vm._q(
+                            _vm.form.behavior_value,
+                            "added_ssw_mdw"
+                          )
+                        },
+                        on: {
+                          change: function($event) {
+                            return _vm.$set(
+                              _vm.form,
+                              "behavior_value",
+                              "added_ssw_mdw"
                             )
-                          ]
-                        )
-                      ]
-                    )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "exampleCheck1" }
+                        },
+                        [
+                          _vm._v(
+                            "Balance transfer intiated in single source wallet, added to multiple destination wallets"
+                          )
+                        ]
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("li", { staticClass: "list-group-item" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "form-check custom-control custom-checkbox"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "form-check-input",
-                          attrs: { type: "checkbox", id: "exampleCheck1" },
-                          domProps: {
-                            checked: _vm.checkItem(_vm.form.added_msw_sdw)
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.added_msw_sdw(_vm.form.added_msw_sdw)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
+                    _c("div", { staticClass: "form-check custom-control" }, [
+                      _c("input", {
+                        directives: [
                           {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
-                          [
-                            _vm._v(
-                              "Balance transfer initiated in multiple source wallets, added to single destination wallet"
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.behavior_value,
+                            expression: "form.behavior_value"
+                          }
+                        ],
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "radio",
+                          id: "exampleCheck1",
+                          value: "added_msw_sdw"
+                        },
+                        domProps: {
+                          checked: _vm._q(
+                            _vm.form.behavior_value,
+                            "added_msw_sdw"
+                          )
+                        },
+                        on: {
+                          change: function($event) {
+                            return _vm.$set(
+                              _vm.form,
+                              "behavior_value",
+                              "added_msw_sdw"
                             )
-                          ]
-                        )
-                      ]
-                    )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "exampleCheck1" }
+                        },
+                        [
+                          _vm._v(
+                            "Balance transfer initiated in multiple source wallets, added to single destination wallet"
+                          )
+                        ]
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("li", { staticClass: "list-group-item" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "form-check custom-control custom-checkbox"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "form-check-input",
-                          attrs: { type: "checkbox", id: "exampleCheck1" },
-                          domProps: {
-                            checked: _vm.checkItem(_vm.form.added_msw_mdw)
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.added_msw_mdw(_vm.form.added_msw_mdw)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
+                    _c("div", { staticClass: "form-check custom-control" }, [
+                      _c("input", {
+                        directives: [
                           {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
-                          [
-                            _vm._v(
-                              "Balance transfer initiated in multiple source wallets, added to multiple destination wallets"
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.behavior_value,
+                            expression: "form.behavior_value"
+                          }
+                        ],
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "radio",
+                          id: "exampleCheck1",
+                          value: "added_msw_mdw"
+                        },
+                        domProps: {
+                          checked: _vm._q(
+                            _vm.form.behavior_value,
+                            "added_msw_mdw"
+                          )
+                        },
+                        on: {
+                          change: function($event) {
+                            return _vm.$set(
+                              _vm.form,
+                              "behavior_value",
+                              "added_msw_mdw"
                             )
-                          ]
-                        )
-                      ]
-                    )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "exampleCheck1" }
+                        },
+                        [
+                          _vm._v(
+                            "Balance transfer initiated in multiple source wallets, added to multiple destination wallets"
+                          )
+                        ]
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("li", { staticClass: "list-group-item" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "form-check custom-control custom-checkbox"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "form-check-input",
-                          attrs: { type: "checkbox", id: "exampleCheck1" },
-                          domProps: {
-                            checked: _vm.checkItem(_vm.form.deducted_sdw_ssw)
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.deducted_sdw_ssw(
-                                _vm.form.deducted_sdw_ssw
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
+                    _c("div", { staticClass: "form-check custom-control" }, [
+                      _c("input", {
+                        directives: [
                           {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
-                          [
-                            _vm._v(
-                              "Balance transfer intiated in single destination wallets, deducted from single source wallet"
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.behavior_value,
+                            expression: "form.behavior_value"
+                          }
+                        ],
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "radio",
+                          id: "exampleCheck1",
+                          value: "deducted_sdw_ssw"
+                        },
+                        domProps: {
+                          checked: _vm._q(
+                            _vm.form.behavior_value,
+                            "deducted_sdw_ssw"
+                          )
+                        },
+                        on: {
+                          change: function($event) {
+                            return _vm.$set(
+                              _vm.form,
+                              "behavior_value",
+                              "deducted_sdw_ssw"
                             )
-                          ]
-                        )
-                      ]
-                    )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "exampleCheck1" }
+                        },
+                        [
+                          _vm._v(
+                            "Balance transfer intiated in single destination wallets, deducted from single source wallet"
+                          )
+                        ]
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("li", { staticClass: "list-group-item" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "form-check custom-control custom-checkbox"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "form-check-input",
-                          attrs: { type: "checkbox", id: "exampleCheck1" },
-                          domProps: {
-                            checked: _vm.checkItem(_vm.form.deducted_sdw_msw)
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.deducted_sdw_msw(
-                                _vm.form.deducted_sdw_msw
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
+                    _c("div", { staticClass: "form-check custom-control" }, [
+                      _c("input", {
+                        directives: [
                           {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
-                          [
-                            _vm._v(
-                              "Balance transfer initiated in single destination wallet, deducted from multiple source wallets"
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.behavior_value,
+                            expression: "form.behavior_value"
+                          }
+                        ],
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "radio",
+                          id: "exampleCheck1",
+                          value: "deducted_sdw_msw"
+                        },
+                        domProps: {
+                          checked: _vm._q(
+                            _vm.form.behavior_value,
+                            "deducted_sdw_msw"
+                          )
+                        },
+                        on: {
+                          change: function($event) {
+                            return _vm.$set(
+                              _vm.form,
+                              "behavior_value",
+                              "deducted_sdw_msw"
                             )
-                          ]
-                        )
-                      ]
-                    )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "exampleCheck1" }
+                        },
+                        [
+                          _vm._v(
+                            "Balance transfer initiated in single destination wallet, deducted from multiple source wallets"
+                          )
+                        ]
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("li", { staticClass: "list-group-item" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "form-check custom-control custom-checkbox"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "form-check-input",
-                          attrs: { type: "checkbox", id: "exampleCheck1" },
-                          domProps: {
-                            checked: _vm.checkItem(_vm.form.deducted_mdw_ssw)
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.deducted_mdw_ssw(
-                                _vm.form.deducted_mdw_ssw
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
+                    _c("div", { staticClass: "form-check custom-control" }, [
+                      _c("input", {
+                        directives: [
                           {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
-                          [
-                            _vm._v(
-                              "Balance transfer initiated in multiple destination wallets, deducted from single source wallet"
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.behavior_value,
+                            expression: "form.behavior_value"
+                          }
+                        ],
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "radio",
+                          id: "exampleCheck1",
+                          value: "deducted_mdw_ssw"
+                        },
+                        domProps: {
+                          checked: _vm._q(
+                            _vm.form.behavior_value,
+                            "deducted_mdw_ssw"
+                          )
+                        },
+                        on: {
+                          change: function($event) {
+                            return _vm.$set(
+                              _vm.form,
+                              "behavior_value",
+                              "deducted_mdw_ssw"
                             )
-                          ]
-                        )
-                      ]
-                    )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "exampleCheck1" }
+                        },
+                        [
+                          _vm._v(
+                            "Balance transfer initiated in multiple destination wallets, deducted from single source wallet"
+                          )
+                        ]
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("li", { staticClass: "list-group-item" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "form-check custom-control custom-checkbox"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "form-check-input",
-                          attrs: { type: "checkbox", id: "exampleCheck1" },
-                          domProps: {
-                            checked: _vm.checkItem(_vm.form.deducted_mdw_msw)
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.deducted_mdw_msw(
-                                _vm.form.deducted_mdw_msw
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
+                    _c("div", { staticClass: "form-check custom-control" }, [
+                      _c("input", {
+                        directives: [
                           {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
-                          [
-                            _vm._v(
-                              "Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets"
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.behavior_value,
+                            expression: "form.behavior_value"
+                          }
+                        ],
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "radio",
+                          id: "exampleCheck1",
+                          value: "deducted_mdw_msw"
+                        },
+                        domProps: {
+                          checked: _vm._q(
+                            _vm.form.behavior_value,
+                            "deducted_mdw_msw"
+                          )
+                        },
+                        on: {
+                          change: function($event) {
+                            return _vm.$set(
+                              _vm.form,
+                              "behavior_value",
+                              "deducted_mdw_msw"
                             )
-                          ]
-                        )
-                      ]
-                    )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "exampleCheck1" }
+                        },
+                        [
+                          _vm._v(
+                            "Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets"
+                          )
+                        ]
+                      )
+                    ])
                   ])
                 ])
               ])
@@ -63255,196 +63518,195 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("div", { staticClass: "col-lg-12 mt-5" }, [
+      _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "col-sm-5" }, [
+            _c("h4", { staticClass: "header-title" }, [
+              _vm._v("List of Services using this service type")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "single-table" }, [
+              _c("div", { staticClass: "table-responsive" }, [
+                _c(
+                  "table",
+                  { staticClass: "table table-bordered text-center" },
+                  [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.Services, function(Service) {
+                        return _c("tr", { key: Service.id }, [
+                          _c("th", { attrs: { scope: "row" } }, [
+                            _vm._v(_vm._s(Service.service_code))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(Service.service_name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(Service.gateway_name))])
+                        ])
+                      }),
+                      0
+                    )
+                  ]
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-6 mt-5" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass:
+                  "btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom",
+                attrs: { type: "button" },
+                on: { click: _vm.saveServiceType }
+              },
+              [_vm._v(" Save Service Type")]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "col-lg-12 mt-5" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "col-sm-5" }, [
-              _c("h4", { staticClass: "header-title" }, [
-                _vm._v("List of Services using this service type")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "single-table" }, [
-                _c("div", { staticClass: "table-responsive" }, [
-                  _c(
-                    "table",
-                    { staticClass: "table table-bordered text-center" },
-                    [
-                      _c("thead", { staticClass: "text-uppercase" }, [
-                        _c("tr", [
-                          _c("th", { attrs: { scope: "col" } }, [
-                            _vm._v("Service Code")
-                          ]),
-                          _vm._v(" "),
-                          _c("th", { attrs: { scope: "col" } }, [
-                            _vm._v("Service Name")
-                          ]),
-                          _vm._v(" "),
-                          _c("th", { attrs: { scope: "col" } }, [
-                            _vm._v("Service Gateway")
-                          ])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("tbody", [
-                        _c("tr", [
-                          _c("th", { attrs: { scope: "row" } }, [
-                            _vm._v("0001")
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Smart Unli")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("ECPay")])
-                        ])
-                      ])
-                    ]
-                  )
-                ])
-              ])
-            ]),
+    return _c("thead", { staticClass: "text-uppercase" }, [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Service Code")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Service Name")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Service Gateway")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "list-group list-group-flush" }, [
+      _c("li", { staticClass: "list-group-item" }, [
+        _c(
+          "div",
+          { staticClass: "form-check custom-control custom-checkbox " },
+          [
+            _c("input", {
+              staticClass: "form-check-input",
+              attrs: { type: "checkbox", id: "exampleCheck1" }
+            }),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-6 mt-5" }, [
-              _c("ul", { staticClass: "list-group list-group-flush" }, [
-                _c("li", { staticClass: "list-group-item" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "form-check custom-control custom-checkbox "
-                    },
-                    [
-                      _c("input", {
-                        staticClass: "form-check-input",
-                        attrs: { type: "checkbox", id: "exampleCheck1" }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        {
-                          staticClass: "form-check-label",
-                          attrs: { for: "exampleCheck1" }
-                        },
-                        [_vm._v("Transaction Acknowledgement Template:  ")]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "custom-file" }, [
-                        _c("input", {
-                          staticClass: "custom-file-input",
-                          attrs: { type: "file", id: "inputGroupFile03" }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
-                          {
-                            staticClass: "custom-file-label",
-                            attrs: { for: "inputGroupFile03" }
-                          },
-                          [_vm._v("Choose file")]
-                        )
-                      ])
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "list-group-item" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "form-check custom-control custom-checkbox "
-                    },
-                    [
-                      _c("input", {
-                        staticClass: "form-check-input",
-                        attrs: { type: "checkbox", id: "exampleCheck1" }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        {
-                          staticClass: "form-check-label",
-                          attrs: { for: "exampleCheck1" }
-                        },
-                        [_vm._v("Transaction Approval Template:")]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "custom-file" }, [
-                        _c("input", {
-                          staticClass: "custom-file-input",
-                          attrs: { type: "file", id: "inputGroupFile03" }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
-                          {
-                            staticClass: "custom-file-label",
-                            attrs: { for: "inputGroupFile03" }
-                          },
-                          [_vm._v("Choose file")]
-                        )
-                      ])
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "list-group-item" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "form-check custom-control custom-checkbox "
-                    },
-                    [
-                      _c("input", {
-                        staticClass: "form-check-input",
-                        attrs: { type: "checkbox", id: "exampleCheck1" }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        {
-                          staticClass: "form-check-label",
-                          attrs: { for: "exampleCheck1" }
-                        },
-                        [_vm._v("Transaction Confirmation Template:")]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "custom-file" }, [
-                        _c("input", {
-                          staticClass: "custom-file-input",
-                          attrs: { type: "file", id: "inputGroupFile03" }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
-                          {
-                            staticClass: "custom-file-label",
-                            attrs: { for: "inputGroupFile03" }
-                          },
-                          [_vm._v("Choose file")]
-                        )
-                      ])
-                    ]
-                  )
-                ])
-              ]),
+            _c(
+              "label",
+              {
+                staticClass: "form-check-label",
+                attrs: { for: "exampleCheck1" }
+              },
+              [_vm._v("Transaction Acknowledgement Template:  ")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "custom-file" }, [
+              _c("input", {
+                staticClass: "custom-file-input",
+                attrs: { type: "file", id: "inputGroupFile03" }
+              }),
               _vm._v(" "),
               _c(
-                "button",
+                "label",
                 {
-                  staticClass:
-                    "btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom",
-                  attrs: { type: "button" }
+                  staticClass: "custom-file-label",
+                  attrs: { for: "inputGroupFile03" }
                 },
-                [_vm._v("Save Service Type")]
+                [_vm._v("Choose file")]
               )
             ])
-          ])
-        ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "list-group-item" }, [
+        _c(
+          "div",
+          { staticClass: "form-check custom-control custom-checkbox " },
+          [
+            _c("input", {
+              staticClass: "form-check-input",
+              attrs: { type: "checkbox", id: "exampleCheck1" }
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "form-check-label",
+                attrs: { for: "exampleCheck1" }
+              },
+              [_vm._v("Transaction Approval Template:")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "custom-file" }, [
+              _c("input", {
+                staticClass: "custom-file-input",
+                attrs: { type: "file", id: "inputGroupFile03" }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  staticClass: "custom-file-label",
+                  attrs: { for: "inputGroupFile03" }
+                },
+                [_vm._v("Choose file")]
+              )
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "list-group-item" }, [
+        _c(
+          "div",
+          { staticClass: "form-check custom-control custom-checkbox " },
+          [
+            _c("input", {
+              staticClass: "form-check-input",
+              attrs: { type: "checkbox", id: "exampleCheck1" }
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "form-check-label",
+                attrs: { for: "exampleCheck1" }
+              },
+              [_vm._v("Transaction Confirmation Template:")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "custom-file" }, [
+              _c("input", {
+                staticClass: "custom-file-input",
+                attrs: { type: "file", id: "inputGroupFile03" }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  staticClass: "custom-file-label",
+                  attrs: { for: "inputGroupFile03" }
+                },
+                [_vm._v("Choose file")]
+              )
+            ])
+          ]
+        )
       ])
     ])
   }
