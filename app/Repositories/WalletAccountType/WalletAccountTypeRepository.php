@@ -15,11 +15,22 @@ use Illuminate\Http\Request;
 class WalletAccountTypeRepository
 {
     /**
+     * @ connection
+     **/
+    protected $connection;
+    /**
+     * @ constructor 
+     **/
+    public function __construct(){
+        // E-Wallet Connection
+        $this->connection = DB::connection('mysql');
+    }
+    /**
      *@ Get All Wallet Account Types 
      **/
     public function get_wallet_account_types(){
         $user = auth('api')->user();
-        $wallet_account_type = DB::connection('mysql')
+        $wallet_account_type = $this->connection
                                 ->table('wallet_account_types')
                                 ->select(
                                     'id',
@@ -39,7 +50,7 @@ class WalletAccountTypeRepository
     public function store_wallet_account_type($wallaccounttype){
         $user = auth('api')->user();
         $type_code = 'EW' . $this->generate_type_code();
-        $wallet_account_type = DB::connection('mysql')
+        $wallet_account_type = $this->connection
                             ->table('wallet_account_types')
                             ->insert([
                                 'type_code' => $type_code,
@@ -58,7 +69,7 @@ class WalletAccountTypeRepository
     public function update_wallet_account_type($wallaccounttype){
         $user = auth('api')->user();
         $type_code = 'EW' . $this->generate_type_code();
-        $wallet_account_type = DB::connection('mysql')
+        $wallet_account_type = $this->connection
                             ->table('wallet_account_types')
                             ->where('id', '=', $wallaccounttype->id)
                             ->where('created_by', '=', $user->id)

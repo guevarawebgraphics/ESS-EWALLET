@@ -22,8 +22,8 @@ const routes = [
     /**
      * @ Routes For Service Matrix 
      **/
-    { path: '/ServiceGroup', component: require('../components/ServiceMatrix/ServiceGroup.vue').default},
-    { path: '/ServiceMatrix', component: require('../components/ServiceMatrix/ServiceMatrix.vue').default},
+    { path: '/serviceGroup', component: require('../components/ServiceMatrix/ServiceGroup.vue').default},
+    { path: '/serviceMatrix', component: require('../components/ServiceMatrix/ServiceMatrix.vue').default},
     /**
      * @ Services  
      */
