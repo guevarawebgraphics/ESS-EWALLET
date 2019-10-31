@@ -10,18 +10,17 @@
                     <table class="table table-bordered text-center">
                     <thead class="text-uppercase">
                     <tr>
-                    <th scope="col">Service Code</th>
-                    <th scope="col">Service Name</th>
-                    <th scope="col">Service Gateway</th>
+                        <th scope="col">Service Code</th>
+                        <th scope="col">Service Name</th>
+                        <th scope="col">Service Gateway</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                    <th scope="row">0001</th>
-                    <td>Smart Unli</td>
-                    <td>ECPay</td>
+                    <tbody> 
+                    <tr v-for="Service in Services" :key="Service.id">
+                        <th scope="row">{{Service.service_code}}</th>
+                        <td>{{Service.service_name}}</td>
+                        <td>{{Service.gateway_name}}</td>
                     </tr>
-                    
                     </tbody>
                     </table>
                     </div>
@@ -65,7 +64,7 @@
                     </li>
 
                     </ul> 
-                        <button type="button" class="btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom">Save Service Type</button>
+                        <button type="button" class="btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom" v-on:click="saveServiceType"> Save Service Type</button>
                     </div> 
                     
             </div> 
@@ -80,11 +79,37 @@
 export default {
 data() {
     return {
-
+        Services : {},
+        showList: true,
+        id: this.$route.params.id,
     }
 },
-methods:{
+methods: {
+    showServices(){
+            axios.get('/api/showservices/' +this.id) 
+            .then((response) => {
+                this.Services = response.data;
+                if(response.data.length > 0 ){
+                    this.Services = response.data;
+                    console.log('true');
+                }
+                else {
+                    
 
+                }
+            })
+            .catch(() => {
+
+            })
+    }, 
+    saveServiceType(){
+            this.$router.push('/servicetypes');
+            console.log("ho");
+    },
+
+},
+created() {
+    this.showServices();
 }
 }
 </script>
