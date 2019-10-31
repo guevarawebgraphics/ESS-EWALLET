@@ -80867,10 +80867,10 @@ var routes = [{
  * @ Routes For Service Matrix 
  **/
 {
-  path: '/ServiceGroup',
+  path: '/serviceGroup',
   component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceGroup.vue */ "./resources/js/components/ServiceMatrix/ServiceGroup.vue")["default"]
 }, {
-  path: '/ServiceMatrix',
+  path: '/serviceMatrix',
   component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceMatrix.vue */ "./resources/js/components/ServiceMatrix/ServiceMatrix.vue")["default"]
 },
 /**
@@ -80896,7 +80896,6 @@ var routes = [{
 {
   path: '/servicegatewaylist',
   component: __webpack_require__(/*! ../components/ServiceGateway/ServiceGatewayTable.vue */ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue")["default"]
-
 },
 /**
  *@ Return Error 404 Page 
