@@ -141,3 +141,7 @@ Route::get('/getservicegateway' ,[
 Route::put('/updateservicegateway/{gw_id}',[
     'uses' => 'Api\\ServiceGateway\ServiceGatewayController@UpdateServiceGateway'
 ]);
+
+Route::get('/getserviceslist',[
+    'uses' => 'Api\\Services\ServiceController@GetService'
+]);
