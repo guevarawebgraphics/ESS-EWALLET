@@ -94,7 +94,7 @@
                       </div>
                       </div>
                     </div>
-                    
+          
                    </div>
               </div>
               </form>
@@ -157,7 +157,7 @@ methods:{
       .then(response => {
 
       this.form.servicetype_name = response.data['st_name'];  
-      this.form.servicetype_id = response.data['id'];
+      this.form.service_type_id = response.data['id'];
       
           if(response.data['st_name'] == undefined){
                   toast.fire({
