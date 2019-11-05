@@ -15,7 +15,7 @@ class ServiceMatrixRepository
      * @return string
      *  Store Service Matrix
      */
-    public function store_service_matrix($service_matrix_data){
+    public function StoreServiceMatrix($service_matrix_data){
         $user = auth('api')->user();
         $service_matrix = ServiceMatrix::create([
             'service_id' => 1,

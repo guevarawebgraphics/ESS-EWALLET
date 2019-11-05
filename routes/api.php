@@ -34,9 +34,9 @@ Route::prefix('servicematrix')->group(function(){
     Route::put  ('/UpdateServiceGroup/{id}', [
         'uses' => 'Api\\ServiceMatrix\ServiceGroupController@UpdateServiceGroup'
     ]);
-    // api/servicematrix/GetServices
-    Route::get('/GetServices', [
-        'uses' => 'Api\\ServiceMatrix\ServiceGroupController@get_all_service'
+    // api/servicematrix/GetAllService
+    Route::get('/GetAllService', [
+        'uses' => 'Api\\ServiceMatrix\ServiceGroupController@GetAllService'
     ]);
     // api/servicematrix/StoreServiceMatrix
     Route::post('/StoreServiceMatrix', [
@@ -105,6 +105,10 @@ Route::post('/createservice',[
 
 Route::get('/getservicetype/{st_code}',[
     'uses' => 'Api\\Services\ServiceController@fillServiceType'
+]); 
+
+Route::get('/getserviceslist',[
+    'uses' => 'Api\\Services\ServiceController@GetService'
 ]);
 
 /***
@@ -140,8 +144,4 @@ Route::get('/getservicegateway' ,[
 
 Route::put('/updateservicegateway/{gw_id}',[
     'uses' => 'Api\\ServiceGateway\ServiceGatewayController@UpdateServiceGateway'
-]);
-
-Route::get('/getserviceslist',[
-    'uses' => 'Api\\Services\ServiceController@GetService'
 ]);
