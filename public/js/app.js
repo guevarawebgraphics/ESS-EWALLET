@@ -4616,6 +4616,41 @@ __webpack_require__.r(__webpack_exports__);
   /**
    * This module is related with other modules to be completed.
    */
+  data: function data() {
+    return {
+      Services: {}
+    };
+  },
+  methods: {
+    showDatatable: function showDatatable() {
+      setTimeout(function () {
+        var table = $('#table-services').DataTable({
+          // "searching": false,
+          //"sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+          "paging": true,
+          "pageLength": 10,
+          scrollY: true,
+          "autoWidth": true,
+          //lengthChange: false,
+          responsive: true,
+          fixedColumns: true
+        });
+      }, 400);
+    },
+    showServices: function showServices() {
+      var _this = this;
+
+      axios.get('/api/getserviceslist').then(function (response) {
+        _this.Services = response.data;
+      })["catch"](function () {
+        console.log("err");
+      });
+    }
+  },
+  created: function created() {
+    this.showServices();
+    this.showDatatable();
+  }
 });
 
 /***/ }),
@@ -64591,41 +64626,47 @@ var render = function() {
               "table",
               {
                 staticClass: "table table-hover",
-                attrs: { id: "table-service-type" }
+                attrs: { id: "table-services" }
               },
               [
                 _vm._m(0),
                 _vm._v(" "),
-                _c("tbody", [
-                  _c("tr", [
-                    _c("td", [_vm._v("Test ")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("Test ")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("Test ")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("Test ")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("Test ")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("Test ")]),
-                    _vm._v(" "),
-                    _c(
-                      "td",
-                      [
-                        _c(
-                          "router-link",
-                          {
-                            staticClass: "btn btn-primary btn-custom",
-                            attrs: { to: { name: "/test", params: { id: 1 } } }
-                          },
-                          [_vm._v("Update")]
-                        )
-                      ],
-                      1
-                    )
-                  ])
-                ])
+                _c(
+                  "tbody",
+                  _vm._l(_vm.Services, function(s) {
+                    return _c("tr", { key: s.id }, [
+                      _c("td", [_vm._v(_vm._s(s.service_code) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(s.service_name) + "t ")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(s.st_code) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(s.st_name) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("---- ")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("---- ")]),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "btn btn-primary btn-custom",
+                              attrs: {
+                                to: { name: "/test", params: { id: 1 } }
+                              }
+                            },
+                            [_vm._v("Update")]
+                          )
+                        ],
+                        1
+                      )
+                    ])
+                  }),
+                  0
+                )
               ]
             )
           ])

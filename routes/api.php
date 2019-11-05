@@ -105,6 +105,10 @@ Route::post('/createservice',[
 
 Route::get('/getservicetype/{st_code}',[
     'uses' => 'Api\\Services\ServiceController@fillServiceType'
+]); 
+
+Route::get('/getserviceslist',[
+    'uses' => 'Api\\Services\ServiceController@GetService'
 ]);
 
 /***
@@ -140,8 +144,4 @@ Route::get('/getservicegateway' ,[
 
 Route::put('/updateservicegateway/{gw_id}',[
     'uses' => 'Api\\ServiceGateway\ServiceGatewayController@UpdateServiceGateway'
-]);
-
-Route::get('/getserviceslist',[
-    'uses' => 'Api\\Services\ServiceController@GetService'
 ]);
