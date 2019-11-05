@@ -15,8 +15,8 @@ class ServiceGroupRepository
     /**
      * Get All Service group 
      **/
-    public function get_all_service(){
-        $service_group = ServiceGroup::select('id', 'group_code', 'group_description')->get();
+    public function GetAllService(){
+        $service_group = ServiceGroup::select('id', 'group_code', 'group_description')->orderBy('created_at', 'DESC')->get();
         return $service_group;
     }
 
@@ -24,7 +24,7 @@ class ServiceGroupRepository
      * @return string
      * Store Service Group
      */
-    public function store_service_group($servicedata){
+    public function StoreServiceGroup($servicedata){
         $user = auth('api')->user();
         $service_group = ServiceGroup::create([
             'group_code' => $servicedata->group_code,
@@ -38,7 +38,7 @@ class ServiceGroupRepository
     /**
      * Update Service Group
      **/
-    public function update_service_group($servicedata, $id){
+    public function UpdateServiceGroup($servicedata, $id){
         $user = auth('api')->user();
         $service_group = ServiceGroup::where('created_by', '=', $user->id)
             ->where('id', '=', $id)
