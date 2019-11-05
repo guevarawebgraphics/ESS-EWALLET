@@ -47,5 +47,12 @@ class ServiceController extends Controller
         $fill_ir_account_name = $this->services->FillIrAccountNameMethod($ir_wallet_acc_no);
         return response()->json($fill_ir_account_name);
     }
+    /**
+     * Get service table
+     */
+    public function GetService(){
+        $get_services = $this->services->GetAllServices();
+        return response()->json($get_services);
+    }
 
 }
