@@ -30,7 +30,7 @@ class AccountRepository
      * @ mysq2 (ESS Database)
      * @ Get All Account
      */
-    public function get_all_account($essid){
+    public function GellAllAccount($essid){
         /**
          * @ check 
          **/

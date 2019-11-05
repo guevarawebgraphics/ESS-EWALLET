@@ -2198,14 +2198,15 @@ $(document).ready(function () {
           "autoWidth": true,
           //lengthChange: false,
           responsive: true,
-          fixedColumns: true
+          fixedColumns: true,
+          "order": [2, "desc"]
         });
       }, 500);
     },
     get_service_group: function get_service_group() {
       var _this = this;
 
-      axios.get("api/servicematrix/GetServices").then(function (_ref) {
+      axios.get("api/servicematrix/GetAllService").then(function (_ref) {
         var data = _ref.data;
         return _this.serviceGroups = data;
       });
@@ -3483,7 +3484,7 @@ __webpack_require__.r(__webpack_exports__);
       //     },
       // })
       // .then(({ data }) => (this.users = data));
-      axios.get('api/walletaccount/GetWalletAccount').then(function (_ref) {
+      axios.get('api/walletaccount/GetAllWalletAccount').then(function (_ref) {
         var data = _ref.data;
         return _this.WalletAccount = data;
       });
