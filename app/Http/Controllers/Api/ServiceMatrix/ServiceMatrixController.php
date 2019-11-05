@@ -15,7 +15,7 @@ class ServiceMatrixController extends Controller
     /**
      * @ Respositry Implementation
      **/
-    protected $serviceMatrixRepository;
+    protected $ServiceMatrix;
 
     /**
      * Create a new controller instance
@@ -23,7 +23,7 @@ class ServiceMatrixController extends Controller
      * @ Constructor
      **/
     public function __construct(ServiceMatrixRepository $ServiceMatrixRepository){
-        $this->serviceMatrixRepository = $ServiceMatrixRepository;
+        $this->ServiceMatrix = $ServiceMatrixRepository;
         $this->middleware('auth:api');
     }
 
@@ -31,7 +31,7 @@ class ServiceMatrixController extends Controller
      * @ Store Service Matrix
      **/
     public function StoreServiceMatrix(Request $request){
-        $service_matrix = $this->serviceMatrixRepository->store_service_matrix($request);
+        $service_matrix = $this->ServiceMatrix->StoreServiceMatrix($request);
 
         return response()->json([
             'status' => 'success'
