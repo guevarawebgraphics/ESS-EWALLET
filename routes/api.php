@@ -34,9 +34,9 @@ Route::prefix('servicematrix')->group(function(){
     Route::put  ('/UpdateServiceGroup/{id}', [
         'uses' => 'Api\\ServiceMatrix\ServiceGroupController@UpdateServiceGroup'
     ]);
-    // api/servicematrix/GetServices
-    Route::get('/GetServices', [
-        'uses' => 'Api\\ServiceMatrix\ServiceGroupController@get_all_service'
+    // api/servicematrix/GetAllService
+    Route::get('/GetAllService', [
+        'uses' => 'Api\\ServiceMatrix\ServiceGroupController@GetAllService'
     ]);
     // api/servicematrix/StoreServiceMatrix
     Route::post('/StoreServiceMatrix', [

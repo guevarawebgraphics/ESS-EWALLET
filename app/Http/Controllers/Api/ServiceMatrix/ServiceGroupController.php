@@ -19,7 +19,7 @@ class ServiceGroupController extends Controller
     /**
      *@ Repository Implementation 
      **/
-    protected $serviceGroupRepository;
+    protected $ServiceGroup;
 
     /**
      * Create a new controller instance
@@ -27,22 +27,22 @@ class ServiceGroupController extends Controller
      * @ Constructor 
      **/
     public function __construct(ServiceGroupRepository $ServiceGroupRepository){
-        $this->serviceGroupRepository = $ServiceGroupRepository;
+        $this->ServiceGroup = $ServiceGroupRepository;
         $this->middleware('auth:api');
     }
 
     /**
      * Get All Service group 
      **/
-    public function get_all_service(){
-        $service_group = $this->serviceGroupRepository->get_all_service();
+    public function GetAllService(){
+        $service_group = $this->ServiceGroup->GetAllService();
         return response()->json($service_group);
     }
     /**
      * @ Store Service Group 
      **/
     public function StoreServiceGroup(StoreServiceGroup $request){
-        $service_group = $this->serviceGroupRepository->store_service_group($request);
+        $service_group = $this->ServiceGroup->StoreServiceGroup($request);
 
         return response()->json([
             'status' => 'success'
@@ -53,7 +53,7 @@ class ServiceGroupController extends Controller
      * @ Update Service Group
      **/
     public function UpdateServiceGroup(StoreServiceGroup $request, $id){
-        $service_group = $this->serviceGroupRepository->update_service_group($request, $id);
+        $service_group = $this->ServiceGroup->UpdateServiceGroup($request, $id);
 
         return response()->json([
             'status' => 'success'
