@@ -61,11 +61,11 @@ Route::prefix('walletaccount')->group(function(){
     ]);
     // api/walletaccount/StoreWalletAccount
     Route::post('/StoreWalletAccount', [
-        'uses' => 'Api\\WalletAccount\WalletAccountController@store_wallet_account'
+        'uses' => 'Api\\WalletAccount\WalletAccountController@StoreWalletAccount'
     ]);
     // api/walletaccount/GetWalletAccount
-    Route::get('/GetWalletAccount', [
-        'uses' => 'Api\\WalletAccount\WalletAccountController@get_all_wallet_account'
+    Route::get('/GetAllWalletAccount', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@GetAllWalletAccount'
     ]);
 });
 /**
@@ -140,4 +140,8 @@ Route::get('/getservicegateway' ,[
 
 Route::put('/updateservicegateway/{gw_id}',[
     'uses' => 'Api\\ServiceGateway\ServiceGatewayController@UpdateServiceGateway'
+]);
+
+Route::get('/getserviceslist',[
+    'uses' => 'Api\\Services\ServiceController@GetService'
 ]);
