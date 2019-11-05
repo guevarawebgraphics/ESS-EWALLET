@@ -36,16 +36,16 @@ class WalletAccountController extends Controller
     /**
      * @ Get all E-Wallet Account 
      **/
-    public function get_all_wallet_account(){
-        $WalletAccount = $this->WalletAccount->get_all_wallet_account();
+    public function GetAllWalletAccount(){
+        $WalletAccount = $this->WalletAccount->GetAllWalletAccount();
         return response()->json($WalletAccount);
     }
 
     /**
      * @ Store Wallet Account 
      **/
-    public function store_wallet_account(StoreWalletAccount $request){
-        $WalletAccount = $this->WalletAccount->store_wallet_account($request);
+    public function StoreWalletAccount(StoreWalletAccount $request){
+        $WalletAccount = $this->WalletAccount->StoreWalletAccount($request);
         return response()->json([
             'status' => 'success'
         ]);
