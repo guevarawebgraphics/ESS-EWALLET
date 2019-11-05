@@ -33,7 +33,7 @@ class WalletAccountRepository
     /**
      * @ Get All E-Wallet Account 
      **/
-    public function get_all_wallet_account(){
+    public function GetAllWalletAccount(){
         $user = auth('api')->user();
         $wallet_account = $this->connection
                             ->table('wallet_account')
@@ -53,7 +53,7 @@ class WalletAccountRepository
      * @return string
      *  Store Wallet Account
      */
-    public function store_wallet_account($wallet_account_data){
+    public function StoreWalletAccount($wallet_account_data){
         $user = auth('api')->user();
         // Store to Wallet Account
         $wallet_account = wallet_account::create([

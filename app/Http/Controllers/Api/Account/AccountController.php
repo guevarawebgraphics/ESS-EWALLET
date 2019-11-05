@@ -36,7 +36,7 @@ class AccountController extends Controller
      * @ Return Response JSon
      **/
     public function GetAccountViaEssId(Request $request, $essid){
-        $Account = $this->accountRepository->get_all_account($essid);
+        $Account = $this->accountRepository->GellAllAccount($essid);
         return response()->json($Account);
     }
 

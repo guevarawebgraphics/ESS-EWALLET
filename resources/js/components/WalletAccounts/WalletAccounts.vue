@@ -75,7 +75,7 @@ export default {
             //     },
             // })
             // .then(({ data }) => (this.users = data));
-            axios.get('api/walletaccount/GetWalletAccount').then(({ data}) => (this.WalletAccount = data));
+            axios.get('api/walletaccount/GetAllWalletAccount').then(({ data}) => (this.WalletAccount = data));
         },
         datatable() {
             setTimeout(function(){
