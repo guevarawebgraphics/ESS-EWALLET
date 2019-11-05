@@ -18,6 +18,9 @@ class ServiceRepository
      * @return string
      *  Return the model
      */ 
+    /**
+     * For creating service
+     */
     public function InsertServiceMethod($service_data){
         $wservice = WService::create([
             'service_code'=> $service_data->service_code,
@@ -39,6 +42,9 @@ class ServiceRepository
         ]); 
         return $wservice;
     }
+     /*
+      * For searching/filling Service Type 
+      */
     public function FillServiceTypeMethod($service_type_code){
          $service_type = DB::connection('mysql')
                 ->table('servicetypedetails')
@@ -54,6 +60,9 @@ class ServiceRepository
                         ->first();
                         return $account_name;
     }
+    /**
+     * For searching/filling IR Account details
+     */
     public function FillIrAccountNameMethod($ir_wallet_acc_no){
         $account_name = DB::connection('mysql')
                         ->table('wallet_account')
@@ -61,5 +70,18 @@ class ServiceRepository
                         ->first();
                         return $account_name;
     }
+    /**
+     * Get services table
+     */
+    public function GetAllServices(){
+        $getservicetable = DB::connection('mysql')
+                        ->table('service_and_servicetype')
+                        ->join('wservice','service_and_servicetype.service_id','=','wservice.id')
+                        ->join('servicetypedetails','service_and_servicetype.service_type_id','=','servicetypedetails.id') 
+                        ->join('wdetails','wdetails.wservice_id','=','service_and_servicetype.service_id') 
+                        ->join('wallet_account','wallet_account.id','=','wdetails.pr_wdetails_id') // this is temporary
+                        ->get();
+                        return $getservicetable;
+    }   
 
 }
