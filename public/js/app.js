@@ -4471,10 +4471,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       ServiceGateway: {},
+      ServiceGroups: {},
       form: new Form({
         service_type_id: null,
         pr_wallet_id: null,
@@ -4489,7 +4498,8 @@ __webpack_require__.r(__webpack_exports__);
         pr_wallet_acc_no: null,
         pr_wallet_acc_name: null,
         ir_wallet_acc_no: null,
-        ir_wallet_acc_name: null //  service_template: null,
+        ir_wallet_acc_name: null,
+        service_group_id: null //  service_template: null,
 
       })
     };
@@ -4551,10 +4561,19 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/api/getservicegateway').then(function (response) {
         _this5.ServiceGateway = response.data;
       });
+    },
+    getServiceGroup: function getServiceGroup() {
+      var _this6 = this;
+
+      axios.get("api/servicematrix/GetAllService").then(function (_ref) {
+        var data = _ref.data;
+        return _this6.ServiceGroups = data;
+      });
     }
   },
   created: function created() {
     this.getServiceGateway();
+    this.getServiceGroup();
   }
 });
 
@@ -64294,6 +64313,76 @@ var render = function() {
                                     "option",
                                     { key: sg.id, domProps: { value: sg.id } },
                                     [_vm._v(_vm._s(sg.gateway_name))]
+                                  )
+                                })
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _c("small", {
+                              staticClass: "form-text text-muted",
+                              attrs: { id: "emailHelp" }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              { attrs: { for: "exampleInputEmail1" } },
+                              [_vm._v("Service Group:")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.service_group_id,
+                                    expression: "form.service_group_id"
+                                  }
+                                ],
+                                staticClass: "custom-select",
+                                attrs: { name: "service_gateway" },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.form,
+                                      "service_group_id",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: {
+                                      selected: "selected",
+                                      disabled: ""
+                                    }
+                                  },
+                                  [_vm._v("Select")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(_vm.ServiceGroups, function(g) {
+                                  return _c(
+                                    "option",
+                                    { key: g.id, domProps: { value: g.id } },
+                                    [_vm._v(" " + _vm._s(g.group_description))]
                                   )
                                 })
                               ],

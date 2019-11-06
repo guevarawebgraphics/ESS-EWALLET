@@ -127,7 +127,8 @@ export default {
             }, 500);
         },
         get_service_group(){
-            axios.get("api/servicematrix/GetAllService").then(({ data }) => (this.serviceGroups = data));
+            axios.get("api/servicematrix/GetAllService").then(({ data }) => (this.serviceGroups = data));  
+           
         },
         editServiceGroup(sg){
             this.form.clear()

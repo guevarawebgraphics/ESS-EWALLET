@@ -54,6 +54,14 @@
                   
                       </select>
                       <small id="emailHelp" class="form-text text-muted"></small>
+                    </div> 
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Service Group:</label>
+                      <select class="custom-select"  v-model="form.service_group_id" name="service_gateway">
+                      <option selected="selected" disabled>Select</option>
+                      <option v-bind:value="g.id" v-for="g in ServiceGroups" :key="g.id"> {{g.group_description}}</option>
+                      </select>
+                      <small id="emailHelp" class="form-text text-muted"></small>
                     </div>
                    </div> 
                    <div class="col-sm-6"> 
@@ -117,10 +125,13 @@
 </template>
 
 <script>
+
+
 export default {
 data() {
   return{
     ServiceGateway : {},
+    ServiceGroups :{}, 
     form : new Form({
       service_type_id :null,
       pr_wallet_id: null,
@@ -136,6 +147,7 @@ data() {
       pr_wallet_acc_name: null,
       ir_wallet_acc_no: null,
       ir_wallet_acc_name:null,
+      service_group_id : null,
     //  service_template: null,
       
     })
@@ -208,10 +220,18 @@ methods:{
             .then((response) => {
                 this.ServiceGateway = response.data;
             })
-    }
+    },
+    getServiceGroup(){
+         axios.get("api/servicematrix/GetAllService")
+         .then(({ data }) => (
+           this.ServiceGroups = data
+         ));  
+    }, 
+    
 },
 created() {
     this.getServiceGateway();
+    this.getServiceGroup();
 }
 }
 </script>
