@@ -3145,6 +3145,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3175,8 +3176,9 @@ __webpack_require__.r(__webpack_exports__);
         WalletAccountNo: null,
         WalletAccountName: null,
         Wallettitle: null,
-        NameOfBank: null,
+        //NameOfBank: null,
         // Wallet Bank Account Details
+        bank_name: null,
         Branch: null,
         account_type: null,
         account_name: null,
@@ -3199,17 +3201,17 @@ __webpack_require__.r(__webpack_exports__);
         am_year_minimum: null,
         am_year_maximum: null,
         // Wallet limit no of transaction config
-        lm_per_day: false,
-        lm_per_month: false,
-        lm_per_year: false,
-        allow_negative_balance: false,
-        com_daily_balance: false,
-        com_daily_usage: false,
+        c_lm_per_day: false,
+        c_lm_per_month: false,
+        c_lm_per_year: false,
+        c_allow_negative_balance: false,
+        c_com_daily_balance: false,
+        c_com_daily_usage: false,
         // Wallet limit no of transaction
-        c_lm_per_day: null,
-        c_lm_per_month: null,
-        c_lm_per_year: null,
-        c_allow_negative_balance: null
+        lm_per_day: null,
+        lm_per_month: null,
+        lm_per_year: null,
+        allow_negative_balance: null
       })
     };
   },
@@ -3268,7 +3270,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     ValidateFourthStep: function ValidateFourthStep() {
-      if (this.form.NameOfBank == null || this.form.Branch == null || this.form.account_type == null || this.form.account_name == null || this.form.account_no == null) {
+      if (this.form.bank_name == null || this.form.Branch == null || this.form.account_type == null || this.form.account_name == null || this.form.account_no == null) {
         toast.fire({
           type: 'info',
           title: 'Please fill required fields'
@@ -3297,7 +3299,8 @@ __webpack_require__.r(__webpack_exports__);
           $('#nextTab').attr('disabled', true);
         }
       } else {
-        axios.get('/api/account/' + this.form.username).then(function (response) {
+        var ess_id = this.editmode ? this.$route.params.id : this.form.username;
+        axios.get('/api/account/' + ess_id).then(function (response) {
           if (response.data.length > 0 && _this.form.username != null) {
             _this.step = 1;
 
@@ -3341,6 +3344,21 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     /**
+     * @ Edit Wallet Account 
+     **/
+    EditWalletAccount: function EditWalletAccount() {
+      /**
+       * @ Check if the params is not empty then editmode = true 
+       **/
+      var ess_id = this.$route.params.id;
+
+      if (ess_id != null) {
+        this.editmode = true;
+        this.form.username = ess_id;
+      }
+    },
+
+    /**
      * @ Generate Account No 
      **/
     GenerateAccountNo: function GenerateAccountNo() {
@@ -3356,15 +3374,10 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ UpdateWalletAccount
      **/
-    UpdateWalletAccount: function UpdateWalletAccount() {},
-
-    /**
-     * @ Store Wallet Account 
-     **/
-    StoreWalletAccount: function StoreWalletAccount() {
+    UpdateWalletAccount: function UpdateWalletAccount() {
       var _this3 = this;
 
-      this.form.post('api/walletaccount/StoreWalletAccount').then(function (res) {
+      this.form.put('/api/walletaccount/UpdateWalletAccount').then(function (res) {
         console.log(res);
 
         _this3.form.clear();
@@ -3373,7 +3386,7 @@ __webpack_require__.r(__webpack_exports__);
 
         toast.fire({
           type: 'success',
-          title: 'Wallet Account Successfully created!'
+          title: 'Wallet Account Successfully updated!'
         });
 
         _this3.$router.push('/walletaccounts');
@@ -3381,17 +3394,89 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err);
       });
     },
-    GetWalletAccountType: function GetWalletAccountType() {
+
+    /**
+     * @ Store Wallet Account 
+     **/
+    StoreWalletAccount: function StoreWalletAccount() {
       var _this4 = this;
 
-      axios.get('api/walletaccount/GetAllWalletAccountType').then(function (_ref) {
+      this.form.post('api/walletaccount/StoreWalletAccount').then(function (res) {
+        console.log(res);
+
+        _this4.form.clear();
+
+        _this4.form.reset();
+
+        toast.fire({
+          type: 'success',
+          title: 'Wallet Account Successfully created!'
+        });
+
+        _this4.$router.push('/walletaccounts');
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+    GetWalletAccountType: function GetWalletAccountType() {
+      var _this5 = this;
+
+      axios.get('/api/walletaccount/GetAllWalletAccountType').then(function (_ref) {
         var data = _ref.data;
-        return _this4.walletAccountTypes = data;
+        return _this5.walletAccountTypes = data;
+      });
+    },
+    GetWalletAccountDetails: function GetWalletAccountDetails() {
+      var _this6 = this;
+
+      //axios.get('api/walletaccount/GetWalletAccountDetails/'+ this.form.username).then(({ data}) => (console.log(data)));
+      axios.get('/api/walletaccount/GetWalletAccountDetails/' + this.$route.params.id).then(function (res) {
+        console.log(res);
+        _this6.form.WalletAccountType = res.data[0]['wallet_account_type'];
+        _this6.form.WalletType = res.data[0]['wallet_type'];
+        _this6.form.Branch = res.data[0]['branch'];
+        _this6.form.account_name = res.data[0]['account_name'];
+        _this6.form.account_no = res.data[0]['account_no'];
+        _this6.form.amount_limit = res.data[0]['amount_limit'];
+        _this6.form.am_per_transaction = res.data[0]['am_per_transaction'];
+        _this6.form.am_per_day = res.data[0]['am_per_day'];
+        _this6.form.am_per_month = res.data[0]['am_per_month'];
+        _this6.form.am_per_year = res.data[0]['am_per_year'];
+        _this6.form.am_minimum = res.data[0]['am_minimum'];
+        _this6.form.am_maximum = res.data[0]['am_maximum'];
+        _this6.form.am_transaction_minimun = res.data[0]['am_transaction_minimum'];
+        _this6.form.am_transaction_maximum = res.data[0]['am_transaction"_maximum'];
+        _this6.form.am_day_minimum = res.data[0]['am_day_minimum'];
+        _this6.form.am_day_maximum = res.data[0]['am_day_maximum'];
+        _this6.form.am_month_minimum = res.data[0]['am_month_minimum'];
+        _this6.form.am_month_maximum = res.data[0]['am_month_maximum'];
+        _this6.form.am_year_minimum = res.data[0]['am_year_minumum'];
+        _this6.form.am_year_maximum = res.data[0]['am_year_maximum'];
+        _this6.form.c_lm_per_day = res.data[0]['c_lm_per_day'];
+        _this6.form.c_lm_per_month = res.data[0]['c_lm_per_month'];
+        _this6.form.c_lm_per_year = res.data[0]['c_lm_per_year'];
+        _this6.form.c_allow_negative_balance = res.data[0]['c_allow_negative_balance'];
+        _this6.form.c_com_daily_balance = res.data[0]['c_com_daily_balance'];
+        _this6.form.c_com_daily_usage = res.data[0]['c_com_daily_usage'];
+        _this6.form.lm_per_day = res.data[0]['lm_per_day'];
+        _this6.form.lm_per_month = res.data[0]['lm_per_month'];
+        _this6.form.lm_per_year = res.data[0]['lm_per_year'];
+        _this6.form.allow_negative_balance = res.data[0]['allow_negative_balance'];
+        _this6.form.bank_name = res.data[0]['bank_name'];
+        _this6.form.account_type = res.data[0]['account_type'];
+      })["catch"](function (err) {
+        console.log(err);
       });
     }
   },
   created: function created() {
     this.GetWalletAccountType();
+    this.EditWalletAccount();
+    this.SearchESSID();
+
+    if (this.editmode == true) {
+      this.GetWalletAccountDetails();
+    }
   }
 });
 
@@ -3498,12 +3583,13 @@ __webpack_require__.r(__webpack_exports__);
           "autoWidth": true,
           //lengthChange: false,
           responsive: true,
-          fixedColumns: true
+          fixedColumns: true,
+          "order": [6, "desc"]
         });
       }, 1000);
     },
-    editWalletAccount: function editWalletAccount(wa) {
-      this.$router.push('/createwalletaccounts');
+    editWalletAccount: function editWalletAccount(ess_id) {
+      this.$router.push('/updatewalletaccount/' + ess_id);
     }
   },
   mounted: function mounted() {
@@ -9220,7 +9306,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
 
 // exports
 
@@ -58316,7 +58402,9 @@ var render = function() {
                                 style: props.fillButtonStyle,
                                 nativeOn: {
                                   click: function($event) {
-                                    return _vm.StoreWalletAccount()
+                                    _vm.editmode
+                                      ? _vm.UpdateWalletAccount()
+                                      : _vm.StoreWalletAccount()
                                   }
                                 }
                               },
@@ -58388,7 +58476,8 @@ var render = function() {
                                 attrs: {
                                   name: "username",
                                   type: "text",
-                                  placeholder: "ESSID/Username"
+                                  placeholder: "ESSID/Username",
+                                  disabled: _vm.editmode
                                 },
                                 domProps: { value: _vm.form.username },
                                 on: {
@@ -59814,164 +59903,6 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _c("tab-content", { attrs: { title: "E-Wallet Acount Setup" } }, [
-              _c("div", { staticClass: "box" }, [
-                _c("div", { staticClass: "card shadow-custom" }, [
-                  _c("div", { staticClass: "card-body" }, [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-4 offset-md-1" }, [
-                        _c(
-                          "div",
-                          { staticClass: "form-group" },
-                          [
-                            _c(
-                              "label",
-                              {
-                                staticClass: "control-label custom-label",
-                                attrs: { for: "WalletAccountName" }
-                              },
-                              [_vm._v("Wallet Account Name")]
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "validate",
-                                  rawName: "v-validate",
-                                  value: "required",
-                                  expression: "'required'"
-                                },
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.WalletAccountName,
-                                  expression: "form.WalletAccountName"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.has(
-                                  "WalletAccountName"
-                                )
-                              },
-                              attrs: {
-                                name: "WalletAccountName",
-                                type: "text",
-                                placeholder: "WalletAccountName",
-                                disabled: ""
-                              },
-                              domProps: { value: _vm.form.WalletAccountName },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "WalletAccountName",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("has-error", {
-                              attrs: {
-                                form: _vm.form,
-                                field: "WalletAccountName"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.errors.has("WalletAccountName")
-                              ? _c("p", { staticClass: "text-danger" }, [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.errors.first("WalletAccountName")
-                                    )
-                                  )
-                                ])
-                              : _vm._e()
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "form-group" },
-                          [
-                            _c(
-                              "label",
-                              {
-                                staticClass: "control-label custom-label",
-                                attrs: { for: "WalletAccountNo" }
-                              },
-                              [_vm._v("Wallet Account No")]
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "validate",
-                                  rawName: "v-validate",
-                                  value: "required",
-                                  expression: "'required'"
-                                },
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.WalletAccountNo,
-                                  expression: "form.WalletAccountNo"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.has("WalletAccountNo")
-                              },
-                              attrs: {
-                                name: "WalletAccountNo",
-                                type: "text",
-                                placeholder: "WalletAccountNo",
-                                disabled: ""
-                              },
-                              domProps: { value: _vm.form.WalletAccountNo },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "WalletAccountNo",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("has-error", {
-                              attrs: {
-                                form: _vm.form,
-                                field: "WalletAccountNo"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.errors.has("WalletAccountNo")
-                              ? _c("p", { staticClass: "text-danger" }, [
-                                  _vm._v(
-                                    _vm._s(_vm.errors.first("WalletAccountNo"))
-                                  )
-                                ])
-                              : _vm._e()
-                          ],
-                          1
-                        )
-                      ])
-                    ])
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
             _c(
               "tab-content",
               {
@@ -59998,7 +59929,7 @@ var render = function() {
                                 "label",
                                 {
                                   staticClass: "control-label custom-label",
-                                  attrs: { for: "NameOfBank" }
+                                  attrs: { for: "bank_name" }
                                 },
                                 [_vm._v("Name of Bank")]
                               ),
@@ -60014,20 +59945,20 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.form.NameOfBank,
-                                    expression: "form.NameOfBank"
+                                    value: _vm.form.bank_name,
+                                    expression: "form.bank_name"
                                   }
                                 ],
                                 staticClass: "form-control",
                                 class: {
-                                  "is-invalid": _vm.errors.has("NameOfBank")
+                                  "is-invalid": _vm.errors.has("bank_name")
                                 },
                                 attrs: {
-                                  name: "NameOfBank",
+                                  name: "bank_name",
                                   type: "text",
                                   placeholder: "Name Of Bank"
                                 },
-                                domProps: { value: _vm.form.NameOfBank },
+                                domProps: { value: _vm.form.bank_name },
                                 on: {
                                   change: _vm.ValidateFourthStep,
                                   input: function($event) {
@@ -60036,7 +59967,7 @@ var render = function() {
                                     }
                                     _vm.$set(
                                       _vm.form,
-                                      "NameOfBank",
+                                      "bank_name",
                                       $event.target.value
                                     )
                                   }
@@ -60044,13 +59975,13 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _c("has-error", {
-                                attrs: { form: _vm.form, field: "NameOfBank" }
+                                attrs: { form: _vm.form, field: "bank_name" }
                               }),
                               _vm._v(" "),
-                              _vm.errors.has("NameOfBank")
+                              _vm.errors.has("bank_name")
                                 ? _c("p", { staticClass: "text-danger" }, [
                                     _vm._v(
-                                      _vm._s(_vm.errors.first("NameOfBank"))
+                                      _vm._s(_vm.errors.first("bank_name"))
                                     )
                                   ])
                                 : _vm._e()
@@ -60497,6 +60428,7 @@ var render = function() {
                                           staticClass: "custom-limit-input",
                                           attrs: {
                                             type: "number",
+                                            min: "0",
                                             name: "am_minimum",
                                             id: "",
                                             value: "0"
@@ -60532,6 +60464,7 @@ var render = function() {
                                           staticClass: "custom-limit-input",
                                           attrs: {
                                             type: "number",
+                                            min: "0",
                                             name: "am_maximum",
                                             id: "",
                                             value: "200000"
@@ -60654,6 +60587,7 @@ var render = function() {
                                           staticClass: "custom-limit-input",
                                           attrs: {
                                             type: "number",
+                                            min: "0",
                                             name: "am_transaction_minimun",
                                             id: "",
                                             value: "0"
@@ -60692,6 +60626,7 @@ var render = function() {
                                           staticClass: "custom-limit-input",
                                           attrs: {
                                             type: "number",
+                                            min: "0",
                                             name: "am_transaction_minimun",
                                             id: "",
                                             value: "200000"
@@ -60811,6 +60746,7 @@ var render = function() {
                                           staticClass: "custom-limit-input",
                                           attrs: {
                                             type: "number",
+                                            min: "0",
                                             name: "am_day_minimum",
                                             id: "",
                                             value: "0"
@@ -60846,6 +60782,7 @@ var render = function() {
                                           staticClass: "custom-limit-input",
                                           attrs: {
                                             type: "number",
+                                            min: "0",
                                             name: "am_day_maximum",
                                             id: "",
                                             value: "200000"
@@ -60967,6 +60904,7 @@ var render = function() {
                                           staticClass: "custom-limit-input",
                                           attrs: {
                                             type: "number",
+                                            min: "0",
                                             name: "am_month_minimum",
                                             id: "",
                                             value: "0"
@@ -61003,6 +60941,7 @@ var render = function() {
                                           staticClass: "custom-limit-input",
                                           attrs: {
                                             type: "number",
+                                            min: "0",
                                             name: "am_month_maximum",
                                             id: "",
                                             value: "200000"
@@ -61121,6 +61060,7 @@ var render = function() {
                                           staticClass: "custom-limit-input",
                                           attrs: {
                                             type: "number",
+                                            min: "0",
                                             name: "am_year_minimum",
                                             id: "",
                                             value: "0"
@@ -61156,6 +61096,7 @@ var render = function() {
                                           staticClass: "custom-limit-input",
                                           attrs: {
                                             type: "number",
+                                            min: "0",
                                             name: "am_year_maximum",
                                             id: "",
                                             value: "200000"
@@ -61219,8 +61160,8 @@ var render = function() {
                                         {
                                           name: "model",
                                           rawName: "v-model",
-                                          value: _vm.form.lm_per_day,
-                                          expression: "form.lm_per_day"
+                                          value: _vm.form.c_lm_per_day,
+                                          expression: "form.c_lm_per_day"
                                         }
                                       ],
                                       staticClass: "form-check-input",
@@ -61231,15 +61172,17 @@ var render = function() {
                                       },
                                       domProps: {
                                         checked: Array.isArray(
-                                          _vm.form.lm_per_day
+                                          _vm.form.c_lm_per_day
                                         )
-                                          ? _vm._i(_vm.form.lm_per_day, null) >
-                                            -1
-                                          : _vm.form.lm_per_day
+                                          ? _vm._i(
+                                              _vm.form.c_lm_per_day,
+                                              null
+                                            ) > -1
+                                          : _vm.form.c_lm_per_day
                                       },
                                       on: {
                                         change: function($event) {
-                                          var $$a = _vm.form.lm_per_day,
+                                          var $$a = _vm.form.c_lm_per_day,
                                             $$el = $event.target,
                                             $$c = $$el.checked ? true : false
                                           if (Array.isArray($$a)) {
@@ -61249,14 +61192,14 @@ var render = function() {
                                               $$i < 0 &&
                                                 _vm.$set(
                                                   _vm.form,
-                                                  "lm_per_day",
+                                                  "c_lm_per_day",
                                                   $$a.concat([$$v])
                                                 )
                                             } else {
                                               $$i > -1 &&
                                                 _vm.$set(
                                                   _vm.form,
-                                                  "lm_per_day",
+                                                  "c_lm_per_day",
                                                   $$a
                                                     .slice(0, $$i)
                                                     .concat($$a.slice($$i + 1))
@@ -61265,7 +61208,7 @@ var render = function() {
                                           } else {
                                             _vm.$set(
                                               _vm.form,
-                                              "lm_per_day",
+                                              "c_lm_per_day",
                                               $$c
                                             )
                                           }
@@ -61289,19 +61232,20 @@ var render = function() {
                                             {
                                               name: "model",
                                               rawName: "v-model",
-                                              value: _vm.form.c_lm_per_day,
-                                              expression: "form.c_lm_per_day"
+                                              value: _vm.form.lm_per_day,
+                                              expression: "form.lm_per_day"
                                             }
                                           ],
                                           staticClass: "custom-limit-input",
                                           attrs: {
                                             type: "number",
+                                            min: "0",
                                             name: "c_lm_per_day",
                                             id: "c_lm_per_day",
                                             value: "0"
                                           },
                                           domProps: {
-                                            value: _vm.form.c_lm_per_day
+                                            value: _vm.form.lm_per_day
                                           },
                                           on: {
                                             input: function($event) {
@@ -61310,7 +61254,7 @@ var render = function() {
                                               }
                                               _vm.$set(
                                                 _vm.form,
-                                                "c_lm_per_day",
+                                                "lm_per_day",
                                                 $event.target.value
                                               )
                                             }
@@ -61337,8 +61281,8 @@ var render = function() {
                                         {
                                           name: "model",
                                           rawName: "v-model",
-                                          value: _vm.form.lm_per_month,
-                                          expression: "form.lm_per_month"
+                                          value: _vm.form.c_lm_per_month,
+                                          expression: "form.c_lm_per_month"
                                         }
                                       ],
                                       staticClass: "form-check-input",
@@ -61349,17 +61293,17 @@ var render = function() {
                                       },
                                       domProps: {
                                         checked: Array.isArray(
-                                          _vm.form.lm_per_month
+                                          _vm.form.c_lm_per_month
                                         )
                                           ? _vm._i(
-                                              _vm.form.lm_per_month,
+                                              _vm.form.c_lm_per_month,
                                               null
                                             ) > -1
-                                          : _vm.form.lm_per_month
+                                          : _vm.form.c_lm_per_month
                                       },
                                       on: {
                                         change: function($event) {
-                                          var $$a = _vm.form.lm_per_month,
+                                          var $$a = _vm.form.c_lm_per_month,
                                             $$el = $event.target,
                                             $$c = $$el.checked ? true : false
                                           if (Array.isArray($$a)) {
@@ -61369,14 +61313,14 @@ var render = function() {
                                               $$i < 0 &&
                                                 _vm.$set(
                                                   _vm.form,
-                                                  "lm_per_month",
+                                                  "c_lm_per_month",
                                                   $$a.concat([$$v])
                                                 )
                                             } else {
                                               $$i > -1 &&
                                                 _vm.$set(
                                                   _vm.form,
-                                                  "lm_per_month",
+                                                  "c_lm_per_month",
                                                   $$a
                                                     .slice(0, $$i)
                                                     .concat($$a.slice($$i + 1))
@@ -61385,7 +61329,7 @@ var render = function() {
                                           } else {
                                             _vm.$set(
                                               _vm.form,
-                                              "lm_per_month",
+                                              "c_lm_per_month",
                                               $$c
                                             )
                                           }
@@ -61409,19 +61353,20 @@ var render = function() {
                                             {
                                               name: "model",
                                               rawName: "v-model",
-                                              value: _vm.form.c_lm_per_month,
-                                              expression: "form.c_lm_per_month"
+                                              value: _vm.form.lm_per_month,
+                                              expression: "form.lm_per_month"
                                             }
                                           ],
                                           staticClass: "custom-limit-input",
                                           attrs: {
                                             type: "number",
+                                            min: "0",
                                             name: "c_lm_per_month",
                                             id: "c_lm_per_day",
                                             value: "0"
                                           },
                                           domProps: {
-                                            value: _vm.form.c_lm_per_month
+                                            value: _vm.form.lm_per_month
                                           },
                                           on: {
                                             input: function($event) {
@@ -61430,7 +61375,7 @@ var render = function() {
                                               }
                                               _vm.$set(
                                                 _vm.form,
-                                                "c_lm_per_month",
+                                                "lm_per_month",
                                                 $event.target.value
                                               )
                                             }
@@ -61457,8 +61402,8 @@ var render = function() {
                                         {
                                           name: "model",
                                           rawName: "v-model",
-                                          value: _vm.form.lm_per_year,
-                                          expression: "form.lm_per_year"
+                                          value: _vm.form.c_lm_per_year,
+                                          expression: "form.c_lm_per_year"
                                         }
                                       ],
                                       staticClass: "form-check-input",
@@ -61469,15 +61414,17 @@ var render = function() {
                                       },
                                       domProps: {
                                         checked: Array.isArray(
-                                          _vm.form.lm_per_year
+                                          _vm.form.c_lm_per_year
                                         )
-                                          ? _vm._i(_vm.form.lm_per_year, null) >
-                                            -1
-                                          : _vm.form.lm_per_year
+                                          ? _vm._i(
+                                              _vm.form.c_lm_per_year,
+                                              null
+                                            ) > -1
+                                          : _vm.form.c_lm_per_year
                                       },
                                       on: {
                                         change: function($event) {
-                                          var $$a = _vm.form.lm_per_year,
+                                          var $$a = _vm.form.c_lm_per_year,
                                             $$el = $event.target,
                                             $$c = $$el.checked ? true : false
                                           if (Array.isArray($$a)) {
@@ -61487,14 +61434,14 @@ var render = function() {
                                               $$i < 0 &&
                                                 _vm.$set(
                                                   _vm.form,
-                                                  "lm_per_year",
+                                                  "c_lm_per_year",
                                                   $$a.concat([$$v])
                                                 )
                                             } else {
                                               $$i > -1 &&
                                                 _vm.$set(
                                                   _vm.form,
-                                                  "lm_per_year",
+                                                  "c_lm_per_year",
                                                   $$a
                                                     .slice(0, $$i)
                                                     .concat($$a.slice($$i + 1))
@@ -61503,7 +61450,7 @@ var render = function() {
                                           } else {
                                             _vm.$set(
                                               _vm.form,
-                                              "lm_per_year",
+                                              "c_lm_per_year",
                                               $$c
                                             )
                                           }
@@ -61527,19 +61474,20 @@ var render = function() {
                                             {
                                               name: "model",
                                               rawName: "v-model",
-                                              value: _vm.form.c_lm_per_year,
-                                              expression: "form.c_lm_per_year"
+                                              value: _vm.form.lm_per_year,
+                                              expression: "form.lm_per_year"
                                             }
                                           ],
                                           staticClass: "custom-limit-input",
                                           attrs: {
+                                            min: "0",
                                             type: "number",
                                             name: "c_lm_per_year",
                                             id: "c_lm_per_year",
                                             value: "0"
                                           },
                                           domProps: {
-                                            value: _vm.form.c_lm_per_year
+                                            value: _vm.form.lm_per_year
                                           },
                                           on: {
                                             input: function($event) {
@@ -61548,7 +61496,7 @@ var render = function() {
                                               }
                                               _vm.$set(
                                                 _vm.form,
-                                                "c_lm_per_year",
+                                                "lm_per_year",
                                                 $event.target.value
                                               )
                                             }
@@ -61580,9 +61528,9 @@ var render = function() {
                                           name: "model",
                                           rawName: "v-model",
                                           value:
-                                            _vm.form.allow_negative_balance,
+                                            _vm.form.c_allow_negative_balance,
                                           expression:
-                                            "form.allow_negative_balance"
+                                            "form.c_allow_negative_balance"
                                         }
                                       ],
                                       staticClass: "form-check-input",
@@ -61593,18 +61541,18 @@ var render = function() {
                                       },
                                       domProps: {
                                         checked: Array.isArray(
-                                          _vm.form.allow_negative_balance
+                                          _vm.form.c_allow_negative_balance
                                         )
                                           ? _vm._i(
-                                              _vm.form.allow_negative_balance,
+                                              _vm.form.c_allow_negative_balance,
                                               null
                                             ) > -1
-                                          : _vm.form.allow_negative_balance
+                                          : _vm.form.c_allow_negative_balance
                                       },
                                       on: {
                                         change: function($event) {
                                           var $$a =
-                                              _vm.form.allow_negative_balance,
+                                              _vm.form.c_allow_negative_balance,
                                             $$el = $event.target,
                                             $$c = $$el.checked ? true : false
                                           if (Array.isArray($$a)) {
@@ -61614,14 +61562,14 @@ var render = function() {
                                               $$i < 0 &&
                                                 _vm.$set(
                                                   _vm.form,
-                                                  "allow_negative_balance",
+                                                  "c_allow_negative_balance",
                                                   $$a.concat([$$v])
                                                 )
                                             } else {
                                               $$i > -1 &&
                                                 _vm.$set(
                                                   _vm.form,
-                                                  "allow_negative_balance",
+                                                  "c_allow_negative_balance",
                                                   $$a
                                                     .slice(0, $$i)
                                                     .concat($$a.slice($$i + 1))
@@ -61630,7 +61578,7 @@ var render = function() {
                                           } else {
                                             _vm.$set(
                                               _vm.form,
-                                              "allow_negative_balance",
+                                              "c_allow_negative_balance",
                                               $$c
                                             )
                                           }
@@ -61655,10 +61603,9 @@ var render = function() {
                                               name: "model",
                                               rawName: "v-model",
                                               value:
-                                                _vm.form
-                                                  .c_allow_negative_balance,
+                                                _vm.form.allow_negative_balance,
                                               expression:
-                                                "form.c_allow_negative_balance"
+                                                "form.allow_negative_balance"
                                             }
                                           ],
                                           staticClass: "custom-limit-input",
@@ -61670,7 +61617,7 @@ var render = function() {
                                           },
                                           domProps: {
                                             value:
-                                              _vm.form.c_allow_negative_balance
+                                              _vm.form.allow_negative_balance
                                           },
                                           on: {
                                             input: function($event) {
@@ -61679,7 +61626,7 @@ var render = function() {
                                               }
                                               _vm.$set(
                                                 _vm.form,
-                                                "c_allow_negative_balance",
+                                                "allow_negative_balance",
                                                 $event.target.value
                                               )
                                             }
@@ -61706,8 +61653,8 @@ var render = function() {
                                         {
                                           name: "model",
                                           rawName: "v-model",
-                                          value: _vm.form.com_daily_balance,
-                                          expression: "form.com_daily_balance"
+                                          value: _vm.form.c_com_daily_balance,
+                                          expression: "form.c_com_daily_balance"
                                         }
                                       ],
                                       staticClass: "form-check-input",
@@ -61718,17 +61665,18 @@ var render = function() {
                                       },
                                       domProps: {
                                         checked: Array.isArray(
-                                          _vm.form.com_daily_balance
+                                          _vm.form.c_com_daily_balance
                                         )
                                           ? _vm._i(
-                                              _vm.form.com_daily_balance,
+                                              _vm.form.c_com_daily_balance,
                                               null
                                             ) > -1
-                                          : _vm.form.com_daily_balance
+                                          : _vm.form.c_com_daily_balance
                                       },
                                       on: {
                                         change: function($event) {
-                                          var $$a = _vm.form.com_daily_balance,
+                                          var $$a =
+                                              _vm.form.c_com_daily_balance,
                                             $$el = $event.target,
                                             $$c = $$el.checked ? true : false
                                           if (Array.isArray($$a)) {
@@ -61738,14 +61686,14 @@ var render = function() {
                                               $$i < 0 &&
                                                 _vm.$set(
                                                   _vm.form,
-                                                  "com_daily_balance",
+                                                  "c_com_daily_balance",
                                                   $$a.concat([$$v])
                                                 )
                                             } else {
                                               $$i > -1 &&
                                                 _vm.$set(
                                                   _vm.form,
-                                                  "com_daily_balance",
+                                                  "c_com_daily_balance",
                                                   $$a
                                                     .slice(0, $$i)
                                                     .concat($$a.slice($$i + 1))
@@ -61754,7 +61702,7 @@ var render = function() {
                                           } else {
                                             _vm.$set(
                                               _vm.form,
-                                              "com_daily_balance",
+                                              "c_com_daily_balance",
                                               $$c
                                             )
                                           }
@@ -61794,8 +61742,8 @@ var render = function() {
                                         {
                                           name: "model",
                                           rawName: "v-model",
-                                          value: _vm.form.com_daily_usage,
-                                          expression: "form.com_daily_usage"
+                                          value: _vm.form.c_com_daily_usage,
+                                          expression: "form.c_com_daily_usage"
                                         }
                                       ],
                                       staticClass: "form-check-input",
@@ -61806,17 +61754,17 @@ var render = function() {
                                       },
                                       domProps: {
                                         checked: Array.isArray(
-                                          _vm.form.com_daily_usage
+                                          _vm.form.c_com_daily_usage
                                         )
                                           ? _vm._i(
-                                              _vm.form.com_daily_usage,
+                                              _vm.form.c_com_daily_usage,
                                               null
                                             ) > -1
-                                          : _vm.form.com_daily_usage
+                                          : _vm.form.c_com_daily_usage
                                       },
                                       on: {
                                         change: function($event) {
-                                          var $$a = _vm.form.com_daily_usage,
+                                          var $$a = _vm.form.c_com_daily_usage,
                                             $$el = $event.target,
                                             $$c = $$el.checked ? true : false
                                           if (Array.isArray($$a)) {
@@ -61826,14 +61774,14 @@ var render = function() {
                                               $$i < 0 &&
                                                 _vm.$set(
                                                   _vm.form,
-                                                  "com_daily_usage",
+                                                  "c_com_daily_usage",
                                                   $$a.concat([$$v])
                                                 )
                                             } else {
                                               $$i > -1 &&
                                                 _vm.$set(
                                                   _vm.form,
-                                                  "com_daily_usage",
+                                                  "c_com_daily_usage",
                                                   $$a
                                                     .slice(0, $$i)
                                                     .concat($$a.slice($$i + 1))
@@ -61842,7 +61790,7 @@ var render = function() {
                                           } else {
                                             _vm.$set(
                                               _vm.form,
-                                              "com_daily_usage",
+                                              "c_com_daily_usage",
                                               $$c
                                             )
                                           }
@@ -61919,7 +61867,7 @@ var render = function() {
                     "router-link",
                     {
                       staticClass: "btn btn-primary",
-                      attrs: { to: "/createwalletaccounts" }
+                      attrs: { to: "/createwalletaccount" }
                     },
                     [
                       _vm._v("Create Wallet Account "),
@@ -61976,7 +61924,7 @@ var render = function() {
                                 attrs: { href: "#EditWalletAccount" },
                                 on: {
                                   click: function($event) {
-                                    return _vm.editWalletAccount(wa)
+                                    return _vm.editWalletAccount(wa.ess_id)
                                   }
                                 }
                               },
@@ -81185,7 +81133,10 @@ var routes = [{
   path: '/walletaccounts',
   component: __webpack_require__(/*! ../components/WalletAccounts/WalletAccounts.vue */ "./resources/js/components/WalletAccounts/WalletAccounts.vue")["default"]
 }, {
-  path: '/createwalletaccounts',
+  path: '/createwalletaccount',
+  component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"]
+}, {
+  path: '/updatewalletaccount/:id',
   component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"]
 },
 /**
