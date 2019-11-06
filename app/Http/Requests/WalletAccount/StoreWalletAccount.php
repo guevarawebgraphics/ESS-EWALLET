@@ -29,7 +29,7 @@ class StoreWalletAccount extends FormRequest
             'WalletAccountType' => 'required|max:255',
             'WalletAccountNo' => 'required|max:255',
             'WalletAccountName' => 'required|max:255',
-            'NameOfBank' => 'required|max:255',
+            'bank_name' => 'required|max:255',
             'Branch' => 'required|max:255',
             'account_type' => 'required|max:255',
             'account_name' =>'required|max:255',

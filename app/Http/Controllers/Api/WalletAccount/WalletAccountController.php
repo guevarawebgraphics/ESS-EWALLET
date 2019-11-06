@@ -51,6 +51,24 @@ class WalletAccountController extends Controller
         ]);
     }
 
+    /**
+     * @ Update Wallet Account
+     **/
+    public function UpdateWalletAccount(StoreWalletAccount $request){
+        $WalletAccount = $this->WalletAccount->UpdateWalletAccount($request);
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+
+    /**
+     * @ Get Wallet Account Details 
+     **/
+    public function GetWalletAccountDetails(Request $request , $essid){
+        $WalletAccount = $this->WalletAccount->GetWalletAccountDetails($essid);
+        return response()->json($WalletAccount);
+    }
+
 
     public function ValidateFirstStep(ValidateFirstStep $request){
         return response()->json('hello');

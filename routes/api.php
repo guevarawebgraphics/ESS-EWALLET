@@ -63,9 +63,17 @@ Route::prefix('walletaccount')->group(function(){
     Route::post('/StoreWalletAccount', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@StoreWalletAccount'
     ]);
+    // api/walletaccount/UpdateWalletAccount
+    Route::put('/UpdateWalletAccount', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@UpdateWalletAccount'
+    ]);
     // api/walletaccount/GetWalletAccount
     Route::get('/GetAllWalletAccount', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@GetAllWalletAccount'
+    ]);
+    // api/walletaccount/GetWalletAccountDetails
+    Route::get('/GetWalletAccountDetails/{essid}', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@GetWalletAccountDetails'
     ]);
 });
 /**
