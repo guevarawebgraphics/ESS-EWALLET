@@ -26,7 +26,8 @@ class ServiceRepository
             'service_code'=> $service_data->service_code,
             'service_name'=> $service_data->service_name,
             'service_description' => $service_data->service_description,
-            'service_gateway_id'=> $service_data->service_gateway,
+            'service_gateway_id'=> $service_data->service_gateway, 
+            'service_group_id'=> $service_data->service_group_id,
             'service_template' => "sameple.template",
         ]);
         $wservice_id = $wservice->id;
