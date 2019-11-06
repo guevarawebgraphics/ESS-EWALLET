@@ -48,17 +48,16 @@
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Service Gateway:</label>
-                      <select class="custom-select"  v-model="form.service_gateway" name="service_gateway">
-                      <option selected="selected" disabled>Select</option>
+                      <select class="custom-select"  v-model="form.service_gateway" name="service_gateway"> 
+                      <option disabled value="">Please select one</option>
                       <option v-bind:value="sg.id" v-for="sg in ServiceGateway" :key="sg.id">{{sg.gateway_name}}</option>
-                  
                       </select>
                       <small id="emailHelp" class="form-text text-muted"></small>
                     </div> 
                     <div class="form-group">
                       <label for="exampleInputEmail1">Service Group:</label>
-                      <select class="custom-select"  v-model="form.service_group_id" name="service_gateway">
-                      <option selected="selected" disabled>Select</option>
+                      <select class="custom-select"  v-model="form.service_group_id" name="service_gateway"> 
+                      <option disabled value="">Please select one</option>
                       <option v-bind:value="g.id" v-for="g in ServiceGroups" :key="g.id"> {{g.group_description}}</option>
                       </select>
                       <small id="emailHelp" class="form-text text-muted"></small>

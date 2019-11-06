@@ -4478,7 +4478,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -64299,13 +64298,8 @@ var render = function() {
                               [
                                 _c(
                                   "option",
-                                  {
-                                    attrs: {
-                                      selected: "selected",
-                                      disabled: ""
-                                    }
-                                  },
-                                  [_vm._v("Select")]
+                                  { attrs: { disabled: "", value: "" } },
+                                  [_vm._v("Please select one")]
                                 ),
                                 _vm._v(" "),
                                 _vm._l(_vm.ServiceGateway, function(sg) {
@@ -64369,13 +64363,8 @@ var render = function() {
                               [
                                 _c(
                                   "option",
-                                  {
-                                    attrs: {
-                                      selected: "selected",
-                                      disabled: ""
-                                    }
-                                  },
-                                  [_vm._v("Select")]
+                                  { attrs: { disabled: "", value: "" } },
+                                  [_vm._v("Please select one")]
                                 ),
                                 _vm._v(" "),
                                 _vm._l(_vm.ServiceGroups, function(g) {
