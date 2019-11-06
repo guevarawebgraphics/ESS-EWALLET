@@ -10,7 +10,8 @@ const routes = [
     { path: '/home', component: require('../components/auth/Login.vue').default },
     { path: '/dashboard', component: require('../components/General/Dashboard.vue').default},
     { path: '/walletaccounts', component: require('../components/WalletAccounts/WalletAccounts.vue').default},
-    { path: '/createwalletaccounts', component: require('../components/WalletAccounts/CreateWalletAccount.vue').default},
+    { path: '/createwalletaccount', component: require('../components/WalletAccounts/CreateWalletAccount.vue').default},
+    { path: '/updatewalletaccount/:id', component: require('../components/WalletAccounts/CreateWalletAccount.vue').default},
     /**
      * @ CHUGUG EARPHONES SIRA
      **/
