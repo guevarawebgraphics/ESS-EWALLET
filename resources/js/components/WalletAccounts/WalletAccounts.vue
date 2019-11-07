@@ -6,7 +6,7 @@
                 <div class="form-group row">
                     <div class="col-md-12">
                         <div class="col-md-4">
-                            <router-link class="btn btn-primary" to="/createwalletaccounts">Create Wallet Account <i class="ti-arrow-right"></i></router-link>
+                            <router-link class="btn btn-primary" to="/createwalletaccount">Create Wallet Account <i class="ti-arrow-right"></i></router-link>
                         </div>
                             <h4 class="header-title mt-3">Elektronik Pitaka</h4>
                             <div class="data-tables datatable-dark">
@@ -33,7 +33,7 @@
                                     <td v-if="wa.AccountStatus = 1"><span class="badge badge-primary">Active</span></td>
                                     <td v-else>Deactivated</td>
                                     <td>
-                                        <a class="btn btn-primary btn-xs" href="#EditWalletAccount" @click="editWalletAccount(wa)">
+                                        <a class="btn btn-primary btn-xs" href="#EditWalletAccount" @click="editWalletAccount(wa.ess_id)">
                                             <i class="fa fa-edit blue"></i>
                                             <span>Update</span>
                                         </a>
@@ -87,11 +87,12 @@ export default {
                     //lengthChange: false,
                     responsive: true,
                     fixedColumns: true,
+                    "order": [6, "desc"]
                 });
             },1000);
         },
-        editWalletAccount(wa){
-            this.$router.push('/createwalletaccounts')
+        editWalletAccount(ess_id){
+            this.$router.push('/updatewalletaccount/' + ess_id)
         }
     },
     mounted() {
