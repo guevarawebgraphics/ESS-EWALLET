@@ -4,7 +4,8 @@
   <tab-content title="Service details">
      <div class="col-12 mt-5">
         <div class="card shadow-custom">
-            <div class="col-md-12">
+            <div class="col-md-12"> 
+                  <h4 class="header-title mt-3 text-center">{{this.form.service_name}} ( Service Set Up I )</h4>   
             </div>   
             <div class="card-body"> 
        
@@ -111,12 +112,154 @@
     </div>
 
   </tab-content>
-  <tab-content title="Additional Info">
-   SOOOONNNN
-   </tab-content>
-   <tab-content title="Last step">
-     SOOOONNNN
-   </tab-content>
+  <tab-content title="Set up">
+      <div class="col-12 mt-5">
+          <div class="card shadow-custom"> 
+              <div class="col-md-12">   
+                 <h4 class="header-title mt-3 text-center">{{this.form.service_name}} ( Service Set Up II )</h4>   
+              </div>   
+              <div class="card-body"> 
+
+              </div>
+          </div>
+      </div>
+  </tab-content>
+  <tab-content title="Last step">
+      <div class="col-12 mt-5">
+          <div class="card shadow-custom">
+              <div class="col-md-12"> 
+                <h4 class="header-title mt-3 text-center">{{this.form.service_name}} ( Service Set Up III )</h4>   
+              </div>   
+              <div class="card-body"> 
+                    <h4 class="header-title">AMOUNT LIMITS</h4> 
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                       <p class="text-muted mb-3">Amount limit (minimum and maximum) per transaction</p>        
+                    </div> 
+                    <div class="form-row"> 
+                      <div class="form-group col-md-6">
+                          <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-3 col-form-label">Minimum Amount : </label>
+                            <div class="col-sm-9">
+                              <input type="number" v-model="form.limit_minimum" class="form-control" id="inputEmail3" placeholder="Enter Minimum Amount">
+                            </div>
+                          </div>
+                      </div>
+                      <div class="form-group col-md-6">
+                          <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-3 col-form-label">Maximum Amount : </label>
+                            <div class="col-sm-9">
+                              <input type="number" v-model="form.limit_maximum" class="form-control" id="inputEmail3" placeholder="Enter Maximum Amount">
+                            </div>
+                          </div>
+                      </div>
+                    </div> 
+                    <!-- -->
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                       <p class="text-muted mb-3">Limit of total transaction amount per day</p>        
+                    </div> 
+                    <div class="form-row"> 
+                      <div class="form-group col-md-6">
+                          <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-3 col-form-label">Maximum Amount : </label>
+                            <div class="col-sm-9">
+                              <input type="number" v-model="form.amount_per_day" class="form-control" id="inputEmail3" placeholder="Enter Maximum Amount">
+                            </div>
+                          </div>
+                      </div>
+                    </div> 
+                    <!-- -->
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                       <p class="text-muted mb-3">Limit of total transaction amount per month</p>        
+                    </div> 
+                    <div class="form-row"> 
+                      <div class="form-group col-md-6">
+                          <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-3 col-form-label">Maximum Amount : </label>
+                            <div class="col-sm-9">
+                              <input type="number" v-model="form.amount_per_month" class="form-control" id="inputEmail3" placeholder="Enter Maximum Amount">
+                            </div>
+                          </div>
+                      </div>
+                    </div> 
+                    <!-- -->
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                       <p class="text-muted mb-3">Limit of total transaction amount per year</p>        
+                    </div> 
+                    <div class="form-row"> 
+                      <div class="form-group col-md-6">
+                          <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-3 col-form-label">Maximum Amount : </label>
+                            <div class="col-sm-9">
+                              <input type="number"  v-model="form.amount_per_year"  class="form-control" id="inputEmail3" placeholder="Enter Maximum Amount">
+                            </div>
+                          </div>
+                      </div>
+                    </div> 
+                    <!-- -->
+              </div>
+          </div>
+      </div>
+  </tab-content> 
+  <tab-content title="Last step">
+      <div class="col-12 mt-5">
+          <div class="card shadow-custom">
+              <div class="col-md-12"> 
+                  <h4 class="header-title mt-3 text-center">{{this.form.service_name}} ( Service Set Up IV )</h4>   
+              </div>   
+              <div class="card-body">         
+                    <h4 class="header-title">LIMIT NO. OF TRANSACTION</h4> 
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                       <p class="text-muted mb-3">Limit no. of transactions per day</p>        
+                    </div> 
+                    <div class="form-row"> 
+                      <div class="form-group col-md-6">
+                          <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">Maximum No. of Transactions: </label>
+                            <div class="col-sm-8">
+                              <input type="number" v-model="form.limit_per_day" class="form-control" id="inputEmail3" placeholder="Enter Maximum No. of Transactions">
+                            </div>
+                          </div>
+                      </div>
+                    </div> 
+                    <!---- -----> 
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                       <p class="text-muted mb-3">Limit no. of transactions per month</p>        
+                    </div> 
+                    <div class="form-row"> 
+                      <div class="form-group col-md-6">
+                          <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">Maximum No. of Transactions: </label>
+                            <div class="col-sm-8">
+                              <input type="number" v-model="form.limit_per_month" class="form-control" id="inputEmail3" placeholder="Enter Maximum No. of Transactions">
+                            </div>
+                          </div>
+                      </div>
+                    </div>  
+                    <!---- -----> 
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                       <p class="text-muted mb-3">Limit no. of transactions per year</p>        
+                    </div> 
+                    <div class="form-row"> 
+                      <div class="form-group col-md-6">
+                          <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">Maximum No. of Transactions: </label>
+                            <div class="col-sm-8">
+                              <input type="number" v-model="form.limit_per_year" class="form-control" id="inputEmail3" placeholder="Enter Maximum No. of Transactions">
+                            </div>
+                          </div>
+                      </div>
+                    </div> 
+              </div>
+          </div>
+      </div>
+  </tab-content>
 </form-wizard>
 </div>  
 
@@ -131,7 +274,10 @@ data() {
   return{
     ServiceGateway : {},
     ServiceGroups :{}, 
-    form : new Form({
+    form : new Form({ 
+      /**
+       * Form data For First Tab
+       */
       service_type_id :null,
       pr_wallet_id: null,
       ir_wallet_id:null,
@@ -147,15 +293,32 @@ data() {
       ir_wallet_acc_no: null,
       ir_wallet_acc_name:null,
       service_group_id : null,
-    //  service_template: null,
-      
-    })
+      service_template: null,
+      /**
+       * Form data for Second Tab
+       */ 
+      /**
+       * Form data for Third Tab
+       */
+      limit_minimum : null,
+      limit_maximum : null,
+      amount_per_day : null,
+      amount_per_month : null,
+      amount_per_year : null,
+      /**
+       * Form Data for Fourth Tab
+       */
+      limit_per_day :null,
+      limit_per_month : null,
+      limit_per_year: null,
+
+    }),
   }
 },
 methods:{
      onComplete: function(){
        console.log('hi'); 
-       this.form.post('/api/createservice')
+       this.form.post('/api/service/createservice')
         .then((response)=>{
             this.$router.push('serviceslist')
         })
@@ -164,7 +327,7 @@ methods:{
         })
      },
      showServiceTypeDetails(){
-      axios.get('/api/getservicetype/'+ this.form.servicetype_code)
+      axios.get('/api/service/getservicetype/'+ this.form.servicetype_code)
       .then(response => {
 
       this.form.servicetype_name = response.data['st_name'];  
@@ -184,7 +347,7 @@ methods:{
 
      },
      showPRWallletAccountName(){
-       axios.get('/api/getprwalletdetails/'+ this.form.pr_wallet_acc_no)
+       axios.get('/api/service/getprwalletdetails/'+ this.form.pr_wallet_acc_no)
        .then(response => {
             this.form.pr_wallet_acc_name = response.data['wallet_account_name']; 
             this.form.pr_wallet_id = response.data['id'];
@@ -204,7 +367,7 @@ methods:{
        
      },
      showIRWalletName(){
-       axios.get('/api/getirwalletdetails/'+ this.form.ir_wallet_acc_no)
+       axios.get('/api/service/getirwalletdetails/'+ this.form.ir_wallet_acc_no)
        .then(response => { 
           this.form.ir_wallet_acc_name = response.data['wallet_account_name'];
           this.form.ir_wallet_id = response.data['id'];
@@ -215,13 +378,13 @@ methods:{
        })
      },  
      getServiceGateway(){
-            axios.get('/api/getservicegateway')
+            axios.get('/api/service_gateway/getservicegateway')
             .then((response) => {
                 this.ServiceGateway = response.data;
             })
     },
     getServiceGroup(){
-         axios.get("api/servicematrix/GetAllService")
+         axios.get("/api/servicematrix/GetAllService")
          .then(({ data }) => (
            this.ServiceGroups = data
          ));  

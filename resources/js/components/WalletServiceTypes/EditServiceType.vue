@@ -245,7 +245,7 @@ methods : {
     },    
     */
     updateDetailsBehavior() {
-        this.form.put('/api/updateservicetype/'+ this.form.id)
+        this.form.put('/api/service_type/updateservicetype/'+ this.form.id)
         .then((response) =>{
            
         })
