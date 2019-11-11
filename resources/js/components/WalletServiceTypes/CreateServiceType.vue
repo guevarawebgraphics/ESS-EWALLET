@@ -15,7 +15,7 @@
                     <div class="card-body"> 
                     <div class="col-sm-12">
                     <h4 class="header-title">Service Type Details</h4> 
-                        <form >
+                    
                         <div class="form-group row"> 
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Code:</label>
                         <div class="col-sm-10">
@@ -38,7 +38,7 @@
                         </div>
                         </div> 
         
-                        </form>
+                    
                     </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
         
             </form> 
         --> 
-        <form>
+
             <ul class="list-group list-group-flush"> 
             <li class="list-group-item">
                 <div class="form-check custom-control">
@@ -155,7 +155,6 @@
             </li>
             </ul>
         
-            </form> 
             </div>
             </div> 
             </div> 
@@ -194,7 +193,7 @@
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
                             <label class="form-check-label" for="exampleCheck1">Transaction Acknowledgement Template:  </label>
                             <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile03">
+                            <input type="file" v-on:change="onImageChange" class="custom-file-input" id="inputGroupFile03">
                             <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
                             </div>   
                         </div> 
@@ -244,7 +243,8 @@
 <script>
 export default {
     data() {
-        return {
+        return { 
+    
         loadingWizard: false,
         form  : new Form({
             servicetype_code : null,
@@ -259,6 +259,9 @@ export default {
             deducted_sdw_msw: 0,
             deducted_mdw_ssw:0,
             deducted_mdw_msw:0,*/
+            acknowledgement_template : null,
+            approval_template : null,
+            confirmation_template : null,
         })
         }
     }, 
@@ -284,9 +287,10 @@ export default {
         /**
         * For creating service type
         */
-           this.form.post("/api/createservicetype")
+           this.form.post("/api/service_type/createservicetype")
            .then((response) =>{
-               this.$router.push('servicetypes') 
+            this.$router.push('servicetypes') 
+             console.log("hi");
            })
            .catch(() => {
              console.log("error");  
@@ -317,6 +321,13 @@ export default {
                 return true;
             }
         },
+            onImageChange(e) {
+                let files = e.target.files || e.dataTransfer.files;
+                if (!files.length)
+                    return;
+
+                this.form.acknowledgement_template = files[0];
+            },
          /***
      * These methods are for changing the value of the form data
      */

@@ -68,14 +68,15 @@ class ServiceTypeRepository
                                  
 
               }
-     public function create_service_type($service_type_data){ 
+     public function create_service_type($service_type_data){  
                 $user = auth('api')->user();
                 $service_details = ServiceTypeDetails::create([
                     'st_code' => $service_type_data->servicetype_code,
                     'st_name' => $service_type_data->servicetype_name,
                     'st_description' => $service_type_data->servicetype_description
                 ]); 
-                $st_id = $service_details->id;
+                $st_id = $service_details->id; 
+
                 $service_group = STBehavior::create([
                     'st_id' => $st_id,
                     'st_code' => $service_type_data->servicetype_code,

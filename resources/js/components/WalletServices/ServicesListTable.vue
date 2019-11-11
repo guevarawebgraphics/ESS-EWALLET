@@ -69,7 +69,7 @@ export default {
             }, 400);
         },
         showServices() {
-            axios.get('/api/getserviceslist')
+            axios.get('/api/service/getserviceslist')
             .then(response => {
                 this.Services = response.data;
             })

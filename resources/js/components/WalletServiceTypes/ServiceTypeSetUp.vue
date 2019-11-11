@@ -86,7 +86,7 @@ data() {
 },
 methods: {
     showServices(){
-            axios.get('/api/showservices/' +this.id) 
+            axios.get('/api/service_type/showservices/' +this.id) 
             .then((response) => {
                 this.Services = response.data;
                 if(response.data.length > 0 ){
