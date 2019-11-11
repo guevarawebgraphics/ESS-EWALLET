@@ -41,19 +41,19 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <tr v-for="sm in Services" :key="sm.id">
+                                                <td>{{sm.st_name}}</td>
+                                                <td>{{sm.service_name}}</td>
+                                                <td>{{sm.group_description}}</td>
                                                 <td>Test</td>
-                                                <td>Test</td>
-                                                <td>Test</td>
-                                                <td>Test</td>
-                                                <td><input type="checkbox" name="admin_all" class="form-check-input"  v-model="form.admin_all" id="admin_all"></td>
-                                                <td><input type="checkbox" name="admin_some" class="form-check-input" v-model="form.admin_some" id="admin_some"></td>
-                                                <td><input type="checkbox" name="merchant_all" class="form-check-input" v-model="form.merchant_all" id="merchant_all"></td>
-                                                <td><input type="checkbox" name="merchant_some" class="form-check-input" v-model="form.merchant_some" id="merchant_some"></td>
-                                                <td><input type="checkbox" name="branch_all" class="form-check-input" v-model="form.branch_all" id="branch_all"></td>
-                                                <td><input type="checkbox" name="branch_some" class="form-check-input" v-model="form.branch_some" id="branch_some"></td>
-                                                <td><input type="checkbox" name="agent_all" class="form-check-input" v-model="form.agent_all" id="agent_all"></td>
-                                                <td><input type="checkbox" name="agent_some" class="form-check-input" v-model="form.agent_some" id="agent_some"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="admin_all[]" class="form-check-input"  v-model="sm.admin_all" id="admin_all"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" id="admin_some"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" id="merchant_all"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some" id="merchant_some"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" id="branch_all"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" id="branch_some"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" id="agent_all"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" id="agent_some"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -83,15 +83,16 @@
 export default {
     data(){
         return {
+            Services: {},
             form: new Form({
-                admin_all: false,
-                admin_some: false,
-                merchant_all: false,
-                merchant_some: false,
-                branch_all: false,
-                branch_some: false,
-                agent_all: false,
-                agent_some: false,
+                admin_all: {},
+                admin_some: {},
+                merchant_all: {},
+                merchant_some: {},
+                branch_all: {},
+                branch_some: {},
+                agent_all: {},
+                agent_some: {},
             })
         }
     },
@@ -109,7 +110,7 @@ export default {
                     responsive: true,
                     fixedColumns: false,
                 });
-            }, 300);
+            }, 900);
         },
         SaveChanges(){
             swal.fire({
@@ -122,8 +123,11 @@ export default {
                 confirmButtonText: 'Save'
             }).then((result) => {
                 if (result.value) {
-                    this.form.post('api/servicematrix/StoreServiceMatrix')
+                    axios.post('api/servicematrix/StoreServiceMatrix', this.Services)
                     .then((response) => {
+                        $("#service_matrix").DataTable().destroy()
+                        this.datatable();
+                        this.GetServices();
                         toast.fire({
                             type: 'success',
                             title: 'Saved!'
@@ -140,10 +144,14 @@ export default {
                     
                 }
             })
+        },
+        GetServices(){
+            axios.get('api/servicematrix/GetServices').then(({ data }) => (this.Services = data));
         }
     },
     created(){
         this.datatable();
+        this.GetServices();
     }
 }
 </script>

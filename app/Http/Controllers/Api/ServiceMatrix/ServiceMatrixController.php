@@ -31,11 +31,17 @@ class ServiceMatrixController extends Controller
      * @ Store Service Matrix
      **/
     public function StoreServiceMatrix(Request $request){
-        $service_matrix = $this->ServiceMatrix->StoreServiceMatrix($request);
+        $service_matrix = $this->ServiceMatrix->StoreServiceMatrix($request->all());
 
-        return response()->json([
-            'status' => 'success'
-        ]);
+        return response()->json($service_matrix);
+    }
+
+     /**
+     * @ Get Services 
+     **/
+    public function GetServices(){
+        $Services = $this->ServiceMatrix->GetServices();
+        return response()->json($Services);
     }
 
 
