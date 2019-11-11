@@ -42,6 +42,10 @@ Route::prefix('servicematrix')->group(function(){
     Route::post('/StoreServiceMatrix', [
         'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@StoreServiceMatrix'
     ]);
+    // api/servicematrix/GetServices
+    Route::get('/GetServices', [
+        'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@GetServices'
+    ]);
 });
 /**
  *  @ Wallet Account
@@ -88,68 +92,78 @@ Route::get('/GenerateAccountNo', [
     'uses' => 'Api\\Account\AccountController@GenerateAccountNo'
 ]);
 
-Route::get('/servicetypetable',[
-    'uses' => 'Api\\ServiceType\ServiceTypeController@GetServiceTypeTable'
-]);
-
-Route::get('/behavior/{st_id}',[
-    'uses' => 'Api\\ServiceType\ServiceTypeController@ServiceTypeSetUp'
-]);
-
-Route::put('/updateservicetype/{st_id}', [
-    'uses' => 'Api\\ServiceType\ServiceTypeController@SaveServiceDetailsBehavior'
-]);
-
-Route::post('/createservicetype',[
-    'uses' => 'Api\\ServiceType\ServiceTypeController@SaveServiceType'
-]); 
 
 /***
- * Services
- */
-Route::post('/createservice',[
-    'uses' => 'Api\\Services\ServiceController@InsertService' 
-]);
+* Services
+*/ 
+Route::prefix('service')->group(function(){ 
 
-Route::get('/getservicetype/{st_code}',[
-    'uses' => 'Api\\Services\ServiceController@fillServiceType'
-]); 
-
-Route::get('/getserviceslist',[
-    'uses' => 'Api\\Services\ServiceController@GetService'
-]);
-
-/***
-* Services Type Module
-*/
-Route::post('/createservice',[
-    'uses' => 'Api\\Services\ServiceController@InsertService' 
-]);
-
-Route::get('/showservices/{st_id}',[
-    'uses' => 'Api\\ServiceType\ServiceTypeController@ShowServices'
-]);
-
-Route::get('/getservicetype/{st_code}',[
-    'uses' => 'Api\\Services\ServiceController@FillServiceType'
-]);
-
-Route::get('/getprwalletdetails/{pr_no}',[
-    'uses' => 'Api\\Services\ServiceController@FillPrWalletMethod'
-]);
-
-Route::get('/getirwalletdetails/{ir_no}',[
-    'uses' => 'Api\\Services\ServiceController@FillIrWalletMethod'
-]);
-
-Route::post('/createservicegateway',[
-    'uses' => 'Api\\ServiceGateway\ServiceGatewayController@CreateServiceGateway'
-]);
-
-Route::get('/getservicegateway' ,[
-    'uses' => 'Api\\ServiceGateway\ServiceGatewayController@GetServiceGateway'
-]);
-
-Route::put('/updateservicegateway/{gw_id}',[
-    'uses' => 'Api\\ServiceGateway\ServiceGatewayController@UpdateServiceGateway'
-]);
+    Route::post('/createservice',[
+        'uses' => 'Api\\Services\ServiceController@InsertService' 
+    ]);
+    
+    Route::get('/getservicetype/{st_code}',[
+        'uses' => 'Api\\Services\ServiceController@fillServiceType'
+    ]); 
+    
+    Route::get('/getserviceslist',[
+        'uses' => 'Api\\Services\ServiceController@GetService'
+    ]); 
+    
+    Route::post('/createservice',[
+        'uses' => 'Api\\Services\ServiceController@InsertService' 
+    ]); 
+    
+    Route::get('/getservicetype/{st_code}',[
+        'uses' => 'Api\\Services\ServiceController@FillServiceType'
+    ]);
+    
+    Route::get('/getprwalletdetails/{pr_no}',[
+        'uses' => 'Api\\Services\ServiceController@FillPrWalletMethod'
+    ]);
+    
+    Route::get('/getirwalletdetails/{ir_no}',[
+        'uses' => 'Api\\Services\ServiceController@FillIrWalletMethod'
+    ]);
+    
+});
+    /**
+    * Services Type Module
+    */
+Route::prefix('service_type')->group(function(){
+    Route::get('/showservices/{st_id}',[
+        'uses' => 'Api\\ServiceType\ServiceTypeController@ShowServices'
+    ]); 
+    Route::get('/servicetypetable',[
+        'uses' => 'Api\\ServiceType\ServiceTypeController@GetServiceTypeTable'
+    ]);
+    
+    Route::get('/behavior/{st_id}',[
+        'uses' => 'Api\\ServiceType\ServiceTypeController@ServiceTypeSetUp'
+    ]);
+    
+    Route::put('/updateservicetype/{st_id}', [
+        'uses' => 'Api\\ServiceType\ServiceTypeController@SaveServiceDetailsBehavior'
+    ]);
+    
+    Route::post('/createservicetype',[
+        'uses' => 'Api\\ServiceType\ServiceTypeController@SaveServiceType'
+    ]); 
+});
+    
+    /**
+    * Service Gateway
+    */ 
+Route::prefix('service_gateway')->group(function(){
+    Route::post('/createservicegateway',[
+        'uses' => 'Api\\ServiceGateway\ServiceGatewayController@CreateServiceGateway'
+    ]);
+    
+    Route::get('/getservicegateway' ,[
+        'uses' => 'Api\\ServiceGateway\ServiceGatewayController@GetServiceGateway'
+    ]);
+    
+    Route::put('/updateservicegateway/{gw_id}',[
+        'uses' => 'Api\\ServiceGateway\ServiceGatewayController@UpdateServiceGateway'
+    ]);
+});
