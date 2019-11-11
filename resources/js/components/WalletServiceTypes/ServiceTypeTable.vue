@@ -46,7 +46,7 @@
         },
         methods: {
         loadServices(){
-              axios.get("/api/servicetypetable").then(({ data }) => (this.services = data));
+              axios.get("/api/service_type/servicetypetable").then(({ data }) => (this.services = data));
         },
         loadDataTable(){
                 setTimeout(function(){ 
