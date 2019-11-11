@@ -88,7 +88,7 @@ data() {
 },
 methods : {
         getServiceGateway(){
-            axios.get('/api/getservicegateway')
+            axios.get('/api/service_gateway/getservicegateway')
             .then((response) => {
                 this.ServiceGateway = response.data;
             })
@@ -115,7 +115,7 @@ methods : {
             $('#serviceGatewayModal').modal('show');
         },
         createGateway(){
-                this.form.post('/api/createservicegateway')
+                this.form.post('/api/service_gateway/createservicegateway')
                 .then((response) => {
                     console.log("ho"); 
                     $('#serviceGatewayModal').modal('hide') 
@@ -132,7 +132,7 @@ methods : {
     
         },
         updateGateway(){
-           this.form.put('/api/updateservicegateway/'+this.form.id)
+           this.form.put('/api/service_gateway/updateservicegateway/'+this.form.id)
            .then((response) => {
                     $('#serviceGatewayModal').modal('hide');
                     this.getServiceGateway();
