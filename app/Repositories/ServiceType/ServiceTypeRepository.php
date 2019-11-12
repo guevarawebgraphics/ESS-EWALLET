@@ -78,8 +78,7 @@ class ServiceTypeRepository
                 //gets the original file name except the extension
                 $file_name = pathinfo($filename_with_extension, PATHINFO_FILENAME);
                 $acknowledgement_template = time().'_'.$file_name.'.'.$service_type_data->file_acknowledgement_template->getClientOriginalExtension();
-                //$service_type_data->file_acknowledgement_template->move(public_path('uploads/templates'), $acknowledgement_template);
-                $upload = $service_type_data->acknowledgement_template->storeAs('public/uploads/templates/acknowledgement_template', $acknowledgement_template);
+                $upload = $service_type_data->file_acknowledgement_template->storeAs('public/uploads/templates/acknowledgement_template', $acknowledgement_template);
                 /**
                  * Get the approval_template file
                  */
