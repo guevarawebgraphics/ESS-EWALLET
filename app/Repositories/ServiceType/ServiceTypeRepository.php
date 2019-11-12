@@ -69,11 +69,27 @@ class ServiceTypeRepository
 
               }
      public function create_service_type($service_type_data){  
-                $user = auth('api')->user();
+                $user = auth('api')->user();  
+                /**
+                 * Get the acknowledgement_template file 
+                 */
+                //gets the original file name
+                $filename_with_extension = $service_type_data->file_acknowledgement_template->getClientOriginalName();
+                //gets the original file name except the extension
+                $file_name = pathinfo($filename_with_extension, PATHINFO_FILENAME);
+                $acknowledgement_template = time().'_'.$file_name.'.'.$service_type_data->file_acknowledgement_template->getClientOriginalExtension();
+                //$service_type_data->file_acknowledgement_template->move(public_path('uploads/templates'), $acknowledgement_template);
+                $upload = $service_type_data->acknowledgement_template->storeAs('public/uploads/templates/acknowledgement_template', $acknowledgement_template);
+                /**
+                 * Get the approval_template file
+                 */
                 $service_details = ServiceTypeDetails::create([
                     'st_code' => $service_type_data->servicetype_code,
                     'st_name' => $service_type_data->servicetype_name,
-                    'st_description' => $service_type_data->servicetype_description
+                    'st_description' => $service_type_data->servicetype_description,
+                    'acknowledgement_template' => $acknowledgement_template,
+                    'approval_template' => "123",
+                    'confirmation_template' => "123"
                 ]); 
                 $st_id = $service_details->id; 
 
