@@ -83,7 +83,10 @@ class ServiceRepository
                  * Inserting into Service Matrix
                  */ 
                 $service_matrix = ServiceMatrix::create([
-                    'service_id' => $wservice_id
+                    'service_id' => $wservice_id,
+                    'created_by' => '1',
+                    'updated_by' => '1',
+
                 ]);
                 
                 return $wservice;
