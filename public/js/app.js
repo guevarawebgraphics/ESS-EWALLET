@@ -3867,6 +3867,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3914,7 +3917,13 @@ __webpack_require__.r(__webpack_exports__);
       /**
       * For creating service type
       */
-      this.form.post("/api/service_type/createservicetype").then(function (response) {
+      var Formtwo = new FormData();
+      Formtwo.append('file_acknowledgement_template', this.form.acknowledgement_template);
+      Formtwo.append('servicetype_code', this.form.servicetype_code);
+      Formtwo.append('servicetype_name', this.form.servicetype_name);
+      Formtwo.append('behavior_value', this.form.behavior_value);
+      Formtwo.append('servicetype_description', this.form.servicetype_description);
+      axios.post("/api/service_type/createservicetype", Formtwo).then(function (response) {
         _this.$router.push('servicetypes');
 
         console.log("hi");
@@ -3950,6 +3959,10 @@ __webpack_require__.r(__webpack_exports__);
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
       this.form.acknowledgement_template = files[0];
+    },
+    onFileChange: function onFileChange(e) {
+      console.log(e.target.files[0]);
+      this.form.acknowledgement_template = e.target.files[0];
     }
     /***
     * These methods are for changing the value of the form data
@@ -4186,7 +4199,7 @@ __webpack_require__.r(__webpack_exports__);
     showDetailsAndBehavior: function showDetailsAndBehavior() {
       var _this = this;
 
-      axios.get('/api/behavior/' + this.id_value).then(function (response) {
+      axios.get('/api/service_type/behavior/' + this.id_value).then(function (response) {
         _this.DetailsBehavior = response.data;
         _this.form.service_code = response.data['st_code'];
         _this.form.service_name = response.data['st_name'];
@@ -62971,8 +62984,12 @@ var render = function() {
                           _c("div", { staticClass: "custom-file" }, [
                             _c("input", {
                               staticClass: "custom-file-input",
-                              attrs: { type: "file", id: "inputGroupFile03" },
-                              on: { change: _vm.onImageChange }
+                              attrs: {
+                                type: "file",
+                                name: "acknowledgement_template",
+                                id: "inputGroupFile03"
+                              },
+                              on: { change: _vm.onFileChange }
                             }),
                             _vm._v(" "),
                             _c(

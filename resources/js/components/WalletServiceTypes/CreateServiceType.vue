@@ -10,6 +10,7 @@
         :index="props.index">
         </wizard-step>
         <tab-content title="Service Type Details" :before-change="validateTab">
+         
             <div class="box ptb--100">
                 <div class="card shadow-custom">
                     <div class="card-body"> 
@@ -189,11 +190,12 @@
                     <div class="col-md-6 mt-5">
                     <ul class="list-group list-group-flush">
                     <li class="list-group-item">
+                        
                         <div class="form-check custom-control custom-checkbox ">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
                             <label class="form-check-label" for="exampleCheck1">Transaction Acknowledgement Template:  </label>
                             <div class="custom-file">
-                            <input type="file" v-on:change="onImageChange" class="custom-file-input" id="inputGroupFile03">
+                            <input type="file" v-on:change="onFileChange" class="custom-file-input" name="acknowledgement_template" id="inputGroupFile03">
                             <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
                             </div>   
                         </div> 
@@ -223,7 +225,8 @@
                       <!--  <button type="button" class="btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom">Save Service Type</button> -->
                     </div>     
             </div> 
-            </div> 
+            </div>  
+      
         </tab-content>   
         <template slot="footer" slot-scope="props">
             <div class="wizard-footer-left">
@@ -286,14 +289,21 @@ export default {
         onComplete: function(){ 
         /**
         * For creating service type
-        */
-           this.form.post("/api/service_type/createservicetype")
+        */ 
+        let Formtwo = new FormData(); 
+        Formtwo.append('file_acknowledgement_template', this.form.acknowledgement_template);
+        Formtwo.append('servicetype_code', this.form.servicetype_code);
+        Formtwo.append('servicetype_name', this.form.servicetype_name); 
+        Formtwo.append('behavior_value', this.form.behavior_value); 
+        Formtwo.append('servicetype_description', this.form.servicetype_description);
+
+        axios.post("/api/service_type/createservicetype",Formtwo)
            .then((response) =>{
-            this.$router.push('servicetypes') 
-             console.log("hi");
+                this.$router.push('servicetypes') 
+                console.log("hi");
            })
            .catch(() => {
-             console.log("error");  
+                console.log("error");  
            })
         },
         addServiceTypeDetails(){
@@ -327,6 +337,10 @@ export default {
                     return;
 
                 this.form.acknowledgement_template = files[0];
+            },
+               onFileChange(e){
+                console.log(e.target.files[0]);
+                this.form.acknowledgement_template = e.target.files[0];
             },
          /***
      * These methods are for changing the value of the form data
