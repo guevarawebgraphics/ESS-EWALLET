@@ -70,3 +70,39 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+E-Wallet Project
+Getting Started
+------------------------------------------------
+git clone http://mmsilvano@192.168.0.250:9090/scm/ess2/e-wallet.git .
+git checkout develop
+cp .env.example .env
+php artisan key:generate
+composer install
+npm install
+php artisan key:generate
+php artisan passport:install
+php artisan migrate
+php artisan serve
+
+if you are using php artisan serve change .env find and change APP_URL=http://127.0.0.1:8000 (Port depending on your port)
+run php artisan config:clear
+then php artisan serve
+
+
+Database Configuration
+------------------------------------------------
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=e-wallet
+DB_USERNAME=root
+DB_PASSWORD=essdev2019
+
+DB_CONNECTION_SECOND=mysql
+DB_HOST_SECOND=127.0.0.1
+DB_PORT_SECOND=3306
+DB_DATABASE_SECOND=v0.13.2_clean
+DB_USERNAME_SECOND=root
+DB_PASSWORD_SECOND=essdev2019
