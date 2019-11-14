@@ -148,7 +148,11 @@ Route::prefix('service_type')->group(function(){
     
     Route::post('/createservicetype',[
         'uses' => 'Api\\ServiceType\ServiceTypeController@SaveServiceType'
-    ]); 
+    ]);  
+
+    Route::post('/updateservicetype/templates',[
+        'uses' => 'Api\\ServiceType\ServiceTypeController@SaveServiceTemplates'
+    ]);
 });
     
     /**
