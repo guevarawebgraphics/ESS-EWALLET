@@ -3930,6 +3930,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3948,9 +3951,9 @@ __webpack_require__.r(__webpack_exports__);
            deducted_sdw_msw: 0,
            deducted_mdw_ssw:0,
            deducted_mdw_msw:0,*/
-        acknowledgement_template: null,
-        approval_template: null,
-        confirmation_template: null
+        acknowledgement_template: 'empty',
+        approval_template: 'empty',
+        confirmation_template: 'empty'
       })
     };
   },
@@ -3979,6 +3982,8 @@ __webpack_require__.r(__webpack_exports__);
       */
       var Formtwo = new FormData();
       Formtwo.append('file_acknowledgement_template', this.form.acknowledgement_template);
+      Formtwo.append('file_approval_template', this.form.approval_template);
+      Formtwo.append('file_confirmation_template', this.form.confirmation_template);
       Formtwo.append('servicetype_code', this.form.servicetype_code);
       Formtwo.append('servicetype_name', this.form.servicetype_name);
       Formtwo.append('behavior_value', this.form.behavior_value);
@@ -4015,14 +4020,17 @@ __webpack_require__.r(__webpack_exports__);
         return true;
       }
     },
-    onImageChange: function onImageChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      this.form.acknowledgement_template = files[0];
-    },
-    onFileChange: function onFileChange(e) {
+    onFileChangeAcknowledgeTemplate: function onFileChangeAcknowledgeTemplate(e) {
       console.log(e.target.files[0]);
       this.form.acknowledgement_template = e.target.files[0];
+    },
+    onFileChangeApprovalTemplate: function onFileChangeApprovalTemplate(e) {
+      console.log(e.target.files[0]);
+      this.form.approval_template = e.target.files[0];
+    },
+    onFileChangeConfirmationTemplate: function onFileChangeConfirmationTemplate(e) {
+      console.log(e.target.files[0]);
+      this.form.confirmation_template = e.target.files[0];
     }
     /***
     * These methods are for changing the value of the form data
@@ -4418,12 +4426,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       Services: {},
       showList: true,
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      ServiceTypeDetails: {},
+      form: new Form({
+        acknowledgement_template: null,
+        approval_template: null,
+        confirmation_template: null
+      }),
+
+      /***
+       * Variable container for updating templates
+       */
+      acknowledgement_template: null,
+      approval_template: null,
+      confirmation_template: null
     };
   },
   methods: {
@@ -4439,13 +4461,61 @@ __webpack_require__.r(__webpack_exports__);
         } else {}
       })["catch"](function () {});
     },
+    showServicesDetails: function showServicesDetails() {
+      var _this2 = this;
+
+      axios.get('/api/service_type/behavior/' + this.id).then(function (response) {
+        _this2.ServiceTypeDetails = response.data;
+        _this2.form.acknowledgement_template = response.data['acknowledgement_template'];
+        _this2.form.approval_template = response.data['approval_template'];
+        _this2.form.confirmation_template = response.data['confirmation_template'];
+        /**
+         * Gets the names of uploaded files
+         */
+
+        _this2.acknowledgement_template = response.data['acknowledgement_template'];
+        _this2.approval_template = response.data['approval_template'];
+        _this2.confirmation_template = response.data['confirmation_template'];
+      });
+    },
+    onFileChangeAcknowledgeTemplate: function onFileChangeAcknowledgeTemplate(e) {
+      console.log(e.target.files[0]);
+      this.acknowledgement_template = e.target.files[0]; // for setting up the variables of templates
+
+      this.form.acknowledgement_template = e.target.files[0]['name']; // for displaying on the client side
+    },
+    onFileChangeApprovalTemplate: function onFileChangeApprovalTemplate(e) {
+      console.log(e.target.files[0]);
+      this.approval_template = e.target.files[0]; // for setting up the variables of templates
+
+      this.form.approval_template = e.target.files[0]['name']; // for displaying on the client side
+    },
+    onFileChangeConfirmationTemplate: function onFileChangeConfirmationTemplate(e) {
+      console.log(e.target.files[0]);
+      this.confirmation_template = e.target.files[0]; // for setting up the variables of templates
+
+      this.form.confirmation_template = e.target.files[0]['name']; // for displaying on the client side
+    },
     saveServiceType: function saveServiceType() {
-      this.$router.push('/servicetypes');
-      console.log("ho");
+      var _this3 = this;
+
+      var Formtwo = new FormData();
+      Formtwo.append('file_acknowledgement_template', this.acknowledgement_template);
+      Formtwo.append('file_approval_template', this.approval_template);
+      Formtwo.append('file_confirmation_template', this.confirmation_template);
+      Formtwo.append('id', this.id);
+      axios.post('/api/service_type/updateservicetype/templates', Formtwo).then(function (response) {
+        console.log(response.data);
+
+        _this3.$router.push('/servicetypes');
+      })["catch"](function () {
+        console.log("error");
+      });
     }
   },
   created: function created() {
     this.showServices();
+    this.showServicesDetails();
   }
 });
 
@@ -63035,7 +63105,15 @@ var render = function() {
                         [
                           _c("input", {
                             staticClass: "form-check-input",
-                            attrs: { type: "checkbox", id: "exampleCheck1" }
+                            attrs: {
+                              type: "checkbox",
+                              id: "exampleCheck1",
+                              disabled: ""
+                            },
+                            domProps: {
+                              checked:
+                                this.form.acknowledgement_template != "empty"
+                            }
                           }),
                           _vm._v(" "),
                           _c(
@@ -63055,17 +63133,36 @@ var render = function() {
                                 name: "acknowledgement_template",
                                 id: "inputGroupFile03"
                               },
-                              on: { change: _vm.onFileChange }
+                              on: {
+                                change: _vm.onFileChangeAcknowledgeTemplate
+                              }
                             }),
                             _vm._v(" "),
-                            _c(
-                              "label",
-                              {
-                                staticClass: "custom-file-label",
-                                attrs: { for: "inputGroupFile03" }
-                              },
-                              [_vm._v("Choose file")]
-                            )
+                            this.form.acknowledgement_template == "empty"
+                              ? _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [_vm._v("Choose File")]
+                                )
+                              : _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        this.form.acknowledgement_template[
+                                          "name"
+                                        ]
+                                      )
+                                    )
+                                  ]
+                                )
                           ])
                         ]
                       )
@@ -63081,7 +63178,14 @@ var render = function() {
                         [
                           _c("input", {
                             staticClass: "form-check-input",
-                            attrs: { type: "checkbox", id: "exampleCheck1" }
+                            attrs: {
+                              type: "checkbox",
+                              id: "exampleCheck1",
+                              disabled: ""
+                            },
+                            domProps: {
+                              checked: this.form.approval_template != "empty"
+                            }
                           }),
                           _vm._v(" "),
                           _c(
@@ -63096,17 +63200,33 @@ var render = function() {
                           _c("div", { staticClass: "custom-file" }, [
                             _c("input", {
                               staticClass: "custom-file-input",
-                              attrs: { type: "file", id: "inputGroupFile03" }
+                              attrs: { type: "file", id: "inputGroupFile03" },
+                              on: { change: _vm.onFileChangeApprovalTemplate }
                             }),
                             _vm._v(" "),
-                            _c(
-                              "label",
-                              {
-                                staticClass: "custom-file-label",
-                                attrs: { for: "inputGroupFile03" }
-                              },
-                              [_vm._v("Choose file")]
-                            )
+                            this.form.approval_template == "empty"
+                              ? _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [_vm._v("Choose File")]
+                                )
+                              : _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        this.form.approval_template["name"]
+                                      )
+                                    )
+                                  ]
+                                )
                           ])
                         ]
                       )
@@ -63122,7 +63242,15 @@ var render = function() {
                         [
                           _c("input", {
                             staticClass: "form-check-input",
-                            attrs: { type: "checkbox", id: "exampleCheck1" }
+                            attrs: {
+                              type: "checkbox",
+                              id: "exampleCheck1",
+                              disabled: ""
+                            },
+                            domProps: {
+                              checked:
+                                this.form.confirmation_template != "empty"
+                            }
                           }),
                           _vm._v(" "),
                           _c(
@@ -63137,17 +63265,35 @@ var render = function() {
                           _c("div", { staticClass: "custom-file" }, [
                             _c("input", {
                               staticClass: "custom-file-input",
-                              attrs: { type: "file", id: "inputGroupFile03" }
+                              attrs: { type: "file", id: "inputGroupFile03" },
+                              on: {
+                                change: _vm.onFileChangeConfirmationTemplate
+                              }
                             }),
                             _vm._v(" "),
-                            _c(
-                              "label",
-                              {
-                                staticClass: "custom-file-label",
-                                attrs: { for: "inputGroupFile03" }
-                              },
-                              [_vm._v("Choose file")]
-                            )
+                            this.form.confirmation_template == "empty"
+                              ? _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [_vm._v("Choose File")]
+                                )
+                              : _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        this.form.confirmation_template["name"]
+                                      )
+                                    )
+                                  ]
+                                )
                           ])
                         ]
                       )
@@ -63810,7 +63956,170 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-md-6 mt-5" }, [
-            _vm._m(1),
+            _c("ul", { staticClass: "list-group list-group-flush" }, [
+              _c("li", { staticClass: "list-group-item" }, [
+                _c(
+                  "div",
+                  { staticClass: "form-check custom-control custom-checkbox " },
+                  [
+                    _c("input", {
+                      staticClass: "form-check-input",
+                      attrs: {
+                        type: "checkbox",
+                        id: "exampleCheck1",
+                        disabled: ""
+                      },
+                      domProps: {
+                        checked: _vm.form.acknowledgement_template != null
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-check-label",
+                        attrs: { for: "exampleCheck1" }
+                      },
+                      [_vm._v("Transaction Acknowledgement Template:  ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "custom-file" }, [
+                      _c("input", {
+                        staticClass: "custom-file-input",
+                        attrs: { type: "file", id: "inputGroupFile03" },
+                        on: { change: _vm.onFileChangeAcknowledgeTemplate }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.acknowledgement_template != null
+                        ? _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v(_vm._s(_vm.form.acknowledgement_template))]
+                          )
+                        : _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v("Choose File")]
+                          )
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "list-group-item" }, [
+                _c(
+                  "div",
+                  { staticClass: "form-check custom-control custom-checkbox " },
+                  [
+                    _c("input", {
+                      staticClass: "form-check-input",
+                      attrs: {
+                        type: "checkbox",
+                        id: "exampleCheck1",
+                        disabled: ""
+                      },
+                      domProps: { checked: _vm.form.approval_template != null }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-check-label",
+                        attrs: { for: "exampleCheck1" }
+                      },
+                      [_vm._v("Transaction Approval Template:")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "custom-file" }, [
+                      _c("input", {
+                        staticClass: "custom-file-input",
+                        attrs: { type: "file", id: "inputGroupFile03" },
+                        on: { change: _vm.onFileChangeApprovalTemplate }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.approval_template != null
+                        ? _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v(_vm._s(_vm.form.approval_template))]
+                          )
+                        : _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v("Choose File")]
+                          )
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "list-group-item" }, [
+                _c(
+                  "div",
+                  { staticClass: "form-check custom-control custom-checkbox " },
+                  [
+                    _c("input", {
+                      staticClass: "form-check-input",
+                      attrs: {
+                        type: "checkbox",
+                        id: "exampleCheck1",
+                        disabled: ""
+                      },
+                      domProps: {
+                        checked: _vm.form.confirmation_template != null
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-check-label",
+                        attrs: { for: "exampleCheck1" }
+                      },
+                      [_vm._v("Transaction Confirmation Template")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "custom-file" }, [
+                      _c("input", {
+                        staticClass: "custom-file-input",
+                        attrs: { type: "file", id: "inputGroupFile03" },
+                        on: { change: _vm.onFileChangeConfirmationTemplate }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.confirmation_template != null
+                        ? _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v(_vm._s(_vm.form.confirmation_template))]
+                          )
+                        : _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v("Choose File")]
+                          )
+                    ])
+                  ]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "button",
@@ -63840,126 +64149,6 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Service Name")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Service Gateway")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "list-group list-group-flush" }, [
-      _c("li", { staticClass: "list-group-item" }, [
-        _c(
-          "div",
-          { staticClass: "form-check custom-control custom-checkbox " },
-          [
-            _c("input", {
-              staticClass: "form-check-input",
-              attrs: { type: "checkbox", id: "exampleCheck1" }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "form-check-label",
-                attrs: { for: "exampleCheck1" }
-              },
-              [_vm._v("Transaction Acknowledgement Template:  ")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "custom-file" }, [
-              _c("input", {
-                staticClass: "custom-file-input",
-                attrs: { type: "file", id: "inputGroupFile03" }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "custom-file-label",
-                  attrs: { for: "inputGroupFile03" }
-                },
-                [_vm._v("Choose file")]
-              )
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "list-group-item" }, [
-        _c(
-          "div",
-          { staticClass: "form-check custom-control custom-checkbox " },
-          [
-            _c("input", {
-              staticClass: "form-check-input",
-              attrs: { type: "checkbox", id: "exampleCheck1" }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "form-check-label",
-                attrs: { for: "exampleCheck1" }
-              },
-              [_vm._v("Transaction Approval Template:")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "custom-file" }, [
-              _c("input", {
-                staticClass: "custom-file-input",
-                attrs: { type: "file", id: "inputGroupFile03" }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "custom-file-label",
-                  attrs: { for: "inputGroupFile03" }
-                },
-                [_vm._v("Choose file")]
-              )
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "list-group-item" }, [
-        _c(
-          "div",
-          { staticClass: "form-check custom-control custom-checkbox " },
-          [
-            _c("input", {
-              staticClass: "form-check-input",
-              attrs: { type: "checkbox", id: "exampleCheck1" }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "form-check-label",
-                attrs: { for: "exampleCheck1" }
-              },
-              [_vm._v("Transaction Confirmation Template:")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "custom-file" }, [
-              _c("input", {
-                staticClass: "custom-file-input",
-                attrs: { type: "file", id: "inputGroupFile03" }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "custom-file-label",
-                  attrs: { for: "inputGroupFile03" }
-                },
-                [_vm._v("Choose file")]
-              )
-            ])
-          ]
-        )
       ])
     ])
   }
