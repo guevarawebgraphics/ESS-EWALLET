@@ -3200,34 +3200,37 @@ __webpack_require__.r(__webpack_exports__);
         account_name: null,
         account_no: null,
         // Wallet Amount limits config
-        amount_limit: false,
-        am_per_transaction: false,
-        am_per_day: false,
-        am_per_month: false,
-        am_per_year: false,
+        amount_limit: 0,
+        am_per_transaction: 0,
+        am_per_day: 0,
+        am_per_month: 0,
+        am_per_year: 0,
         // Wallet Amount Limits
-        am_minimum: null,
-        am_maximum: null,
-        am_transaction_minimun: null,
-        am_transaction_maximum: null,
-        am_day_minimum: null,
-        am_day_maximum: null,
-        am_month_minimum: null,
-        am_month_maximum: null,
-        am_year_minimum: null,
-        am_year_maximum: null,
+        am_minimum: '',
+        am_maximum: '',
+        am_transaction_minimun: '',
+        am_transaction_maximum: '',
+        am_day_minimum: '',
+        am_day_maximum: '',
+        am_month_minimum: '',
+        am_month_maximum: '',
+        am_year_minimum: '',
+        am_year_maximum: '',
         // Wallet limit no of transaction config
-        c_lm_per_day: false,
-        c_lm_per_month: false,
-        c_lm_per_year: false,
-        c_allow_negative_balance: false,
-        c_com_daily_balance: false,
-        c_com_daily_usage: false,
+        c_lm_per_day: 0,
+        c_lm_per_month: 0,
+        c_lm_per_year: 0,
+        c_allow_negative_balance: 0,
+        c_com_daily_balance: 0,
+        c_com_daily_usage: 0,
         // Wallet limit no of transaction
-        lm_per_day: null,
-        lm_per_month: null,
-        lm_per_year: null,
-        allow_negative_balance: null
+        lm_per_day: 0,
+        lm_per_month: 0,
+        lm_per_year: 0,
+        allow_negative_balance: 0,
+        // Files
+        kyc_form: null,
+        valid_id: null
       })
     };
   },
@@ -3417,7 +3420,58 @@ __webpack_require__.r(__webpack_exports__);
     StoreWalletAccount: function StoreWalletAccount() {
       var _this4 = this;
 
-      this.form.post('api/walletaccount/StoreWalletAccount').then(function (res) {
+      var formData = new FormData(); // Wallet Account
+
+      formData.append('username', this.form.username);
+      formData.append('kyc_form', this.form.kyc_form);
+      formData.append('valid_id', this.form.valid_id);
+      formData.append('WalletType', this.form.WalletType);
+      formData.append('WalletAccountType', this.form.WalletAccountType);
+      formData.append('WalletAccountNo', this.form.WalletAccountNo);
+      formData.append('WalletAccountName', this.form.WalletAccountName);
+      formData.append('Wallettitle', this.form.Wallettitle); // //Wallet Bank Account
+
+      formData.append('Branch', this.form.Branch);
+      formData.append('bank_name', this.form.bank_name);
+      formData.append('account_type', this.form.account_type);
+      formData.append('account_name', this.form.account_name);
+      formData.append('account_no', this.form.account_no); // Wallet Amount limits config
+
+      formData.append('amount_limit', this.form.amount_limit);
+      formData.append('am_per_transaction', this.form.am_per_transaction);
+      formData.append('am_per_day', this.form.am_per_day);
+      formData.append('am_per_month', this.form.am_per_month);
+      formData.append('am_per_year', this.form.am_per_year); // Wallet Amount Limits
+
+      formData.append('am_minimum', this.form.am_minimum);
+      formData.append('am_maximum', this.form.am_maximum);
+      formData.append('am_transaction_minimum', this.form.am_transaction_minimun);
+      formData.append('am_transaction_maximum', this.form.am_transaction_maximum);
+      formData.append('am_day_minimum', this.form.am_day_minimum);
+      formData.append('am_day_maximum', this.form.am_day_maximum);
+      formData.append('am_month_minimum', this.form.am_month_minimum);
+      formData.append('am_month_maximum', this.form.am_month_maximum);
+      formData.append('am_year_minimum', this.form.am_year_minimum);
+      formData.append('am_year_minimum', this.form.am_year_minimum);
+      formData.append('am_year_maximum', this.form.am_year_maximum); // Wallet limit no of transaction config
+
+      formData.append('c_lm_per_day', this.form.c_lm_per_day);
+      formData.append('c_lm_per_month', this.form.c_lm_per_month);
+      formData.append('c_lm_per_year', this.form.c_lm_per_year);
+      formData.append('c_allow_negative_balance', this.form.c_allow_negative_balance);
+      formData.append('c_com_daily_balance', this.form.c_com_daily_balance);
+      formData.append('c_com_daily_usage', this.form.c_com_daily_usage); // Wallet limit no of transaction
+
+      formData.append('lm_per_day', this.form.lm_per_day);
+      formData.append('lm_per_month', this.form.lm_per_month);
+      formData.append('lm_per_year', this.form.lm_per_year);
+      formData.append('allow_negative_balance', this.form.allow_negative_balance);
+      axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+      axios.post('api/walletaccount/StoreWalletAccount', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (res) {
         console.log(res);
 
         _this4.form.clear();
@@ -3483,6 +3537,12 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         console.log(err);
       });
+    },
+    uploadFile: function uploadFile(e) {
+      this.form.kyc_form = this.$refs.file.files[0];
+    },
+    uploadValidId: function uploadValidId(e) {
+      this.form.valid_id = this.$refs.valid_id.files[0];
     }
   },
   created: function created() {
@@ -9528,7 +9588,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
 
 // exports
 
@@ -59102,10 +59162,13 @@ var render = function() {
                             _c("div", { staticClass: "input-group mb-3" }, [
                               _c("div", { staticClass: "custom-file" }, [
                                 _c("input", {
+                                  ref: "file",
                                   staticClass: "custom-file-input",
-                                  attrs: {
-                                    type: "file",
-                                    id: "inputGroupFile02"
+                                  attrs: { type: "file", id: "kyc_form" },
+                                  on: {
+                                    change: function($event) {
+                                      return _vm.uploadFile()
+                                    }
                                   }
                                 }),
                                 _vm._v(" "),
@@ -59123,10 +59186,13 @@ var render = function() {
                             _c("div", { staticClass: "input-group" }, [
                               _c("div", { staticClass: "custom-file" }, [
                                 _c("input", {
+                                  ref: "valid_id",
                                   staticClass: "custom-file-input",
-                                  attrs: {
-                                    type: "file",
-                                    id: "inputGroupFile02"
+                                  attrs: { type: "file", id: "valid_id" },
+                                  on: {
+                                    change: function($event) {
+                                      return _vm.uploadValidId()
+                                    }
                                   }
                                 }),
                                 _vm._v(" "),
