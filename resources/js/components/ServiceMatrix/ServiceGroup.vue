@@ -122,11 +122,13 @@ export default {
                     //lengthChange: false,
                     responsive: true,
                     fixedColumns: true,
+                    "order": [2, "desc"]
                 });
             }, 500);
         },
         get_service_group(){
-            axios.get("api/servicematrix/GetServices").then(({ data }) => (this.serviceGroups = data));
+            axios.get("api/servicematrix/GetAllService").then(({ data }) => (this.serviceGroups = data));  
+           
         },
         editServiceGroup(sg){
             this.form.clear()

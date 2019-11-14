@@ -10,7 +10,8 @@ const routes = [
     { path: '/home', component: require('../components/auth/Login.vue').default },
     { path: '/dashboard', component: require('../components/General/Dashboard.vue').default},
     { path: '/walletaccounts', component: require('../components/WalletAccounts/WalletAccounts.vue').default},
-    { path: '/createwalletaccounts', component: require('../components/WalletAccounts/CreateWalletAccount.vue').default},
+    { path: '/createwalletaccount', component: require('../components/WalletAccounts/CreateWalletAccount.vue').default},
+    { path: '/updatewalletaccount/:id', component: require('../components/WalletAccounts/CreateWalletAccount.vue').default},
     /**
      * @ CHUGUG EARPHONES SIRA
      **/
@@ -22,13 +23,21 @@ const routes = [
     /**
      * @ Routes For Service Matrix 
      **/
-    { path: '/ServiceGroup', component: require('../components/ServiceMatrix/ServiceGroup.vue').default},
-    { path: '/ServiceMatrix', component: require('../components/ServiceMatrix/ServiceMatrix.vue').default},
+    { path: '/serviceGroup', component: require('../components/ServiceMatrix/ServiceGroup.vue').default},
+    { path: '/serviceMatrix', component: require('../components/ServiceMatrix/ServiceMatrix.vue').default},
     /**
      * @ Services  
      */
     {path:'/serviceslist',component: require('../components/WalletServices/ServicesListTable.vue').default},
     {path:'/createservice',component: require('../components/WalletServices/CreateWalletServices.vue').default},
+    /**
+     *@ Wallet Account Type 
+     **/
+    {path:'/walletaccounttype',component: require('../components/WalletAccountTypes/WalletAccountType.vue').default},
+    /**
+     * Service Gateway
+     */
+    {path:'/servicegatewaylist',component: require('../components/ServiceGateway/ServiceGatewayTable.vue').default},
     /**
      *@ Return Error 404 Page 
      * @param /* 
