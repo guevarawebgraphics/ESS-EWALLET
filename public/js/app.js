@@ -4948,11 +4948,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       ServiceGateway: {},
       ServiceGroups: {},
+      service_template: null,
       form: new Form({
         /**
          * Form data For First Tab
@@ -4992,7 +5038,13 @@ __webpack_require__.r(__webpack_exports__);
          */
         limit_per_day: null,
         limit_per_month: null,
-        limit_per_year: null
+        limit_per_year: null,
+
+        /**
+         * Approval 
+         */
+        approval: 0,
+        merchand_admin_id: null
       })
     };
   },
@@ -5061,6 +5113,14 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref.data;
         return _this6.ServiceGroups = data;
       });
+    },
+    onFileChangeAcknowledgeTemplate: function onFileChangeAcknowledgeTemplate(e) {
+      console.log(e.target.files[0]);
+      this.form.service_template = e.target.files[0];
+      this.service_template = e.target.files[0]['name'];
+    },
+    switchApproval: function switchApproval(changeValue) {
+      changeValue == 0 ? this.form.approval = 1 : this.form.approval = 0;
     }
   },
   created: function created() {
@@ -65187,17 +65247,29 @@ var render = function() {
                                   attrs: {
                                     type: "file",
                                     id: "inputGroupFile04"
+                                  },
+                                  on: {
+                                    change: _vm.onFileChangeAcknowledgeTemplate
                                   }
                                 }),
                                 _vm._v(" "),
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "custom-file-label",
-                                    attrs: { for: "inputGroupFile04" }
-                                  },
-                                  [_vm._v("Choose file")]
-                                )
+                                this.service_template == null
+                                  ? _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: { for: "inputGroupFile04" }
+                                      },
+                                      [_vm._v("Choose file")]
+                                    )
+                                  : _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: { for: "inputGroupFile04" }
+                                      },
+                                      [_vm._v(_vm._s(this.service_template))]
+                                    )
                               ])
                             ])
                           ])
@@ -65221,7 +65293,123 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "card-body" })
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "data-tables datatable-dark" }, [
+                    _c(
+                      "table",
+                      {
+                        staticClass: "table table-hover",
+                        attrs: { id: "table-services" }
+                      },
+                      [
+                        _c("thead", [
+                          _c("tr", { staticClass: "th-table" }, [
+                            _c("th", [_vm._v("Value")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Source Wallet")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Destination Wallet")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Rates Table")])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tbody", [
+                          _c("tr", [
+                            _c("td", [_vm._v("test ")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("test ")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("test ")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("test ")])
+                          ])
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-sm-6" }, [
+                        _c(
+                          "div",
+                          { staticClass: "custom-control custom-switch" },
+                          [
+                            _c("input", {
+                              staticClass: "custom-control-input",
+                              attrs: { type: "checkbox", id: "customSwitch1" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.switchApproval(_vm.form.approval)
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            this.form.approval == 0
+                              ? _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-control-label",
+                                    attrs: { for: "customSwitch1" }
+                                  },
+                                  [_vm._v(" Require Approval : NO  ")]
+                                )
+                              : _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-control-label",
+                                    attrs: { for: "customSwitch1" }
+                                  },
+                                  [_vm._v(" Require Approval : YES  ")]
+                                )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "my-1",
+                              attrs: { for: "inlineFormCustomSelectPref" }
+                            },
+                            [_vm._v("Assign Approver:")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              staticClass: "custom-select my-1",
+                              attrs: {
+                                id: "inlineFormCustomSelectPref",
+                                disabled: this.form.approval == 0
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { selected: "" } }, [
+                                _vm._v("Choose Merchant Admin")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "1" } }, [
+                                _vm._v("One")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "2" } }, [
+                                _vm._v("Two")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "3" } }, [
+                                _vm._v("Three")
+                              ])
+                            ]
+                          )
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
               ])
             ])
           ]),
