@@ -97,8 +97,9 @@
                       <label for="exampleInputEmail1">Service Template</label>
                       <div class="input-group">
                       <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="inputGroupFile04">
-                      <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                      <input type="file" class="custom-file-input" v-on:change="onFileChangeAcknowledgeTemplate" id="inputGroupFile04">
+                      <label class="custom-file-label" for="inputGroupFile04" v-if="this.service_template == null">Choose file</label>
+                      <label class="custom-file-label" for="inputGroupFile04" v-else>{{this.service_template}}</label>
                       </div>
                       </div>
                     </div>
@@ -119,6 +120,50 @@
                  <h4 class="header-title mt-3 text-center">{{this.form.service_name}} ( Service Set Up II )</h4>   
               </div>   
               <div class="card-body"> 
+                       
+                <div class="data-tables datatable-dark">
+                <table class="table table-hover" id="table-services">
+                <thead>
+                    <tr class="th-table">
+                        <th>Value</th>
+                        <th>Source Wallet</th>
+                        <th>Destination Wallet</th>
+                        <th>Rates Table</th>
+                    </tr>  
+                </thead>
+                <tbody>
+                    <tr> 
+                        <td>test </td> 
+                        <td>test </td> 
+                        <td>test </td> 
+                        <td>test </td> 
+                    </tr> 
+                </tbody>
+                </table> 
+
+                </div> 
+                <div class="col-md-12">      
+                  <div class="row">
+                  <div class="col-sm-6">    
+                    <div class="custom-control custom-switch">  
+                      <input type="checkbox" class="custom-control-input" id="customSwitch1" v-on:click="switchApproval(form.approval)">
+                      <label class="custom-control-label" for="customSwitch1" v-if="this.form.approval == 0"> Require Approval : NO  </label>
+                      <label class="custom-control-label" for="customSwitch1" v-else> Require Approval : YES  </label>
+                    </div>   
+                  </div> 
+                  <div class="col-sm-6">
+                    <div class="form-group">  
+                      <label class="my-1" for="inlineFormCustomSelectPref">Assign Approver:</label>
+                    <select class="custom-select my-1" id="inlineFormCustomSelectPref" :disabled="this.form.approval==0">
+                      <option selected>Choose Merchant Admin</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>   
+                  </div> 
+                  </div>
+                </div>
 
               </div>
           </div>
@@ -274,6 +319,7 @@ data() {
   return{
     ServiceGateway : {},
     ServiceGroups :{}, 
+    service_template : null,
     form : new Form({ 
       /**
        * Form data For First Tab
@@ -311,6 +357,11 @@ data() {
       limit_per_day :null,
       limit_per_month : null,
       limit_per_year: null,
+      /**
+       * Approval 
+       */
+      approval : 0,
+      merchand_admin_id : null
 
     }),
   }
@@ -339,7 +390,6 @@ methods:{
                               title: 'Service Code not found'
                           })
           }
-        
       })
       .catch(() => {
       
@@ -357,14 +407,10 @@ methods:{
                               title: 'Principal Redeem Wallet No not found'
                           })
             }
-
        })
        .catch(() => {
 
-       }
-
-       )
-       
+       })
      },
      showIRWalletName(){
        axios.get('/api/service/getirwalletdetails/'+ this.form.ir_wallet_acc_no)
@@ -389,6 +435,15 @@ methods:{
            this.ServiceGroups = data
          ));  
     }, 
+    onFileChangeAcknowledgeTemplate(e){
+            console.log(e.target.files[0]);
+            this.form.service_template = e.target.files[0];
+            this.service_template = e.target.files[0]['name'];
+    }, 
+    switchApproval(changeValue) {
+             changeValue == 0 ? this.form.approval  = 1 : this.form.approval  = 0 
+    }
+    
     
 },
 created() {
