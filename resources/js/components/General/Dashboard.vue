@@ -6,7 +6,21 @@
 
 <script>
 export default {
-
+  data(){
+    return {
+      user: window.user,
+    }
+  },
+  methods: {
+    checkAuthenticatedUser(){
+      if(!this.user){
+        window.location.href="/";
+      }
+    }
+  },
+  created(){
+    this.checkAuthenticatedUser();
+  }
 }
 </script>
 

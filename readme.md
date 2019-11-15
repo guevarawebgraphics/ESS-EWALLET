@@ -71,7 +71,17 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-
+############################################################################################################
+#        ______                                                               ________ __________          #
+#        |             \          /\          /  /\       |         |         |            |               #
+#        |              \        /  \        /  /  \      |         |         |            |               #
+#        |_____  _____   \      /    \      /  /__ _\     |         |         |_____       |               #
+#        |                \    /      \    /  /      \    |         |         |            |               #
+#        |                 \  /        \  /  /        \   |         |         |            |               #
+#        |_____             \/          \/  /          \  |________ |________ |_____       |               #
+#                                                                                                          #
+############################################################################################################
+  
 E-Wallet Project
 Getting Started
 ------------------------------------------------
@@ -106,3 +116,23 @@ DB_PORT_SECOND=3306
 DB_DATABASE_SECOND=v0.13.2_clean
 DB_USERNAME_SECOND=root
 DB_PASSWORD_SECOND=essdev2019
+
+For any further concerns regarding the project please contact the project owner.
+
+
+# ############################
+# Accounts For ESS Project
+
+# #### Gmail #######
+# username: essample@gmail.com
+# password: @dmin123
+
+# #### Mailtrap #######
+# For Testing Email in Local Development
+# use Gmail logged in
+# username: esssample@gmail.com
+# password: @dmin123
+
+# ### Trello #####
+# username: esssample@gmail.com
+# password: @dmindev
