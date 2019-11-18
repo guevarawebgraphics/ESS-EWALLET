@@ -1905,7 +1905,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      user: window.user
+      user: window.localStorage.getItem('user')
     };
   },
   methods: {
@@ -1968,6 +1968,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     logout: function logout() {
       axios.post('/logout').then(function (res) {
+        window.localStorage.removeItem('user');
         location.reload();
         window.location.href = "/";
       })["catch"](function (err) {
@@ -5277,13 +5278,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     login: function login() {
+      var _this = this;
+
       this.form.post('/login').then(function (_ref) {
         var data = _ref.data;
         console.log(data);
+        window.localStorage.setItem('user', JSON.stringify(_this.form.username));
         window.location.href = "/dashboard";
       })["catch"](function () {
         console.clear();
-        console.log('Error');
       });
     }
   },
@@ -82606,6 +82609,7 @@ __webpack_require__.r(__webpack_exports__);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
+var user = window.localStorage.getItem('user');
 var routes = [{
   path: '/',
   component: __webpack_require__(/*! ../components/auth/Login.vue */ "./resources/js/components/auth/Login.vue")["default"]
@@ -82617,36 +82621,52 @@ var routes = [{
   component: __webpack_require__(/*! ../components/auth/Login.vue */ "./resources/js/components/auth/Login.vue")["default"]
 }, {
   path: '/dashboard',
-  component: __webpack_require__(/*! ../components/General/Dashboard.vue */ "./resources/js/components/General/Dashboard.vue")["default"]
-}, {
+  component: __webpack_require__(/*! ../components/General/Dashboard.vue */ "./resources/js/components/General/Dashboard.vue")["default"],
+  beforeEnter: requireLogin
+},
+/* 
+ * @ Wallet Accounts
+ */
+{
   path: '/walletaccounts',
-  component: __webpack_require__(/*! ../components/WalletAccounts/WalletAccounts.vue */ "./resources/js/components/WalletAccounts/WalletAccounts.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletAccounts/WalletAccounts.vue */ "./resources/js/components/WalletAccounts/WalletAccounts.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/createwalletaccount',
-  component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/updatewalletaccount/:id',
-  component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
- * @ CHUGUG EARPHONES SIRA
+ * @ Service Types
  **/
 {
   path: '/servicetypes',
-  component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeTable.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeTable.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeTable.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeTable.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/editservicetype/:id',
   name: '/test',
-  component: __webpack_require__(/*! ../components/WalletServiceTypes/EditServiceType.vue */ "./resources/js/components/WalletServiceTypes/EditServiceType.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/EditServiceType.vue */ "./resources/js/components/WalletServiceTypes/EditServiceType.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/servicetypesetup/:id',
   name: '/st-setup',
-  component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeSetUp.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeSetUp.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/createservicetype',
   name: '/st-create-new',
-  component: __webpack_require__(/*! ../components/WalletServiceTypes/CreateServiceType.vue */ "./resources/js/components/WalletServiceTypes/CreateServiceType.vue")["default"]
-}, {
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/CreateServiceType.vue */ "./resources/js/components/WalletServiceTypes/CreateServiceType.vue")["default"],
+  beforeEnter: requireLogin
+},
+/**
+ * @ Error Pages
+ **/
+{
   path: '*',
   component: __webpack_require__(/*! ../components/ErrorPages/404.vue */ "./resources/js/components/ErrorPages/404.vue")
 },
@@ -82655,34 +82675,40 @@ var routes = [{
  **/
 {
   path: '/serviceGroup',
-  component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceGroup.vue */ "./resources/js/components/ServiceMatrix/ServiceGroup.vue")["default"]
+  component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceGroup.vue */ "./resources/js/components/ServiceMatrix/ServiceGroup.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/serviceMatrix',
-  component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceMatrix.vue */ "./resources/js/components/ServiceMatrix/ServiceMatrix.vue")["default"]
+  component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceMatrix.vue */ "./resources/js/components/ServiceMatrix/ServiceMatrix.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
  * @ Services  
  */
 {
   path: '/serviceslist',
-  component: __webpack_require__(/*! ../components/WalletServices/ServicesListTable.vue */ "./resources/js/components/WalletServices/ServicesListTable.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServices/ServicesListTable.vue */ "./resources/js/components/WalletServices/ServicesListTable.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/createservice',
-  component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
  *@ Wallet Account Type 
  **/
 {
   path: '/walletaccounttype',
-  component: __webpack_require__(/*! ../components/WalletAccountTypes/WalletAccountType.vue */ "./resources/js/components/WalletAccountTypes/WalletAccountType.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletAccountTypes/WalletAccountType.vue */ "./resources/js/components/WalletAccountTypes/WalletAccountType.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
  * Service Gateway
  */
 {
   path: '/servicegatewaylist',
-  component: __webpack_require__(/*! ../components/ServiceGateway/ServiceGatewayTable.vue */ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue")["default"]
+  component: __webpack_require__(/*! ../components/ServiceGateway/ServiceGatewayTable.vue */ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
  *@ Return Error 404 Page 
@@ -82692,6 +82718,21 @@ var routes = [{
   path: '/*',
   component: __webpack_require__(/*! ../components/ErrorPages/404.vue */ "./resources/js/components/ErrorPages/404.vue")["default"]
 }];
+/**
+ * @ Route Guards
+ * Authentication Login 
+ **/
+
+function requireLogin(to, from, next) {
+  if (user != null) {
+    next(true);
+  } else {
+    window.localStorage.removeItem('user');
+    location.reload();
+    window.location.href = "/";
+  }
+}
+
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history',
   routes: routes // short for routes: routes
