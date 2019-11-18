@@ -1,7 +1,7 @@
 <template>
   <div id="CreateWalletAccount">
       <!-- Create Wallet Account Form -->
-     <form>
+     <form @submit.prevent="editmode ? UpdateWalletAccount() : StoreWalletAccount()">
       <!-- Create Wallet Accounts Form Wizard -->
         <form-wizard @on-complete="onComplete" title="Create Wallet Account" subtitle="Details" color="#0077B5">
             <!-- Form Wizard Step -->
@@ -23,7 +23,7 @@
                                     <!-- ESSID Username -->
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="username">ESSID/Username</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('username') } " v-on:change="SearchESSID"  name="username" v-validate="'required'" type="text" v-model="form.username" placeholder="ESSID/Username">
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('username') } " v-on:change="SearchESSID"  name="username" v-validate="'required'" type="text" v-model="form.username" placeholder="ESSID/Username" :disabled="editmode">
                                         <has-error :form="form" field="username"></has-error>
                                         <p class="text-danger" v-if="errors.has('username')">{{errors.first('username')}}</p>
                                     </div>
@@ -67,13 +67,13 @@
                                     <div class="form-group">
                                         <div class="input-group mb-3">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="inputGroupFile02">
+                                                <input type="file" v-on:change="uploadFile()" class="custom-file-input" id="kyc_form" ref="file">
                                                 <label class="custom-file-label" for="inputGroupFile02">Filled-Up KYC Form</label>
                                             </div>
                                         </div>
                                         <div class="input-group">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="inputGroupFile02">
+                                                <input type="file" v-on:change="uploadValidId()" class="custom-file-input" id="valid_id" ref="valid_id">
                                                 <label class="custom-file-label" for="inputGroupFile02">Valid ID w/ Signature</label>
                                             </div>
                                         </div>
@@ -89,12 +89,12 @@
                                         <p class="text-danger" v-if="errors.has('birthdate')">{{errors.first('birthdate')}}</p>
                                     </div>
                                     <!-- Place of Birth -->
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label class="control-label custom-label" for="placeofbirth">Place of Birth</label>
                                         <input class="form-control" :class="{ 'is-invalid': form.errors.has('placeofbirth') }" name="placeofbirth" v-validate="'required'" v-model="form.placeofbirth" type="text" placeholder="Place of Birthdate" disabled>
                                         <has-error :form="form" field="birthdate"></has-error>
                                         <p class="text-danger" v-if="errors.has('placeofbirth')">{{errors.first('placeofbirth')}}</p>
-                                    </div>
+                                    </div> -->
                                     <!-- Nationality -->
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="nationality">Nationality</label>
@@ -126,12 +126,12 @@
                                         <p class="text-danger" v-if="errors.has('sss')">{{errors.first('sss')}}</p>
                                     </div>
                                     <!-- National Id No -->
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label class="control-label custom-label" for="NationalIdNo">National Id No</label>
                                         <input class="form-control" :class="{ 'is-invalid': form.errors.has('NationalIdNo') }" name="NationalIdNo" v-validate="'required'" v-model="form.NationalIdNo" type="text" placeholder="National Id No" disabled>
                                         <has-error :form="form" field="sss"></has-error>
                                         <p class="text-danger" v-if="errors.has('NationalIdNo')">{{errors.first('NationalIdNo')}}</p>
-                                    </div>
+                                    </div> -->
                                     <!-- Employer Name -->
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="EmployerName">Employer Name</label>
@@ -154,7 +154,7 @@
             </tab-content>
             <!-- ./ End E-Wallet Account Information (KYC)  -->
             <!-- E-Wallet Account Setup Step 2 -->
-            <tab-content title="E-Wallet Acount Setup">
+            <tab-content title="E-Wallet Acount Setup" :before-change="ValidateSecondStep">
                 <!-- Create Wallet Account Step 2 -->
                 <div class="box">
                     <div class="card shadow-custom">
@@ -164,6 +164,7 @@
                                     <hr>
                                     <!-- ESSID/Username -->
                                         <div class="form-group">
+                                        <label class="control-label custom-label" for="ess_id">ESS ID/Username</label>
                                         <input class="form-control" v-model="form.username"  type="text" placeholder="ESSID/Username" disabled>
                                         </div>
                                         <hr>
@@ -171,10 +172,10 @@
                                         <!-- Wallet Type -->
                                         <div class="form-group mt-3">
                                             <label class="control-label custom-label" for="WalletType">Wallet Type</label>
-                                            <select class="custom-select" :class="{ 'is-invalid': errors.has('WalletType') } "  name="WalletType" v-validate="'required'" v-model="form.WalletType">
+                                            <select class="custom-select" :class="{ 'is-invalid': errors.has('WalletType') } "  name="WalletType" v-validate="'required'" v-on:change="ValidateSecondStep" v-model="form.WalletType">
                                                 <option value="" selected disabled>Select</option>
-                                                <option>Prepaid</option>
-                                                <option>Select 1</option>
+                                                <option value="Credit">Credit</option>
+                                                <option value="Prepaid">Prepaid</option>
                                             </select>
                                             <has-error :form="form" field="WalletType"></has-error>
                                             <p class="text-danger" v-if="errors.has('WalletType')">{{errors.first('WalletType')}}</p>
@@ -182,10 +183,11 @@
                                         <!-- Wallet Account Type -->
                                         <div class="form-group">
                                             <label class="control-label custom-label" for="WalletAccountType">Wallet Account Type</label>
-                                            <select class="custom-select" :class="{ 'is-invalid': errors.has('WalletAccountType') } "  name="WalletAccountType" v-validate="'required'"  v-model="form.WalletAccountType">
+                                            <select class="custom-select" :class="{ 'is-invalid': errors.has('WalletAccountType') } "  name="WalletAccountType" v-on:change="ValidateSecondStep" v-validate="'required'"  v-model="form.WalletAccountType">
                                                 <option value="" selected disabled>Select</option>
-                                                <option>Prepaid Merchant</option>
-                                                <option>Select 1</option>
+                                                <option v-for="wat in walletAccountTypes" :key="wat.id" :value="wat.id">
+                                                    {{ wat.wallet_account_type}}
+                                                </option>
                                             </select>
                                             <has-error :form="form" field="WalletAccountType"></has-error>
                                             <p class="text-danger" v-if="errors.has('WalletAccountType')">{{errors.first('WalletAccountType')}}</p>
@@ -219,20 +221,21 @@
             </tab-content>
             <!-- ./ E-Wallet Account Setup Step 2 -->
             <!-- E-Wallet Account Setup Step 3-->
+            <!-- 
             <tab-content title="E-Wallet Acount Setup">
                 <div class="box">
                     <div class="card shadow-custom">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4 offset-md-1">
-                                    <!-- Account Name -->
+                                    Account Name 
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="WalletAccountName">Wallet Account Name</label>
                                         <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountName') } "  name="WalletAccountName" v-validate="'required'" type="text" v-model="form.WalletAccountName" placeholder="WalletAccountName" disabled>
                                             <has-error :form="form" field="WalletAccountName"></has-error>
                                             <p class="text-danger" v-if="errors.has('WalletAccountName')">{{errors.first('WalletAccountName')}}</p>
                                     </div>
-                                    <!-- Account No -->
+                                    Account No
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="WalletAccountNo">Wallet Account No</label>
                                         <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNo') } "  name="WalletAccountNo" v-validate="'required'" type="text" v-model="form.WalletAccountNo" placeholder="WalletAccountNo" disabled>
@@ -245,10 +248,10 @@
                     </div>
                     
                 </div>
-            </tab-content>
+            </tab-content>-->
             <!--./ End E-Wallet Account Setup Step 3-->
             <!-- E-Wallet Account Setup Step 4 -->
-            <tab-content title="E-Wallet Acount Setup">
+            <tab-content title="E-Wallet Acount Setup" :before-change="ValidateFourthStep">
                 <div class="box">
                     <div class="card shadow-custom">
                         <div class="card-body">
@@ -258,42 +261,49 @@
                                 <div class="col-md-4 offset-md-1">
                                     <!-- Name of Bank -->
                                     <div class="form-group">
-                                        <label class="control-label custom-label" for="NameOfBank">Name of Bank</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('NameOfBank') } "  name="NameOfBank" v-validate="'required'" type="text" v-model="form.NameOfBank" placeholder="Name Of Bank">
-                                            <has-error :form="form" field="NameOfBank"></has-error>
-                                            <p class="text-danger" v-if="errors.has('NameOfBank')">{{errors.first('NameOfBank')}}</p>
+                                        <label class="control-label custom-label" for="bank_name">Name of Bank</label>
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('bank_name') } "  name="bank_name" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="form.bank_name" placeholder="Name Of Bank">
+                                            <has-error :form="form" field="bank_name"></has-error>
+                                            <p class="text-danger" v-if="errors.has('bank_name')">{{errors.first('bank_name')}}</p>
                                     </div>
                                     <!-- Branch -->
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="Branch">Branch</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('Branch') } "  name="Branch" v-validate="'required'" type="text" v-model="form.Branch" placeholder="Branch">
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('Branch') } "  name="Branch" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="form.Branch" placeholder="Branch">
                                             <has-error :form="form" field="Branch"></has-error>
                                             <p class="text-danger" v-if="errors.has('Branch')">{{errors.first('Branch')}}</p>
                                     </div>
                                     <!-- Account Type -->
                                     <div class="form-group">
-                                        <label class="control-label custom-label" for="WalletType">Wallet Type</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('WalletType') } "  name="WalletType" v-validate="'required'" type="text" v-model="form.WalletType" placeholder="Account Type">
-                                            <has-error :form="form" field="WalletType"></has-error>
-                                            <p class="text-danger" v-if="errors.has('WalletType')">{{errors.first('WalletType')}}</p>
+                                        <label class="control-label custom-label" for="account_type">Wallet Type</label>
+                                        <!-- <input class="form-control" :class="{ 'is-invalid': errors.has('WalletType') } "  name="WalletType" v-validate="'required'" type="text" v-model="form.WalletType" placeholder="Account Type"> -->
+                                        <select class="custom-select" :class="{ 'is-invalid': errors.has('account_type') } "  name="account_type" v-validate="'required'" v-on:change="ValidateFourthStep" v-model="form.account_type">
+                                                <option value="" selected disabled>Select</option>
+                                                <option>Credit</option>
+                                                <option>Prepaid</option>
+                                        </select>
+                                        <has-error :form="form" field="account_type"></has-error>
+                                        <p class="text-danger" v-if="errors.has('account_type')">{{errors.first('account_type')}}</p>
                                     </div>
                                     <!-- Account Name -->
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="WalletAccountName">Wallet Account Name</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountName') } "  name="WalletAccountName" v-validate="'required'" type="text" v-model="form.WalletAccountName" placeholder="Account Name">
-                                            <has-error :form="form" field="WalletAccountName"></has-error>
-                                            <p class="text-danger" v-if="errors.has('WalletAccountName')">{{errors.first('WalletAccountName')}}</p>
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('account_name') } "  name="account_name" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="form.account_name" placeholder="Account Name">
+                                            <has-error :form="form" field="account_name"></has-error>
+                                            <p class="text-danger" v-if="errors.has('account_name')">{{errors.first('account_name')}}</p>
                                     </div>
                                     <!-- Account No -->
                                     <div class="form-group">
-                                        <label class="control-label custom-label" for="WalletAccountNo">Wallet Account No</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNo') } "  name="WalletAccountNo" v-validate="'required'" type="text" v-model="form.WalletAccountNo" placeholder="Account No">
-                                            <has-error :form="form" field="WalletAccountNo"></has-error>
-                                            <p class="text-danger" v-if="errors.has('WalletAccountNo')">{{errors.first('WalletAccountNo')}}</p>
+                                        <label class="control-label custom-label" for="account_no">Wallet Account No</label>
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('account_no') } "  name="account_no" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="form.account_no" placeholder="Account No">
+                                            <has-error :form="form" field="account_no"></has-error>
+                                            <p class="text-danger" v-if="errors.has('account_no')">{{errors.first('account_no')}}</p>
                                     </div>
-                                    <div class="custom-control form-control-md custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input col-md-4" id="customCheck1">
-                                        <label class="custom-control-label" for="customCheck1">Check this custom checkbox</label>
+                                    <div class="form-group">
+                                        <div class="form-check custom-control custom-checkbox"> 
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1"> 
+                                            <label class="form-check-label" for="exampleCheck1">Test</label>
+                                        </div>
                                     </div>
                                     <!-- Add New Bank Account -->
                                     <!-- <button class="btn btn-primary btn-flat"> Add New Account</button> -->
@@ -306,18 +316,192 @@
             <!-- ./ End E-Wallet Account Setup 4 -->
             <!-- E-Wallet Account Setup 5 -->
             <tab-content title="E-Wallet Acount Setup">
+                <!-- Box -->
                 <div class="box">
+                    <!-- Card -->
                     <div class="card shadow-custom">
+                        <!-- Card Body -->
                         <div class="card-body">
                             <h5>Amount Limits:</h5>
                             <hr>
+                            <!-- Row -->
                             <div class="row">
-
+                                <div class="col-md-10 offset-md-1">
+                                    <!-- Unordered List -->
+                                    <ul class="list-group list-group-flush">
+                                        <!-- List item 1 -->
+                                        <li class="list-group-item">
+                                            <div class="form-group row">
+                                                <div class="form-check custom-control custom-checkbox"> 
+                                                    <input v-model="form.amount_limit" type="checkbox" class="form-check-input" name="amount_limit" id="amount_limit"> 
+                                                    <label class="form-check-label custom-label" for="amount_limit">
+                                                        Amount Limit (minimum and maximum) of wallet balance at any givin time Minimum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_minimum" name="am_minimum" id="" value="0">
+                                                        Maximum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_maximum" name="am_maximum" id="" value="200000">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- ./ List item 1 -->
+                                        <!-- List item 2 -->
+                                        <li class="list-group-item">
+                                            <div class="form-group row">
+                                                <div class="form-check custom-control custom-checkbox"> 
+                                                    <input v-model="form.am_per_transaction" name="am_per_transaction" type="checkbox" class="form-check-input" id="exampleCheck2"> 
+                                                    <label class="form-check-label custom-label" for="exampleCheck2">
+                                                        Amount Limit (minimum and maximum) per transaction: <input class="custom-limit-input" type="number" min="0" v-model="form.am_transaction_minimun" name="am_transaction_minimun" id="" value="0">
+                                                        Maximum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_transaction_maximum" name="am_transaction_minimun" id="" value="200000">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- ./ List item 2 -->
+                                        <!-- List item 3 -->
+                                        <li class="list-group-item">
+                                            <div class="form-group row">
+                                                <div class="form-check custom-control custom-checkbox"> 
+                                                    <input v-model="form.am_per_day" name="am_per_day" type="checkbox" class="form-check-input" id="exampleCheck3"> 
+                                                    <label class="form-check-label custom-label" for="exampleCheck3">
+                                                        Limit of total transaction amount per day Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_day_minimum" name="am_day_minimum" id="" value="0">
+                                                        Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_day_maximum" name="am_day_maximum" id="" value="200000">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- ./ List item 3 -->
+                                        <!-- List item 4 -->
+                                        <li class="list-group-item">
+                                            <div class="form-group row">
+                                                <div class="form-check custom-control custom-checkbox"> 
+                                                    <input v-model="form.am_per_month" name="am_per_month" type="checkbox" class="form-check-input" id="exampleCheck4"> 
+                                                    <label class="form-check-label custom-label" for="exampleCheck4">
+                                                        Limit of total transaction amount per month Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_month_minimum" name="am_month_minimum" id="" value="0">
+                                                        Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_month_maximum" name="am_month_maximum" id="" value="200000">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- ./ List item 4 -->
+                                        <!-- List item 5 -->
+                                        <li class="list-group-item">
+                                            <div class="form-group row">
+                                                <div class="form-check custom-control custom-checkbox"> 
+                                                    <input v-model="form.am_per_year" name="am_per_year" type="checkbox" class="form-check-input" id="exampleCheck5"> 
+                                                    <label class="form-check-label custom-label" for="exampleCheck5">
+                                                        Limit of total transaction amount per year month Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_year_minimum" name="am_year_minimum" id="" value="0">
+                                                        Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_year_maximum" name="am_year_maximum" id="" value="200000">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- ./ List item 5 -->
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- ./ Row -->
+                        </div>
+                        <!-- ./ Card Body -->
+                    </div>
+                    <!-- ./ Card -->
+                </div>
+                <!-- ./ Box -->
+            </tab-content>
+            <!-- ./ E-Wallet Account Setup 5 -->
+             <!-- E-Wallet Account Setup 6 -->
+            <tab-content title="E-Wallet Acount Setup">
+                <!-- Box -->
+                <div class="box">
+                    <!-- Card -->
+                    <div class="card shadow-custom">
+                        <!-- Card body -->
+                        <div class="card-body">
+                            <h5>Limits No. Of Transactions</h5>
+                            <hr>
+                            <!-- Row -->
+                            <div class="row">
+                                <div class="col-md-10 offset-md-1">
+                                    <!-- Unordered List -->
+                                    <ul class="list-group list-group-flush">
+                                        <!-- List item 1 -->
+                                        <li class="list-group-item">
+                                            <div class="form-group row">
+                                                <div class="form-check custom-control custom-checkbox"> 
+                                                    <input v-model="form.c_lm_per_day" type="checkbox" class="form-check-input" name="lm_per_day" id="amount_limit"> 
+                                                    <label class="form-check-label custom-label" for="lm_per_day">
+                                                        Limit no. of transactions per day Maximum No. of Transactions: <input class="custom-limit-input" type="number" min="0" v-model="form.lm_per_day" name="c_lm_per_day" id="c_lm_per_day" value="0">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- ./ List item 1 -->
+                                        <!-- List item 2 -->
+                                        <li class="list-group-item">
+                                            <div class="form-group row">
+                                                <div class="form-check custom-control custom-checkbox"> 
+                                                    <input v-model="form.c_lm_per_month" type="checkbox" class="form-check-input" name="lm_per_month" id="amount_limit"> 
+                                                    <label class="form-check-label custom-label" for="lm_per_month">
+                                                        Limit no. of transactions per month Maximum No. of Transactions: <input class="custom-limit-input" type="number" min="0"  v-model="form.lm_per_month" name="c_lm_per_month" id="c_lm_per_day" value="0">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- ./ List item 2 -->
+                                        <!-- List item 3 -->
+                                        <li class="list-group-item">
+                                            <div class="form-group row">
+                                                <div class="form-check custom-control custom-checkbox"> 
+                                                    <input v-model="form.c_lm_per_year" type="checkbox" class="form-check-input" name="lm_per_year" id="lm_per_year"> 
+                                                    <label class="form-check-label custom-label" for="lm_per_year">
+                                                        Limit no. of transactions per year Maximum No. of Transactions: <input class="custom-limit-input" min="0" v-model="form.lm_per_year" type="number" name="c_lm_per_year" id="c_lm_per_year" value="0">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- ./ List item 3 -->
+                                        <h5 class="custom-label">Other Options</h5>
+                                        <!-- List item 4 -->
+                                        <li class="list-group-item">
+                                            <div class="form-group row">
+                                                <div class="form-check custom-control custom-checkbox"> 
+                                                    <input v-model="form.c_allow_negative_balance" type="checkbox" class="form-check-input" name="allow_negative_balance" id="allow_negative_balance"> 
+                                                    <label class="form-check-label custom-label" for="allow_negative_balance">
+                                                        Allow negative Balance Maximum negative Balance: <input class="custom-limit-input" type="number" v-model="form.allow_negative_balance" name="c_allow_negative_balance" id="c_allow_negative_balance" value="0">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- ./ List item 4 -->
+                                        <!-- List item 5 -->
+                                        <li class="list-group-item">
+                                            <div class="form-group row">
+                                                <div class="form-check custom-control custom-checkbox"> 
+                                                    <input v-model="form.c_com_daily_balance" type="checkbox" class="form-check-input" name="com_daily_balance" id="com_daily_balance"> 
+                                                    <label class="form-check-label custom-label" for="com_daily_balance">
+                                                        Compute Average Daily Balance
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- ./ List item 5 -->
+                                        <!-- List item 6 -->
+                                        <li class="list-group-item">
+                                            <div class="form-group row">
+                                                <div class="form-check custom-control custom-checkbox"> 
+                                                    <input v-model="form.c_com_daily_usage" type="checkbox" class="form-check-input" name="com_daily_usage" id="com_daily_usage"> 
+                                                    <label class="form-check-label custom-label" for="com_daily_usage">
+                                                        Compute Average Daily Usage
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- ./ List item 6 -->
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </tab-content>
+            <!-- ./ E-Wallet Account Setup 6  -->
             <!-- Form Wizzard Footer -->
             <template slot="footer" slot-scope="props">
                 <div class="wizard-footer-left">
@@ -325,7 +509,7 @@
                 </div>
                 <div class="wizard-footer-right">
                 <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" id="nextTab" :disabled="errors.items.length>0" class="wizard-footer-right" :style="props.fillButtonStyle">Next <span class="ti-arrow-right"></span></wizard-button>
-                <wizard-button v-else @click.native="alert('Done')" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">  {{props.isLastStep ? 'Done' : 'Next'}} <span class="ti-saves"></span></wizard-button>
+                <wizard-button v-else @click.native="editmode ? UpdateWalletAccount() : StoreWalletAccount()" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">  {{props.isLastStep ? 'Done' : 'Next'}} <span class="ti-saves"></span></wizard-button>
                 </div>
             </template>
             <!-- ./ End Form Wizzard Footer Template -->
@@ -341,8 +525,9 @@ export default {
         return {
          editmode: false,
          switching: false,
-         step: 1,
+         step: 0,
          account: [],
+         walletAccountTypes: [],
          form: new Form({
            username: null,
            lastname: null,
@@ -351,13 +536,13 @@ export default {
            presentaddress: null,
            permanentaddress: null,
            birthdate: null,
-           placeofbirth: null,
+           //placeofbirth: null,
            nationality: null,
            contactNo: null,
            emailaddress: null,
            tin: null,
            sss: null,
-           NationalIdNo: null,
+           //NationalIdNo: null,
            EmployerName: null,
            BusinessName: null,
            WalletType: null,
@@ -365,8 +550,46 @@ export default {
            WalletAccountNo: null,
            WalletAccountName: null,
            Wallettitle: null,
-           NameOfBank: null,
+           //NameOfBank: null,
+            // Wallet Bank Account Details
+           bank_name: null,
            Branch: null,
+           account_type: null,
+           account_name: null,
+           account_no: null,
+           // Wallet Amount limits config
+           amount_limit: 0,
+           am_per_transaction: 0,
+           am_per_day: 0,
+           am_per_month: 0,
+           am_per_year: 0,
+           // Wallet Amount Limits
+           am_minimum: '',
+           am_maximum: '',
+           am_transaction_minimun: '',
+           am_transaction_maximum: '',
+           am_day_minimum: '',
+           am_day_maximum: '',
+           am_month_minimum: '',
+           am_month_maximum: '',
+           am_year_minimum: '',
+           am_year_maximum: '',
+           // Wallet limit no of transaction config
+           c_lm_per_day: 0,
+           c_lm_per_month: 0,
+           c_lm_per_year: 0,
+           c_allow_negative_balance: 0,
+           c_com_daily_balance: 0,
+           c_com_daily_usage: 0,
+           // Wallet limit no of transaction
+           lm_per_day: 0,
+           lm_per_month: 0,
+           lm_per_year: 0,
+           allow_negative_balance: 0,
+           // Files
+           kyc_form: null,
+           valid_id: null
+
         })
         }
     },
@@ -375,10 +598,17 @@ export default {
           alert('Yay. Done!');
         },
         ValidateFirstStep(){
-            
-            if(this.form.username != null){
-                this.errors.clear()
-                return true;
+            if(this.form.emailaddress != null){
+                if(this.step == 1){
+                    this.errors.clear()
+                    return true;
+                }
+                else {
+                    this.form.reset()
+                    $('#nextTab').attr('disabled', true)
+                    this.step = 0;
+                    return false;
+                }
             }
             if(this.form.username == null){
                 toast.fire({
@@ -391,7 +621,49 @@ export default {
                     return;
                     }
                 });
+                this.step = 0;
                 return false;
+            }
+        },
+        ValidateSecondStep(){
+            if(this.form.WalletAccountType != null && this.form.WalletType != null){
+                this.errors.clear()
+                $('#nextTab').removeAttr('disabled')
+                return true;
+            }
+            if(this.form.WalletType == null || this.form.WalletAccountType == null){
+                toast.fire({
+                    type: 'info',
+                    title: 'Please fill required fields'
+                })
+                this.$validator.validateAll().then(result => {
+                    if (result) {
+                        return;
+                    }
+                });
+                return false;
+            }
+            else {
+                return true;
+            }
+        },
+        ValidateFourthStep(){
+            if(this.form.bank_name == null || this.form.Branch == null || this.form.account_type == null || this.form.account_name == null || this.form.account_no == null){
+                toast.fire({
+                    type: 'info',
+                    title: 'Please fill required fields'
+                })
+                this.$validator.validateAll().then(result => {
+                    if (result) {
+                        return;
+                    }
+                });
+                return false;
+            }
+            else {
+                this.errors.clear();
+                $('#nextTab').removeAttr('disabled')
+                return true;
             }
         },
         /**
@@ -399,12 +671,16 @@ export default {
          **/
         SearchESSID(){
             if(!this.form.username){
-                $('#nextTab').attr('disabled', true)
+                if(this.step == 1){
+                    $('#nextTab').attr('disabled', true)
+                }
             }
             else {
-                axios.get('/api/account/' + this.form.username)
+                let ess_id = (this.editmode ? this.$route.params.id :  this.form.username);
+                axios.get('/api/account/' + ess_id)
                 .then(response => {
-                    if(response.data.length > 0){
+                    if(response.data.length > 0 && this.form.username != null){
+                        this.step = 1;
                         this.errors.clear()
                         $('#nextTab').removeAttr('disabled')
                         this.GenerateAccountNo()
@@ -427,6 +703,7 @@ export default {
                         this.form.permanentaddress = '#' + response.data[0]['address_unit'] + ' ' + response.data[0]['brgyDesc'] + ' ' + response.data[0]['citymunDesc'] + ' ' + response.data[0]['provDesc'];
                     }
                     else {
+                        this.step = 0;
                         this.form.reset()
                         $('#nextTab').attr('disabled', true)
                         toast.fire({
@@ -442,6 +719,19 @@ export default {
             }
         },
         /**
+         * @ Edit Wallet Account 
+         **/
+        EditWalletAccount(){
+            /**
+             * @ Check if the params is not empty then editmode = true 
+             **/
+            let ess_id = this.$route.params.id;
+            if(ess_id != null){
+                this.editmode = true;
+                this.form.username = ess_id;
+            }
+        },
+        /**
          * @ Generate Account No 
          **/ 
         GenerateAccountNo(){
@@ -452,15 +742,164 @@ export default {
             .catch(err => {
                 console.log(err)
             })
+        },
+        /**
+         * @ UpdateWalletAccount
+         **/
+        UpdateWalletAccount(){
+            this.form.put('/api/walletaccount/UpdateWalletAccount')
+            .then(res => {
+                console.log(res)
+                this.form.clear()
+                this.form.reset()
+                toast.fire({
+                    type: 'success',
+                    title: 'Wallet Account Successfully updated!'
+                })
+                this.$router.push('/walletaccounts')
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        },
+        /**
+         * @ Store Wallet Account 
+         **/
+        StoreWalletAccount(){
+            let formData = new FormData();
+            // Wallet Account
+            formData.append('username', this.form.username)
+            formData.append('kyc_form', this.form.kyc_form)
+            formData.append('valid_id', this.form.valid_id)
+            formData.append('WalletType', this.form.WalletType)
+            formData.append('WalletAccountType', this.form.WalletAccountType)
+            formData.append('WalletAccountNo', this.form.WalletAccountNo)
+            formData.append('WalletAccountName', this.form.WalletAccountName)
+            formData.append('Wallettitle', this.form.Wallettitle)
+            // //Wallet Bank Account
+            formData.append('Branch', this.form.Branch)
+            formData.append('bank_name', this.form.bank_name)
+            formData.append('account_type', this.form.account_type)
+            formData.append('account_name', this.form.account_name)
+            formData.append('account_no', this.form.account_no)
+            // Wallet Amount limits config
+            formData.append('amount_limit', this.form.amount_limit)
+            formData.append('am_per_transaction', this.form.am_per_transaction)
+            formData.append('am_per_day', this.form.am_per_day)
+            formData.append('am_per_month', this.form.am_per_month)
+            formData.append('am_per_year', this.form.am_per_year)
+            // Wallet Amount Limits
+            formData.append('am_minimum', this.form.am_minimum)
+            formData.append('am_maximum', this.form.am_maximum)
+            formData.append('am_transaction_minimum', this.form.am_transaction_minimun)
+            formData.append('am_transaction_maximum', this.form.am_transaction_maximum)
+            formData.append('am_day_minimum', this.form.am_day_minimum)
+            formData.append('am_day_maximum', this.form.am_day_maximum)
+            formData.append('am_month_minimum', this.form.am_month_minimum)
+            formData.append('am_month_maximum', this.form.am_month_maximum)
+            formData.append('am_year_minimum', this.form.am_year_minimum)
+            formData.append('am_year_minimum', this.form.am_year_minimum)
+            formData.append('am_year_maximum', this.form.am_year_maximum)
+            // Wallet limit no of transaction config
+            formData.append('c_lm_per_day', this.form.c_lm_per_day)
+            formData.append('c_lm_per_month', this.form.c_lm_per_month)
+            formData.append('c_lm_per_year', this.form.c_lm_per_year)
+            formData.append('c_allow_negative_balance', this.form.c_allow_negative_balance)
+            formData.append('c_com_daily_balance', this.form.c_com_daily_balance)
+            formData.append('c_com_daily_usage', this.form.c_com_daily_usage)
+            // Wallet limit no of transaction
+            formData.append('lm_per_day', this.form.lm_per_day)
+            formData.append('lm_per_month', this.form.lm_per_month)
+            formData.append('lm_per_year', this.form.lm_per_year)
+            formData.append('allow_negative_balance', this.form.allow_negative_balance)
+            axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+            axios.post('api/walletaccount/StoreWalletAccount', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(res => {
+                console.log(res)
+                this.form.clear()
+                this.form.reset()
+                toast.fire({
+                    type: 'success',
+                    title: 'Wallet Account Successfully created!'
+                })
+                this.$router.push('/walletaccounts')
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        },
+        GetWalletAccountType(){
+            axios.get('/api/walletaccount/GetAllWalletAccountType').then(({ data}) => (this.walletAccountTypes = data));
+        },
+        GetWalletAccountDetails(){
+            //axios.get('api/walletaccount/GetWalletAccountDetails/'+ this.form.username).then(({ data}) => (console.log(data)));
+            axios.get('/api/walletaccount/GetWalletAccountDetails/'+ this.$route.params.id)
+            .then(res => {
+                console.log(res)
+                this.form.WalletAccountType = res.data[0]['wallet_account_type'];
+                this.form.WalletType = res.data[0]['wallet_type'];
+                this.form.Branch = res.data[0]['branch'];
+                this.form.account_name = res.data[0]['account_name'];
+                this.form.account_no = res.data[0]['account_no'];
+                this.form.amount_limit = res.data[0]['amount_limit'];
+                this.form.am_per_transaction = res.data[0]['am_per_transaction'];
+                this.form.am_per_day = res.data[0]['am_per_day'];
+                this.form.am_per_month = res.data[0]['am_per_month'];
+                this.form.am_per_year = res.data[0]['am_per_year'];
+                this.form.am_minimum = res.data[0]['am_minimum'];
+                this.form.am_maximum = res.data[0]['am_maximum'];
+                this.form.am_transaction_minimun = res.data[0]['am_transaction_minimum'];
+                this.form.am_transaction_maximum = res.data[0]['am_transaction"_maximum'];
+                this.form.am_day_minimum = res.data[0]['am_day_minimum'];
+                this.form.am_day_maximum = res.data[0]['am_day_maximum'];
+                this.form.am_month_minimum = res.data[0]['am_month_minimum'];
+                this.form.am_month_maximum = res.data[0]['am_month_maximum'];
+                this.form.am_year_minimum = res.data[0]['am_year_minumum'];
+                this.form.am_year_maximum = res.data[0]['am_year_maximum'];
+                this.form.c_lm_per_day = res.data[0]['c_lm_per_day'];
+                this.form.c_lm_per_month = res.data[0]['c_lm_per_month'];
+                this.form.c_lm_per_year = res.data[0]['c_lm_per_year'];
+                this.form.c_allow_negative_balance = res.data[0]['c_allow_negative_balance'];
+                this.form.c_com_daily_balance = res.data[0]['c_com_daily_balance'];
+                this.form.c_com_daily_usage = res.data[0]['c_com_daily_usage'];
+                this.form.lm_per_day = res.data[0]['lm_per_day'];
+                this.form.lm_per_month = res.data[0]['lm_per_month'];
+                this.form.lm_per_year = res.data[0]['lm_per_year'];
+                this.form.allow_negative_balance = res.data[0]['allow_negative_balance'];
+                this.form.bank_name = res.data[0]['bank_name'];
+                this.form.account_type = res.data[0]['account_type'];
+                
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        },
+        uploadFile(e){
+            this.form.kyc_form = this.$refs.file.files[0];
+        },
+        uploadValidId(e){
+            this.form.valid_id = this.$refs.valid_id.files[0];
         }
     },
 
-    created() {},
+    created() {
+        this.GetWalletAccountType();
+        this.EditWalletAccount()
+        this.SearchESSID()
+        if(this.editmode == true){
+            this.GetWalletAccountDetails()
+        }
+        
+    },
 }
 </script>
 
 <style scoped>
-input {
+/* input {
     width: 100%;
     height: 40px;
     border: 1px solid #d9dadc;
@@ -474,5 +913,9 @@ input {
     top: .8rem;
     width: 1.25rem;
     height: 1.25rem;
+} */
+
+.custom-limit-input {
+    width: 15%;
 }
 </style>

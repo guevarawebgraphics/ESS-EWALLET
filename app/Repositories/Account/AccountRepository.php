@@ -14,15 +14,27 @@ use Illuminate\Http\Request;
 class AccountRepository
 {
     /**
+     * @ connection
+     **/
+    protected $connection;
+    /**
+     * @ constructor 
+     **/
+    public function __construct(){
+        // ESS Connection
+        $this->connection = DB::connection('mysql2');
+    }
+
+    /**
      * @return string
      * @ mysq2 (ESS Database)
      * @ Get All Account
      */
-    public function get_all_account($essid){
+    public function GellAllAccount($essid){
         /**
          * @ check 
          **/
-        $check = DB::connection('mysql2')
+        $check = $this->connection
                     ->table('ess_basetable')
                     ->where('ess_id', '=', $essid)
                     ->select('user_type_id')
@@ -33,7 +45,7 @@ class AccountRepository
               * @  check if employer
               **/
              if($check->user_type_id == 3){
-                $employer = DB::connection('mysql2')
+                $employer = $this->connection
                         ->table('ess_basetable')
                         ->join('users', 'ess_basetable.ess_id', '=', 'users.username')
                         ->join('employer', 'employer.id', 'users.employer_id')
@@ -70,7 +82,7 @@ class AccountRepository
               * @ check if employee 
               **/ 
              if($check->user_type_id == 4){
-                $employee = DB::connection('mysql2')
+                $employee = $this->connection
                             ->table('ess_basetable')
                             ->join('users', 'ess_basetable.ess_id', '=', 'users.username')
                             ->join('employee_personal_information', 'ess_basetable.employee_info', '=', 'employee_personal_information.id')

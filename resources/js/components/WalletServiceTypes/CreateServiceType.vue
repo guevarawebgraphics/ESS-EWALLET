@@ -10,12 +10,13 @@
         :index="props.index">
         </wizard-step>
         <tab-content title="Service Type Details" :before-change="validateTab">
+         
             <div class="box ptb--100">
                 <div class="card shadow-custom">
                     <div class="card-body"> 
                     <div class="col-sm-12">
                     <h4 class="header-title">Service Type Details</h4> 
-                        <form >
+                    
                         <div class="form-group row"> 
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Code:</label>
                         <div class="col-sm-10">
@@ -38,7 +39,7 @@
                         </div>
                         </div> 
         
-                        </form>
+                    
                     </div>
                     </div>
                 </div>
@@ -49,7 +50,7 @@
             <div class="card-body" >
             <div class="col-sm-7">
             <h4 class="header-title">Behavior</h4>
-         <form>
+         <!--<form>
                   <ul class="list-group list-group-flush"> 
             <li class="list-group-item">
                 <div class="form-check custom-control custom-checkbox ">
@@ -101,7 +102,60 @@
             </li>
             </ul>
         
-            </form>
+            </form> 
+        --> 
+
+            <ul class="list-group list-group-flush"> 
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="added_ssw_sdw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in single source wallet, added to single destination wallet</label>
+                </div> 
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="added_ssw_mdw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer intiated in single source wallet, added to multiple destination wallets</label>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="added_msw_sdw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple source wallets, added to single destination wallet</label>
+                </div>
+            </li> 
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="added_msw_mdw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple source wallets, added to multiple destination wallets</label>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="deducted_sdw_ssw" v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer intiated in single destination wallets, deducted from single source wallet</label>
+                </div> 
+             </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="deducted_sdw_msw"  v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in single destination wallet, deducted from multiple source wallets</label>
+                </div> 
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1" value="deducted_mdw_ssw"  v-model="form.behavior_value">
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple destination wallets, deducted from single source wallet</label>
+                </div> 
+            </li>
+            <li class="list-group-item">
+                <div class="form-check custom-control">
+                    <input type="radio" class="form-check-input" id="exampleCheck1"  value="deducted_mdw_msw" v-model="form.behavior_value"> 
+                    <label class="form-check-label" for="exampleCheck1">Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets</label>
+                </div>
+            </li>
+            </ul>
+        
             </div>
             </div> 
             </div> 
@@ -110,8 +164,8 @@
             <div class="card shadow-custom">
             <div class="card-body">
             <div class="col-sm-5">
-            <h4 class="header-title">List of Services using this service type</h4>
-                    <div class="single-table">
+           <!--    <h4 class="header-title">List of Services using this service type</h4>
+                 <div class="single-table">
                         <div class="table-responsive">
                         <table class="table table-bordered text-center">
                         <thead class="text-uppercase">
@@ -131,37 +185,41 @@
                         </tbody>
                         </table>
                         </div>
-                    </div>
+                    </div> -->
             </div> 
                     <div class="col-md-6 mt-5">
                     <ul class="list-group list-group-flush">
                     <li class="list-group-item">
+                        
                         <div class="form-check custom-control custom-checkbox ">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" :checked="this.form.acknowledgement_template != 'empty'" disabled>
                             <label class="form-check-label" for="exampleCheck1">Transaction Acknowledgement Template:  </label>
                             <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile03">
-                            <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+                            <input type="file" v-on:change="onFileChangeAcknowledgeTemplate" class="custom-file-input" name="acknowledgement_template" id="inputGroupFile03">
+                            <label class="custom-file-label" for="inputGroupFile03" v-if="this.form.acknowledgement_template == 'empty'">Choose File</label>
+                            <label class="custom-file-label" for="inputGroupFile03" v-else>{{this.form.acknowledgement_template['name']}}</label>
                             </div>   
                         </div> 
                     </li>
                     <li class="list-group-item">
                         <div class="form-check custom-control custom-checkbox ">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" :checked="this.form.approval_template != 'empty'" disabled>
                             <label class="form-check-label" for="exampleCheck1">Transaction Approval Template:</label>
                             <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile03">
-                            <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+                            <input type="file" v-on:change="onFileChangeApprovalTemplate" class="custom-file-input" id="inputGroupFile03">
+                            <label class="custom-file-label" for="inputGroupFile03" v-if="this.form.approval_template == 'empty'">Choose File</label>
+                            <label class="custom-file-label" for="inputGroupFile03" v-else>{{this.form.approval_template['name']}}</label>
                             </div> 
                         </div> 
                     </li>
                     <li class="list-group-item">
                         <div class="form-check custom-control custom-checkbox ">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1"  :checked="this.form.confirmation_template != 'empty'" disabled>
                             <label class="form-check-label" for="exampleCheck1">Transaction Confirmation Template:</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile03">
-                            <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+                            <input type="file"  v-on:change="onFileChangeConfirmationTemplate" class="custom-file-input" id="inputGroupFile03">
+                            <label class="custom-file-label" for="inputGroupFile03" v-if="this.form.confirmation_template == 'empty'">Choose File</label>
+                            <label class="custom-file-label" for="inputGroupFile03" v-else>{{this.form.confirmation_template['name']}}</label>
                         </div> 
                         </div> 
                     </li>
@@ -170,7 +228,8 @@
                       <!--  <button type="button" class="btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom">Save Service Type</button> -->
                     </div>     
             </div> 
-            </div> 
+            </div>  
+      
         </tab-content>   
         <template slot="footer" slot-scope="props">
             <div class="wizard-footer-left">
@@ -190,25 +249,33 @@
 <script>
 export default {
     data() {
-        return {
-        loadingWizard: false, 
+        return { 
+    
+        loadingWizard: false,
         form  : new Form({
             servicetype_code : null,
             servicetype_name : null,
-            servicetype_description: null,
-            added_ssw_sdw: 0,
+            servicetype_description: null, 
+            behavior_value : null,
+         /*   added_ssw_sdw: 0,
             added_ssw_mdw: 0,
             added_msw_sdw: 0, 
             added_msw_mdw: 0,
             deducted_sdw_ssw: 0,
             deducted_sdw_msw: 0,
             deducted_mdw_ssw:0,
-            deducted_mdw_msw:0,
+            deducted_mdw_msw:0,*/
+            acknowledgement_template : 'empty',
+            approval_template : 'empty',
+            confirmation_template : 'empty',
         })
         }
     }, 
     methods: {
-        validateTab:function(){
+        validateTab:function(){ 
+        /**
+        * Form Validation 
+        */
             if(!this.form.servicetype_name && !this.form.servicetype_description && !this.servicetype_code){
                 this.$validator.validateAll().then(result => {
                         if (result) {
@@ -221,17 +288,34 @@ export default {
             else {
                 return true;
             }     
-        }, 
-        onComplete: function(){
-           this.form.post("/api/createservicetype")
+        },  
+        onComplete: function(){ 
+        /**
+        * For creating service type
+        */ 
+        let Formtwo = new FormData(); 
+        Formtwo.append('file_acknowledgement_template', this.form.acknowledgement_template);
+        Formtwo.append('file_approval_template', this.form.approval_template);
+        Formtwo.append('file_confirmation_template', this.form.confirmation_template); 
+        Formtwo.append('servicetype_code', this.form.servicetype_code);
+        Formtwo.append('servicetype_name', this.form.servicetype_name); 
+        Formtwo.append('behavior_value', this.form.behavior_value); 
+        Formtwo.append('servicetype_description', this.form.servicetype_description);
+
+        axios.post("/api/service_type/createservicetype",Formtwo)
            .then((response) =>{
-               this.$router.push('servicetypes') 
+                this.$router.push('servicetypes') 
+                console.log("hi");
            })
            .catch(() => {
-             console.log("error");  
+                console.log("error");  
            })
         },
         addServiceTypeDetails(){
+
+        /**
+        * Form Validation 
+        */
             this.$validator.validateAll().then((result)=> {
             if(result) {
                 this.tabone = true;
@@ -253,10 +337,22 @@ export default {
                 return true;
             }
         },
+        onFileChangeAcknowledgeTemplate(e){
+            console.log(e.target.files[0]);
+            this.form.acknowledgement_template = e.target.files[0];
+        },
+        onFileChangeApprovalTemplate(e){
+            console.log(e.target.files[0]);
+            this.form.approval_template = e.target.files[0];
+        },
+        onFileChangeConfirmationTemplate(e){
+            console.log(e.target.files[0]); 
+            this.form.confirmation_template = e.target.files[0];
+        },
          /***
      * These methods are for changing the value of the form data
      */
-    added_ssw_sdw(changeValue){
+   /* added_ssw_sdw(changeValue){
         changeValue == 0 ? this.form.added_ssw_sdw = 1 : this.form.added_ssw_sdw = 0 
     }, 
     added_ssw_mdw(changeValue){
@@ -280,8 +376,9 @@ export default {
     deducted_mdw_msw(changeValue){
         changeValue == 0 ? this.form.deducted_mdw_msw  = 1 : this.form.deducted_mdw_msw  = 0 
     },    
-   
+       */
     },
+
 
     created() {
 

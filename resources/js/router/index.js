@@ -2,44 +2,142 @@ window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
-
+let user = window.localStorage.getItem('user');
 
 const routes = [
-    { path: '/', component: require('../components/auth/Login.vue').default },
-    { path: '/login', component: require('../components/auth/Login.vue').default },
-    { path: '/home', component: require('../components/auth/Login.vue').default },
-    { path: '/dashboard', component: require('../components/General/Dashboard.vue').default},
-    { path: '/walletaccounts', component: require('../components/WalletAccounts/WalletAccounts.vue').default},
-    { path: '/createwalletaccounts', component: require('../components/WalletAccounts/CreateWalletAccount.vue').default},
+    { 
+      path: '/',
+      component: require('../components/auth/Login.vue').default
+    },
+    {
+       path: '/login',
+      component: require('../components/auth/Login.vue').default
+    },
+    { 
+      path: '/home', 
+      component: require('../components/auth/Login.vue').default
+    },
+    { 
+      path: '/dashboard', 
+      component: require('../components/General/Dashboard.vue').default, 
+      beforeEnter: requireLogin
+    },
+    /* 
+     * @ Wallet Accounts
+     */
+    { 
+      path: '/walletaccounts', 
+      component: require('../components/WalletAccounts/WalletAccounts.vue').default, 
+      beforeEnter: requireLogin
+    },
+    { 
+      path: '/createwalletaccount', 
+      component: require('../components/WalletAccounts/CreateWalletAccount.vue').default, 
+      beforeEnter: requireLogin
+    },
+    { 
+      path: '/updatewalletaccount/:id', 
+      component: require('../components/WalletAccounts/CreateWalletAccount.vue').default, 
+      beforeEnter: requireLogin
+    },
     /**
-     * @ CHUGUG EARPHONES SIRA
+     * @ Service Types
      **/
-    { path: '/servicetypes', component: require('../components/WalletServiceTypes/ServiceTypeTable.vue').default}, 
-    { path: '/editservicetype/:id', name: '/test', component: require('../components/WalletServiceTypes/EditServiceType.vue').default},
-    { path: '/servicetypesetup/:id', name: '/st-setup', component: require('../components/WalletServiceTypes/ServiceTypeSetUp.vue').default},
-    { path: '/createservicetype', name: '/st-create-new', component: require('../components/WalletServiceTypes/CreateServiceType.vue').default},
-    { path: '*', component: require('../components/ErrorPages/404.vue') },
+    { 
+      path: '/servicetypes', 
+      component: require('../components/WalletServiceTypes/ServiceTypeTable.vue').default, 
+      beforeEnter: requireLogin
+    }, 
+    { 
+      path: '/editservicetype/:id', name: '/test', 
+      component: require('../components/WalletServiceTypes/EditServiceType.vue').default, 
+      beforeEnter: requireLogin
+    },
+    { 
+      path: '/servicetypesetup/:id', 
+      name: '/st-setup', 
+      component: require('../components/WalletServiceTypes/ServiceTypeSetUp.vue').default, 
+      beforeEnter: requireLogin
+    },
+    { 
+      path: '/createservicetype',
+       name: '/st-create-new', 
+       component: require('../components/WalletServiceTypes/CreateServiceType.vue').default, 
+       beforeEnter: requireLogin
+    },
+    /**
+     * @ Error Pages
+     **/
+    { 
+      path: '*', 
+      component: require('../components/ErrorPages/404.vue') 
+    },
     /**
      * @ Routes For Service Matrix 
      **/
-    { path: '/ServiceGroup', component: require('../components/ServiceMatrix/ServiceGroup.vue').default},
-    { path: '/ServiceMatrix', component: require('../components/ServiceMatrix/ServiceMatrix.vue').default},
+    { 
+      path: '/serviceGroup', 
+      component: require('../components/ServiceMatrix/ServiceGroup.vue').default, 
+      beforeEnter: requireLogin
+    },
+    { 
+      path: '/serviceMatrix', 
+      component: require('../components/ServiceMatrix/ServiceMatrix.vue').default, 
+      beforeEnter: requireLogin
+    },
     /**
      * @ Services  
      */
-    {path:'/serviceslist',component: require('../components/WalletServices/ServicesListTable.vue').default},
-    {path:'/createservice',component: require('../components/WalletServices/CreateWalletServices.vue').default},
+    {
+      path:'/serviceslist',
+      component: require('../components/WalletServices/ServicesListTable.vue').default, 
+      beforeEnter: requireLogin
+    },
+    {
+      path:'/createservice',
+      component: require('../components/WalletServices/CreateWalletServices.vue').default, 
+      beforeEnter: requireLogin
+    },
     /**
      *@ Wallet Account Type 
      **/
-    {path:'/walletaccounttype',component: require('../components/WalletAccountTypes/WalletAccountType.vue').default},
+    {
+      path:'/walletaccounttype',
+      component: require('../components/WalletAccountTypes/WalletAccountType.vue').default, 
+      beforeEnter: requireLogin
+    },
+    /**
+     * Service Gateway
+     */
+    {
+      path:'/servicegatewaylist',
+      component: require('../components/ServiceGateway/ServiceGatewayTable.vue').default, 
+      beforeEnter: requireLogin
+    },
     /**
      *@ Return Error 404 Page 
      * @param /* 
      **/
-    {path:'/*',component: require('../components/ErrorPages/404.vue').default},
+    {
+      path:'/*',
+      component: require('../components/ErrorPages/404.vue').default
+    },
 
   ]
+
+  /**
+   * @ Route Guards
+   * Authentication Login 
+   **/
+  function requireLogin(to, from, next) {
+      if (user != null) {
+          next(true);
+      } else {
+        window.localStorage.removeItem('user');
+        location.reload();
+        window.location.href="/";
+      }
+  }
 
 export default new VueRouter({
     mode: 'history',
