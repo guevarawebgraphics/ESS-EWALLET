@@ -154,11 +154,12 @@
                   <div class="col-sm-6">
                     <div class="form-group">  
                       <label class="my-1" for="inlineFormCustomSelectPref">Assign Approver:</label>
-                    <select class="custom-select my-1" id="inlineFormCustomSelectPref" :disabled="this.form.approval==0">
-                      <option selected>Choose Merchant Admin</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                    <select class="custom-select my-1" id="assignapprover" :disabled="this.form.approval==0"> 
+
+                      <option selected="" disabled >Choose Merchant Admin</option>
+                      <option value="1">Merchant One</option>
+                      <option value="2">Merchant Two</option>
+                      <option value="3">Merchant Three</option>
                     </select>
                   </div>   
                   </div> 
@@ -361,13 +362,13 @@ data() {
        * Approval 
        */
       approval : 0,
-      merchand_admin_id : null
+      merchant_admin_id : null
 
     }),
   }
 },
 methods:{
-     onComplete: function(){
+      onComplete: function(){
        console.log('hi'); 
        this.form.post('/api/service/createservice')
         .then((response)=>{
@@ -423,7 +424,7 @@ methods:{
           console.log('err');
        })
      },  
-     getServiceGateway(){
+    getServiceGateway(){
             axios.get('/api/service_gateway/getservicegateway')
             .then((response) => {
                 this.ServiceGateway = response.data;
@@ -441,8 +442,16 @@ methods:{
             this.service_template = e.target.files[0]['name'];
     }, 
     switchApproval(changeValue) {
-             changeValue == 0 ? this.form.approval  = 1 : this.form.approval  = 0 
-    }
+             if(changeValue == 0){
+                this.form.approval  = 1   
+             }
+             else {
+                this.form.approval  = 0;  
+                /*this.form.merchant_admin_id === "0";  
+                $('#assignapprover').attr('hidden');*/
+             }
+    },
+
     
     
 },
