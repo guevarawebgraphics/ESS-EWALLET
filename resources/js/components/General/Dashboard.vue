@@ -8,7 +8,7 @@
 export default {
   data(){
     return {
-      user: window.user,
+      user: window.localStorage.getItem('user'),
     }
   },
   methods: {
