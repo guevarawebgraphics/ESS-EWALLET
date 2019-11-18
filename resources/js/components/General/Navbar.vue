@@ -37,6 +37,7 @@ export default {
         logout(){
             axios.post('/logout')
             .then(res => {
+                window.localStorage.removeItem('user');
                 location.reload();
                 window.location.href="/";
             })
