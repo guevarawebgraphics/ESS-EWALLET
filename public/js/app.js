@@ -5045,7 +5045,7 @@ __webpack_require__.r(__webpack_exports__);
          * Approval 
          */
         approval: 0,
-        merchand_admin_id: null
+        merchant_admin_id: null
       })
     };
   },
@@ -5121,7 +5121,20 @@ __webpack_require__.r(__webpack_exports__);
       this.service_template = e.target.files[0]['name'];
     },
     switchApproval: function switchApproval(changeValue) {
-      changeValue == 0 ? this.form.approval = 1 : this.form.approval = 0;
+      if (changeValue == 0) {
+        this.form.approval = 1;
+        this.configureAssignApprover();
+      } else {
+        this.form.approval = 0;
+        this.configureAssignApprover();
+      }
+    },
+    configureAssignApprover: function configureAssignApprover() {
+      if (this.form.approval == 0) {
+        this.form.merchant_admin_id === "0";
+        $('#assignapprover').attr('hidden');
+        console.log("hey");
+      } else {}
     }
   },
   created: function created() {
@@ -65384,27 +65397,59 @@ var render = function() {
                           _c(
                             "select",
                             {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.merchant_admin_id,
+                                  expression: "form.merchant_admin_id"
+                                }
+                              ],
                               staticClass: "custom-select my-1",
                               attrs: {
-                                id: "inlineFormCustomSelectPref",
+                                id: "assignapprover",
                                 disabled: this.form.approval == 0
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.form,
+                                    "merchant_admin_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
                               }
                             },
                             [
-                              _c("option", { attrs: { selected: "" } }, [
-                                _vm._v("Choose Merchant Admin")
-                              ]),
+                              _c(
+                                "option",
+                                {
+                                  attrs: { selected: "selected", disabled: "" }
+                                },
+                                [_vm._v("Choose Merchant Admin")]
+                              ),
                               _vm._v(" "),
                               _c("option", { attrs: { value: "1" } }, [
-                                _vm._v("One")
+                                _vm._v("Merchant One")
                               ]),
                               _vm._v(" "),
                               _c("option", { attrs: { value: "2" } }, [
-                                _vm._v("Two")
+                                _vm._v("Merchant Two")
                               ]),
                               _vm._v(" "),
                               _c("option", { attrs: { value: "3" } }, [
-                                _vm._v("Three")
+                                _vm._v("Merchant Three")
                               ])
                             ]
                           )
