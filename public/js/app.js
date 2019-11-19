@@ -2617,6 +2617,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2626,6 +2636,7 @@ __webpack_require__.r(__webpack_exports__);
         id: '',
         type_code: '',
         wallet_account_type: '',
+        wallet_type: '',
         status: status
       })
     };
@@ -2677,7 +2688,12 @@ __webpack_require__.r(__webpack_exports__);
         _this2.get_walle_account_type();
 
         _this2.datatable();
-      }).then(function () {
+
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
+      })["catch"](function () {
         console.clear();
       });
     },
@@ -2693,6 +2709,11 @@ __webpack_require__.r(__webpack_exports__);
         _this3.get_walle_account_type();
 
         _this3.datatable();
+
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
       })["catch"](function () {
         console.clear();
       });
@@ -4994,6 +5015,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5123,18 +5145,11 @@ __webpack_require__.r(__webpack_exports__);
     switchApproval: function switchApproval(changeValue) {
       if (changeValue == 0) {
         this.form.approval = 1;
-        this.configureAssignApprover();
       } else {
         this.form.approval = 0;
-        this.configureAssignApprover();
+        /*this.form.merchant_admin_id === "0";  
+        $('#assignapprover').attr('hidden');*/
       }
-    },
-    configureAssignApprover: function configureAssignApprover() {
-      if (this.form.approval == 0) {
-        this.form.merchant_admin_id === "0";
-        $('#assignapprover').attr('hidden');
-        console.log("hey");
-      } else {}
     }
   },
   created: function created() {
@@ -58495,7 +58510,7 @@ var render = function() {
       _c("div", { staticClass: "card shadow-custom" }, [
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-8" }, [
               _c("div", { staticClass: "header-title" }, [
                 _vm._v("Wallet Account Types")
               ]),
@@ -58517,6 +58532,8 @@ var render = function() {
                           _c("td", [_vm._v(_vm._s(wat.type_code))]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(wat.wallet_account_type))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(wat.wallet_type))]),
                           _vm._v(" "),
                           wat.status == 1
                             ? _c("td", [
@@ -58800,7 +58817,65 @@ var render = function() {
                             ]
                           )
                         ])
-                      : _vm._e()
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "custom-label",
+                          attrs: { for: "wallet_type" }
+                        },
+                        [_vm._v("Wallet Type")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.wallet_type,
+                              expression: "form.wallet_type"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "wallet_type",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { selected: "", value: "" } }, [
+                            _vm._v("Select")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Credit" } }, [
+                            _vm._v("Credit")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Prepaid" } }, [
+                            _vm._v("Prepaid")
+                          ])
+                        ]
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
@@ -58866,6 +58941,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Type Code")]),
         _vm._v(" "),
         _c("th", [_vm._v("Wallet Account Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Wallet Type")]),
         _vm._v(" "),
         _c("th", [_vm._v("Status")]),
         _vm._v(" "),
@@ -65397,46 +65474,16 @@ var render = function() {
                           _c(
                             "select",
                             {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.merchant_admin_id,
-                                  expression: "form.merchant_admin_id"
-                                }
-                              ],
                               staticClass: "custom-select my-1",
                               attrs: {
                                 id: "assignapprover",
                                 disabled: this.form.approval == 0
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.form,
-                                    "merchant_admin_id",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
                               }
                             },
                             [
                               _c(
                                 "option",
-                                {
-                                  attrs: { selected: "selected", disabled: "" }
-                                },
+                                { attrs: { selected: "", disabled: "" } },
                                 [_vm._v("Choose Merchant Admin")]
                               ),
                               _vm._v(" "),
