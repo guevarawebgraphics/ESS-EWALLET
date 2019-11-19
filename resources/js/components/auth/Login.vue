@@ -45,11 +45,11 @@
                this.form.post('/login')
                .then(({ data }) => { 
                    console.log(data);
+                   window.localStorage.setItem('user', JSON.stringify(this.form.username));
                    window.location.href = "/dashboard"
             })
             .catch(() => {
                 console.clear();
-                console.log('Error');
             });
            }
        },

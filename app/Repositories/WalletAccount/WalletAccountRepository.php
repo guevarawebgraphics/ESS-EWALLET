@@ -109,6 +109,20 @@ class WalletAccountRepository
      */
     public function StoreWalletAccount($wallet_account_data){
         $user = auth('api')->user();
+        /**
+         * @ Handle File Upload 
+         **/
+         //gets the original file name
+         $kyc_form_ext = $wallet_account_data->kyc_form->getClientOriginalName();
+         $valid_id_ext = $wallet_account_data->valid_id->getClientOriginalName();
+         //gets the original file name except the extension
+         $kyc_form_filename = pathinfo($kyc_form_ext, PATHINFO_FILENAME);
+         $valid_id_name = pathinfo($valid_id_ext, PATHINFO_FILENAME);
+         $kyc_form_file = time().'_'.$kyc_form_filename.'.'.$wallet_account_data->kyc_form->getClientOriginalExtension();
+         $valid_id_file = time().'_'.$valid_id_name.'.'.$wallet_account_data->valid_id->getClientOriginalExtension();
+         // Store File
+         $kyc_form = $wallet_account_data->kyc_form->storeAs('public/wallet_account_files/kyc_form', $kyc_form_file);
+         $valid_id = $wallet_account_data->valid_id->storeAs('public/wallet_account_files/valid_id', $valid_id_file);
         // Store to Wallet Account
         $wallet_account = wallet_account::create([
                             'ess_id' => $wallet_account_data->username,
@@ -117,6 +131,8 @@ class WalletAccountRepository
                             'wallet_account_no' => $wallet_account_data->WalletAccountNo,
                             'wallet_account_name' => $wallet_account_data->WalletAccountName,
                             'wallet_title' => $wallet_account_data->Wallettitle,
+                            'kyc_form' => $kyc_form,
+                            'valid_id'=> $valid_id_file,
                             'status' => true,
                             'created_by' => $user->id,
                             'updated_by' => $user->id,
@@ -125,6 +141,7 @@ class WalletAccountRepository
         $wallet_account_bank = wallet_bank_account::create([
                                     'wallet_account_id' => $wallet_account->id,
                                     'branch' => $wallet_account_data->Branch,
+                                    'bank_name' => $wallet_account_data->bank_name,
                                     'account_type' => $wallet_account_data->account_type,
                                     'account_name' => $wallet_account_data->account_name,
                                     'account_no' => $wallet_account_data->account_no,
@@ -170,8 +187,8 @@ class WalletAccountRepository
                                                 'lm_per_month' => $wallet_account_data->lm_per_month,
                                                 'lm_per_year' => $wallet_account_data->lm_per_year,
                                                 'allow_negative_balance' => $wallet_account_data->allow_negative_balance,
-                                                'com_daily_balance' => $wallet_account_data->com_daily_balance,
-                                                'com_daily_usage' => $wallet_account_data->com_daily_usage,
+                                                'com_daily_balance' => $wallet_account_data->c_com_daily_balance,
+                                                'com_daily_usage' => $wallet_account_data->c_com_daily_usage,
                                                 'created_by' => $user->id,
                                                 'updated_by' => $user->id,
                                                 'created_at' => Carbon::now(),

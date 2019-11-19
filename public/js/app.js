@@ -1902,7 +1902,81 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      user: window.localStorage.getItem('user')
+    };
+  },
+  methods: {
+    checkAuthenticatedUser: function checkAuthenticatedUser() {
+      if (!this.user) {
+        window.location.href = "/";
+      }
+    }
+  },
+  created: function created() {
+    this.checkAuthenticatedUser();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/General/Navbar.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/General/Navbar.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+  methods: {
+    logout: function logout() {
+      axios.post('/logout').then(function (res) {
+        window.localStorage.removeItem('user');
+        location.reload();
+        window.location.href = "/";
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -3200,34 +3274,37 @@ __webpack_require__.r(__webpack_exports__);
         account_name: null,
         account_no: null,
         // Wallet Amount limits config
-        amount_limit: false,
-        am_per_transaction: false,
-        am_per_day: false,
-        am_per_month: false,
-        am_per_year: false,
+        amount_limit: 0,
+        am_per_transaction: 0,
+        am_per_day: 0,
+        am_per_month: 0,
+        am_per_year: 0,
         // Wallet Amount Limits
-        am_minimum: null,
-        am_maximum: null,
-        am_transaction_minimun: null,
-        am_transaction_maximum: null,
-        am_day_minimum: null,
-        am_day_maximum: null,
-        am_month_minimum: null,
-        am_month_maximum: null,
-        am_year_minimum: null,
-        am_year_maximum: null,
+        am_minimum: '',
+        am_maximum: '',
+        am_transaction_minimun: '',
+        am_transaction_maximum: '',
+        am_day_minimum: '',
+        am_day_maximum: '',
+        am_month_minimum: '',
+        am_month_maximum: '',
+        am_year_minimum: '',
+        am_year_maximum: '',
         // Wallet limit no of transaction config
-        c_lm_per_day: false,
-        c_lm_per_month: false,
-        c_lm_per_year: false,
-        c_allow_negative_balance: false,
-        c_com_daily_balance: false,
-        c_com_daily_usage: false,
+        c_lm_per_day: 0,
+        c_lm_per_month: 0,
+        c_lm_per_year: 0,
+        c_allow_negative_balance: 0,
+        c_com_daily_balance: 0,
+        c_com_daily_usage: 0,
         // Wallet limit no of transaction
-        lm_per_day: null,
-        lm_per_month: null,
-        lm_per_year: null,
-        allow_negative_balance: null
+        lm_per_day: 0,
+        lm_per_month: 0,
+        lm_per_year: 0,
+        allow_negative_balance: 0,
+        // Files
+        kyc_form: null,
+        valid_id: null
       })
     };
   },
@@ -3417,7 +3494,58 @@ __webpack_require__.r(__webpack_exports__);
     StoreWalletAccount: function StoreWalletAccount() {
       var _this4 = this;
 
-      this.form.post('api/walletaccount/StoreWalletAccount').then(function (res) {
+      var formData = new FormData(); // Wallet Account
+
+      formData.append('username', this.form.username);
+      formData.append('kyc_form', this.form.kyc_form);
+      formData.append('valid_id', this.form.valid_id);
+      formData.append('WalletType', this.form.WalletType);
+      formData.append('WalletAccountType', this.form.WalletAccountType);
+      formData.append('WalletAccountNo', this.form.WalletAccountNo);
+      formData.append('WalletAccountName', this.form.WalletAccountName);
+      formData.append('Wallettitle', this.form.Wallettitle); // //Wallet Bank Account
+
+      formData.append('Branch', this.form.Branch);
+      formData.append('bank_name', this.form.bank_name);
+      formData.append('account_type', this.form.account_type);
+      formData.append('account_name', this.form.account_name);
+      formData.append('account_no', this.form.account_no); // Wallet Amount limits config
+
+      formData.append('amount_limit', this.form.amount_limit);
+      formData.append('am_per_transaction', this.form.am_per_transaction);
+      formData.append('am_per_day', this.form.am_per_day);
+      formData.append('am_per_month', this.form.am_per_month);
+      formData.append('am_per_year', this.form.am_per_year); // Wallet Amount Limits
+
+      formData.append('am_minimum', this.form.am_minimum);
+      formData.append('am_maximum', this.form.am_maximum);
+      formData.append('am_transaction_minimum', this.form.am_transaction_minimun);
+      formData.append('am_transaction_maximum', this.form.am_transaction_maximum);
+      formData.append('am_day_minimum', this.form.am_day_minimum);
+      formData.append('am_day_maximum', this.form.am_day_maximum);
+      formData.append('am_month_minimum', this.form.am_month_minimum);
+      formData.append('am_month_maximum', this.form.am_month_maximum);
+      formData.append('am_year_minimum', this.form.am_year_minimum);
+      formData.append('am_year_minimum', this.form.am_year_minimum);
+      formData.append('am_year_maximum', this.form.am_year_maximum); // Wallet limit no of transaction config
+
+      formData.append('c_lm_per_day', this.form.c_lm_per_day);
+      formData.append('c_lm_per_month', this.form.c_lm_per_month);
+      formData.append('c_lm_per_year', this.form.c_lm_per_year);
+      formData.append('c_allow_negative_balance', this.form.c_allow_negative_balance);
+      formData.append('c_com_daily_balance', this.form.c_com_daily_balance);
+      formData.append('c_com_daily_usage', this.form.c_com_daily_usage); // Wallet limit no of transaction
+
+      formData.append('lm_per_day', this.form.lm_per_day);
+      formData.append('lm_per_month', this.form.lm_per_month);
+      formData.append('lm_per_year', this.form.lm_per_year);
+      formData.append('allow_negative_balance', this.form.allow_negative_balance);
+      axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+      axios.post('api/walletaccount/StoreWalletAccount', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (res) {
         console.log(res);
 
         _this4.form.clear();
@@ -3483,6 +3611,12 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         console.log(err);
       });
+    },
+    uploadFile: function uploadFile(e) {
+      this.form.kyc_form = this.$refs.file.files[0];
+    },
+    uploadValidId: function uploadValidId(e) {
+      this.form.valid_id = this.$refs.valid_id.files[0];
     }
   },
   created: function created() {
@@ -3867,6 +4001,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3885,9 +4025,9 @@ __webpack_require__.r(__webpack_exports__);
            deducted_sdw_msw: 0,
            deducted_mdw_ssw:0,
            deducted_mdw_msw:0,*/
-        acknowledgement_template: null,
-        approval_template: null,
-        confirmation_template: null
+        acknowledgement_template: 'empty',
+        approval_template: 'empty',
+        confirmation_template: 'empty'
       })
     };
   },
@@ -3914,7 +4054,15 @@ __webpack_require__.r(__webpack_exports__);
       /**
       * For creating service type
       */
-      this.form.post("/api/service_type/createservicetype").then(function (response) {
+      var Formtwo = new FormData();
+      Formtwo.append('file_acknowledgement_template', this.form.acknowledgement_template);
+      Formtwo.append('file_approval_template', this.form.approval_template);
+      Formtwo.append('file_confirmation_template', this.form.confirmation_template);
+      Formtwo.append('servicetype_code', this.form.servicetype_code);
+      Formtwo.append('servicetype_name', this.form.servicetype_name);
+      Formtwo.append('behavior_value', this.form.behavior_value);
+      Formtwo.append('servicetype_description', this.form.servicetype_description);
+      axios.post("/api/service_type/createservicetype", Formtwo).then(function (response) {
         _this.$router.push('servicetypes');
 
         console.log("hi");
@@ -3946,10 +4094,17 @@ __webpack_require__.r(__webpack_exports__);
         return true;
       }
     },
-    onImageChange: function onImageChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      this.form.acknowledgement_template = files[0];
+    onFileChangeAcknowledgeTemplate: function onFileChangeAcknowledgeTemplate(e) {
+      console.log(e.target.files[0]);
+      this.form.acknowledgement_template = e.target.files[0];
+    },
+    onFileChangeApprovalTemplate: function onFileChangeApprovalTemplate(e) {
+      console.log(e.target.files[0]);
+      this.form.approval_template = e.target.files[0];
+    },
+    onFileChangeConfirmationTemplate: function onFileChangeConfirmationTemplate(e) {
+      console.log(e.target.files[0]);
+      this.form.confirmation_template = e.target.files[0];
     }
     /***
     * These methods are for changing the value of the form data
@@ -4186,7 +4341,7 @@ __webpack_require__.r(__webpack_exports__);
     showDetailsAndBehavior: function showDetailsAndBehavior() {
       var _this = this;
 
-      axios.get('/api/behavior/' + this.id_value).then(function (response) {
+      axios.get('/api/service_type/behavior/' + this.id_value).then(function (response) {
         _this.DetailsBehavior = response.data;
         _this.form.service_code = response.data['st_code'];
         _this.form.service_name = response.data['st_name'];
@@ -4345,12 +4500,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       Services: {},
       showList: true,
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      ServiceTypeDetails: {},
+      form: new Form({
+        acknowledgement_template: null,
+        approval_template: null,
+        confirmation_template: null
+      }),
+
+      /***
+       * Variable container for updating templates
+       */
+      acknowledgement_template: null,
+      approval_template: null,
+      confirmation_template: null
     };
   },
   methods: {
@@ -4366,13 +4535,61 @@ __webpack_require__.r(__webpack_exports__);
         } else {}
       })["catch"](function () {});
     },
+    showServicesDetails: function showServicesDetails() {
+      var _this2 = this;
+
+      axios.get('/api/service_type/behavior/' + this.id).then(function (response) {
+        _this2.ServiceTypeDetails = response.data;
+        _this2.form.acknowledgement_template = response.data['acknowledgement_template'];
+        _this2.form.approval_template = response.data['approval_template'];
+        _this2.form.confirmation_template = response.data['confirmation_template'];
+        /**
+         * Gets the names of uploaded files
+         */
+
+        _this2.acknowledgement_template = response.data['acknowledgement_template'];
+        _this2.approval_template = response.data['approval_template'];
+        _this2.confirmation_template = response.data['confirmation_template'];
+      });
+    },
+    onFileChangeAcknowledgeTemplate: function onFileChangeAcknowledgeTemplate(e) {
+      console.log(e.target.files[0]);
+      this.acknowledgement_template = e.target.files[0]; // for setting up the variables of templates
+
+      this.form.acknowledgement_template = e.target.files[0]['name']; // for displaying on the client side
+    },
+    onFileChangeApprovalTemplate: function onFileChangeApprovalTemplate(e) {
+      console.log(e.target.files[0]);
+      this.approval_template = e.target.files[0]; // for setting up the variables of templates
+
+      this.form.approval_template = e.target.files[0]['name']; // for displaying on the client side
+    },
+    onFileChangeConfirmationTemplate: function onFileChangeConfirmationTemplate(e) {
+      console.log(e.target.files[0]);
+      this.confirmation_template = e.target.files[0]; // for setting up the variables of templates
+
+      this.form.confirmation_template = e.target.files[0]['name']; // for displaying on the client side
+    },
     saveServiceType: function saveServiceType() {
-      this.$router.push('/servicetypes');
-      console.log("ho");
+      var _this3 = this;
+
+      var Formtwo = new FormData();
+      Formtwo.append('file_acknowledgement_template', this.acknowledgement_template);
+      Formtwo.append('file_approval_template', this.approval_template);
+      Formtwo.append('file_confirmation_template', this.confirmation_template);
+      Formtwo.append('id', this.id);
+      axios.post('/api/service_type/updateservicetype/templates', Formtwo).then(function (response) {
+        console.log(response.data);
+
+        _this3.$router.push('/servicetypes');
+      })["catch"](function () {
+        console.log("error");
+      });
     }
   },
   created: function created() {
     this.showServices();
+    this.showServicesDetails();
   }
 });
 
@@ -4732,11 +4949,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       ServiceGateway: {},
       ServiceGroups: {},
+      service_template: null,
       form: new Form({
         /**
          * Form data For First Tab
@@ -4776,7 +5039,13 @@ __webpack_require__.r(__webpack_exports__);
          */
         limit_per_day: null,
         limit_per_month: null,
-        limit_per_year: null
+        limit_per_year: null,
+
+        /**
+         * Approval 
+         */
+        approval: 0,
+        merchant_admin_id: null
       })
     };
   },
@@ -4845,6 +5114,27 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref.data;
         return _this6.ServiceGroups = data;
       });
+    },
+    onFileChangeAcknowledgeTemplate: function onFileChangeAcknowledgeTemplate(e) {
+      console.log(e.target.files[0]);
+      this.form.service_template = e.target.files[0];
+      this.service_template = e.target.files[0]['name'];
+    },
+    switchApproval: function switchApproval(changeValue) {
+      if (changeValue == 0) {
+        this.form.approval = 1;
+        this.configureAssignApprover();
+      } else {
+        this.form.approval = 0;
+        this.configureAssignApprover();
+      }
+    },
+    configureAssignApprover: function configureAssignApprover() {
+      if (this.form.approval == 0) {
+        this.form.merchant_admin_id === "0";
+        $('#assignapprover').attr('hidden');
+        console.log("hey");
+      } else {}
     }
   },
   created: function created() {
@@ -5001,13 +5291,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     login: function login() {
+      var _this = this;
+
       this.form.post('/login').then(function (_ref) {
         var data = _ref.data;
         console.log(data);
+        window.localStorage.setItem('user', JSON.stringify(_this.form.username));
         window.location.href = "/dashboard";
       })["catch"](function () {
         console.clear();
-        console.log('Error');
       });
     }
   },
@@ -9515,7 +9807,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
 
 // exports
 
@@ -56872,6 +57164,110 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "page-title-area" }, [
+    _c("div", { staticClass: "row align-items-center" }, [
+      _c("div", { staticClass: "col-sm-6" }, [
+        _c("div", { staticClass: "breadcrumbs-area clearfix" }, [
+          _c("h4", { staticClass: "page-title pull-left" }, [
+            _vm._v("Dashboard")
+          ]),
+          _vm._v(" "),
+          _c("ul", { staticClass: "breadcrumbs pull-left" }, [
+            _c(
+              "li",
+              [
+                _c("router-link", { attrs: { to: "/dashboard" } }, [
+                  _vm._v("Home")
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm._m(0)
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-6 clearfix" }, [
+        _c("div", { staticClass: "user-profile pull-right btn-custom" }, [
+          _c("img", {
+            staticClass: "avatar user-thumb",
+            attrs: { src: "/str_dash/images/author/avatar.png", alt: "avatar" }
+          }),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: "dropdown-menu" }, [
+            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+              _vm._v("Message")
+            ]),
+            _vm._v(" "),
+            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+              _vm._v("Settings")
+            ]),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "dropdown-item",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.logout($event)
+                  }
+                }
+              },
+              [_vm._v("Logout")]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [_c("span", [_vm._v("Dashboard")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "h4",
+      {
+        staticClass: "user-name dropdown-toggle",
+        attrs: { "data-toggle": "dropdown" }
+      },
+      [_vm._v("Admin "), _c("i", { staticClass: "fa fa-angle-down" })]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=template&id=449c170a&":
 /*!*************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=template&id=449c170a& ***!
@@ -59089,10 +59485,13 @@ var render = function() {
                             _c("div", { staticClass: "input-group mb-3" }, [
                               _c("div", { staticClass: "custom-file" }, [
                                 _c("input", {
+                                  ref: "file",
                                   staticClass: "custom-file-input",
-                                  attrs: {
-                                    type: "file",
-                                    id: "inputGroupFile02"
+                                  attrs: { type: "file", id: "kyc_form" },
+                                  on: {
+                                    change: function($event) {
+                                      return _vm.uploadFile()
+                                    }
                                   }
                                 }),
                                 _vm._v(" "),
@@ -59110,10 +59509,13 @@ var render = function() {
                             _c("div", { staticClass: "input-group" }, [
                               _c("div", { staticClass: "custom-file" }, [
                                 _c("input", {
+                                  ref: "valid_id",
                                   staticClass: "custom-file-input",
-                                  attrs: {
-                                    type: "file",
-                                    id: "inputGroupFile02"
+                                  attrs: { type: "file", id: "valid_id" },
+                                  on: {
+                                    change: function($event) {
+                                      return _vm.uploadValidId()
+                                    }
                                   }
                                 }),
                                 _vm._v(" "),
@@ -62956,7 +63358,15 @@ var render = function() {
                         [
                           _c("input", {
                             staticClass: "form-check-input",
-                            attrs: { type: "checkbox", id: "exampleCheck1" }
+                            attrs: {
+                              type: "checkbox",
+                              id: "exampleCheck1",
+                              disabled: ""
+                            },
+                            domProps: {
+                              checked:
+                                this.form.acknowledgement_template != "empty"
+                            }
                           }),
                           _vm._v(" "),
                           _c(
@@ -62971,18 +63381,41 @@ var render = function() {
                           _c("div", { staticClass: "custom-file" }, [
                             _c("input", {
                               staticClass: "custom-file-input",
-                              attrs: { type: "file", id: "inputGroupFile03" },
-                              on: { change: _vm.onImageChange }
+                              attrs: {
+                                type: "file",
+                                name: "acknowledgement_template",
+                                id: "inputGroupFile03"
+                              },
+                              on: {
+                                change: _vm.onFileChangeAcknowledgeTemplate
+                              }
                             }),
                             _vm._v(" "),
-                            _c(
-                              "label",
-                              {
-                                staticClass: "custom-file-label",
-                                attrs: { for: "inputGroupFile03" }
-                              },
-                              [_vm._v("Choose file")]
-                            )
+                            this.form.acknowledgement_template == "empty"
+                              ? _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [_vm._v("Choose File")]
+                                )
+                              : _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        this.form.acknowledgement_template[
+                                          "name"
+                                        ]
+                                      )
+                                    )
+                                  ]
+                                )
                           ])
                         ]
                       )
@@ -62998,7 +63431,14 @@ var render = function() {
                         [
                           _c("input", {
                             staticClass: "form-check-input",
-                            attrs: { type: "checkbox", id: "exampleCheck1" }
+                            attrs: {
+                              type: "checkbox",
+                              id: "exampleCheck1",
+                              disabled: ""
+                            },
+                            domProps: {
+                              checked: this.form.approval_template != "empty"
+                            }
                           }),
                           _vm._v(" "),
                           _c(
@@ -63013,17 +63453,33 @@ var render = function() {
                           _c("div", { staticClass: "custom-file" }, [
                             _c("input", {
                               staticClass: "custom-file-input",
-                              attrs: { type: "file", id: "inputGroupFile03" }
+                              attrs: { type: "file", id: "inputGroupFile03" },
+                              on: { change: _vm.onFileChangeApprovalTemplate }
                             }),
                             _vm._v(" "),
-                            _c(
-                              "label",
-                              {
-                                staticClass: "custom-file-label",
-                                attrs: { for: "inputGroupFile03" }
-                              },
-                              [_vm._v("Choose file")]
-                            )
+                            this.form.approval_template == "empty"
+                              ? _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [_vm._v("Choose File")]
+                                )
+                              : _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        this.form.approval_template["name"]
+                                      )
+                                    )
+                                  ]
+                                )
                           ])
                         ]
                       )
@@ -63039,7 +63495,15 @@ var render = function() {
                         [
                           _c("input", {
                             staticClass: "form-check-input",
-                            attrs: { type: "checkbox", id: "exampleCheck1" }
+                            attrs: {
+                              type: "checkbox",
+                              id: "exampleCheck1",
+                              disabled: ""
+                            },
+                            domProps: {
+                              checked:
+                                this.form.confirmation_template != "empty"
+                            }
                           }),
                           _vm._v(" "),
                           _c(
@@ -63054,17 +63518,35 @@ var render = function() {
                           _c("div", { staticClass: "custom-file" }, [
                             _c("input", {
                               staticClass: "custom-file-input",
-                              attrs: { type: "file", id: "inputGroupFile03" }
+                              attrs: { type: "file", id: "inputGroupFile03" },
+                              on: {
+                                change: _vm.onFileChangeConfirmationTemplate
+                              }
                             }),
                             _vm._v(" "),
-                            _c(
-                              "label",
-                              {
-                                staticClass: "custom-file-label",
-                                attrs: { for: "inputGroupFile03" }
-                              },
-                              [_vm._v("Choose file")]
-                            )
+                            this.form.confirmation_template == "empty"
+                              ? _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [_vm._v("Choose File")]
+                                )
+                              : _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        this.form.confirmation_template["name"]
+                                      )
+                                    )
+                                  ]
+                                )
                           ])
                         ]
                       )
@@ -63727,7 +64209,170 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-md-6 mt-5" }, [
-            _vm._m(1),
+            _c("ul", { staticClass: "list-group list-group-flush" }, [
+              _c("li", { staticClass: "list-group-item" }, [
+                _c(
+                  "div",
+                  { staticClass: "form-check custom-control custom-checkbox " },
+                  [
+                    _c("input", {
+                      staticClass: "form-check-input",
+                      attrs: {
+                        type: "checkbox",
+                        id: "exampleCheck1",
+                        disabled: ""
+                      },
+                      domProps: {
+                        checked: _vm.form.acknowledgement_template != null
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-check-label",
+                        attrs: { for: "exampleCheck1" }
+                      },
+                      [_vm._v("Transaction Acknowledgement Template:  ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "custom-file" }, [
+                      _c("input", {
+                        staticClass: "custom-file-input",
+                        attrs: { type: "file", id: "inputGroupFile03" },
+                        on: { change: _vm.onFileChangeAcknowledgeTemplate }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.acknowledgement_template != null
+                        ? _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v(_vm._s(_vm.form.acknowledgement_template))]
+                          )
+                        : _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v("Choose File")]
+                          )
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "list-group-item" }, [
+                _c(
+                  "div",
+                  { staticClass: "form-check custom-control custom-checkbox " },
+                  [
+                    _c("input", {
+                      staticClass: "form-check-input",
+                      attrs: {
+                        type: "checkbox",
+                        id: "exampleCheck1",
+                        disabled: ""
+                      },
+                      domProps: { checked: _vm.form.approval_template != null }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-check-label",
+                        attrs: { for: "exampleCheck1" }
+                      },
+                      [_vm._v("Transaction Approval Template:")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "custom-file" }, [
+                      _c("input", {
+                        staticClass: "custom-file-input",
+                        attrs: { type: "file", id: "inputGroupFile03" },
+                        on: { change: _vm.onFileChangeApprovalTemplate }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.approval_template != null
+                        ? _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v(_vm._s(_vm.form.approval_template))]
+                          )
+                        : _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v("Choose File")]
+                          )
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "list-group-item" }, [
+                _c(
+                  "div",
+                  { staticClass: "form-check custom-control custom-checkbox " },
+                  [
+                    _c("input", {
+                      staticClass: "form-check-input",
+                      attrs: {
+                        type: "checkbox",
+                        id: "exampleCheck1",
+                        disabled: ""
+                      },
+                      domProps: {
+                        checked: _vm.form.confirmation_template != null
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-check-label",
+                        attrs: { for: "exampleCheck1" }
+                      },
+                      [_vm._v("Transaction Confirmation Template")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "custom-file" }, [
+                      _c("input", {
+                        staticClass: "custom-file-input",
+                        attrs: { type: "file", id: "inputGroupFile03" },
+                        on: { change: _vm.onFileChangeConfirmationTemplate }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.confirmation_template != null
+                        ? _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v(_vm._s(_vm.form.confirmation_template))]
+                          )
+                        : _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v("Choose File")]
+                          )
+                    ])
+                  ]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "button",
@@ -63757,126 +64402,6 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Service Name")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Service Gateway")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "list-group list-group-flush" }, [
-      _c("li", { staticClass: "list-group-item" }, [
-        _c(
-          "div",
-          { staticClass: "form-check custom-control custom-checkbox " },
-          [
-            _c("input", {
-              staticClass: "form-check-input",
-              attrs: { type: "checkbox", id: "exampleCheck1" }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "form-check-label",
-                attrs: { for: "exampleCheck1" }
-              },
-              [_vm._v("Transaction Acknowledgement Template:  ")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "custom-file" }, [
-              _c("input", {
-                staticClass: "custom-file-input",
-                attrs: { type: "file", id: "inputGroupFile03" }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "custom-file-label",
-                  attrs: { for: "inputGroupFile03" }
-                },
-                [_vm._v("Choose file")]
-              )
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "list-group-item" }, [
-        _c(
-          "div",
-          { staticClass: "form-check custom-control custom-checkbox " },
-          [
-            _c("input", {
-              staticClass: "form-check-input",
-              attrs: { type: "checkbox", id: "exampleCheck1" }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "form-check-label",
-                attrs: { for: "exampleCheck1" }
-              },
-              [_vm._v("Transaction Approval Template:")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "custom-file" }, [
-              _c("input", {
-                staticClass: "custom-file-input",
-                attrs: { type: "file", id: "inputGroupFile03" }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "custom-file-label",
-                  attrs: { for: "inputGroupFile03" }
-                },
-                [_vm._v("Choose file")]
-              )
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "list-group-item" }, [
-        _c(
-          "div",
-          { staticClass: "form-check custom-control custom-checkbox " },
-          [
-            _c("input", {
-              staticClass: "form-check-input",
-              attrs: { type: "checkbox", id: "exampleCheck1" }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "form-check-label",
-                attrs: { for: "exampleCheck1" }
-              },
-              [_vm._v("Transaction Confirmation Template:")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "custom-file" }, [
-              _c("input", {
-                staticClass: "custom-file-input",
-                attrs: { type: "file", id: "inputGroupFile03" }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "custom-file-label",
-                  attrs: { for: "inputGroupFile03" }
-                },
-                [_vm._v("Choose file")]
-              )
-            ])
-          ]
-        )
       ])
     ])
   }
@@ -64738,17 +65263,29 @@ var render = function() {
                                   attrs: {
                                     type: "file",
                                     id: "inputGroupFile04"
+                                  },
+                                  on: {
+                                    change: _vm.onFileChangeAcknowledgeTemplate
                                   }
                                 }),
                                 _vm._v(" "),
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "custom-file-label",
-                                    attrs: { for: "inputGroupFile04" }
-                                  },
-                                  [_vm._v("Choose file")]
-                                )
+                                this.service_template == null
+                                  ? _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: { for: "inputGroupFile04" }
+                                      },
+                                      [_vm._v("Choose file")]
+                                    )
+                                  : _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: { for: "inputGroupFile04" }
+                                      },
+                                      [_vm._v(_vm._s(this.service_template))]
+                                    )
                               ])
                             ])
                           ])
@@ -64772,7 +65309,155 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "card-body" })
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "data-tables datatable-dark" }, [
+                    _c(
+                      "table",
+                      {
+                        staticClass: "table table-hover",
+                        attrs: { id: "table-services" }
+                      },
+                      [
+                        _c("thead", [
+                          _c("tr", { staticClass: "th-table" }, [
+                            _c("th", [_vm._v("Value")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Source Wallet")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Destination Wallet")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Rates Table")])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tbody", [
+                          _c("tr", [
+                            _c("td", [_vm._v("test ")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("test ")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("test ")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("test ")])
+                          ])
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-sm-6" }, [
+                        _c(
+                          "div",
+                          { staticClass: "custom-control custom-switch" },
+                          [
+                            _c("input", {
+                              staticClass: "custom-control-input",
+                              attrs: { type: "checkbox", id: "customSwitch1" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.switchApproval(_vm.form.approval)
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            this.form.approval == 0
+                              ? _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-control-label",
+                                    attrs: { for: "customSwitch1" }
+                                  },
+                                  [_vm._v(" Require Approval : NO  ")]
+                                )
+                              : _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-control-label",
+                                    attrs: { for: "customSwitch1" }
+                                  },
+                                  [_vm._v(" Require Approval : YES  ")]
+                                )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "my-1",
+                              attrs: { for: "inlineFormCustomSelectPref" }
+                            },
+                            [_vm._v("Assign Approver:")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.merchant_admin_id,
+                                  expression: "form.merchant_admin_id"
+                                }
+                              ],
+                              staticClass: "custom-select my-1",
+                              attrs: {
+                                id: "assignapprover",
+                                disabled: this.form.approval == 0
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.form,
+                                    "merchant_admin_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: { selected: "selected", disabled: "" }
+                                },
+                                [_vm._v("Choose Merchant Admin")]
+                              ),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "1" } }, [
+                                _vm._v("Merchant One")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "2" } }, [
+                                _vm._v("Merchant Two")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "3" } }, [
+                                _vm._v("Merchant Three")
+                              ])
+                            ]
+                          )
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
               ])
             ])
           ]),
@@ -80667,7 +81352,9 @@ Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_5__["default"]);
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
+Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]); // General Components
+
+Vue.component('Navbar', __webpack_require__(/*! ./components/General/Navbar.vue */ "./resources/js/components/General/Navbar.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -80929,6 +81616,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_0ed2d4b2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_0ed2d4b2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/General/Navbar.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/General/Navbar.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Navbar.vue?vue&type=template&id=641d82e2& */ "./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2&");
+/* harmony import */ var _Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Navbar.vue?vue&type=script&lang=js& */ "./resources/js/components/General/Navbar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/General/Navbar.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/General/Navbar.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/General/Navbar.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Navbar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/General/Navbar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Navbar.vue?vue&type=template&id=641d82e2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -81898,6 +82654,7 @@ __webpack_require__.r(__webpack_exports__);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
+var user = window.localStorage.getItem('user');
 var routes = [{
   path: '/',
   component: __webpack_require__(/*! ../components/auth/Login.vue */ "./resources/js/components/auth/Login.vue")["default"]
@@ -81909,36 +82666,52 @@ var routes = [{
   component: __webpack_require__(/*! ../components/auth/Login.vue */ "./resources/js/components/auth/Login.vue")["default"]
 }, {
   path: '/dashboard',
-  component: __webpack_require__(/*! ../components/General/Dashboard.vue */ "./resources/js/components/General/Dashboard.vue")["default"]
-}, {
+  component: __webpack_require__(/*! ../components/General/Dashboard.vue */ "./resources/js/components/General/Dashboard.vue")["default"],
+  beforeEnter: requireLogin
+},
+/* 
+ * @ Wallet Accounts
+ */
+{
   path: '/walletaccounts',
-  component: __webpack_require__(/*! ../components/WalletAccounts/WalletAccounts.vue */ "./resources/js/components/WalletAccounts/WalletAccounts.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletAccounts/WalletAccounts.vue */ "./resources/js/components/WalletAccounts/WalletAccounts.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/createwalletaccount',
-  component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/updatewalletaccount/:id',
-  component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
- * @ CHUGUG EARPHONES SIRA
+ * @ Service Types
  **/
 {
   path: '/servicetypes',
-  component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeTable.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeTable.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeTable.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeTable.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/editservicetype/:id',
   name: '/test',
-  component: __webpack_require__(/*! ../components/WalletServiceTypes/EditServiceType.vue */ "./resources/js/components/WalletServiceTypes/EditServiceType.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/EditServiceType.vue */ "./resources/js/components/WalletServiceTypes/EditServiceType.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/servicetypesetup/:id',
   name: '/st-setup',
-  component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeSetUp.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeSetUp.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/createservicetype',
   name: '/st-create-new',
-  component: __webpack_require__(/*! ../components/WalletServiceTypes/CreateServiceType.vue */ "./resources/js/components/WalletServiceTypes/CreateServiceType.vue")["default"]
-}, {
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/CreateServiceType.vue */ "./resources/js/components/WalletServiceTypes/CreateServiceType.vue")["default"],
+  beforeEnter: requireLogin
+},
+/**
+ * @ Error Pages
+ **/
+{
   path: '*',
   component: __webpack_require__(/*! ../components/ErrorPages/404.vue */ "./resources/js/components/ErrorPages/404.vue")
 },
@@ -81947,34 +82720,40 @@ var routes = [{
  **/
 {
   path: '/serviceGroup',
-  component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceGroup.vue */ "./resources/js/components/ServiceMatrix/ServiceGroup.vue")["default"]
+  component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceGroup.vue */ "./resources/js/components/ServiceMatrix/ServiceGroup.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/serviceMatrix',
-  component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceMatrix.vue */ "./resources/js/components/ServiceMatrix/ServiceMatrix.vue")["default"]
+  component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceMatrix.vue */ "./resources/js/components/ServiceMatrix/ServiceMatrix.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
  * @ Services  
  */
 {
   path: '/serviceslist',
-  component: __webpack_require__(/*! ../components/WalletServices/ServicesListTable.vue */ "./resources/js/components/WalletServices/ServicesListTable.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServices/ServicesListTable.vue */ "./resources/js/components/WalletServices/ServicesListTable.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/createservice',
-  component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
  *@ Wallet Account Type 
  **/
 {
   path: '/walletaccounttype',
-  component: __webpack_require__(/*! ../components/WalletAccountTypes/WalletAccountType.vue */ "./resources/js/components/WalletAccountTypes/WalletAccountType.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletAccountTypes/WalletAccountType.vue */ "./resources/js/components/WalletAccountTypes/WalletAccountType.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
  * Service Gateway
  */
 {
   path: '/servicegatewaylist',
-  component: __webpack_require__(/*! ../components/ServiceGateway/ServiceGatewayTable.vue */ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue")["default"]
+  component: __webpack_require__(/*! ../components/ServiceGateway/ServiceGatewayTable.vue */ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
  *@ Return Error 404 Page 
@@ -81984,6 +82763,21 @@ var routes = [{
   path: '/*',
   component: __webpack_require__(/*! ../components/ErrorPages/404.vue */ "./resources/js/components/ErrorPages/404.vue")["default"]
 }];
+/**
+ * @ Route Guards
+ * Authentication Login 
+ **/
+
+function requireLogin(to, from, next) {
+  if (user != null) {
+    next(true);
+  } else {
+    window.localStorage.removeItem('user');
+    location.reload();
+    window.location.href = "/";
+  }
+}
+
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history',
   routes: routes // short for routes: routes

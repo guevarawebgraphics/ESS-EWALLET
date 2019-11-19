@@ -185,7 +185,7 @@ methods : {
      * For inserting the response data into form data
      */
     showDetailsAndBehavior() {
-            axios.get('/api/behavior/'+this.id_value)
+            axios.get('/api/service_type/behavior/'+this.id_value)
                 .then(response => {
                     this.DetailsBehavior = response.data; 
                     this.form.service_code = response.data['st_code'];

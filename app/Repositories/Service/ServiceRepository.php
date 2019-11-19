@@ -38,6 +38,8 @@ class ServiceRepository
                     'service_gateway_id'=> $service_data->service_gateway, 
                     'service_group_id'=> $service_data->service_group_id,
                     'service_template' => "sameple.template", // sample string for template
+                    'require_approval' => $service_data->approval,
+                    'assign_approver_id' => $service_data->merchand_admin_id,
                 ]); 
                 /**
                  * Gets the service inserted and insert into wdetails table
@@ -83,7 +85,10 @@ class ServiceRepository
                  * Inserting into Service Matrix
                  */ 
                 $service_matrix = ServiceMatrix::create([
-                    'service_id' => $wservice_id
+                    'service_id' => $wservice_id,
+                    'created_by' => '1',
+                    'updated_by' => '1',
+
                 ]);
                 
                 return $wservice;

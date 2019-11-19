@@ -10,6 +10,7 @@
         :index="props.index">
         </wizard-step>
         <tab-content title="Service Type Details" :before-change="validateTab">
+         
             <div class="box ptb--100">
                 <div class="card shadow-custom">
                     <div class="card-body"> 
@@ -189,32 +190,36 @@
                     <div class="col-md-6 mt-5">
                     <ul class="list-group list-group-flush">
                     <li class="list-group-item">
+                        
                         <div class="form-check custom-control custom-checkbox ">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" :checked="this.form.acknowledgement_template != 'empty'" disabled>
                             <label class="form-check-label" for="exampleCheck1">Transaction Acknowledgement Template:  </label>
                             <div class="custom-file">
-                            <input type="file" v-on:change="onImageChange" class="custom-file-input" id="inputGroupFile03">
-                            <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+                            <input type="file" v-on:change="onFileChangeAcknowledgeTemplate" class="custom-file-input" name="acknowledgement_template" id="inputGroupFile03">
+                            <label class="custom-file-label" for="inputGroupFile03" v-if="this.form.acknowledgement_template == 'empty'">Choose File</label>
+                            <label class="custom-file-label" for="inputGroupFile03" v-else>{{this.form.acknowledgement_template['name']}}</label>
                             </div>   
                         </div> 
                     </li>
                     <li class="list-group-item">
                         <div class="form-check custom-control custom-checkbox ">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" :checked="this.form.approval_template != 'empty'" disabled>
                             <label class="form-check-label" for="exampleCheck1">Transaction Approval Template:</label>
                             <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile03">
-                            <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+                            <input type="file" v-on:change="onFileChangeApprovalTemplate" class="custom-file-input" id="inputGroupFile03">
+                            <label class="custom-file-label" for="inputGroupFile03" v-if="this.form.approval_template == 'empty'">Choose File</label>
+                            <label class="custom-file-label" for="inputGroupFile03" v-else>{{this.form.approval_template['name']}}</label>
                             </div> 
                         </div> 
                     </li>
                     <li class="list-group-item">
                         <div class="form-check custom-control custom-checkbox ">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1"  :checked="this.form.confirmation_template != 'empty'" disabled>
                             <label class="form-check-label" for="exampleCheck1">Transaction Confirmation Template:</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile03">
-                            <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+                            <input type="file"  v-on:change="onFileChangeConfirmationTemplate" class="custom-file-input" id="inputGroupFile03">
+                            <label class="custom-file-label" for="inputGroupFile03" v-if="this.form.confirmation_template == 'empty'">Choose File</label>
+                            <label class="custom-file-label" for="inputGroupFile03" v-else>{{this.form.confirmation_template['name']}}</label>
                         </div> 
                         </div> 
                     </li>
@@ -223,7 +228,8 @@
                       <!--  <button type="button" class="btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom">Save Service Type</button> -->
                     </div>     
             </div> 
-            </div> 
+            </div>  
+      
         </tab-content>   
         <template slot="footer" slot-scope="props">
             <div class="wizard-footer-left">
@@ -259,9 +265,9 @@ export default {
             deducted_sdw_msw: 0,
             deducted_mdw_ssw:0,
             deducted_mdw_msw:0,*/
-            acknowledgement_template : null,
-            approval_template : null,
-            confirmation_template : null,
+            acknowledgement_template : 'empty',
+            approval_template : 'empty',
+            confirmation_template : 'empty',
         })
         }
     }, 
@@ -286,17 +292,27 @@ export default {
         onComplete: function(){ 
         /**
         * For creating service type
-        */
-           this.form.post("/api/service_type/createservicetype")
+        */ 
+        let Formtwo = new FormData(); 
+        Formtwo.append('file_acknowledgement_template', this.form.acknowledgement_template);
+        Formtwo.append('file_approval_template', this.form.approval_template);
+        Formtwo.append('file_confirmation_template', this.form.confirmation_template); 
+        Formtwo.append('servicetype_code', this.form.servicetype_code);
+        Formtwo.append('servicetype_name', this.form.servicetype_name); 
+        Formtwo.append('behavior_value', this.form.behavior_value); 
+        Formtwo.append('servicetype_description', this.form.servicetype_description);
+
+        axios.post("/api/service_type/createservicetype",Formtwo)
            .then((response) =>{
-            this.$router.push('servicetypes') 
-             console.log("hi");
+                this.$router.push('servicetypes') 
+                console.log("hi");
            })
            .catch(() => {
-             console.log("error");  
+                console.log("error");  
            })
         },
         addServiceTypeDetails(){
+
         /**
         * Form Validation 
         */
@@ -321,13 +337,18 @@ export default {
                 return true;
             }
         },
-            onImageChange(e) {
-                let files = e.target.files || e.dataTransfer.files;
-                if (!files.length)
-                    return;
-
-                this.form.acknowledgement_template = files[0];
-            },
+        onFileChangeAcknowledgeTemplate(e){
+            console.log(e.target.files[0]);
+            this.form.acknowledgement_template = e.target.files[0];
+        },
+        onFileChangeApprovalTemplate(e){
+            console.log(e.target.files[0]);
+            this.form.approval_template = e.target.files[0];
+        },
+        onFileChangeConfirmationTemplate(e){
+            console.log(e.target.files[0]); 
+            this.form.confirmation_template = e.target.files[0];
+        },
          /***
      * These methods are for changing the value of the form data
      */

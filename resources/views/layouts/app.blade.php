@@ -53,7 +53,7 @@
     <div id="app">
       @if(auth::check())
        @include('inc/sidebar')
-       @include('inc/navbar')
+       <Navbar></Navbar>
       @endif
      <div class="main-content-inner">
         <router-view></router-view>
@@ -79,5 +79,15 @@
     @if(auth::check())
     @include('inc/footer')
     @endif
+    <!--
+        ______                                                               ________ __________
+        |             \          /\          /  /\       |         |         |            |
+        |              \        /  \        /  /  \      |         |         |            |
+        |_____  _____   \      /    \      /  /__ _\     |         |         |_____       |
+        |                \    /      \    /  /      \    |         |         |            |
+        |                 \  /        \  /  /        \   |         |         |            |
+        |_____             \/          \/  /          \  |________ |________ |_____       |
+
+    -->
 </body>
 </html>
