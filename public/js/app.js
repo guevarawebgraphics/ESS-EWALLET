@@ -4306,6 +4306,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4315,6 +4318,7 @@ __webpack_require__.r(__webpack_exports__);
       /***
        * Declaration of the new form and an object DetailsBehavior
        */
+      validate: true,
       DetailsBehavior: [],
       form: new Form({
         id: this.$route.params.id,
@@ -4371,6 +4375,23 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
     },
+    validation: function validation() {
+      var _this2 = this;
+
+      if (this.form.service_name != null || this.form.service_description != null) {
+        this.$validator.validateAll().then(function (result) {
+          if (result) {
+            _this2.validate == true;
+            return;
+          } else {
+            _this2.validate == false;
+            console.log('has error');
+          }
+        });
+      } else {
+        console.log("true");
+      }
+    },
 
     /***
      * These methods are for changing the value of the form data
@@ -4404,6 +4425,12 @@ __webpack_require__.r(__webpack_exports__);
     updateDetailsBehavior: function updateDetailsBehavior() {
       this.form.put('/api/service_type/updateservicetype/' + this.form.id).then(function (response) {})["catch"](function () {
         console.log('rrrr');
+      });
+    },
+    showToast: function showToast() {
+      toast.fire({
+        type: 'warning',
+        title: 'Please fill empty fields'
       });
     }
   },
@@ -4993,7 +5020,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5123,18 +5149,9 @@ __webpack_require__.r(__webpack_exports__);
     switchApproval: function switchApproval(changeValue) {
       if (changeValue == 0) {
         this.form.approval = 1;
-        this.configureAssignApprover();
       } else {
         this.form.approval = 0;
-        this.configureAssignApprover();
       }
-    },
-    configureAssignApprover: function configureAssignApprover() {
-      if (this.form.approval == 0) {
-        this.form.merchant_admin_id === "0";
-        $('#assignapprover').attr('hidden');
-        console.log("hey");
-      } else {}
     }
   },
   created: function created() {
@@ -63612,12 +63629,19 @@ var render = function() {
                       rawName: "v-model",
                       value: _vm.form.service_code,
                       expression: "form.service_code"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required",
+                      expression: "'required'"
                     }
                   ],
                   staticClass: "form-control mb-4 col-sm-4",
                   attrs: {
-                    type: "email",
+                    type: "text",
                     id: "inputEmail3",
+                    name: "service_type_code",
                     placeholder: "Code",
                     disabled: ""
                   },
@@ -63652,16 +63676,26 @@ var render = function() {
                       rawName: "v-model",
                       value: _vm.form.service_name,
                       expression: "form.service_name"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required",
+                      expression: "'required'"
                     }
                   ],
                   staticClass: "form-control mb-4 col-sm-4",
                   attrs: {
-                    type: "email",
+                    type: "text",
                     id: "inputEmail3",
+                    name: "service_type_name",
                     placeholder: "Name"
                   },
                   domProps: { value: _vm.form.service_name },
                   on: {
+                    change: function($event) {
+                      return _vm.validation()
+                    },
                     input: function($event) {
                       if ($event.target.composing) {
                         return
@@ -63669,7 +63703,17 @@ var render = function() {
                       _vm.$set(_vm.form, "service_name", $event.target.value)
                     }
                   }
-                })
+                }),
+                _vm._v(" "),
+                _vm.errors.has("service_type_name")
+                  ? _c("p", { staticClass: "alert text=danger" }, [
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.errors.first("service_type_name")) +
+                          " "
+                      )
+                    ])
+                  : _vm._e()
               ])
             ]),
             _vm._v(" "),
@@ -63691,16 +63735,26 @@ var render = function() {
                       rawName: "v-model",
                       value: _vm.form.service_description,
                       expression: "form.service_description"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required",
+                      expression: "'required'"
                     }
                   ],
                   staticClass: "form-control mb-4 col-sm-4",
                   attrs: {
-                    type: "email",
+                    type: "text",
                     id: "inputEmail3",
+                    name: "service_type_description",
                     placeholder: "Description"
                   },
                   domProps: { value: _vm.form.service_description },
                   on: {
+                    change: function($event) {
+                      return _vm.validation()
+                    },
                     input: function($event) {
                       if ($event.target.composing) {
                         return
@@ -63712,7 +63766,17 @@ var render = function() {
                       )
                     }
                   }
-                })
+                }),
+                _vm._v(" "),
+                _vm.errors.has("service_type_description")
+                  ? _c("p", { staticClass: "alert text=danger" }, [
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.errors.first("service_type_description")) +
+                          " "
+                      )
+                    ])
+                  : _vm._e()
               ])
             ])
           ])
@@ -64126,21 +64190,37 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                staticClass: "btn btn-primary float-right btn-lg btn-custom",
-                attrs: {
-                  to: { name: "/st-setup", params: { id: _vm.id_value } }
-                },
-                nativeOn: {
-                  click: function($event) {
-                    return _vm.updateDetailsBehavior()
-                  }
-                }
-              },
-              [_vm._v("Save & Next")]
-            )
+            _vm.errors.items.length == 0
+              ? _c(
+                  "router-link",
+                  {
+                    staticClass:
+                      "btn btn-primary float-right btn-lg btn-custom",
+                    attrs: {
+                      to: { name: "/st-setup", params: { id: _vm.id_value } }
+                    },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.updateDetailsBehavior()
+                      }
+                    }
+                  },
+                  [_vm._v("Save & Next")]
+                )
+              : _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-primary float-right btn-lg btn-custom",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.showToast()
+                      }
+                    }
+                  },
+                  [_vm._v("Save & Next  ")]
+                )
           ],
           1
         )
@@ -65401,8 +65481,8 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.form.merchant_admin_id,
-                                  expression: "form.merchant_admin_id"
+                                  value: this.form.merchant_admin_id,
+                                  expression: "this.form.merchant_admin_id"
                                 }
                               ],
                               staticClass: "custom-select my-1",
@@ -65422,7 +65502,7 @@ var render = function() {
                                       return val
                                     })
                                   _vm.$set(
-                                    _vm.form,
+                                    this.form,
                                     "merchant_admin_id",
                                     $event.target.multiple
                                       ? $$selectedVal
@@ -65432,13 +65512,9 @@ var render = function() {
                               }
                             },
                             [
-                              _c(
-                                "option",
-                                {
-                                  attrs: { selected: "selected", disabled: "" }
-                                },
-                                [_vm._v("Choose Merchant Admin")]
-                              ),
+                              _c("option", { attrs: { value: "0" } }, [
+                                _vm._v("Choose Merchant Admin")
+                              ]),
                               _vm._v(" "),
                               _c("option", { attrs: { value: "1" } }, [
                                 _vm._v("Merchant One")
