@@ -9,7 +9,7 @@
                     <!-- Row Table -->
                     <div class="form-group row">
                         <!-- Col md 6 -->
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <div class="header-title">Wallet Account Types</div>
                             <div class="data-tables datatable-dark">
                                 <!-- Table -->
@@ -18,6 +18,7 @@
                                         <tr>
                                             <th>Type Code</th>
                                             <th>Wallet Account Type</th>
+                                            <th>Wallet Type</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -26,6 +27,7 @@
                                         <tr v-for="wat in walletAccountTypes" :key="wat.id">
                                             <td>{{ wat.type_code}}</td>
                                             <td>{{ wat.wallet_account_type}}</td>
+                                            <td>{{ wat.wallet_type }}</td>
                                             <td v-if="wat.status == 1"><div class="badge badge-primary">Active</div></td>
                                             <td v-if="wat.status == 0"><div class="badge badge-info">Disabled</div></td>
                                             <td>
@@ -86,6 +88,14 @@
                                 <option value="0">Disabled</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="wallet_type" class="custom-label">Wallet Type</label>
+                            <select v-model="form.wallet_type" class="form-control">
+                                <option selected value="">Select</option>
+                                <option value="Credit">Credit</option>
+                                <option value="Prepaid">Prepaid</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
@@ -110,6 +120,7 @@ export default {
                 id: '',
                 type_code: '',
                 wallet_account_type: '',
+                wallet_type: '',
                 status
             })
         }
@@ -153,8 +164,12 @@ export default {
                 $("#wallet_account_types").DataTable().destroy()
                 this.get_walle_account_type()
                 this.datatable()
+                toast.fire({
+                    type: 'success',
+                    title: 'Saved!'
+                })
             })
-            .then(() => {
+            .catch(() => {
                 console.clear()
             })
         },
@@ -167,6 +182,10 @@ export default {
                 $("#wallet_account_types").DataTable().destroy()
                 this.get_walle_account_type()
                 this.datatable()
+                toast.fire({
+                    type: 'success',
+                    title: 'Saved!'
+                })
             })
             .catch(() => {
                 console.clear()
