@@ -36,6 +36,7 @@ class WalletAccountTypeRepository
                                     'id',
                                     'type_code',
                                     'wallet_account_type',
+                                    'wallet_type',
                                     'status')
                                 ->where('created_by', '=', $user->id)
                                 ->get();
@@ -55,6 +56,7 @@ class WalletAccountTypeRepository
                             ->insert([
                                 'type_code' => $type_code,
                                 'wallet_account_type' => $wallaccounttype->wallet_account_type,
+                                'wallet_type' => $wallaccounttype->wallet_type,
                                 'created_by' => $user->id,
                                 'updated_by' => $user->id,
                                 'created_at' => Carbon::now(),
@@ -75,6 +77,7 @@ class WalletAccountTypeRepository
                             ->where('created_by', '=', $user->id)
                             ->update([
                                 'wallet_account_type' => $wallaccounttype->wallet_account_type,
+                                'wallet_type' => $wallaccounttype->wallet_type,
                                 'status' => $wallaccounttype->status,
                                 'updated_by' => $user->id,
                                 'updated_at' => Carbon::now()
