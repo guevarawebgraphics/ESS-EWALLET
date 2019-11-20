@@ -11,7 +11,7 @@ const routes = [
     },
     {
        path: '/login',
-      component: require('../components/auth/Login.vue').default
+       component: require('../components/auth/Login.vue').default
     },
     { 
       path: '/home', 
@@ -82,6 +82,7 @@ const routes = [
     },
     { 
       path: '/serviceMatrix', 
+      name: 'Service Matrix',
       component: require('../components/ServiceMatrix/ServiceMatrix.vue').default, 
       beforeEnter: requireLogin
     },
