@@ -13,7 +13,7 @@ class RenameTableServiceMartrixToServiceMatrix extends Migration
      */
     public function up()
     {
-        Schema::rename('service_martrix', 'service_matrix');
+        Schema::rename('service_martix', 'service_matrix');
     }
 
     /**
@@ -23,6 +23,6 @@ class RenameTableServiceMartrixToServiceMatrix extends Migration
      */
     public function down()
     {
-        Schema::rename('service_matrix', 'service_martrix');
+        Schema::rename('service_matrix', 'service_martix');
     }
 }
