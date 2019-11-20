@@ -41,6 +41,15 @@ class ServiceTypeController extends Controller
         ]);    
     }
     /**
+     * For saving service type templates
+     */
+    public function SaveServiceTemplates(Request $request){
+        $SaveServiceTypeTemplates = $this->serviceType->update_service_type_templates($request);
+        return response()->json([
+            'status' => 'success'
+        ]);    
+    }
+    /**
      * Saving Service Type
      */
     public function SaveServiceType(Request $request){

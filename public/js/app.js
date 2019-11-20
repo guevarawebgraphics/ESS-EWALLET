@@ -1902,7 +1902,81 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      user: window.localStorage.getItem('user')
+    };
+  },
+  methods: {
+    checkAuthenticatedUser: function checkAuthenticatedUser() {
+      if (!this.user) {
+        window.location.href = "/";
+      }
+    }
+  },
+  created: function created() {
+    this.checkAuthenticatedUser();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/General/Navbar.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/General/Navbar.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+  methods: {
+    logout: function logout() {
+      axios.post('/logout').then(function (res) {
+        window.localStorage.removeItem('user');
+        location.reload();
+        window.location.href = "/";
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -2353,12 +2427,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       Services: {},
       form: new Form({
-        admin_all: {},
+        admin: {},
         admin_some: {},
         merchant_all: {},
         merchant_some: {},
@@ -2374,7 +2478,7 @@ __webpack_require__.r(__webpack_exports__);
       setTimeout(function () {
         var table = $('#service_matrix').DataTable({
           // "searching": false,
-          "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+          //"sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
           "paging": true,
           "pageLength": 10,
           //scrollX: true,
@@ -2383,7 +2487,7 @@ __webpack_require__.r(__webpack_exports__);
           responsive: true,
           fixedColumns: false
         });
-      }, 900);
+      }, 1000);
     },
     SaveChanges: function SaveChanges() {
       var _this = this;
@@ -2427,6 +2531,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.datatable();
     this.GetServices();
+    console.log(this.$route.name);
   }
 });
 
@@ -2543,6 +2648,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2552,6 +2667,7 @@ __webpack_require__.r(__webpack_exports__);
         id: '',
         type_code: '',
         wallet_account_type: '',
+        wallet_type: '',
         status: status
       })
     };
@@ -2603,7 +2719,12 @@ __webpack_require__.r(__webpack_exports__);
         _this2.get_walle_account_type();
 
         _this2.datatable();
-      }).then(function () {
+
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
+      })["catch"](function () {
         console.clear();
       });
     },
@@ -2619,6 +2740,11 @@ __webpack_require__.r(__webpack_exports__);
         _this3.get_walle_account_type();
 
         _this3.datatable();
+
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
       })["catch"](function () {
         console.clear();
       });
@@ -3930,6 +4056,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3948,9 +4077,9 @@ __webpack_require__.r(__webpack_exports__);
            deducted_sdw_msw: 0,
            deducted_mdw_ssw:0,
            deducted_mdw_msw:0,*/
-        acknowledgement_template: null,
-        approval_template: null,
-        confirmation_template: null
+        acknowledgement_template: 'empty',
+        approval_template: 'empty',
+        confirmation_template: 'empty'
       })
     };
   },
@@ -3979,6 +4108,8 @@ __webpack_require__.r(__webpack_exports__);
       */
       var Formtwo = new FormData();
       Formtwo.append('file_acknowledgement_template', this.form.acknowledgement_template);
+      Formtwo.append('file_approval_template', this.form.approval_template);
+      Formtwo.append('file_confirmation_template', this.form.confirmation_template);
       Formtwo.append('servicetype_code', this.form.servicetype_code);
       Formtwo.append('servicetype_name', this.form.servicetype_name);
       Formtwo.append('behavior_value', this.form.behavior_value);
@@ -4015,14 +4146,17 @@ __webpack_require__.r(__webpack_exports__);
         return true;
       }
     },
-    onImageChange: function onImageChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      this.form.acknowledgement_template = files[0];
-    },
-    onFileChange: function onFileChange(e) {
+    onFileChangeAcknowledgeTemplate: function onFileChangeAcknowledgeTemplate(e) {
       console.log(e.target.files[0]);
       this.form.acknowledgement_template = e.target.files[0];
+    },
+    onFileChangeApprovalTemplate: function onFileChangeApprovalTemplate(e) {
+      console.log(e.target.files[0]);
+      this.form.approval_template = e.target.files[0];
+    },
+    onFileChangeConfirmationTemplate: function onFileChangeConfirmationTemplate(e) {
+      console.log(e.target.files[0]);
+      this.form.confirmation_template = e.target.files[0];
     }
     /***
     * These methods are for changing the value of the form data
@@ -4224,6 +4358,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4233,6 +4370,7 @@ __webpack_require__.r(__webpack_exports__);
       /***
        * Declaration of the new form and an object DetailsBehavior
        */
+      validate: true,
       DetailsBehavior: [],
       form: new Form({
         id: this.$route.params.id,
@@ -4289,6 +4427,23 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
     },
+    validation: function validation() {
+      var _this2 = this;
+
+      if (this.form.service_name != null || this.form.service_description != null) {
+        this.$validator.validateAll().then(function (result) {
+          if (result) {
+            _this2.validate == true;
+            return;
+          } else {
+            _this2.validate == false;
+            console.log('has error');
+          }
+        });
+      } else {
+        console.log("true");
+      }
+    },
 
     /***
      * These methods are for changing the value of the form data
@@ -4322,6 +4477,12 @@ __webpack_require__.r(__webpack_exports__);
     updateDetailsBehavior: function updateDetailsBehavior() {
       this.form.put('/api/service_type/updateservicetype/' + this.form.id).then(function (response) {})["catch"](function () {
         console.log('rrrr');
+      });
+    },
+    showToast: function showToast() {
+      toast.fire({
+        type: 'warning',
+        title: 'Please fill empty fields'
       });
     }
   },
@@ -4418,12 +4579,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       Services: {},
       showList: true,
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      ServiceTypeDetails: {},
+      form: new Form({
+        acknowledgement_template: null,
+        approval_template: null,
+        confirmation_template: null
+      }),
+
+      /***
+       * Variable container for updating templates
+       */
+      acknowledgement_template: null,
+      approval_template: null,
+      confirmation_template: null
     };
   },
   methods: {
@@ -4439,13 +4614,61 @@ __webpack_require__.r(__webpack_exports__);
         } else {}
       })["catch"](function () {});
     },
+    showServicesDetails: function showServicesDetails() {
+      var _this2 = this;
+
+      axios.get('/api/service_type/behavior/' + this.id).then(function (response) {
+        _this2.ServiceTypeDetails = response.data;
+        _this2.form.acknowledgement_template = response.data['acknowledgement_template'];
+        _this2.form.approval_template = response.data['approval_template'];
+        _this2.form.confirmation_template = response.data['confirmation_template'];
+        /**
+         * Gets the names of uploaded files
+         */
+
+        _this2.acknowledgement_template = response.data['acknowledgement_template'];
+        _this2.approval_template = response.data['approval_template'];
+        _this2.confirmation_template = response.data['confirmation_template'];
+      });
+    },
+    onFileChangeAcknowledgeTemplate: function onFileChangeAcknowledgeTemplate(e) {
+      console.log(e.target.files[0]);
+      this.acknowledgement_template = e.target.files[0]; // for setting up the variables of templates
+
+      this.form.acknowledgement_template = e.target.files[0]['name']; // for displaying on the client side
+    },
+    onFileChangeApprovalTemplate: function onFileChangeApprovalTemplate(e) {
+      console.log(e.target.files[0]);
+      this.approval_template = e.target.files[0]; // for setting up the variables of templates
+
+      this.form.approval_template = e.target.files[0]['name']; // for displaying on the client side
+    },
+    onFileChangeConfirmationTemplate: function onFileChangeConfirmationTemplate(e) {
+      console.log(e.target.files[0]);
+      this.confirmation_template = e.target.files[0]; // for setting up the variables of templates
+
+      this.form.confirmation_template = e.target.files[0]['name']; // for displaying on the client side
+    },
     saveServiceType: function saveServiceType() {
-      this.$router.push('/servicetypes');
-      console.log("ho");
+      var _this3 = this;
+
+      var Formtwo = new FormData();
+      Formtwo.append('file_acknowledgement_template', this.acknowledgement_template);
+      Formtwo.append('file_approval_template', this.approval_template);
+      Formtwo.append('file_confirmation_template', this.confirmation_template);
+      Formtwo.append('id', this.id);
+      axios.post('/api/service_type/updateservicetype/templates', Formtwo).then(function (response) {
+        console.log(response.data);
+
+        _this3.$router.push('/servicetypes');
+      })["catch"](function () {
+        console.log("error");
+      });
     }
   },
   created: function created() {
     this.showServices();
+    this.showServicesDetails();
   }
 });
 
@@ -4805,11 +5028,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       ServiceGateway: {},
       ServiceGroups: {},
+      service_template: null,
       form: new Form({
         /**
          * Form data For First Tab
@@ -4849,7 +5117,13 @@ __webpack_require__.r(__webpack_exports__);
          */
         limit_per_day: null,
         limit_per_month: null,
-        limit_per_year: null
+        limit_per_year: null,
+
+        /**
+         * Approval 
+         */
+        approval: 0,
+        merchant_admin_id: null
       })
     };
   },
@@ -4918,6 +5192,20 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref.data;
         return _this6.ServiceGroups = data;
       });
+    },
+    onFileChangeAcknowledgeTemplate: function onFileChangeAcknowledgeTemplate(e) {
+      console.log(e.target.files[0]);
+      this.form.service_template = e.target.files[0];
+      this.service_template = e.target.files[0]['name'];
+    },
+    switchApproval: function switchApproval(changeValue) {
+      if (changeValue == 0) {
+        this.form.approval = 1;
+      } else {
+        this.form.approval = 0;
+        /*this.form.merchant_admin_id === "0";  
+        $('#assignapprover').attr('hidden');*/
+      }
     }
   },
   created: function created() {
@@ -5074,13 +5362,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     login: function login() {
+      var _this = this;
+
       this.form.post('/login').then(function (_ref) {
         var data = _ref.data;
         console.log(data);
+        window.localStorage.setItem('user', JSON.stringify(_this.form.username));
         window.location.href = "/dashboard";
       })["catch"](function () {
         console.clear();
-        console.log('Error');
       });
     }
   },
@@ -56945,6 +57235,110 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "page-title-area" }, [
+    _c("div", { staticClass: "row align-items-center" }, [
+      _c("div", { staticClass: "col-sm-6" }, [
+        _c("div", { staticClass: "breadcrumbs-area clearfix" }, [
+          _c("h4", { staticClass: "page-title pull-left" }, [
+            _vm._v("Dashboard")
+          ]),
+          _vm._v(" "),
+          _c("ul", { staticClass: "breadcrumbs pull-left" }, [
+            _c(
+              "li",
+              [
+                _c("router-link", { attrs: { to: "/dashboard" } }, [
+                  _vm._v("Home")
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm._m(0)
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-6 clearfix" }, [
+        _c("div", { staticClass: "user-profile pull-right btn-custom" }, [
+          _c("img", {
+            staticClass: "avatar user-thumb",
+            attrs: { src: "/str_dash/images/author/avatar.png", alt: "avatar" }
+          }),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: "dropdown-menu" }, [
+            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+              _vm._v("Message")
+            ]),
+            _vm._v(" "),
+            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+              _vm._v("Settings")
+            ]),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "dropdown-item",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.logout($event)
+                  }
+                }
+              },
+              [_vm._v("Logout")]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [_c("span", [_vm._v("Dashboard")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "h4",
+      {
+        staticClass: "user-name dropdown-toggle",
+        attrs: { "data-toggle": "dropdown" }
+      },
+      [_vm._v("Admin "), _c("i", { staticClass: "fa fa-angle-down" })]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=template&id=449c170a&":
 /*!*************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=template&id=449c170a& ***!
@@ -57594,7 +57988,7 @@ var render = function() {
           _c("div", { staticClass: "card shadow-custom" }, [
             _c("div", { staticClass: "card-body" }, [
               _c("div", { staticClass: "form-group row" }, [
-                _c("div", { staticClass: "col-md-10" }, [
+                _c("div", { staticClass: "col-md-12" }, [
                   _c("div", { staticClass: "header-title" }, [
                     _vm._v("Services Matrix Setup")
                   ]),
@@ -57623,443 +58017,343 @@ var render = function() {
                               _c("td", [_vm._v("Test")]),
                               _vm._v(" "),
                               _c("td", [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: sm.admin_all,
-                                      expression: "sm.admin_all"
-                                    }
-                                  ],
-                                  key: sm.id,
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    name: "admin_all[]",
-                                    id: "admin_all"
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "custom-control custom-switch"
                                   },
-                                  domProps: {
-                                    checked: Array.isArray(sm.admin_all)
-                                      ? _vm._i(sm.admin_all, null) > -1
-                                      : sm.admin_all
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      var $$a = sm.admin_all,
-                                        $$el = $event.target,
-                                        $$c = $$el.checked ? true : false
-                                      if (Array.isArray($$a)) {
-                                        var $$v = null,
-                                          $$i = _vm._i($$a, $$v)
-                                        if ($$el.checked) {
-                                          $$i < 0 &&
-                                            _vm.$set(
-                                              sm,
-                                              "admin_all",
-                                              $$a.concat([$$v])
-                                            )
-                                        } else {
-                                          $$i > -1 &&
-                                            _vm.$set(
-                                              sm,
-                                              "admin_all",
-                                              $$a
-                                                .slice(0, $$i)
-                                                .concat($$a.slice($$i + 1))
-                                            )
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: sm.admin,
+                                          expression: "sm.admin"
                                         }
-                                      } else {
-                                        _vm.$set(sm, "admin_all", $$c)
+                                      ],
+                                      key: sm.id,
+                                      staticClass: "custom-control-input",
+                                      attrs: {
+                                        type: "checkbox",
+                                        name: "admin[]",
+                                        id: "admin" + sm.id
+                                      },
+                                      domProps: {
+                                        checked: Array.isArray(sm.admin)
+                                          ? _vm._i(sm.admin, null) > -1
+                                          : sm.admin
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = sm.admin,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = null,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                _vm.$set(
+                                                  sm,
+                                                  "admin",
+                                                  $$a.concat([$$v])
+                                                )
+                                            } else {
+                                              $$i > -1 &&
+                                                _vm.$set(
+                                                  sm,
+                                                  "admin",
+                                                  $$a
+                                                    .slice(0, $$i)
+                                                    .concat($$a.slice($$i + 1))
+                                                )
+                                            }
+                                          } else {
+                                            _vm.$set(sm, "admin", $$c)
+                                          }
+                                        }
                                       }
-                                    }
-                                  }
-                                })
+                                    }),
+                                    _vm._v(" "),
+                                    sm.admin == true
+                                      ? _c(
+                                          "label",
+                                          {
+                                            staticClass: "custom-control-label",
+                                            attrs: { for: "admin" + sm.id }
+                                          },
+                                          [_vm._v("ALL")]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    sm.admin == false
+                                      ? _c(
+                                          "label",
+                                          {
+                                            staticClass: "custom-control-label",
+                                            attrs: { for: "admin" + sm.id }
+                                          },
+                                          [_vm._v("SOME")]
+                                        )
+                                      : _vm._e()
+                                  ]
+                                )
                               ]),
                               _vm._v(" "),
                               _c("td", [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: sm.admin_some,
-                                      expression: "sm.admin_some"
-                                    }
-                                  ],
-                                  key: sm.id,
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    name: "admin_some[]",
-                                    id: "admin_some"
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "custom-control custom-switch"
                                   },
-                                  domProps: {
-                                    checked: Array.isArray(sm.admin_some)
-                                      ? _vm._i(sm.admin_some, null) > -1
-                                      : sm.admin_some
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      var $$a = sm.admin_some,
-                                        $$el = $event.target,
-                                        $$c = $$el.checked ? true : false
-                                      if (Array.isArray($$a)) {
-                                        var $$v = null,
-                                          $$i = _vm._i($$a, $$v)
-                                        if ($$el.checked) {
-                                          $$i < 0 &&
-                                            _vm.$set(
-                                              sm,
-                                              "admin_some",
-                                              $$a.concat([$$v])
-                                            )
-                                        } else {
-                                          $$i > -1 &&
-                                            _vm.$set(
-                                              sm,
-                                              "admin_some",
-                                              $$a
-                                                .slice(0, $$i)
-                                                .concat($$a.slice($$i + 1))
-                                            )
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: sm.merchant,
+                                          expression: "sm.merchant"
                                         }
-                                      } else {
-                                        _vm.$set(sm, "admin_some", $$c)
+                                      ],
+                                      key: sm.id,
+                                      staticClass: "custom-control-input",
+                                      attrs: {
+                                        type: "checkbox",
+                                        name: "merchant[]",
+                                        id: "merchant" + sm.id
+                                      },
+                                      domProps: {
+                                        checked: Array.isArray(sm.merchant)
+                                          ? _vm._i(sm.merchant, null) > -1
+                                          : sm.merchant
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = sm.merchant,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = null,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                _vm.$set(
+                                                  sm,
+                                                  "merchant",
+                                                  $$a.concat([$$v])
+                                                )
+                                            } else {
+                                              $$i > -1 &&
+                                                _vm.$set(
+                                                  sm,
+                                                  "merchant",
+                                                  $$a
+                                                    .slice(0, $$i)
+                                                    .concat($$a.slice($$i + 1))
+                                                )
+                                            }
+                                          } else {
+                                            _vm.$set(sm, "merchant", $$c)
+                                          }
+                                        }
                                       }
-                                    }
-                                  }
-                                })
+                                    }),
+                                    _vm._v(" "),
+                                    sm.merchant == true
+                                      ? _c(
+                                          "label",
+                                          {
+                                            staticClass: "custom-control-label",
+                                            attrs: { for: "merchant" + sm.id }
+                                          },
+                                          [_vm._v("ALL")]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    sm.merchant == false
+                                      ? _c(
+                                          "label",
+                                          {
+                                            staticClass: "custom-control-label",
+                                            attrs: { for: "merchant" + sm.id }
+                                          },
+                                          [_vm._v("SOME")]
+                                        )
+                                      : _vm._e()
+                                  ]
+                                )
                               ]),
                               _vm._v(" "),
                               _c("td", [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: sm.merchant_all,
-                                      expression: "sm.merchant_all"
-                                    }
-                                  ],
-                                  key: sm.id,
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    name: "merchant_all[]",
-                                    id: "merchant_all"
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "custom-control custom-switch"
                                   },
-                                  domProps: {
-                                    checked: Array.isArray(sm.merchant_all)
-                                      ? _vm._i(sm.merchant_all, null) > -1
-                                      : sm.merchant_all
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      var $$a = sm.merchant_all,
-                                        $$el = $event.target,
-                                        $$c = $$el.checked ? true : false
-                                      if (Array.isArray($$a)) {
-                                        var $$v = null,
-                                          $$i = _vm._i($$a, $$v)
-                                        if ($$el.checked) {
-                                          $$i < 0 &&
-                                            _vm.$set(
-                                              sm,
-                                              "merchant_all",
-                                              $$a.concat([$$v])
-                                            )
-                                        } else {
-                                          $$i > -1 &&
-                                            _vm.$set(
-                                              sm,
-                                              "merchant_all",
-                                              $$a
-                                                .slice(0, $$i)
-                                                .concat($$a.slice($$i + 1))
-                                            )
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: sm.branch,
+                                          expression: "sm.branch"
                                         }
-                                      } else {
-                                        _vm.$set(sm, "merchant_all", $$c)
+                                      ],
+                                      key: sm.id,
+                                      staticClass: "custom-control-input",
+                                      attrs: {
+                                        type: "checkbox",
+                                        name: "branch[]",
+                                        id: "branch" + sm.id
+                                      },
+                                      domProps: {
+                                        checked: Array.isArray(sm.branch)
+                                          ? _vm._i(sm.branch, null) > -1
+                                          : sm.branch
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = sm.branch,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = null,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                _vm.$set(
+                                                  sm,
+                                                  "branch",
+                                                  $$a.concat([$$v])
+                                                )
+                                            } else {
+                                              $$i > -1 &&
+                                                _vm.$set(
+                                                  sm,
+                                                  "branch",
+                                                  $$a
+                                                    .slice(0, $$i)
+                                                    .concat($$a.slice($$i + 1))
+                                                )
+                                            }
+                                          } else {
+                                            _vm.$set(sm, "branch", $$c)
+                                          }
+                                        }
                                       }
-                                    }
-                                  }
-                                })
+                                    }),
+                                    _vm._v(" "),
+                                    sm.branch == true
+                                      ? _c(
+                                          "label",
+                                          {
+                                            staticClass: "custom-control-label",
+                                            attrs: { for: "branch" + sm.id }
+                                          },
+                                          [_vm._v("ALL")]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    sm.branch == false
+                                      ? _c(
+                                          "label",
+                                          {
+                                            staticClass: "custom-control-label",
+                                            attrs: { for: "branch" + sm.id }
+                                          },
+                                          [_vm._v("SOME")]
+                                        )
+                                      : _vm._e()
+                                  ]
+                                )
                               ]),
                               _vm._v(" "),
                               _c("td", [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: sm.merchant_some,
-                                      expression: "sm.merchant_some"
-                                    }
-                                  ],
-                                  key: sm.id,
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    name: "merchant_some[]",
-                                    id: "merchant_some"
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "custom-control custom-switch"
                                   },
-                                  domProps: {
-                                    checked: Array.isArray(sm.merchant_some)
-                                      ? _vm._i(sm.merchant_some, null) > -1
-                                      : sm.merchant_some
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      var $$a = sm.merchant_some,
-                                        $$el = $event.target,
-                                        $$c = $$el.checked ? true : false
-                                      if (Array.isArray($$a)) {
-                                        var $$v = null,
-                                          $$i = _vm._i($$a, $$v)
-                                        if ($$el.checked) {
-                                          $$i < 0 &&
-                                            _vm.$set(
-                                              sm,
-                                              "merchant_some",
-                                              $$a.concat([$$v])
-                                            )
-                                        } else {
-                                          $$i > -1 &&
-                                            _vm.$set(
-                                              sm,
-                                              "merchant_some",
-                                              $$a
-                                                .slice(0, $$i)
-                                                .concat($$a.slice($$i + 1))
-                                            )
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: sm.agent,
+                                          expression: "sm.agent"
                                         }
-                                      } else {
-                                        _vm.$set(sm, "merchant_some", $$c)
-                                      }
-                                    }
-                                  }
-                                })
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: sm.branch_all,
-                                      expression: "sm.branch_all"
-                                    }
-                                  ],
-                                  key: sm.id,
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    name: "branch_all[]",
-                                    id: "branch_all"
-                                  },
-                                  domProps: {
-                                    checked: Array.isArray(sm.branch_all)
-                                      ? _vm._i(sm.branch_all, null) > -1
-                                      : sm.branch_all
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      var $$a = sm.branch_all,
-                                        $$el = $event.target,
-                                        $$c = $$el.checked ? true : false
-                                      if (Array.isArray($$a)) {
-                                        var $$v = null,
-                                          $$i = _vm._i($$a, $$v)
-                                        if ($$el.checked) {
-                                          $$i < 0 &&
-                                            _vm.$set(
-                                              sm,
-                                              "branch_all",
-                                              $$a.concat([$$v])
-                                            )
-                                        } else {
-                                          $$i > -1 &&
-                                            _vm.$set(
-                                              sm,
-                                              "branch_all",
-                                              $$a
-                                                .slice(0, $$i)
-                                                .concat($$a.slice($$i + 1))
-                                            )
+                                      ],
+                                      key: sm.id,
+                                      staticClass: "custom-control-input",
+                                      attrs: {
+                                        type: "checkbox",
+                                        name: "agent[]",
+                                        id: "agent" + sm.id
+                                      },
+                                      domProps: {
+                                        checked: Array.isArray(sm.agent)
+                                          ? _vm._i(sm.agent, null) > -1
+                                          : sm.agent
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = sm.agent,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = null,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                _vm.$set(
+                                                  sm,
+                                                  "agent",
+                                                  $$a.concat([$$v])
+                                                )
+                                            } else {
+                                              $$i > -1 &&
+                                                _vm.$set(
+                                                  sm,
+                                                  "agent",
+                                                  $$a
+                                                    .slice(0, $$i)
+                                                    .concat($$a.slice($$i + 1))
+                                                )
+                                            }
+                                          } else {
+                                            _vm.$set(sm, "agent", $$c)
+                                          }
                                         }
-                                      } else {
-                                        _vm.$set(sm, "branch_all", $$c)
                                       }
-                                    }
-                                  }
-                                })
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: sm.branch_some,
-                                      expression: "sm.branch_some"
-                                    }
-                                  ],
-                                  key: sm.id,
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    name: "branch_some[]",
-                                    id: "branch_some"
-                                  },
-                                  domProps: {
-                                    checked: Array.isArray(sm.branch_some)
-                                      ? _vm._i(sm.branch_some, null) > -1
-                                      : sm.branch_some
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      var $$a = sm.branch_some,
-                                        $$el = $event.target,
-                                        $$c = $$el.checked ? true : false
-                                      if (Array.isArray($$a)) {
-                                        var $$v = null,
-                                          $$i = _vm._i($$a, $$v)
-                                        if ($$el.checked) {
-                                          $$i < 0 &&
-                                            _vm.$set(
-                                              sm,
-                                              "branch_some",
-                                              $$a.concat([$$v])
-                                            )
-                                        } else {
-                                          $$i > -1 &&
-                                            _vm.$set(
-                                              sm,
-                                              "branch_some",
-                                              $$a
-                                                .slice(0, $$i)
-                                                .concat($$a.slice($$i + 1))
-                                            )
-                                        }
-                                      } else {
-                                        _vm.$set(sm, "branch_some", $$c)
-                                      }
-                                    }
-                                  }
-                                })
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: sm.agent_all,
-                                      expression: "sm.agent_all"
-                                    }
-                                  ],
-                                  key: sm.id,
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    name: "agent_all[]",
-                                    id: "agent_all"
-                                  },
-                                  domProps: {
-                                    checked: Array.isArray(sm.agent_all)
-                                      ? _vm._i(sm.agent_all, null) > -1
-                                      : sm.agent_all
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      var $$a = sm.agent_all,
-                                        $$el = $event.target,
-                                        $$c = $$el.checked ? true : false
-                                      if (Array.isArray($$a)) {
-                                        var $$v = null,
-                                          $$i = _vm._i($$a, $$v)
-                                        if ($$el.checked) {
-                                          $$i < 0 &&
-                                            _vm.$set(
-                                              sm,
-                                              "agent_all",
-                                              $$a.concat([$$v])
-                                            )
-                                        } else {
-                                          $$i > -1 &&
-                                            _vm.$set(
-                                              sm,
-                                              "agent_all",
-                                              $$a
-                                                .slice(0, $$i)
-                                                .concat($$a.slice($$i + 1))
-                                            )
-                                        }
-                                      } else {
-                                        _vm.$set(sm, "agent_all", $$c)
-                                      }
-                                    }
-                                  }
-                                })
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: sm.agent_some,
-                                      expression: "sm.agent_some"
-                                    }
-                                  ],
-                                  key: sm.id,
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    name: "agent_some[]",
-                                    id: "agent_some"
-                                  },
-                                  domProps: {
-                                    checked: Array.isArray(sm.agent_some)
-                                      ? _vm._i(sm.agent_some, null) > -1
-                                      : sm.agent_some
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      var $$a = sm.agent_some,
-                                        $$el = $event.target,
-                                        $$c = $$el.checked ? true : false
-                                      if (Array.isArray($$a)) {
-                                        var $$v = null,
-                                          $$i = _vm._i($$a, $$v)
-                                        if ($$el.checked) {
-                                          $$i < 0 &&
-                                            _vm.$set(
-                                              sm,
-                                              "agent_some",
-                                              $$a.concat([$$v])
-                                            )
-                                        } else {
-                                          $$i > -1 &&
-                                            _vm.$set(
-                                              sm,
-                                              "agent_some",
-                                              $$a
-                                                .slice(0, $$i)
-                                                .concat($$a.slice($$i + 1))
-                                            )
-                                        }
-                                      } else {
-                                        _vm.$set(sm, "agent_some", $$c)
-                                      }
-                                    }
-                                  }
-                                })
+                                    }),
+                                    _vm._v(" "),
+                                    sm.agent == true
+                                      ? _c(
+                                          "label",
+                                          {
+                                            staticClass: "custom-control-label",
+                                            attrs: { for: "agent" + sm.id }
+                                          },
+                                          [_vm._v("ALL")]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    sm.agent == false
+                                      ? _c(
+                                          "label",
+                                          {
+                                            staticClass: "custom-control-label",
+                                            attrs: { for: "agent" + sm.id }
+                                          },
+                                          [_vm._v("SOME")]
+                                        )
+                                      : _vm._e()
+                                  ]
+                                )
                               ])
                             ])
                           }),
@@ -58092,13 +58386,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Applies To:")]),
         _vm._v(" "),
-        _c("th", { attrs: { colspan: "2" } }, [_vm._v("Admin")]),
-        _vm._v(" "),
-        _c("th", { attrs: { colspan: "2" } }, [_vm._v("Merchant")]),
-        _vm._v(" "),
-        _c("th", { attrs: { colspan: "2" } }, [_vm._v("Branch")]),
-        _vm._v(" "),
-        _c("th", { attrs: { colspan: "2" } }, [_vm._v("Agent")])
+        _c("th", { attrs: { colspan: "4" } })
       ]),
       _vm._v(" "),
       _c("tr", [
@@ -58110,21 +58398,13 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Inc. Redeem")]),
         _vm._v(" "),
-        _c("th", [_vm._v("All")]),
+        _c("th", [_vm._v("Admin")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Some")]),
+        _c("th", [_vm._v("Merchant")]),
         _vm._v(" "),
-        _c("th", [_vm._v("All")]),
+        _c("th", [_vm._v("Branch")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Some")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("All")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Some")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("All")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Some")])
+        _c("th", [_vm._v("Agent")])
       ])
     ])
   },
@@ -58133,7 +58413,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group row" }, [
-      _c("div", { staticClass: "col-md-10" }, [
+      _c("div", { staticClass: "col-md-12" }, [
         _c(
           "button",
           {
@@ -58172,7 +58452,7 @@ var render = function() {
       _c("div", { staticClass: "card shadow-custom" }, [
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-8" }, [
               _c("div", { staticClass: "header-title" }, [
                 _vm._v("Wallet Account Types")
               ]),
@@ -58194,6 +58474,8 @@ var render = function() {
                           _c("td", [_vm._v(_vm._s(wat.type_code))]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(wat.wallet_account_type))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(wat.wallet_type))]),
                           _vm._v(" "),
                           wat.status == 1
                             ? _c("td", [
@@ -58477,7 +58759,65 @@ var render = function() {
                             ]
                           )
                         ])
-                      : _vm._e()
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "custom-label",
+                          attrs: { for: "wallet_type" }
+                        },
+                        [_vm._v("Wallet Type")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.wallet_type,
+                              expression: "form.wallet_type"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "wallet_type",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { selected: "", value: "" } }, [
+                            _vm._v("Select")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Credit" } }, [
+                            _vm._v("Credit")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Prepaid" } }, [
+                            _vm._v("Prepaid")
+                          ])
+                        ]
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
@@ -58543,6 +58883,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Type Code")]),
         _vm._v(" "),
         _c("th", [_vm._v("Wallet Account Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Wallet Type")]),
         _vm._v(" "),
         _c("th", [_vm._v("Status")]),
         _vm._v(" "),
@@ -63035,7 +63377,15 @@ var render = function() {
                         [
                           _c("input", {
                             staticClass: "form-check-input",
-                            attrs: { type: "checkbox", id: "exampleCheck1" }
+                            attrs: {
+                              type: "checkbox",
+                              id: "exampleCheck1",
+                              disabled: ""
+                            },
+                            domProps: {
+                              checked:
+                                this.form.acknowledgement_template != "empty"
+                            }
                           }),
                           _vm._v(" "),
                           _c(
@@ -63055,17 +63405,36 @@ var render = function() {
                                 name: "acknowledgement_template",
                                 id: "inputGroupFile03"
                               },
-                              on: { change: _vm.onFileChange }
+                              on: {
+                                change: _vm.onFileChangeAcknowledgeTemplate
+                              }
                             }),
                             _vm._v(" "),
-                            _c(
-                              "label",
-                              {
-                                staticClass: "custom-file-label",
-                                attrs: { for: "inputGroupFile03" }
-                              },
-                              [_vm._v("Choose file")]
-                            )
+                            this.form.acknowledgement_template == "empty"
+                              ? _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [_vm._v("Choose File")]
+                                )
+                              : _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        this.form.acknowledgement_template[
+                                          "name"
+                                        ]
+                                      )
+                                    )
+                                  ]
+                                )
                           ])
                         ]
                       )
@@ -63081,7 +63450,14 @@ var render = function() {
                         [
                           _c("input", {
                             staticClass: "form-check-input",
-                            attrs: { type: "checkbox", id: "exampleCheck1" }
+                            attrs: {
+                              type: "checkbox",
+                              id: "exampleCheck1",
+                              disabled: ""
+                            },
+                            domProps: {
+                              checked: this.form.approval_template != "empty"
+                            }
                           }),
                           _vm._v(" "),
                           _c(
@@ -63096,17 +63472,33 @@ var render = function() {
                           _c("div", { staticClass: "custom-file" }, [
                             _c("input", {
                               staticClass: "custom-file-input",
-                              attrs: { type: "file", id: "inputGroupFile03" }
+                              attrs: { type: "file", id: "inputGroupFile03" },
+                              on: { change: _vm.onFileChangeApprovalTemplate }
                             }),
                             _vm._v(" "),
-                            _c(
-                              "label",
-                              {
-                                staticClass: "custom-file-label",
-                                attrs: { for: "inputGroupFile03" }
-                              },
-                              [_vm._v("Choose file")]
-                            )
+                            this.form.approval_template == "empty"
+                              ? _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [_vm._v("Choose File")]
+                                )
+                              : _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        this.form.approval_template["name"]
+                                      )
+                                    )
+                                  ]
+                                )
                           ])
                         ]
                       )
@@ -63122,7 +63514,15 @@ var render = function() {
                         [
                           _c("input", {
                             staticClass: "form-check-input",
-                            attrs: { type: "checkbox", id: "exampleCheck1" }
+                            attrs: {
+                              type: "checkbox",
+                              id: "exampleCheck1",
+                              disabled: ""
+                            },
+                            domProps: {
+                              checked:
+                                this.form.confirmation_template != "empty"
+                            }
                           }),
                           _vm._v(" "),
                           _c(
@@ -63137,17 +63537,35 @@ var render = function() {
                           _c("div", { staticClass: "custom-file" }, [
                             _c("input", {
                               staticClass: "custom-file-input",
-                              attrs: { type: "file", id: "inputGroupFile03" }
+                              attrs: { type: "file", id: "inputGroupFile03" },
+                              on: {
+                                change: _vm.onFileChangeConfirmationTemplate
+                              }
                             }),
                             _vm._v(" "),
-                            _c(
-                              "label",
-                              {
-                                staticClass: "custom-file-label",
-                                attrs: { for: "inputGroupFile03" }
-                              },
-                              [_vm._v("Choose file")]
-                            )
+                            this.form.confirmation_template == "empty"
+                              ? _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [_vm._v("Choose File")]
+                                )
+                              : _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-file-label",
+                                    attrs: { for: "inputGroupFile03" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        this.form.confirmation_template["name"]
+                                      )
+                                    )
+                                  ]
+                                )
                           ])
                         ]
                       )
@@ -63213,12 +63631,19 @@ var render = function() {
                       rawName: "v-model",
                       value: _vm.form.service_code,
                       expression: "form.service_code"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required",
+                      expression: "'required'"
                     }
                   ],
                   staticClass: "form-control mb-4 col-sm-4",
                   attrs: {
-                    type: "email",
+                    type: "text",
                     id: "inputEmail3",
+                    name: "service_type_code",
                     placeholder: "Code",
                     disabled: ""
                   },
@@ -63253,16 +63678,26 @@ var render = function() {
                       rawName: "v-model",
                       value: _vm.form.service_name,
                       expression: "form.service_name"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required",
+                      expression: "'required'"
                     }
                   ],
                   staticClass: "form-control mb-4 col-sm-4",
                   attrs: {
-                    type: "email",
+                    type: "text",
                     id: "inputEmail3",
+                    name: "service_type_name",
                     placeholder: "Name"
                   },
                   domProps: { value: _vm.form.service_name },
                   on: {
+                    change: function($event) {
+                      return _vm.validation()
+                    },
                     input: function($event) {
                       if ($event.target.composing) {
                         return
@@ -63270,7 +63705,17 @@ var render = function() {
                       _vm.$set(_vm.form, "service_name", $event.target.value)
                     }
                   }
-                })
+                }),
+                _vm._v(" "),
+                _vm.errors.has("service_type_name")
+                  ? _c("p", { staticClass: "alert text=danger" }, [
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.errors.first("service_type_name")) +
+                          " "
+                      )
+                    ])
+                  : _vm._e()
               ])
             ]),
             _vm._v(" "),
@@ -63292,16 +63737,26 @@ var render = function() {
                       rawName: "v-model",
                       value: _vm.form.service_description,
                       expression: "form.service_description"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required",
+                      expression: "'required'"
                     }
                   ],
                   staticClass: "form-control mb-4 col-sm-4",
                   attrs: {
-                    type: "email",
+                    type: "text",
                     id: "inputEmail3",
+                    name: "service_type_description",
                     placeholder: "Description"
                   },
                   domProps: { value: _vm.form.service_description },
                   on: {
+                    change: function($event) {
+                      return _vm.validation()
+                    },
                     input: function($event) {
                       if ($event.target.composing) {
                         return
@@ -63313,7 +63768,17 @@ var render = function() {
                       )
                     }
                   }
-                })
+                }),
+                _vm._v(" "),
+                _vm.errors.has("service_type_description")
+                  ? _c("p", { staticClass: "alert text=danger" }, [
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.errors.first("service_type_description")) +
+                          " "
+                      )
+                    ])
+                  : _vm._e()
               ])
             ])
           ])
@@ -63727,21 +64192,37 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                staticClass: "btn btn-primary float-right btn-lg btn-custom",
-                attrs: {
-                  to: { name: "/st-setup", params: { id: _vm.id_value } }
-                },
-                nativeOn: {
-                  click: function($event) {
-                    return _vm.updateDetailsBehavior()
-                  }
-                }
-              },
-              [_vm._v("Save & Next")]
-            )
+            _vm.errors.items.length == 0
+              ? _c(
+                  "router-link",
+                  {
+                    staticClass:
+                      "btn btn-primary float-right btn-lg btn-custom",
+                    attrs: {
+                      to: { name: "/st-setup", params: { id: _vm.id_value } }
+                    },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.updateDetailsBehavior()
+                      }
+                    }
+                  },
+                  [_vm._v("Save & Next")]
+                )
+              : _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-primary float-right btn-lg btn-custom",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.showToast()
+                      }
+                    }
+                  },
+                  [_vm._v("Save & Next  ")]
+                )
           ],
           1
         )
@@ -63810,7 +64291,170 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-md-6 mt-5" }, [
-            _vm._m(1),
+            _c("ul", { staticClass: "list-group list-group-flush" }, [
+              _c("li", { staticClass: "list-group-item" }, [
+                _c(
+                  "div",
+                  { staticClass: "form-check custom-control custom-checkbox " },
+                  [
+                    _c("input", {
+                      staticClass: "form-check-input",
+                      attrs: {
+                        type: "checkbox",
+                        id: "exampleCheck1",
+                        disabled: ""
+                      },
+                      domProps: {
+                        checked: _vm.form.acknowledgement_template != null
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-check-label",
+                        attrs: { for: "exampleCheck1" }
+                      },
+                      [_vm._v("Transaction Acknowledgement Template:  ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "custom-file" }, [
+                      _c("input", {
+                        staticClass: "custom-file-input",
+                        attrs: { type: "file", id: "inputGroupFile03" },
+                        on: { change: _vm.onFileChangeAcknowledgeTemplate }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.acknowledgement_template != null
+                        ? _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v(_vm._s(_vm.form.acknowledgement_template))]
+                          )
+                        : _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v("Choose File")]
+                          )
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "list-group-item" }, [
+                _c(
+                  "div",
+                  { staticClass: "form-check custom-control custom-checkbox " },
+                  [
+                    _c("input", {
+                      staticClass: "form-check-input",
+                      attrs: {
+                        type: "checkbox",
+                        id: "exampleCheck1",
+                        disabled: ""
+                      },
+                      domProps: { checked: _vm.form.approval_template != null }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-check-label",
+                        attrs: { for: "exampleCheck1" }
+                      },
+                      [_vm._v("Transaction Approval Template:")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "custom-file" }, [
+                      _c("input", {
+                        staticClass: "custom-file-input",
+                        attrs: { type: "file", id: "inputGroupFile03" },
+                        on: { change: _vm.onFileChangeApprovalTemplate }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.approval_template != null
+                        ? _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v(_vm._s(_vm.form.approval_template))]
+                          )
+                        : _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v("Choose File")]
+                          )
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "list-group-item" }, [
+                _c(
+                  "div",
+                  { staticClass: "form-check custom-control custom-checkbox " },
+                  [
+                    _c("input", {
+                      staticClass: "form-check-input",
+                      attrs: {
+                        type: "checkbox",
+                        id: "exampleCheck1",
+                        disabled: ""
+                      },
+                      domProps: {
+                        checked: _vm.form.confirmation_template != null
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-check-label",
+                        attrs: { for: "exampleCheck1" }
+                      },
+                      [_vm._v("Transaction Confirmation Template")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "custom-file" }, [
+                      _c("input", {
+                        staticClass: "custom-file-input",
+                        attrs: { type: "file", id: "inputGroupFile03" },
+                        on: { change: _vm.onFileChangeConfirmationTemplate }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.confirmation_template != null
+                        ? _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v(_vm._s(_vm.form.confirmation_template))]
+                          )
+                        : _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "inputGroupFile03" }
+                            },
+                            [_vm._v("Choose File")]
+                          )
+                    ])
+                  ]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "button",
@@ -63840,126 +64484,6 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Service Name")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Service Gateway")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "list-group list-group-flush" }, [
-      _c("li", { staticClass: "list-group-item" }, [
-        _c(
-          "div",
-          { staticClass: "form-check custom-control custom-checkbox " },
-          [
-            _c("input", {
-              staticClass: "form-check-input",
-              attrs: { type: "checkbox", id: "exampleCheck1" }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "form-check-label",
-                attrs: { for: "exampleCheck1" }
-              },
-              [_vm._v("Transaction Acknowledgement Template:  ")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "custom-file" }, [
-              _c("input", {
-                staticClass: "custom-file-input",
-                attrs: { type: "file", id: "inputGroupFile03" }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "custom-file-label",
-                  attrs: { for: "inputGroupFile03" }
-                },
-                [_vm._v("Choose file")]
-              )
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "list-group-item" }, [
-        _c(
-          "div",
-          { staticClass: "form-check custom-control custom-checkbox " },
-          [
-            _c("input", {
-              staticClass: "form-check-input",
-              attrs: { type: "checkbox", id: "exampleCheck1" }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "form-check-label",
-                attrs: { for: "exampleCheck1" }
-              },
-              [_vm._v("Transaction Approval Template:")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "custom-file" }, [
-              _c("input", {
-                staticClass: "custom-file-input",
-                attrs: { type: "file", id: "inputGroupFile03" }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "custom-file-label",
-                  attrs: { for: "inputGroupFile03" }
-                },
-                [_vm._v("Choose file")]
-              )
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "list-group-item" }, [
-        _c(
-          "div",
-          { staticClass: "form-check custom-control custom-checkbox " },
-          [
-            _c("input", {
-              staticClass: "form-check-input",
-              attrs: { type: "checkbox", id: "exampleCheck1" }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "form-check-label",
-                attrs: { for: "exampleCheck1" }
-              },
-              [_vm._v("Transaction Confirmation Template:")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "custom-file" }, [
-              _c("input", {
-                staticClass: "custom-file-input",
-                attrs: { type: "file", id: "inputGroupFile03" }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "custom-file-label",
-                  attrs: { for: "inputGroupFile03" }
-                },
-                [_vm._v("Choose file")]
-              )
-            ])
-          ]
-        )
       ])
     ])
   }
@@ -64821,17 +65345,29 @@ var render = function() {
                                   attrs: {
                                     type: "file",
                                     id: "inputGroupFile04"
+                                  },
+                                  on: {
+                                    change: _vm.onFileChangeAcknowledgeTemplate
                                   }
                                 }),
                                 _vm._v(" "),
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "custom-file-label",
-                                    attrs: { for: "inputGroupFile04" }
-                                  },
-                                  [_vm._v("Choose file")]
-                                )
+                                this.service_template == null
+                                  ? _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: { for: "inputGroupFile04" }
+                                      },
+                                      [_vm._v("Choose file")]
+                                    )
+                                  : _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: { for: "inputGroupFile04" }
+                                      },
+                                      [_vm._v(_vm._s(this.service_template))]
+                                    )
                               ])
                             ])
                           ])
@@ -64855,7 +65391,134 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "card-body" })
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "data-tables datatable-dark" }, [
+                    _c(
+                      "table",
+                      {
+                        staticClass: "table table-hover",
+                        attrs: { id: "table-services" }
+                      },
+                      [
+                        _c("thead", [
+                          _c("tr", { staticClass: "th-table" }, [
+                            _c("th", [_vm._v("Value")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Source Wallet")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Destination Wallet")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Rates Table")])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tbody", [
+                          _c("tr", [
+                            _c("td", [_vm._v("test ")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("test ")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("test ")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("test ")])
+                          ])
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-sm-6" }, [
+                        _c(
+                          "div",
+                          { staticClass: "custom-control custom-switch" },
+                          [
+                            _c("input", {
+                              staticClass: "custom-control-input",
+                              attrs: { type: "checkbox", id: "customSwitch1" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.switchApproval(_vm.form.approval)
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            this.form.approval == 0
+                              ? _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-control-label",
+                                    attrs: { for: "customSwitch1" }
+                                  },
+                                  [_vm._v(" Require Approval : NO  ")]
+                                )
+                              : _c(
+                                  "label",
+                                  {
+                                    staticClass: "custom-control-label",
+                                    attrs: { for: "customSwitch1" }
+                                  },
+                                  [_vm._v(" Require Approval : YES  ")]
+                                )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "my-1",
+                              attrs: { for: "inlineFormCustomSelectPref" }
+                            },
+                            [_vm._v("Assign Approver:")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: this.form.merchant_admin_id,
+                                  expression: "this.form.merchant_admin_id"
+                                }
+                              ],
+                              staticClass: "custom-select my-1",
+                              attrs: {
+                                id: "assignapprover",
+                                disabled: this.form.approval == 0
+                              }
+                            },
+                            [
+                              _c(
+                                "option",
+                                { attrs: { selected: "", disabled: "" } },
+                                [_vm._v("Choose Merchant Admin")]
+                              ),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "1" } }, [
+                                _vm._v("Merchant One")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "2" } }, [
+                                _vm._v("Merchant Two")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "3" } }, [
+                                _vm._v("Merchant Three")
+                              ])
+                            ]
+                          )
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
               ])
             ])
           ]),
@@ -80750,7 +81413,9 @@ Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_5__["default"]);
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
+Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]); // General Components
+
+Vue.component('Navbar', __webpack_require__(/*! ./components/General/Navbar.vue */ "./resources/js/components/General/Navbar.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -81012,6 +81677,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_0ed2d4b2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_0ed2d4b2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/General/Navbar.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/General/Navbar.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Navbar.vue?vue&type=template&id=641d82e2& */ "./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2&");
+/* harmony import */ var _Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Navbar.vue?vue&type=script&lang=js& */ "./resources/js/components/General/Navbar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/General/Navbar.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/General/Navbar.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/General/Navbar.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Navbar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/General/Navbar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Navbar.vue?vue&type=template&id=641d82e2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -81981,6 +82715,7 @@ __webpack_require__.r(__webpack_exports__);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
+var user = window.localStorage.getItem('user');
 var routes = [{
   path: '/',
   component: __webpack_require__(/*! ../components/auth/Login.vue */ "./resources/js/components/auth/Login.vue")["default"]
@@ -81992,36 +82727,52 @@ var routes = [{
   component: __webpack_require__(/*! ../components/auth/Login.vue */ "./resources/js/components/auth/Login.vue")["default"]
 }, {
   path: '/dashboard',
-  component: __webpack_require__(/*! ../components/General/Dashboard.vue */ "./resources/js/components/General/Dashboard.vue")["default"]
-}, {
+  component: __webpack_require__(/*! ../components/General/Dashboard.vue */ "./resources/js/components/General/Dashboard.vue")["default"],
+  beforeEnter: requireLogin
+},
+/* 
+ * @ Wallet Accounts
+ */
+{
   path: '/walletaccounts',
-  component: __webpack_require__(/*! ../components/WalletAccounts/WalletAccounts.vue */ "./resources/js/components/WalletAccounts/WalletAccounts.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletAccounts/WalletAccounts.vue */ "./resources/js/components/WalletAccounts/WalletAccounts.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/createwalletaccount',
-  component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/updatewalletaccount/:id',
-  component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
- * @ CHUGUG EARPHONES SIRA
+ * @ Service Types
  **/
 {
   path: '/servicetypes',
-  component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeTable.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeTable.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeTable.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeTable.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/editservicetype/:id',
   name: '/test',
-  component: __webpack_require__(/*! ../components/WalletServiceTypes/EditServiceType.vue */ "./resources/js/components/WalletServiceTypes/EditServiceType.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/EditServiceType.vue */ "./resources/js/components/WalletServiceTypes/EditServiceType.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/servicetypesetup/:id',
   name: '/st-setup',
-  component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeSetUp.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeSetUp.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeSetUp.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/createservicetype',
   name: '/st-create-new',
-  component: __webpack_require__(/*! ../components/WalletServiceTypes/CreateServiceType.vue */ "./resources/js/components/WalletServiceTypes/CreateServiceType.vue")["default"]
-}, {
+  component: __webpack_require__(/*! ../components/WalletServiceTypes/CreateServiceType.vue */ "./resources/js/components/WalletServiceTypes/CreateServiceType.vue")["default"],
+  beforeEnter: requireLogin
+},
+/**
+ * @ Error Pages
+ **/
+{
   path: '*',
   component: __webpack_require__(/*! ../components/ErrorPages/404.vue */ "./resources/js/components/ErrorPages/404.vue")
 },
@@ -82030,34 +82781,41 @@ var routes = [{
  **/
 {
   path: '/serviceGroup',
-  component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceGroup.vue */ "./resources/js/components/ServiceMatrix/ServiceGroup.vue")["default"]
+  component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceGroup.vue */ "./resources/js/components/ServiceMatrix/ServiceGroup.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/serviceMatrix',
-  component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceMatrix.vue */ "./resources/js/components/ServiceMatrix/ServiceMatrix.vue")["default"]
+  name: 'Service Matrix',
+  component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceMatrix.vue */ "./resources/js/components/ServiceMatrix/ServiceMatrix.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
  * @ Services  
  */
 {
   path: '/serviceslist',
-  component: __webpack_require__(/*! ../components/WalletServices/ServicesListTable.vue */ "./resources/js/components/WalletServices/ServicesListTable.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServices/ServicesListTable.vue */ "./resources/js/components/WalletServices/ServicesListTable.vue")["default"],
+  beforeEnter: requireLogin
 }, {
   path: '/createservice',
-  component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
  *@ Wallet Account Type 
  **/
 {
   path: '/walletaccounttype',
-  component: __webpack_require__(/*! ../components/WalletAccountTypes/WalletAccountType.vue */ "./resources/js/components/WalletAccountTypes/WalletAccountType.vue")["default"]
+  component: __webpack_require__(/*! ../components/WalletAccountTypes/WalletAccountType.vue */ "./resources/js/components/WalletAccountTypes/WalletAccountType.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
  * Service Gateway
  */
 {
   path: '/servicegatewaylist',
-  component: __webpack_require__(/*! ../components/ServiceGateway/ServiceGatewayTable.vue */ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue")["default"]
+  component: __webpack_require__(/*! ../components/ServiceGateway/ServiceGatewayTable.vue */ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue")["default"],
+  beforeEnter: requireLogin
 },
 /**
  *@ Return Error 404 Page 
@@ -82067,6 +82825,21 @@ var routes = [{
   path: '/*',
   component: __webpack_require__(/*! ../components/ErrorPages/404.vue */ "./resources/js/components/ErrorPages/404.vue")["default"]
 }];
+/**
+ * @ Route Guards
+ * Authentication Login 
+ **/
+
+function requireLogin(to, from, next) {
+  if (user != null) {
+    next(true);
+  } else {
+    window.localStorage.removeItem('user');
+    location.reload();
+    window.location.href = "/";
+  }
+}
+
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history',
   routes: routes // short for routes: routes

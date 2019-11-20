@@ -13,7 +13,7 @@ class ServiceMatrix extends Model
     // Guarded
     protected $guarded = [];
     // Table Name
-    protected $table = 'service_martix';
+    protected $table = 'service_matrix';
     // Primary Key
     public $primaryKey = 'id';
     // Timestamps

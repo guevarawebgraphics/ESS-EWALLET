@@ -42,7 +42,7 @@ class ServiceTypeRepository
                                         ->first();  
                                         return $behavior_details;
     }
-    public function update_service_details_and_behavior($stdata,$st_id){ 
+    public function update_service_details_and_behavior($stdata,$st_id){  
                 $user = auth('api')->user();
                 $update_details = DB::connection('mysql') 
                                         ->table('servicetypedetails')->where('id','=',$st_id)
@@ -65,30 +65,115 @@ class ServiceTypeRepository
                                                 'behavior_value' => $stdata->behavior_value,
                                         ));
                                         return $update_behavior;
-                                 
+    }
+    public function update_service_type_templates($service_type_data){ 
+              
+                /**
+                 * Declaration of Variables (Important)
+                 */
+                $acknowledgement_template_get = DB::connection('mysql')->table('servicetypedetails')
+                                        ->where('id','=',$service_type_data->id)
+                                        ->select('acknowledgement_template')
+                                        ->first();
+                $acknowledgement_template = $acknowledgement_template_get->acknowledgement_template;
 
-              }
+                $approval_template_get = DB::connection('mysql')->table('servicetypedetails')
+                                        ->where('id','=',$service_type_data->id) 
+                                        ->select('approval_template')
+                                        ->first();
+                $approval_template = $approval_template_get->approval_template;
+
+                $confirmation_template_get = DB::connection('mysql')->table('servicetypedetails')
+                                        ->where('id','=',$service_type_data->id)
+                                        ->select('confirmation_template')
+                                        ->first();
+                $confirmation_template = $confirmation_template_get->confirmation_template;
+
+                if($service_type_data->file_acknowledgement_template != "null"){
+                    if($service_type_data->file_acknowledgement_template != $acknowledgement_template){
+                        $filename_with_extension_ack = $service_type_data->file_acknowledgement_template->getClientOriginalName(); /**Whole File Name w/ ext.*/
+                        $file_name_ack = pathinfo($filename_with_extension_ack, PATHINFO_FILENAME); /**Actual File Name */
+                        $acknowledgement_template = time().'_'.$file_name_ack.'.'.$service_type_data->file_acknowledgement_template->getClientOriginalExtension();
+                        $upload_ack = $service_type_data->file_acknowledgement_template->storeAs('public/uploads/templates/acknowledgement_template', $acknowledgement_template);    
+                    }
+                }
+                if($service_type_data->file_approval_template != "null"){
+                    if($service_type_data->file_approval_template != $approval_template){
+                        $filename_with_extension_app = $service_type_data->file_approval_template->getClientOriginalName();
+                        $file_name_app = pathinfo($filename_with_extension_app, PATHINFO_FILENAME);
+                        $approval_template = time().'_'.$file_name_app.'.'.$service_type_data->file_approval_template->getClientOriginalExtension();
+                        $upload_app = $service_type_data->file_approval_template->storeAs('public/uploads/templates/approval_template', $approval_template);     
+                    } 
+                }
+                if($service_type_data->file_confirmation_template != "null"){
+                    if($service_type_data->file_confirmation_template != $confirmation_template){
+                        $filename_with_extension_con = $service_type_data->file_confirmation_template->getClientOriginalName();
+                        $file_name_con = pathinfo($filename_with_extension_con, PATHINFO_FILENAME);
+                        $confirmation_template = time().'_'.$file_name_con.'.'.$service_type_data->file_confirmation_template->getClientOriginalExtension();
+                        $upload_con = $service_type_data->file_confirmation_template->storeAs('public/uploads/templates/confirmation_template', $confirmation_template);     
+                    }
+                }
+     
+                $update_template = DB::connection('mysql') 
+                ->table('servicetypedetails')->where('id','=',$service_type_data->id)
+                ->update(array(
+                        'acknowledgement_template' => $acknowledgement_template, 
+                        'approval_template' =>  $approval_template,
+                        'confirmation_template' => $confirmation_template 
+                ));
+                return $update_template;
+    }
+
      public function create_service_type($service_type_data){  
-                $user = auth('api')->user();  
+                $user = auth('api')->user();   
+                /**
+                 * Declaration of Variables (Important)
+                 */
+                $acknowledgement_template = null; 
+                $approval_template = null; 
+                $confirmation_template = null;
                 /**
                  * Get the acknowledgement_template file 
                  */
-                //gets the original file name
-                $filename_with_extension = $service_type_data->file_acknowledgement_template->getClientOriginalName();
-                //gets the original file name except the extension
-                $file_name = pathinfo($filename_with_extension, PATHINFO_FILENAME);
-                $acknowledgement_template = time().'_'.$file_name.'.'.$service_type_data->file_acknowledgement_template->getClientOriginalExtension();
-                $upload = $service_type_data->file_acknowledgement_template->storeAs('public/uploads/templates/acknowledgement_template', $acknowledgement_template);
+                //gets the original file name 
+                if($service_type_data->file_acknowledgement_template !== 'empty'){
+                    $filename_with_extension_ack = $service_type_data->file_acknowledgement_template->getClientOriginalName(); /**Whole File Name w/ ext.*/
+                    $file_name_ack = pathinfo($filename_with_extension_ack, PATHINFO_FILENAME); /**Actual File Name */
+                    $acknowledgement_template = time().'_'.$file_name_ack.'.'.$service_type_data->file_acknowledgement_template->getClientOriginalExtension();
+                    $upload_ack = $service_type_data->file_acknowledgement_template->storeAs('public/uploads/templates/acknowledgement_template', $acknowledgement_template);    
+                }
+     
                 /**
                  * Get the approval_template file
+                 */
+                //gets the original file name
+                if($service_type_data->file_approval_template !== 'empty'){
+                    $filename_with_extension_app = $service_type_data->file_approval_template->getClientOriginalName();
+                    $file_name_app = pathinfo($filename_with_extension_app, PATHINFO_FILENAME);
+                    $approval_template = time().'_'.$file_name_app.'.'.$service_type_data->file_approval_template->getClientOriginalExtension();
+                    $upload_app = $service_type_data->file_approval_template->storeAs('public/uploads/templates/approval_template', $approval_template);   
+                }
+
+                /**
+                 * Get the confirmation_template file
+                 */ 
+                if($service_type_data->file_confirmation_template !== 'empty'){
+                    $filename_with_extension_con = $service_type_data->file_confirmation_template->getClientOriginalName();
+                    $file_name_con = pathinfo($filename_with_extension_con, PATHINFO_FILENAME);
+                    $confirmation_template = time().'_'.$file_name_app.'.'.$service_type_data->file_confirmation_template->getClientOriginalExtension();
+                    $upload_con = $service_type_data->file_confirmation_template->storeAs('public/uploads/templates/confirmation_template', $confirmation_template);    
+                }
+
+                /**
+                 * Saving into servicetypedetails 
                  */
                 $service_details = ServiceTypeDetails::create([
                     'st_code' => $service_type_data->servicetype_code,
                     'st_name' => $service_type_data->servicetype_name,
                     'st_description' => $service_type_data->servicetype_description,
                     'acknowledgement_template' => $acknowledgement_template,
-                    'approval_template' => "123",
-                    'confirmation_template' => "123"
+                    'approval_template' => $approval_template,
+                    'confirmation_template' => $confirmation_template
                 ]); 
                 $st_id = $service_details->id; 
 
