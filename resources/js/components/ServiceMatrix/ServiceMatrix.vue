@@ -11,7 +11,7 @@
                         <!-- Row Table -->
                         <div class="form-group row">
                             <!-- Cold lg 6 -->
-                            <div class="col-md-10">
+                            <div class="col-md-12">
                                 <div class="header-title">Services Matrix Setup</div>
                                 <div class="data-tables datatable-dark">
                                     <!-- Table -->
@@ -20,24 +20,27 @@
                                             <tr sp>
                                                 <th colspan="3"><h3>Service Matrix</h3></th>
                                                 <th>Applies To:</th>
-                                                <th colspan="2">Admin</th>
-                                                <th colspan="2">Merchant</th>
+                                                <th colspan="4"></th>
+                                                <!-- <th colspan="2">Merchant</th>
                                                 <th colspan="2">Branch</th>
-                                                <th colspan="2">Agent</th>
+                                                <th colspan="2">Agent</th> -->
                                             </tr>
                                             <tr>
                                                 <th>Service Type</th>
                                                 <th>Service Name</th>
                                                 <th>Group</th>
                                                 <th>Inc. Redeem</th>
-                                                <th>All</th>
+                                                <th>Admin</th>
+                                                <th>Merchant</th>
+                                                <th>Branch</th>
+                                                <th>Agent</th>
+                                                <!-- <th>Some</th> -->
+                                                <!-- <th>All</th>
                                                 <th>Some</th>
                                                 <th>All</th>
                                                 <th>Some</th>
                                                 <th>All</th>
-                                                <th>Some</th>
-                                                <th>All</th>
-                                                <th>Some</th>
+                                                <th>Some</th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -46,14 +49,41 @@
                                                 <td>{{sm.service_name}}</td>
                                                 <td>{{sm.group_description}}</td>
                                                 <td>Test</td>
-                                                <td><input :key="sm.id" type="checkbox" name="admin_all[]" class="form-check-input"  v-model="sm.admin_all" id="admin_all"></td>
-                                                <td><input :key="sm.id" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" id="admin_some"></td>
+                                                <td>
+                                                    <div class="custom-control custom-switch">
+                                                        <input :key="sm.id" type="checkbox" v-model="sm.admin" name="admin[]" class="custom-control-input" v-bind:id="'admin' + sm.id">
+                                                        <label class="custom-control-label" v-if="sm.admin == true" v-bind:for="'admin' + sm.id">ALL</label>
+                                                        <label class="custom-control-label" v-if="sm.admin == false" v-bind:for="'admin' + sm.id">SOME</label>
+                                                    </div>
+                                                </td>
+                                                 <td>
+                                                    <div class="custom-control custom-switch">
+                                                        <input :key="sm.id" type="checkbox" v-model="sm.merchant" name="merchant[]" class="custom-control-input" v-bind:id="'merchant' + sm.id">
+                                                        <label class="custom-control-label" v-if="sm.merchant == true" v-bind:for="'merchant' + sm.id">ALL</label>
+                                                        <label class="custom-control-label" v-if="sm.merchant == false" v-bind:for="'merchant' + sm.id">SOME</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="custom-control custom-switch">
+                                                        <input :key="sm.id" type="checkbox" v-model="sm.branch" name="branch[]" class="custom-control-input" v-bind:id="'branch' + sm.id">
+                                                        <label class="custom-control-label" v-if="sm.branch == true" v-bind:for="'branch' + sm.id">ALL</label>
+                                                        <label class="custom-control-label" v-if="sm.branch == false" v-bind:for="'branch' + sm.id">SOME</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="custom-control custom-switch">
+                                                        <input :key="sm.id" type="checkbox" v-model="sm.agent" name="agent[]" class="custom-control-input" v-bind:id="'agent' + sm.id">
+                                                        <label class="custom-control-label" v-if="sm.agent == true" v-bind:for="'agent' + sm.id">ALL</label>
+                                                        <label class="custom-control-label" v-if="sm.agent == false" v-bind:for="'agent' + sm.id">SOME</label>
+                                                    </div>
+                                                </td>
+                                                <!-- <td><input :key="sm.id" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" id="admin_some"></td>
                                                 <td><input :key="sm.id" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" id="merchant_all"></td>
                                                 <td><input :key="sm.id" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some" id="merchant_some"></td>
                                                 <td><input :key="sm.id" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" id="branch_all"></td>
                                                 <td><input :key="sm.id" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" id="branch_some"></td>
                                                 <td><input :key="sm.id" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" id="agent_all"></td>
-                                                <td><input :key="sm.id" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" id="agent_some"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" id="agent_some"></td> -->
                                             </tr>
                                         </tbody>
                                     </table>
@@ -64,7 +94,7 @@
                         <!-- ./ Row Table -->
                         <!-- Row Button -->
                         <div class="form-group row">
-                            <div class="col-md-10">
+                            <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary btn-flat float-right"><i class="ti-save"></i> Save Changes</button>
                             </div>
                         </div>
@@ -85,7 +115,7 @@ export default {
         return {
             Services: {},
             form: new Form({
-                admin_all: {},
+                admin: {},
                 admin_some: {},
                 merchant_all: {},
                 merchant_some: {},
@@ -101,7 +131,7 @@ export default {
             setTimeout(function(){
                 let table = $('#service_matrix').DataTable({
                     // "searching": false,
-                    "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+                    //"sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
                     "paging": true,
                     "pageLength": 10,
                     //scrollX: true,
@@ -110,7 +140,7 @@ export default {
                     responsive: true,
                     fixedColumns: false,
                 });
-            }, 900);
+            }, 1000);
         },
         SaveChanges(){
             swal.fire({
@@ -131,14 +161,14 @@ export default {
                         toast.fire({
                             type: 'success',
                             title: 'Saved!'
-                            })
+                        })
                         
                     })
                     .catch((err) => {
                         swal.fire(
-                        'Something Went Wrong!',
-                        'Something Went Wrong!',
-                        'error'
+                            'Something Went Wrong!',
+                            'Something Went Wrong!',
+                            'error'
                         )
                     })
                     
@@ -152,6 +182,7 @@ export default {
     created(){
         this.datatable();
         this.GetServices();
+        console.log(this.$route.name)
     }
 }
 </script>

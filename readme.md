@@ -119,6 +119,8 @@ DB_PASSWORD_SECOND=essdev2019
 
 For any further concerns regarding the project please contact the project owner.
 
+## To the Future Developer of this project good luck lol
+Please don't contact the previous developers thanks.
 
 # ############################
 # Accounts For ESS Project
