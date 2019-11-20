@@ -154,9 +154,8 @@
                   <div class="col-sm-6">
                     <div class="form-group">  
                       <label class="my-1" for="inlineFormCustomSelectPref">Assign Approver:</label>
-                    <select class="custom-select my-1" id="assignapprover" :disabled="this.form.approval==0"> 
-
-                      <option selected="" disabled >Choose Merchant Admin</option>
+                    <select class="custom-select my-1" id="assignapprover" :disabled="this.form.approval==0" v-model="this.form.merchant_admin_id"> 
+                      <option value="0">Choose Merchant Admin</option>
                       <option value="1">Merchant One</option>
                       <option value="2">Merchant Two</option>
                       <option value="3">Merchant Three</option>
@@ -165,7 +164,6 @@
                   </div> 
                   </div>
                 </div>
-
               </div>
           </div>
       </div>
@@ -447,13 +445,11 @@ methods:{
              }
              else {
                 this.form.approval  = 0;  
-                /*this.form.merchant_admin_id === "0";  
-                $('#assignapprover').attr('hidden');*/
              }
     },
 
     
-    
+   
 },
 created() {
     this.getServiceGateway();

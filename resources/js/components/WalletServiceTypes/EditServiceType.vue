@@ -9,19 +9,21 @@
                 <div class="form-group row">
                 <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Code</label>
                 <div class="col-sm-10">
-                <input type="email" class="form-control mb-4 col-sm-4" id="inputEmail3" v-model="form.service_code"  placeholder="Code" disabled>
+                <input type="text" class="form-control mb-4 col-sm-4" id="inputEmail3" v-model="form.service_code"   v-validate="'required'"  name="service_type_code" placeholder="Code" disabled>
                 </div>
                 </div> 
                 <div class="form-group row">
                 <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Name</label>
                 <div class="col-sm-10">
-                <input type="email" class="form-control mb-4 col-sm-4" id="inputEmail3"  v-model="form.service_name"  placeholder="Name">
+                <input type="text" class="form-control mb-4 col-sm-4" id="inputEmail3"  v-model="form.service_name" v-on:change="validation()" v-validate="'required'"  name="service_type_name"  placeholder="Name">
+                <p class="alert text=danger" v-if="errors.has('service_type_name')"> {{errors.first('service_type_name')}} </p> 
                 </div>
                 </div> 
                 <div class="form-group row">
                 <label for="inputEmail3" class="col-sm-2 col-form-label">Service Type Description</label>
                 <div class="col-sm-10">
-                <input type="email" class="form-control mb-4 col-sm-4" id="inputEmail3"  v-model="form.service_description"  placeholder="Description">
+                <input type="text" class="form-control mb-4 col-sm-4" id="inputEmail3" v-model="form.service_description" v-on:change="validation()" v-validate="'required'"  name="service_type_description" placeholder="Description">
+                   <p class="alert text=danger" v-if="errors.has('service_type_description')"> {{errors.first('service_type_description')}} </p> 
                 </div>
                 </div>
             </div>
@@ -142,7 +144,8 @@
         
             </form> 
                       </div> 
-                     <router-link :to="{ name: '/st-setup', params: { id: id_value }}" class="btn btn-primary float-right btn-lg btn-custom" @click.native="updateDetailsBehavior()">Save & Next</router-link>
+                     <router-link :to="{ name: '/st-setup', params: { id: id_value }}" class="btn btn-primary float-right btn-lg btn-custom" @click.native="updateDetailsBehavior()" v-if="errors.items.length == 0">Save & Next</router-link> 
+                     <button type="button" class="btn btn-primary float-right btn-lg btn-custom" v-on:click="showToast()" v-else>Save & Next  </button>
             </div> 
 
             
@@ -161,6 +164,7 @@ data(){
         /***
          * Declaration of the new form and an object DetailsBehavior
          */
+        validate : true,
         DetailsBehavior : [],
         form : new Form({
         id: this.$route.params.id,
@@ -216,6 +220,24 @@ methods : {
              return false;
          }
     }, 
+    validation(){
+        if(this.form.service_name != null || this.form.service_description != null){
+                    this.$validator.validateAll().then(result => {
+                            if (result) {
+                                this.validate == true;
+                            return; 
+                                
+                            } 
+                            else {
+                                this.validate == false;
+                                console.log('has error');
+                            }
+                    });
+        }
+        else {
+            console.log("true");
+        }
+    },
     /***
      * These methods are for changing the value of the form data
      */
@@ -252,6 +274,12 @@ methods : {
         .catch(() => {
             console.log('rrrr')
         })
+    }, 
+    showToast(){
+            toast.fire({
+                              type: 'warning',
+                              title: 'Please fill empty fields'
+                      })
     }
 },
 
