@@ -2648,6 +2648,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2657,6 +2667,7 @@ __webpack_require__.r(__webpack_exports__);
         id: '',
         type_code: '',
         wallet_account_type: '',
+        wallet_type: '',
         status: status
       })
     };
@@ -2708,7 +2719,12 @@ __webpack_require__.r(__webpack_exports__);
         _this2.get_walle_account_type();
 
         _this2.datatable();
-      }).then(function () {
+
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
+      })["catch"](function () {
         console.clear();
       });
     },
@@ -2724,6 +2740,11 @@ __webpack_require__.r(__webpack_exports__);
         _this3.get_walle_account_type();
 
         _this3.datatable();
+
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
       })["catch"](function () {
         console.clear();
       });
@@ -4337,6 +4358,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4346,6 +4370,7 @@ __webpack_require__.r(__webpack_exports__);
       /***
        * Declaration of the new form and an object DetailsBehavior
        */
+      validate: true,
       DetailsBehavior: [],
       form: new Form({
         id: this.$route.params.id,
@@ -4402,6 +4427,23 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
     },
+    validation: function validation() {
+      var _this2 = this;
+
+      if (this.form.service_name != null || this.form.service_description != null) {
+        this.$validator.validateAll().then(function (result) {
+          if (result) {
+            _this2.validate == true;
+            return;
+          } else {
+            _this2.validate == false;
+            console.log('has error');
+          }
+        });
+      } else {
+        console.log("true");
+      }
+    },
 
     /***
      * These methods are for changing the value of the form data
@@ -4435,6 +4477,12 @@ __webpack_require__.r(__webpack_exports__);
     updateDetailsBehavior: function updateDetailsBehavior() {
       this.form.put('/api/service_type/updateservicetype/' + this.form.id).then(function (response) {})["catch"](function () {
         console.log('rrrr');
+      });
+    },
+    showToast: function showToast() {
+      toast.fire({
+        type: 'warning',
+        title: 'Please fill empty fields'
       });
     }
   },
@@ -4712,8 +4760,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
 //
 //
 //
@@ -58406,7 +58452,7 @@ var render = function() {
       _c("div", { staticClass: "card shadow-custom" }, [
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-8" }, [
               _c("div", { staticClass: "header-title" }, [
                 _vm._v("Wallet Account Types")
               ]),
@@ -58428,6 +58474,8 @@ var render = function() {
                           _c("td", [_vm._v(_vm._s(wat.type_code))]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(wat.wallet_account_type))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(wat.wallet_type))]),
                           _vm._v(" "),
                           wat.status == 1
                             ? _c("td", [
@@ -58711,7 +58759,65 @@ var render = function() {
                             ]
                           )
                         ])
-                      : _vm._e()
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "custom-label",
+                          attrs: { for: "wallet_type" }
+                        },
+                        [_vm._v("Wallet Type")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.wallet_type,
+                              expression: "form.wallet_type"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "wallet_type",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { selected: "", value: "" } }, [
+                            _vm._v("Select")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Credit" } }, [
+                            _vm._v("Credit")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Prepaid" } }, [
+                            _vm._v("Prepaid")
+                          ])
+                        ]
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
@@ -58777,6 +58883,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Type Code")]),
         _vm._v(" "),
         _c("th", [_vm._v("Wallet Account Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Wallet Type")]),
         _vm._v(" "),
         _c("th", [_vm._v("Status")]),
         _vm._v(" "),
@@ -63523,12 +63631,19 @@ var render = function() {
                       rawName: "v-model",
                       value: _vm.form.service_code,
                       expression: "form.service_code"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required",
+                      expression: "'required'"
                     }
                   ],
                   staticClass: "form-control mb-4 col-sm-4",
                   attrs: {
-                    type: "email",
+                    type: "text",
                     id: "inputEmail3",
+                    name: "service_type_code",
                     placeholder: "Code",
                     disabled: ""
                   },
@@ -63563,16 +63678,26 @@ var render = function() {
                       rawName: "v-model",
                       value: _vm.form.service_name,
                       expression: "form.service_name"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required",
+                      expression: "'required'"
                     }
                   ],
                   staticClass: "form-control mb-4 col-sm-4",
                   attrs: {
-                    type: "email",
+                    type: "text",
                     id: "inputEmail3",
+                    name: "service_type_name",
                     placeholder: "Name"
                   },
                   domProps: { value: _vm.form.service_name },
                   on: {
+                    change: function($event) {
+                      return _vm.validation()
+                    },
                     input: function($event) {
                       if ($event.target.composing) {
                         return
@@ -63580,7 +63705,17 @@ var render = function() {
                       _vm.$set(_vm.form, "service_name", $event.target.value)
                     }
                   }
-                })
+                }),
+                _vm._v(" "),
+                _vm.errors.has("service_type_name")
+                  ? _c("p", { staticClass: "alert text=danger" }, [
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.errors.first("service_type_name")) +
+                          " "
+                      )
+                    ])
+                  : _vm._e()
               ])
             ]),
             _vm._v(" "),
@@ -63602,16 +63737,26 @@ var render = function() {
                       rawName: "v-model",
                       value: _vm.form.service_description,
                       expression: "form.service_description"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required",
+                      expression: "'required'"
                     }
                   ],
                   staticClass: "form-control mb-4 col-sm-4",
                   attrs: {
-                    type: "email",
+                    type: "text",
                     id: "inputEmail3",
+                    name: "service_type_description",
                     placeholder: "Description"
                   },
                   domProps: { value: _vm.form.service_description },
                   on: {
+                    change: function($event) {
+                      return _vm.validation()
+                    },
                     input: function($event) {
                       if ($event.target.composing) {
                         return
@@ -63623,7 +63768,17 @@ var render = function() {
                       )
                     }
                   }
-                })
+                }),
+                _vm._v(" "),
+                _vm.errors.has("service_type_description")
+                  ? _c("p", { staticClass: "alert text=danger" }, [
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.errors.first("service_type_description")) +
+                          " "
+                      )
+                    ])
+                  : _vm._e()
               ])
             ])
           ])
@@ -64037,21 +64192,37 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                staticClass: "btn btn-primary float-right btn-lg btn-custom",
-                attrs: {
-                  to: { name: "/st-setup", params: { id: _vm.id_value } }
-                },
-                nativeOn: {
-                  click: function($event) {
-                    return _vm.updateDetailsBehavior()
-                  }
-                }
-              },
-              [_vm._v("Save & Next")]
-            )
+            _vm.errors.items.length == 0
+              ? _c(
+                  "router-link",
+                  {
+                    staticClass:
+                      "btn btn-primary float-right btn-lg btn-custom",
+                    attrs: {
+                      to: { name: "/st-setup", params: { id: _vm.id_value } }
+                    },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.updateDetailsBehavior()
+                      }
+                    }
+                  },
+                  [_vm._v("Save & Next")]
+                )
+              : _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-primary float-right btn-lg btn-custom",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.showToast()
+                      }
+                    }
+                  },
+                  [_vm._v("Save & Next  ")]
+                )
           ],
           1
         )
@@ -65308,6 +65479,15 @@ var render = function() {
                           _c(
                             "select",
                             {
+
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: this.form.merchant_admin_id,
+                                  expression: "this.form.merchant_admin_id"
+                                }
+                              ],
                               staticClass: "custom-select my-1",
                               attrs: {
                                 id: "assignapprover",

@@ -109,7 +109,7 @@ class ServiceTypeRepository
                     if($service_type_data->file_confirmation_template != $confirmation_template){
                         $filename_with_extension_con = $service_type_data->file_confirmation_template->getClientOriginalName();
                         $file_name_con = pathinfo($filename_with_extension_con, PATHINFO_FILENAME);
-                        $confirmation_template = time().'_'.$file_name_app.'.'.$service_type_data->file_confirmation_template->getClientOriginalExtension();
+                        $confirmation_template = time().'_'.$file_name_con.'.'.$service_type_data->file_confirmation_template->getClientOriginalExtension();
                         $upload_con = $service_type_data->file_confirmation_template->storeAs('public/uploads/templates/confirmation_template', $confirmation_template);     
                     }
                 }
