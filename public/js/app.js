@@ -3288,13 +3288,97 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       editmode: false,
       switching: false,
+      wai: null,
       step: 0,
       account: [],
+      Services: {},
       walletAccountTypes: [],
       form: new Form({
         username: null,
@@ -3361,6 +3445,21 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    datatable: function datatable() {
+      setTimeout(function () {
+        var table = $('#service_matrix').DataTable({
+          // "searching": false,
+          //"sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+          "paging": true,
+          "pageLength": 10,
+          //scrollX: true,
+          "autoWidth": true,
+          lengthChange: true,
+          responsive: true,
+          fixedColumns: false
+        });
+      }, 1000);
+    },
     onComplete: function onComplete() {
       alert('Yay. Done!');
     },
@@ -3509,11 +3608,13 @@ __webpack_require__.r(__webpack_exports__);
     GenerateAccountNo: function GenerateAccountNo() {
       var _this2 = this;
 
-      axios.get('/api/GenerateAccountNo').then(function (response) {
-        _this2.form.WalletAccountNo = response.data;
-      })["catch"](function (err) {
-        console.log(err);
-      });
+      if (!this.editmode) {
+        axios.get('/api/GenerateAccountNo').then(function (response) {
+          _this2.form.WalletAccountNo = response.data;
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      }
     },
 
     /**
@@ -3598,18 +3699,29 @@ __webpack_require__.r(__webpack_exports__);
           'Content-Type': 'multipart/form-data'
         }
       }).then(function (res) {
-        console.log(res);
+        if (res) {
+          /**
+           * Store Wallet Service matrix Config 
+           **/
+          axios.post('/api/walletaccount/StoreServiceMatrixConfig/' + res.data.status, _this4.Services).then(function (res) {
+            console.log(res);
 
-        _this4.form.clear();
+            _this4.form.clear();
 
-        _this4.form.reset();
+            _this4.form.reset();
 
-        toast.fire({
-          type: 'success',
-          title: 'Wallet Account Successfully created!'
-        });
+            toast.fire({
+              type: 'success',
+              title: 'Wallet Account Successfully created!'
+            });
 
-        _this4.$router.push('/walletaccounts');
+            _this4.$router.push('/walletaccounts');
+          })["catch"](function (err) {
+            console.log(err);
+          });
+        }
+
+        console.log(res.data.status);
       })["catch"](function (err) {
         console.log(err);
       });
@@ -3669,12 +3781,22 @@ __webpack_require__.r(__webpack_exports__);
     },
     uploadValidId: function uploadValidId(e) {
       this.form.valid_id = this.$refs.valid_id.files[0];
+    },
+    GetServices: function GetServices() {
+      var _this7 = this;
+
+      axios.get('api/servicematrix/GetServices').then(function (_ref2) {
+        var data = _ref2.data;
+        return _this7.Services = data;
+      });
     }
   },
   created: function created() {
     this.GetWalletAccountType();
     this.EditWalletAccount();
     this.SearchESSID();
+    this.datatable();
+    this.GetServices();
 
     if (this.editmode == true) {
       this.GetWalletAccountDetails();
@@ -5203,8 +5325,6 @@ __webpack_require__.r(__webpack_exports__);
         this.form.approval = 1;
       } else {
         this.form.approval = 0;
-        /*this.form.merchant_admin_id === "0";  
-        $('#assignapprover').attr('hidden');*/
       }
     }
   },
@@ -9878,7 +9998,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
 
 // exports
 
@@ -62464,6 +62584,493 @@ var render = function() {
                   ])
                 ])
               ])
+            ]),
+            _vm._v(" "),
+            _c("tab-content", { attrs: { title: "E-Wallet Acount Setup" } }, [
+              _c("div", { staticClass: "box" }, [
+                _c("div", { staticClass: "card shadow-custom" }, [
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("h5", [_vm._v("Service Matrix")]),
+                    _vm._v(" "),
+                    _c("hr"),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c("div", { staticClass: "col-md-12" }, [
+                        _c("div", { staticClass: "header-title" }, [
+                          _vm._v("Services Matrix Setup")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "data-tables datatable-dark" },
+                          [
+                            _c(
+                              "table",
+                              {
+                                staticClass:
+                                  "table table-hover table-bordered text-center",
+                                attrs: { id: "service_matrix" }
+                              },
+                              [
+                                _c(
+                                  "thead",
+                                  { staticClass: "text-capitalize" },
+                                  [
+                                    _c("tr", { attrs: { sp: "" } }, [
+                                      _c("th", { attrs: { colspan: "3" } }, [
+                                        _c("h3", [_vm._v("Service Matrix")])
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Applies To:")]),
+                                      _vm._v(" "),
+                                      _c("th", { attrs: { colspan: "4" } })
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("tr", [
+                                      _c("th", [_vm._v("Service Type")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Service Name")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Group")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Inc. Redeem")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Admin")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Merchant")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Branch")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Agent")])
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "tbody",
+                                  _vm._l(_vm.Services, function(sm) {
+                                    return _c("tr", { key: sm.id }, [
+                                      _c("td", [_vm._v(_vm._s(sm.st_name))]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(_vm._s(sm.service_name))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(_vm._s(sm.group_description))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [_vm._v("Test")]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "custom-control custom-switch"
+                                          },
+                                          [
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: sm.admin,
+                                                  expression: "sm.admin"
+                                                }
+                                              ],
+                                              key: sm.id,
+                                              staticClass:
+                                                "custom-control-input",
+                                              attrs: {
+                                                type: "checkbox",
+                                                name: "admin[]",
+                                                id: "admin" + sm.id
+                                              },
+                                              domProps: {
+                                                checked: Array.isArray(sm.admin)
+                                                  ? _vm._i(sm.admin, null) > -1
+                                                  : sm.admin
+                                              },
+                                              on: {
+                                                change: function($event) {
+                                                  var $$a = sm.admin,
+                                                    $$el = $event.target,
+                                                    $$c = $$el.checked
+                                                      ? true
+                                                      : false
+                                                  if (Array.isArray($$a)) {
+                                                    var $$v = null,
+                                                      $$i = _vm._i($$a, $$v)
+                                                    if ($$el.checked) {
+                                                      $$i < 0 &&
+                                                        _vm.$set(
+                                                          sm,
+                                                          "admin",
+                                                          $$a.concat([$$v])
+                                                        )
+                                                    } else {
+                                                      $$i > -1 &&
+                                                        _vm.$set(
+                                                          sm,
+                                                          "admin",
+                                                          $$a
+                                                            .slice(0, $$i)
+                                                            .concat(
+                                                              $$a.slice($$i + 1)
+                                                            )
+                                                        )
+                                                    }
+                                                  } else {
+                                                    _vm.$set(sm, "admin", $$c)
+                                                  }
+                                                }
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            sm.admin == true
+                                              ? _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "admin" + sm.id
+                                                    }
+                                                  },
+                                                  [_vm._v("ALL")]
+                                                )
+                                              : _vm._e(),
+                                            _vm._v(" "),
+                                            sm.admin == false
+                                              ? _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "admin" + sm.id
+                                                    }
+                                                  },
+                                                  [_vm._v("SOME")]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "custom-control custom-switch"
+                                          },
+                                          [
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: sm.merchant,
+                                                  expression: "sm.merchant"
+                                                }
+                                              ],
+                                              key: sm.id,
+                                              staticClass:
+                                                "custom-control-input",
+                                              attrs: {
+                                                type: "checkbox",
+                                                name: "merchant[]",
+                                                id: "merchant" + sm.id
+                                              },
+                                              domProps: {
+                                                checked: Array.isArray(
+                                                  sm.merchant
+                                                )
+                                                  ? _vm._i(sm.merchant, null) >
+                                                    -1
+                                                  : sm.merchant
+                                              },
+                                              on: {
+                                                change: function($event) {
+                                                  var $$a = sm.merchant,
+                                                    $$el = $event.target,
+                                                    $$c = $$el.checked
+                                                      ? true
+                                                      : false
+                                                  if (Array.isArray($$a)) {
+                                                    var $$v = null,
+                                                      $$i = _vm._i($$a, $$v)
+                                                    if ($$el.checked) {
+                                                      $$i < 0 &&
+                                                        _vm.$set(
+                                                          sm,
+                                                          "merchant",
+                                                          $$a.concat([$$v])
+                                                        )
+                                                    } else {
+                                                      $$i > -1 &&
+                                                        _vm.$set(
+                                                          sm,
+                                                          "merchant",
+                                                          $$a
+                                                            .slice(0, $$i)
+                                                            .concat(
+                                                              $$a.slice($$i + 1)
+                                                            )
+                                                        )
+                                                    }
+                                                  } else {
+                                                    _vm.$set(
+                                                      sm,
+                                                      "merchant",
+                                                      $$c
+                                                    )
+                                                  }
+                                                }
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            sm.merchant == true
+                                              ? _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "merchant" + sm.id
+                                                    }
+                                                  },
+                                                  [_vm._v("ALL")]
+                                                )
+                                              : _vm._e(),
+                                            _vm._v(" "),
+                                            sm.merchant == false
+                                              ? _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "merchant" + sm.id
+                                                    }
+                                                  },
+                                                  [_vm._v("SOME")]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "custom-control custom-switch"
+                                          },
+                                          [
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: sm.branch,
+                                                  expression: "sm.branch"
+                                                }
+                                              ],
+                                              key: sm.id,
+                                              staticClass:
+                                                "custom-control-input",
+                                              attrs: {
+                                                type: "checkbox",
+                                                name: "branch[]",
+                                                id: "branch" + sm.id
+                                              },
+                                              domProps: {
+                                                checked: Array.isArray(
+                                                  sm.branch
+                                                )
+                                                  ? _vm._i(sm.branch, null) > -1
+                                                  : sm.branch
+                                              },
+                                              on: {
+                                                change: function($event) {
+                                                  var $$a = sm.branch,
+                                                    $$el = $event.target,
+                                                    $$c = $$el.checked
+                                                      ? true
+                                                      : false
+                                                  if (Array.isArray($$a)) {
+                                                    var $$v = null,
+                                                      $$i = _vm._i($$a, $$v)
+                                                    if ($$el.checked) {
+                                                      $$i < 0 &&
+                                                        _vm.$set(
+                                                          sm,
+                                                          "branch",
+                                                          $$a.concat([$$v])
+                                                        )
+                                                    } else {
+                                                      $$i > -1 &&
+                                                        _vm.$set(
+                                                          sm,
+                                                          "branch",
+                                                          $$a
+                                                            .slice(0, $$i)
+                                                            .concat(
+                                                              $$a.slice($$i + 1)
+                                                            )
+                                                        )
+                                                    }
+                                                  } else {
+                                                    _vm.$set(sm, "branch", $$c)
+                                                  }
+                                                }
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            sm.branch == true
+                                              ? _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "branch" + sm.id
+                                                    }
+                                                  },
+                                                  [_vm._v("ALL")]
+                                                )
+                                              : _vm._e(),
+                                            _vm._v(" "),
+                                            sm.branch == false
+                                              ? _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "branch" + sm.id
+                                                    }
+                                                  },
+                                                  [_vm._v("SOME")]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "custom-control custom-switch"
+                                          },
+                                          [
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: sm.agent,
+                                                  expression: "sm.agent"
+                                                }
+                                              ],
+                                              key: sm.id,
+                                              staticClass:
+                                                "custom-control-input",
+                                              attrs: {
+                                                type: "checkbox",
+                                                name: "agent[]",
+                                                id: "agent" + sm.id
+                                              },
+                                              domProps: {
+                                                checked: Array.isArray(sm.agent)
+                                                  ? _vm._i(sm.agent, null) > -1
+                                                  : sm.agent
+                                              },
+                                              on: {
+                                                change: function($event) {
+                                                  var $$a = sm.agent,
+                                                    $$el = $event.target,
+                                                    $$c = $$el.checked
+                                                      ? true
+                                                      : false
+                                                  if (Array.isArray($$a)) {
+                                                    var $$v = null,
+                                                      $$i = _vm._i($$a, $$v)
+                                                    if ($$el.checked) {
+                                                      $$i < 0 &&
+                                                        _vm.$set(
+                                                          sm,
+                                                          "agent",
+                                                          $$a.concat([$$v])
+                                                        )
+                                                    } else {
+                                                      $$i > -1 &&
+                                                        _vm.$set(
+                                                          sm,
+                                                          "agent",
+                                                          $$a
+                                                            .slice(0, $$i)
+                                                            .concat(
+                                                              $$a.slice($$i + 1)
+                                                            )
+                                                        )
+                                                    }
+                                                  } else {
+                                                    _vm.$set(sm, "agent", $$c)
+                                                  }
+                                                }
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            sm.agent == true
+                                              ? _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "agent" + sm.id
+                                                    }
+                                                  },
+                                                  [_vm._v("ALL")]
+                                                )
+                                              : _vm._e(),
+                                            _vm._v(" "),
+                                            sm.agent == false
+                                              ? _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "agent" + sm.id
+                                                    }
+                                                  },
+                                                  [_vm._v("SOME")]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        )
+                                      ])
+                                    ])
+                                  }),
+                                  0
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ])
             ])
           ],
           1
@@ -65479,7 +66086,6 @@ var render = function() {
                           _c(
                             "select",
                             {
-
                               directives: [
                                 {
                                   name: "model",
@@ -65492,14 +66098,32 @@ var render = function() {
                               attrs: {
                                 id: "assignapprover",
                                 disabled: this.form.approval == 0
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    this.form,
+                                    "merchant_admin_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
                               }
                             },
                             [
-                              _c(
-                                "option",
-                                { attrs: { selected: "", disabled: "" } },
-                                [_vm._v("Choose Merchant Admin")]
-                              ),
+                              _c("option", { attrs: { value: "0" } }, [
+                                _vm._v("Choose Merchant Admin")
+                              ]),
                               _vm._v(" "),
                               _c("option", { attrs: { value: "1" } }, [
                                 _vm._v("Merchant One")

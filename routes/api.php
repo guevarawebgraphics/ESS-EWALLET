@@ -79,6 +79,10 @@ Route::prefix('walletaccount')->group(function(){
     Route::get('/GetWalletAccountDetails/{essid}', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@GetWalletAccountDetails'
     ]);
+   // api/walletaccount/StoreServiceMatrixConfig
+   Route::post('/StoreServiceMatrixConfig/{wai}', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@StoreServiceMatrixConfig'
+   ]);
 });
 /**
  *  @ Get Account
