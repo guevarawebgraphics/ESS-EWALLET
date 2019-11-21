@@ -17,10 +17,9 @@
                     <div class="form-group"> 
                       <h4 class="header-title mt-3">Service Details </h4>   
                       <label for="exampleInputEmail1">Avaible ONLY in Wallet Type:</label>
-                      <select class="custom-select" v-model="form.wallet_type" name="wallet_type">
+                      <select class="custom-select" v-model="form.wallet_type_id" name="wallet_type">
                       <option selected="selected" disabled>Select</option>
-                      <option value="Prepaid">Prepaid</option>
-                      <option value="Credit">Credit</option>
+                      <option v-bind:value="wt.id" v-for="wt in WalletTypes" :key="wt.id">{{wt.wallet_account_type}} -- {{wt.wallet_type}}</option>
                       </select>
                       <small id="emailHelp" class="form-text text-muted"></small>
                     </div>   
@@ -317,7 +316,8 @@ export default {
 data() {
   return{
     ServiceGateway : {},
-    ServiceGroups :{}, 
+    ServiceGroups :{},  
+    WalletTypes : {},
     service_template : null,
     form : new Form({ 
       /**
@@ -326,7 +326,7 @@ data() {
       service_type_id :null,
       pr_wallet_id: null,
       ir_wallet_id:null,
-      wallet_type : null,
+      wallet_type_id : null,
       servicetype_code : null,
       servicetype_name: null,
       service_code: null,
@@ -379,7 +379,6 @@ methods:{
      showServiceTypeDetails(){
       axios.get('/api/service/getservicetype/'+ this.form.servicetype_code)
       .then(response => {
-
       this.form.servicetype_name = response.data['st_name'];  
       this.form.service_type_id = response.data['id'];
       
@@ -447,13 +446,17 @@ methods:{
                 this.form.approval  = 0;  
              }
     },
+    showWalletTypes() {
+                axios.get('api/walletaccount/GetAllWalletAccountType').then(({ data}) => (this.WalletTypes = data));
+        }
 
     
    
 },
 created() {
     this.getServiceGateway();
-    this.getServiceGroup();
+    this.getServiceGroup(); 
+    this.showWalletTypes();
 }
 }
 </script>
