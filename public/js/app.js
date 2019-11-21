@@ -4063,6 +4063,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       loadingWizard: false,
+      tabtwo: true,
       form: new Form({
         servicetype_code: null,
         servicetype_name: null,
@@ -4138,6 +4139,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     nextTabTwo: function nextTabTwo() {
       this.tabone == false;
+      $('.nextbtn').attr('disabled', true);
     },
     IsDisabled: function IsDisabled() {
       if (errors.items.length > 0) {
@@ -4157,6 +4159,13 @@ __webpack_require__.r(__webpack_exports__);
     onFileChangeConfirmationTemplate: function onFileChangeConfirmationTemplate(e) {
       console.log(e.target.files[0]);
       this.form.confirmation_template = e.target.files[0];
+    },
+    ValidateTabTwo: function ValidateTabTwo() {
+      if (this.form.behavior_value == null) {
+        return false;
+      } else {
+        return true;
+      }
     }
     /***
     * These methods are for changing the value of the form data
@@ -4502,6 +4511,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5071,12 +5085,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       ServiceGateway: {},
       ServiceGroups: {},
+      WalletTypes: {},
       service_template: null,
       form: new Form({
         /**
@@ -5085,7 +5099,7 @@ __webpack_require__.r(__webpack_exports__);
         service_type_id: null,
         pr_wallet_id: null,
         ir_wallet_id: null,
-        wallet_type: null,
+        wallet_type_id: null,
         servicetype_code: null,
         servicetype_name: null,
         service_code: null,
@@ -5203,14 +5217,21 @@ __webpack_require__.r(__webpack_exports__);
         this.form.approval = 1;
       } else {
         this.form.approval = 0;
-        /*this.form.merchant_admin_id === "0";  
-        $('#assignapprover').attr('hidden');*/
       }
+    },
+    showWalletTypes: function showWalletTypes() {
+      var _this7 = this;
+
+      axios.get('api/walletaccount/GetAllWalletAccountType').then(function (_ref2) {
+        var data = _ref2.data;
+        return _this7.WalletTypes = data;
+      });
     }
   },
   created: function created() {
     this.getServiceGateway();
     this.getServiceGroup();
+    this.showWalletTypes();
   }
 });
 
@@ -5225,6 +5246,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -62700,8 +62722,10 @@ var render = function() {
                             {
                               staticClass: "wizard-footer-right",
                               style: props.fillButtonStyle,
-                              attrs: { disabled: _vm.errors.items.length > 0 },
-                              on: { click: _vm.nextTabTwo },
+                              attrs: {
+                                disabled: _vm.errors.items.length > 0,
+                                id: "nextbtn"
+                              },
                               nativeOn: {
                                 click: function($event) {
                                   return props.nextTab()
@@ -62954,401 +62978,439 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _c("tab-content", { attrs: { title: "Behavior" } }, [
-            _c("div", { staticClass: "card shadow-custom" }, [
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "col-sm-7" }, [
-                  _c("h4", { staticClass: "header-title" }, [
-                    _vm._v("Behavior")
-                  ]),
-                  _vm._v(" "),
-                  _c("ul", { staticClass: "list-group list-group-flush" }, [
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "added_ssw_sdw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "added_ssw_sdw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "added_ssw_sdw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+          _c(
+            "tab-content",
+            {
+              attrs: { title: "Behavior", "before-change": _vm.ValidateTabTwo }
+            },
+            [
+              _c("div", { staticClass: "card shadow-custom" }, [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "col-sm-7" }, [
+                    _c("h4", { staticClass: "header-title" }, [
+                      _vm._v("Behavior")
+                    ]),
+                    _vm._v(" "),
+                    _c("ul", { staticClass: "list-group list-group-flush" }, [
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer initiated in single source wallet, added to single destination wallet"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "added_ssw_sdw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "added_ssw_sdw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "added_ssw_sdw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in single source wallet, added to single destination wallet"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "added_ssw_mdw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "added_ssw_mdw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "added_ssw_mdw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer intiated in single source wallet, added to multiple destination wallets"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "added_ssw_mdw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "added_ssw_mdw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "added_ssw_mdw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer intiated in single source wallet, added to multiple destination wallets"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "added_msw_sdw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "added_msw_sdw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "added_msw_sdw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer initiated in multiple source wallets, added to single destination wallet"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "added_msw_sdw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "added_msw_sdw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "added_msw_sdw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in multiple source wallets, added to single destination wallet"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "added_msw_mdw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "added_msw_mdw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "added_msw_mdw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer initiated in multiple source wallets, added to multiple destination wallets"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "added_msw_mdw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "added_msw_mdw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "added_msw_mdw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in multiple source wallets, added to multiple destination wallets"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "deducted_sdw_ssw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "deducted_sdw_ssw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "deducted_sdw_ssw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer intiated in single destination wallets, deducted from single source wallet"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "deducted_sdw_ssw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "deducted_sdw_ssw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "deducted_sdw_ssw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer intiated in single destination wallets, deducted from single source wallet"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "deducted_sdw_msw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "deducted_sdw_msw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "deducted_sdw_msw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer initiated in single destination wallet, deducted from multiple source wallets"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "deducted_sdw_msw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "deducted_sdw_msw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "deducted_sdw_msw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in single destination wallet, deducted from multiple source wallets"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "deducted_mdw_ssw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "deducted_mdw_ssw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "deducted_mdw_ssw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer initiated in multiple destination wallets, deducted from single source wallet"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "deducted_mdw_ssw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "deducted_mdw_ssw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "deducted_mdw_ssw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in multiple destination wallets, deducted from single source wallet"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "deducted_mdw_msw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "deducted_mdw_msw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "deducted_mdw_msw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "deducted_mdw_msw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "deducted_mdw_msw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "deducted_mdw_msw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets"
+                                )
+                              ]
                             )
                           ]
                         )
@@ -63357,8 +63419,8 @@ var render = function() {
                   ])
                 ])
               ])
-            ])
-          ]),
+            ]
+          ),
           _vm._v(" "),
           _c("tab-content", { attrs: { title: "Template" } }, [
             _c("div", { staticClass: "card shadow-custom" }, [
@@ -64271,18 +64333,30 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "tbody",
-                      _vm._l(_vm.Services, function(Service) {
-                        return _c("tr", { key: Service.id }, [
-                          _c("th", { attrs: { scope: "row" } }, [
-                            _vm._v(_vm._s(Service.service_code))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(Service.service_name))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(Service.gateway_name))])
-                        ])
-                      }),
-                      0
+                      [
+                        _vm._l(_vm.Services, function(Service) {
+                          return _c("tr", { key: Service.id }, [
+                            _c("th", { attrs: { scope: "row" } }, [
+                              _vm._v(_vm._s(Service.service_code))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(Service.service_name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(Service.gateway_name))])
+                          ])
+                        }),
+                        _vm._v(" "),
+                        this.Services.length === 0
+                          ? _c("tr", [
+                              _c("td", { attrs: { colspan: "3" } }, [
+                                _vm._v(
+                                  " \n                            No Services Available\n                        "
+                                )
+                              ])
+                            ])
+                          : _vm._e()
+                      ],
+                      2
                     )
                   ]
                 )
@@ -64670,8 +64744,8 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.form.wallet_type,
-                                    expression: "form.wallet_type"
+                                    value: _vm.form.wallet_type_id,
+                                    expression: "form.wallet_type_id"
                                   }
                                 ],
                                 staticClass: "custom-select",
@@ -64689,7 +64763,7 @@ var render = function() {
                                       })
                                     _vm.$set(
                                       _vm.form,
-                                      "wallet_type",
+                                      "wallet_type_id",
                                       $event.target.multiple
                                         ? $$selectedVal
                                         : $$selectedVal[0]
@@ -64709,14 +64783,21 @@ var render = function() {
                                   [_vm._v("Select")]
                                 ),
                                 _vm._v(" "),
-                                _c("option", { attrs: { value: "Prepaid" } }, [
-                                  _vm._v("Prepaid")
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "Credit" } }, [
-                                  _vm._v("Credit")
-                                ])
-                              ]
+                                _vm._l(_vm.WalletTypes, function(wt) {
+                                  return _c(
+                                    "option",
+                                    { key: wt.id, domProps: { value: wt.id } },
+                                    [
+                                      _vm._v(
+                                        _vm._s(wt.wallet_account_type) +
+                                          " -- " +
+                                          _vm._s(wt.wallet_type)
+                                      )
+                                    ]
+                                  )
+                                })
+                              ],
+                              2
                             ),
                             _vm._v(" "),
                             _c("small", {
@@ -65479,7 +65560,6 @@ var render = function() {
                           _c(
                             "select",
                             {
-
                               directives: [
                                 {
                                   name: "model",
@@ -65492,14 +65572,32 @@ var render = function() {
                               attrs: {
                                 id: "assignapprover",
                                 disabled: this.form.approval == 0
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    this.form,
+                                    "merchant_admin_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
                               }
                             },
                             [
-                              _c(
-                                "option",
-                                { attrs: { selected: "", disabled: "" } },
-                                [_vm._v("Choose Merchant Admin")]
-                              ),
+                              _c("option", { attrs: { value: "0" } }, [
+                                _vm._v("Choose Merchant Admin")
+                              ]),
                               _vm._v(" "),
                               _c("option", { attrs: { value: "1" } }, [
                                 _vm._v("Merchant One")
@@ -66118,7 +66216,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(s.st_name) + " ")]),
                       _vm._v(" "),
-                      _c("td", [_vm._v("---- ")]),
+                      _c("td", [_vm._v(_vm._s(s.wallet_account_type) + " ")]),
                       _vm._v(" "),
                       _c("td", [_vm._v("---- ")]),
                       _vm._v(" "),
