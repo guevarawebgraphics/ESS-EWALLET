@@ -27,10 +27,11 @@
                         <td>{{s.service_name}}t </td>
                         <td>{{s.st_code}} </td>
                         <td>{{s.st_name}} </td>
-                        <td>---- </td>
+                        <td>{{s.wallet_account_type}} </td>
                         <td>---- </td>
                         <td> <router-link :to="{ name: '/test', params: { id: 1 }}" class="btn btn-primary btn-custom">Update</router-link> </td>   
-                    </tr> 
+                    </tr>  
+               
                 </tbody>
                 </table> 
 

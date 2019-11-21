@@ -40,6 +40,7 @@ class ServiceRepository
                     'service_template' => "sameple.template", // sample string for template
                     'require_approval' => $service_data->approval,
                     'assign_approver_id' => $service_data->merchand_admin_id,
+                    'wallet_type_id' => $service_data->wallet_type_id,
                 ]); 
                 /**
                  * Gets the service inserted and insert into wdetails table
@@ -131,6 +132,7 @@ class ServiceRepository
                                 ->join('servicetypedetails','service_and_servicetype.service_type_id','=','servicetypedetails.id') 
                                 ->join('wdetails','wdetails.wservice_id','=','service_and_servicetype.service_id') 
                                 ->join('wallet_account','wallet_account.id','=','wdetails.pr_wdetails_id') // this is temporary
+                                ->join('wallet_account_types','wallet_account_types.id','=','wservice.wallet_type_id')
                                 ->get();
                                 return $getservicetable;
     }   
