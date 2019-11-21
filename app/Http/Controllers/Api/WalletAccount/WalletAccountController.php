@@ -47,6 +47,16 @@ class WalletAccountController extends Controller
     public function StoreWalletAccount(StoreWalletAccount $request){
         $WalletAccount = $this->WalletAccount->StoreWalletAccount($request);
         return response()->json([
+            'status' => $WalletAccount
+        ]);
+    }
+    
+    /**
+     * @ Store Servicec Matrix Config 
+     **/
+    public function StoreServiceMatrixconfig(Request $request, $wallet_account_id){
+        $WalletAccount = $this->WalletAccount->StoreServiceMatrixConfig($request->all(), $wallet_account_id);
+        return response()->json([
             'status' => 'success'
         ]);
     }
