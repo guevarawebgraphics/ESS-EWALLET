@@ -502,6 +502,88 @@
                 </div>
             </tab-content>
             <!-- ./ E-Wallet Account Setup 6  -->
+             <!-- E-Wallet Account Setup 7 -->
+            <tab-content title="E-Wallet Acount Setup">
+                <!-- Box -->
+                <div class="box">
+                    <!-- Card -->
+                    <div class="card shadow-custom">
+                        <!-- Card body -->
+                        <div class="card-body">
+                            <h5>Service Matrix</h5>
+                            <hr>
+                            <!-- Row Table -->
+                        <div class="form-group row">
+                            <!-- Cold lg 6 -->
+                            <div class="col-md-12">
+                                <div class="header-title">Services Matrix Setup</div>
+                                <div class="data-tables datatable-dark">
+                                    <!-- Table -->
+                                    <table class="table table-hover table-bordered text-center" id="service_matrix">
+                                        <thead class="text-capitalize">
+                                            <tr sp>
+                                                <th colspan="3"><h3>Service Matrix</h3></th>
+                                                <th>Applies To:</th>
+                                                <th colspan="4"></th>
+                                            </tr>
+                                            <tr>
+                                                <th>Service Type</th>
+                                                <th>Service Name</th>
+                                                <th>Group</th>
+                                                <th>Inc. Redeem</th>
+                                                <th>Admin</th>
+                                                <th>Merchant</th>
+                                                <th>Branch</th>
+                                                <th>Agent</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="sm in Services" :key="sm.id">
+                                                <td>{{sm.st_name}}</td>
+                                                <td>{{sm.service_name}}</td>
+                                                <td>{{sm.group_description}}</td>
+                                                <td>Test</td>
+                                                <td>
+                                                    <div class="custom-control custom-switch">
+                                                        <input :key="sm.id" type="checkbox" v-model="sm.admin" name="admin[]" class="custom-control-input" v-bind:id="'admin' + sm.id">
+                                                        <label class="custom-control-label" v-if="sm.admin == true" v-bind:for="'admin' + sm.id">ALL</label>
+                                                        <label class="custom-control-label" v-if="sm.admin == false" v-bind:for="'admin' + sm.id">SOME</label>
+                                                    </div>
+                                                </td>
+                                                 <td>
+                                                    <div class="custom-control custom-switch">
+                                                        <input :key="sm.id" type="checkbox" v-model="sm.merchant" name="merchant[]" class="custom-control-input" v-bind:id="'merchant' + sm.id">
+                                                        <label class="custom-control-label" v-if="sm.merchant == true" v-bind:for="'merchant' + sm.id">ALL</label>
+                                                        <label class="custom-control-label" v-if="sm.merchant == false" v-bind:for="'merchant' + sm.id">SOME</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="custom-control custom-switch">
+                                                        <input :key="sm.id" type="checkbox" v-model="sm.branch" name="branch[]" class="custom-control-input" v-bind:id="'branch' + sm.id">
+                                                        <label class="custom-control-label" v-if="sm.branch == true" v-bind:for="'branch' + sm.id">ALL</label>
+                                                        <label class="custom-control-label" v-if="sm.branch == false" v-bind:for="'branch' + sm.id">SOME</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="custom-control custom-switch">
+                                                        <input :key="sm.id" type="checkbox" v-model="sm.agent" name="agent[]" class="custom-control-input" v-bind:id="'agent' + sm.id">
+                                                        <label class="custom-control-label" v-if="sm.agent == true" v-bind:for="'agent' + sm.id">ALL</label>
+                                                        <label class="custom-control-label" v-if="sm.agent == false" v-bind:for="'agent' + sm.id">SOME</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- ./ Table -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ./ Row Table -->
+                        </div>
+                    </div>
+                </div>
+            </tab-content>
+            <!-- ./ E-Wallet Account Setup 7  -->
             <!-- Form Wizzard Footer -->
             <template slot="footer" slot-scope="props">
                 <div class="wizard-footer-left">
@@ -525,8 +607,10 @@ export default {
         return {
          editmode: false,
          switching: false,
+         wai: null,
          step: 0,
          account: [],
+         Services: {},
          walletAccountTypes: [],
          form: new Form({
            username: null,
@@ -594,6 +678,21 @@ export default {
         }
     },
     methods: {
+        datatable(){
+            setTimeout(function(){
+                let table = $('#service_matrix').DataTable({
+                    // "searching": false,
+                    //"sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+                    "paging": true,
+                    "pageLength": 10,
+                    //scrollX: true,
+                    "autoWidth": true,
+                    lengthChange: true,
+                    responsive: true,
+                    fixedColumns: false,
+                });
+            }, 1000);
+        },
         onComplete: function(){
           alert('Yay. Done!');
         },
@@ -735,13 +834,15 @@ export default {
          * @ Generate Account No 
          **/ 
         GenerateAccountNo(){
-            axios.get('/api/GenerateAccountNo')
-            .then(response => {
-                this.form.WalletAccountNo = response.data
-            })
-            .catch(err => {
-                console.log(err)
-            })
+            if(!this.editmode){
+                axios.get('/api/GenerateAccountNo')
+                .then(response => {
+                    this.form.WalletAccountNo = response.data
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
         },
         /**
          * @ UpdateWalletAccount
@@ -819,14 +920,26 @@ export default {
                 }
             })
             .then(res => {
-                console.log(res)
-                this.form.clear()
-                this.form.reset()
-                toast.fire({
-                    type: 'success',
-                    title: 'Wallet Account Successfully created!'
-                })
-                this.$router.push('/walletaccounts')
+                if(res) {
+                    /**
+                     * Store Wallet Service matrix Config 
+                     **/
+                    axios.post('/api/walletaccount/StoreServiceMatrixConfig/' + res.data.status, this.Services)
+                    .then(res => {
+                        console.log(res)
+                        this.form.clear()
+                        this.form.reset()
+                        toast.fire({
+                            type: 'success',
+                            title: 'Wallet Account Successfully created!'
+                        })
+                        this.$router.push('/walletaccounts')
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                }
+                console.log(res.data.status)
             })
             .catch((err) => {
                 console.log(err)
@@ -883,6 +996,9 @@ export default {
         },
         uploadValidId(e){
             this.form.valid_id = this.$refs.valid_id.files[0];
+        },
+        GetServices(){
+            axios.get('api/servicematrix/GetServices').then(({ data }) => (this.Services = data));
         }
     },
 
@@ -890,6 +1006,8 @@ export default {
         this.GetWalletAccountType();
         this.EditWalletAccount()
         this.SearchESSID()
+        this.datatable()
+        this.GetServices()
         if(this.editmode == true){
             this.GetWalletAccountDetails()
         }

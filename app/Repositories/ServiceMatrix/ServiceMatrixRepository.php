@@ -63,6 +63,7 @@ class ServiceMatrixRepository
                      ->join('service_grouping', 'wservice.service_group_id', '=', 'service_grouping.id')
                      ->select(
                          'service_matrix.id',
+                         'service_matrix.service_id',
                          'wservice.service_name',
                          'servicetypedetails.st_name',
                          'service_grouping.group_description',

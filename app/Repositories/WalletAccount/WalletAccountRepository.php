@@ -10,6 +10,7 @@ use App\Models\WalletAccount\wallet_amount_limits_config;
 use App\Models\WalletAccount\wallet_amount_limits;
 use App\Models\WalletAccount\wallet_limit_no_transaction_config;
 use App\Models\WalletAccount\wallet_limit_no_transaction;
+use App\Models\WalletAccount\wallet_service_matrix_config;
 
 use DB;
 use Carbon\Carbon;
@@ -209,7 +210,7 @@ class WalletAccountRepository
 
                                      ]);
 
-        return $wallet_account . $wallet_account_bank;
+        return $wallet_account->id;
     }
 
     /**
@@ -224,7 +225,7 @@ class WalletAccountRepository
         ->update([
             'wallet_type' => $wallet_account_data->WalletType,
             'wallet_account_type' => $wallet_account_data->WalletAccountType,
-            'wallet_account_no' => $wallet_account_data->WalletAccountNo,
+            //'wallet_account_no' => $wallet_account_data->WalletAccountNo,
             'wallet_account_name' => $wallet_account_data->WalletAccountName,
             'wallet_title' => $wallet_account_data->Wallettitle,
         ]);
@@ -295,4 +296,25 @@ class WalletAccountRepository
 
         return $wallet_account . $wallet_account_bank;
     }
+
+    public function StoreServiceMatrixConfig($wallet_account_data, $wallet_account_id){
+        // Store Wallet Account Service Matrix Config
+        $user = auth('api')->user();
+        foreach($wallet_account_data as $data){
+            $wallet_service_matrix_config = wallet_service_matrix_config::create([
+                                            'wallet_account_id' => $wallet_account_id,
+                                            'service_id' => $data['service_id'],
+                                            'admin' => $data['admin'],
+                                            'merchant' => $data['merchant'],
+                                            'branch' => $data['branch'],
+                                            'agent' => $data['agent'],
+                                            'created_by' => $user->id,
+                                            'updated_by' => $user->id,
+                                            'created_at' => Carbon::now(),
+                                            'updated_at' => Carbon::now()
+                                        ]);
+        }
+        return $wallet_service_matrix_config;
+    }
+    
 }
