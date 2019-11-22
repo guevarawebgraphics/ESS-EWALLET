@@ -37,6 +37,16 @@ window.toast = toast;
 
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
+
+/**
+ * @ Vue Js Production 
+ * Uncomment below when compiling to production
+ * Comment below if compiling to development
+ **/
+// Vue.config.devtools = false
+// Vue.config.debug = false
+// Vue.config.silent = true
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
