@@ -65,7 +65,6 @@ class WalletAccountRepository
                             ->join('wallet_limit_no_transaction_config', 'wallet_account.id', '=', 'wallet_limit_no_transaction_config.wallet_account_id')
                             ->join('wallet_limit_no_transaction', 'wallet_limit_no_transaction_config.id', '=' , 'wallet_limit_no_transaction.wlnt_id')
                             ->select(
-                                'wallet_account.id',
                                 'wallet_account.wallet_account_type',
                                 'wallet_account.wallet_type',
                                 'wallet_amount_limits_config.amount_limit',
@@ -297,6 +296,9 @@ class WalletAccountRepository
         return $wallet_account . $wallet_account_bank;
     }
 
+    /**
+     * @ Store Service Matrix config 
+     **/
     public function StoreServiceMatrixConfig($wallet_account_data, $wallet_account_id){
         // Store Wallet Account Service Matrix Config
         $user = auth('api')->user();
@@ -304,16 +306,86 @@ class WalletAccountRepository
             $wallet_service_matrix_config = wallet_service_matrix_config::create([
                                             'wallet_account_id' => $wallet_account_id,
                                             'service_id' => $data['service_id'],
-                                            'admin' => $data['admin'],
-                                            'merchant' => $data['merchant'],
-                                            'branch' => $data['branch'],
-                                            'agent' => $data['agent'],
+                                            'redeem' => 'test',
+                                            'admin_all' => $data['admin_all'],
+                                            'admin_some' => $data['admin_some'],
+                                            'merchant_all' => $data['merchant_all'],
+                                            'merchant_some' => $data['merchant_some'],
+                                            'branch_all' => $data['branch_all'],
+                                            'branch_some' => $data['branch_some'],
+                                            'agent_all' => $data['agent_all'],
+                                            'agent_some' => $data['agent_some'],
                                             'created_by' => $user->id,
                                             'updated_by' => $user->id,
                                             'created_at' => Carbon::now(),
                                             'updated_at' => Carbon::now()
                                         ]);
         }
+        return $wallet_service_matrix_config;
+    }
+
+    /**
+     * @ Update Service Matrix Config 
+     **/
+    public function UpdateServiceMatrixConfig($wallet_account_data, $essid){
+        // Update Wallet Account Service Matrix Config
+        $user = auth('api')->user();
+        // Wallet ID
+        $wallet_id = wallet_account::where('ess_id', '=', $essid)->first();
+        foreach($wallet_account_data as $data){
+            $wallet_service_matrix_config = wallet_service_matrix_config::where('wallet_account_id', '=', $wallet_id->id)
+                                        ->where('id', '=', $data['id'])
+                                        ->update([
+                                            'service_id' => $data['service_id'],
+                                            'redeem' => 'test',
+                                            'admin_all' => $data['admin_all'],
+                                            'admin_some' => $data['admin_some'],
+                                            'merchant_all' => $data['merchant_all'],
+                                            'merchant_some' => $data['merchant_some'],
+                                            'branch_all' => $data['branch_all'],
+                                            'branch_some' => $data['branch_some'],
+                                            'agent_all' => $data['agent_all'],
+                                            'agent_some' => $data['agent_some'],
+                                            'updated_by' => $user->id,
+                                            'updated_at' => Carbon::now()
+                                        ]);
+        }
+        return $wallet_service_matrix_config;
+    }
+
+    /**
+     * @ Get Service Matrix Config For Update 
+     **/
+    public function GetServiceMatrixConfig($essid){
+        $wallet_account = $this->connection
+                            ->table('wallet_account')
+                            ->where('ess_id', '=', $essid)
+                            ->select('id')
+                            ->first();
+        $wallet_service_matrix_config = $this->connection
+                                    ->table('wallet_service_matrix_config')
+                                    ->join('wservice', 'wallet_service_matrix_config.service_id', '=', 'wservice.id')
+                                    ->join('service_and_servicetype', 'wallet_service_matrix_config.service_id', 'service_and_servicetype.service_id')
+                                    ->join('servicetypedetails', 'service_and_servicetype.service_type_id', '=', 'servicetypedetails.id')
+                                    ->join('service_grouping', 'wservice.service_group_id', '=', 'service_grouping.id')
+                                    ->select(
+                                        'wallet_service_matrix_config.id',
+                                        'wallet_service_matrix_config.wallet_account_id',
+                                        'wallet_service_matrix_config.service_id',
+                                        'wservice.service_name',
+                                        'servicetypedetails.st_name',
+                                        'service_grouping.group_description',
+                                        'wallet_service_matrix_config.admin_all',
+                                        'wallet_service_matrix_config.admin_some',
+                                        'wallet_service_matrix_config.merchant_all',
+                                        'wallet_service_matrix_config.merchant_some',
+                                        'wallet_service_matrix_config.branch_all',
+                                        'wallet_service_matrix_config.branch_some',
+                                        'wallet_service_matrix_config.agent_all',
+                                        'wallet_service_matrix_config.agent_some',
+                                    )
+                                    ->where('wallet_service_matrix_config.wallet_account_id', '=', $wallet_account->id)
+                                    ->get();
         return $wallet_service_matrix_config;
     }
     
