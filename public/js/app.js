@@ -57484,22 +57484,18 @@ var render = function() {
     _c("div", { staticClass: "row align-items-center" }, [
       _c("div", { staticClass: "col-sm-6" }, [
         _c("div", { staticClass: "breadcrumbs-area clearfix" }, [
-          _c("h4", { staticClass: "page-title pull-left" }, [
-            _vm._v("Dashboard")
-          ]),
-          _vm._v(" "),
           _c("ul", { staticClass: "breadcrumbs pull-left" }, [
             _c(
               "li",
               [
                 _c("router-link", { attrs: { to: "/dashboard" } }, [
-                  _vm._v("Home")
+                  _vm._v("Dashboard")
                 ])
               ],
               1
             ),
             _vm._v(" "),
-            _vm._m(0)
+            _c("li", [_c("span", [_vm._v(_vm._s(this.$route.name))])])
           ])
         ])
       ]),
@@ -57544,14 +57540,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [_c("span", [_vm._v("Dashboard")])])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -67279,7 +67268,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "login-form-head" }, [
-      _c("h4", [_vm._v("Elektronik Pitaka")])
+      _c("h4", [_vm._v("E - Wallet")])
     ])
   },
   function() {
@@ -83713,6 +83702,7 @@ var routes = [{
 }, {
   path: '/dashboard',
   component: __webpack_require__(/*! ../components/General/Dashboard.vue */ "./resources/js/components/General/Dashboard.vue")["default"],
+  name: 'Dashboard',
   beforeEnter: requireLogin
 },
 /* 
@@ -83721,14 +83711,17 @@ var routes = [{
 {
   path: '/walletaccounts',
   component: __webpack_require__(/*! ../components/WalletAccounts/WalletAccounts.vue */ "./resources/js/components/WalletAccounts/WalletAccounts.vue")["default"],
+  name: 'Wallet Accounts',
   beforeEnter: requireLogin
 }, {
   path: '/createwalletaccount',
   component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"],
+  name: 'Create Wallet Account',
   beforeEnter: requireLogin
 }, {
   path: '/updatewalletaccount/:id',
   component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"],
+  name: 'Update Wallet Account',
   beforeEnter: requireLogin
 },
 /**
@@ -83767,6 +83760,7 @@ var routes = [{
 {
   path: '/serviceGroup',
   component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceGroup.vue */ "./resources/js/components/ServiceMatrix/ServiceGroup.vue")["default"],
+  name: 'Service Group',
   beforeEnter: requireLogin
 }, {
   path: '/serviceMatrix',
@@ -83792,6 +83786,7 @@ var routes = [{
 {
   path: '/walletaccounttype',
   component: __webpack_require__(/*! ../components/WalletAccountTypes/WalletAccountType.vue */ "./resources/js/components/WalletAccountTypes/WalletAccountType.vue")["default"],
+  name: 'Wallet Account Type',
   beforeEnter: requireLogin
 },
 /**
