@@ -20,6 +20,7 @@ const routes = [
     { 
       path: '/dashboard', 
       component: require('../components/General/Dashboard.vue').default, 
+      name: 'Dashboard',
       beforeEnter: requireLogin
     },
     /* 
@@ -28,16 +29,19 @@ const routes = [
     { 
       path: '/walletaccounts', 
       component: require('../components/WalletAccounts/WalletAccounts.vue').default, 
+      name: 'Wallet Accounts',
       beforeEnter: requireLogin
     },
     { 
       path: '/createwalletaccount', 
       component: require('../components/WalletAccounts/CreateWalletAccount.vue').default, 
+      name: 'Create Wallet Account',
       beforeEnter: requireLogin
     },
     { 
       path: '/updatewalletaccount/:id', 
       component: require('../components/WalletAccounts/CreateWalletAccount.vue').default, 
+      name: 'Update Wallet Account',
       beforeEnter: requireLogin
     },
     /**
@@ -78,6 +82,7 @@ const routes = [
     { 
       path: '/serviceGroup', 
       component: require('../components/ServiceMatrix/ServiceGroup.vue').default, 
+      name: 'Service Group',
       beforeEnter: requireLogin
     },
     { 
@@ -105,6 +110,7 @@ const routes = [
     {
       path:'/walletaccounttype',
       component: require('../components/WalletAccountTypes/WalletAccountType.vue').default, 
+      name: 'Wallet Account Type',
       beforeEnter: requireLogin
     },
     /**

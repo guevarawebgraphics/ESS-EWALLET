@@ -29,10 +29,10 @@
                         <router-link to="/servicetypes" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Service Types</span></router-link>
                     </li>
                     <li>
-                        <router-link to="/serviceslist" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Services List</span></router-link>
+                        <router-link to="#serviceslist" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Services List</span></router-link>
                     </li>
                     <li>
-                        <router-link to="/servicegatewaylist" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Prepaid Service Gateway</span></router-link>
+                        <router-link to="#servicegatewaylist" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Prepaid Service Gateway</span></router-link>
                     </li>
                     <li>
                         <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Rates</span></a>
@@ -45,8 +45,8 @@
                         <a href="javascript:void(0)" aria-expanded="true"><i class="ti-wallet text-blue"></i>
                             <span>Service Matrix</span></a>
                         <ul class="collapse">
-                            <li><router-link to="/serviceGroup" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Grouping</span></router-link></li>
-                            <li><router-link to="/serviceMatrix" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Matrix</span></router-link></li>
+                            <li><router-link to="#serviceGroup" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Grouping</span></router-link></li>
+                            <li><router-link to="#serviceMatrix" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Matrix</span></router-link></li>
                         </ul>
                     </li>
                     {{-- <li><a href="#"><i class="ti-map-alt"></i><span>Not expanding</span></a></li>

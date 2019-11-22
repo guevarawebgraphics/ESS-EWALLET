@@ -3,7 +3,7 @@
             <div class="login-box ptb--100">
                 <form @submit.prevent="login" @keydown="form.onKeydown($event)">
                     <div class="login-form-head">
-                        <h4>Elektronik Pitaka</h4>
+                        <h4>E - Wallet</h4>
                     </div>
                     <div class="login-form-body">
                         <div class="form-group">
