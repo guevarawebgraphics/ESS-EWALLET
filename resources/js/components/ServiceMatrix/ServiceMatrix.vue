@@ -18,29 +18,26 @@
                                     <table class="table table-hover table-bordered text-center" id="service_matrix">
                                         <thead class="text-capitalize">
                                             <tr sp>
-                                                <th colspan="3"><h3>Service Matrix</h3></th>
-                                                <th>Applies To:</th>
-                                                <th colspan="4"></th>
-                                                <!-- <th colspan="2">Merchant</th>
+                                                 <th colspan="3"><h3>Service Matrix</h3></th>
+                                                <!-- <th>Applies To:</th> -->
+                                                <th colspan="2">Admin</th>
+                                                <th colspan="2">Merchant</th>
                                                 <th colspan="2">Branch</th>
-                                                <th colspan="2">Agent</th> -->
+                                                <th colspan="2">Agent</th>
                                             </tr>
                                             <tr>
                                                 <th>Service Type</th>
                                                 <th>Service Name</th>
                                                 <th>Group</th>
-                                                <th>Inc. Redeem</th>
-                                                <th>Admin</th>
-                                                <th>Merchant</th>
-                                                <th>Branch</th>
-                                                <th>Agent</th>
-                                                <!-- <th>Some</th> -->
-                                                <!-- <th>All</th>
+                                                <!-- <th>Inc. Redeem</th> -->
+                                                <th>All</th>
+                                                <th>Some</th>
+                                                <th>All</th>
                                                 <th>Some</th>
                                                 <th>All</th>
                                                 <th>Some</th>
                                                 <th>All</th>
-                                                <th>Some</th> -->
+                                                <th>Some</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -48,7 +45,7 @@
                                                 <td>{{sm.st_name}}</td>
                                                 <td>{{sm.service_name}}</td>
                                                 <td>{{sm.group_description}}</td>
-                                                <td>Test</td>
+                                                <!-- <td>Test</td>
                                                 <td>
                                                     <div class="custom-control custom-switch">
                                                         <input :key="sm.id" type="checkbox" v-model="sm.admin" name="admin[]" class="custom-control-input" v-bind:id="'admin' + sm.id">
@@ -76,14 +73,15 @@
                                                         <label class="custom-control-label" v-if="sm.agent == true" v-bind:for="'agent' + sm.id">ALL</label>
                                                         <label class="custom-control-label" v-if="sm.agent == false" v-bind:for="'agent' + sm.id">SOME</label>
                                                     </div>
-                                                </td>
-                                                <!-- <td><input :key="sm.id" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" id="admin_some"></td>
+                                                </td> -->
+                                                <td><input :key="sm.id" type="checkbox" name="admin_all[]" class="form-check-input" v-model="sm.admin_all" id="admin_all"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" id="admin_some"></td>
                                                 <td><input :key="sm.id" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" id="merchant_all"></td>
                                                 <td><input :key="sm.id" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some" id="merchant_some"></td>
                                                 <td><input :key="sm.id" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" id="branch_all"></td>
                                                 <td><input :key="sm.id" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" id="branch_some"></td>
                                                 <td><input :key="sm.id" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" id="agent_all"></td>
-                                                <td><input :key="sm.id" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" id="agent_some"></td> -->
+                                                <td><input :key="sm.id" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" id="agent_some"></td>
                                             </tr>
                                         </tbody>
                                     </table>

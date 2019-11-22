@@ -79,10 +79,18 @@ Route::prefix('walletaccount')->group(function(){
     Route::get('/GetWalletAccountDetails/{essid}', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@GetWalletAccountDetails'
     ]);
-   // api/walletaccount/StoreServiceMatrixConfig
-   Route::post('/StoreServiceMatrixConfig/{wai}', [
-        'uses' => 'Api\\WalletAccount\WalletAccountController@StoreServiceMatrixConfig'
-   ]);
+    // api/walletaccount/StoreServiceMatrixConfig
+    Route::post('/StoreServiceMatrixConfig/{wai}', [
+            'uses' => 'Api\\WalletAccount\WalletAccountController@StoreServiceMatrixConfig'
+    ]);
+    // api/walletaccount/GetWalletAccountDetails
+    Route::get('/GetServiceMatrixConfig/{essid}', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@GetServiceMatrixConfig'
+    ]);
+    // api/walletaccount/UpdateServiceMatrixConfig
+    Route::put('/UpdateServiceMatrixConfig/{essid}', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@UpdateServiceMatrixConfig'
+    ]);
 });
 /**
  *  @ Get Account

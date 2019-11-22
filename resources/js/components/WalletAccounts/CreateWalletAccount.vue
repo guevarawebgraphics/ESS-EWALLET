@@ -299,12 +299,12 @@
                                             <has-error :form="form" field="account_no"></has-error>
                                             <p class="text-danger" v-if="errors.has('account_no')">{{errors.first('account_no')}}</p>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <div class="form-check custom-control custom-checkbox"> 
                                             <input type="checkbox" class="form-check-input" id="exampleCheck1"> 
                                             <label class="form-check-label" for="exampleCheck1">Test</label>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <!-- Add New Bank Account -->
                                     <!-- <button class="btn btn-primary btn-flat"> Add New Account</button> -->
                                 </div>
@@ -523,18 +523,26 @@
                                         <thead class="text-capitalize">
                                             <tr sp>
                                                 <th colspan="3"><h3>Service Matrix</h3></th>
-                                                <th>Applies To:</th>
-                                                <th colspan="4"></th>
+                                                <!-- <th>Applies To:</th> -->
+                                                <th colspan="2">Admin</th>
+                                                <th colspan="2">Merchant</th>
+                                                <th colspan="2">Branch</th>
+                                                <th colspan="2">Agent</th>
                                             </tr>
                                             <tr>
                                                 <th>Service Type</th>
                                                 <th>Service Name</th>
                                                 <th>Group</th>
-                                                <th>Inc. Redeem</th>
-                                                <th>Admin</th>
-                                                <th>Merchant</th>
-                                                <th>Branch</th>
-                                                <th>Agent</th>
+                                                <!-- <th>Inc. Redeem</th> -->
+                                                <th>All</th>
+                                                <th>Some</th>
+                                                <th>All</th>
+                                                <th>Some</th>
+                                                <th>All</th>
+                                                <th>Some</th>
+                                                <th>All</th>
+                                                <th>Some</th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -542,8 +550,16 @@
                                                 <td>{{sm.st_name}}</td>
                                                 <td>{{sm.service_name}}</td>
                                                 <td>{{sm.group_description}}</td>
-                                                <td>Test</td>
-                                                <td>
+                                                <!-- <td>Test</td> -->
+                                                <td><input :key="sm.id" type="checkbox" name="admin_all[]" class="form-check-input" v-model="sm.admin_all" id="admin_all"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" id="admin_some"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" id="merchant_all"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some" id="merchant_some"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" id="branch_all"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" id="branch_some"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" id="agent_all"></td>
+                                                <td><input :key="sm.id" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" id="agent_some"></td>
+                                                <!-- <td>
                                                     <div class="custom-control custom-switch">
                                                         <input :key="sm.id" type="checkbox" v-model="sm.admin" name="admin[]" class="custom-control-input" v-bind:id="'admin' + sm.id">
                                                         <label class="custom-control-label" v-if="sm.admin == true" v-bind:for="'admin' + sm.id">ALL</label>
@@ -570,7 +586,7 @@
                                                         <label class="custom-control-label" v-if="sm.agent == true" v-bind:for="'agent' + sm.id">ALL</label>
                                                         <label class="custom-control-label" v-if="sm.agent == false" v-bind:for="'agent' + sm.id">SOME</label>
                                                     </div>
-                                                </td>
+                                                </td> -->
                                             </tr>
                                         </tbody>
                                     </table>
@@ -691,24 +707,24 @@ export default {
                     responsive: true,
                     fixedColumns: false,
                 });
-            }, 1000);
+            }, (this.editmode == true) ? 2000 : 1000);
         },
         onComplete: function(){
           alert('Yay. Done!');
         },
         ValidateFirstStep(){
-            if(this.form.emailaddress != null){
-                if(this.step == 1){
-                    this.errors.clear()
-                    return true;
-                }
-                else {
-                    this.form.reset()
-                    $('#nextTab').attr('disabled', true)
-                    this.step = 0;
-                    return false;
-                }
-            }
+            // if(this.form.emailaddress != null){
+            //     if(this.step == 1){
+            //         this.errors.clear()
+            //         return true;
+            //     }
+            //     else {
+            //         this.form.reset()
+            //         $('#nextTab').attr('disabled', true)
+            //         this.step = 0;
+            //         return false;
+            //     }
+            // }
             if(this.form.username == null){
                 toast.fire({
                     type: 'info',
@@ -722,6 +738,40 @@ export default {
                 });
                 this.step = 0;
                 return false;
+            }
+            else if(this.form.kyc_form == null){
+                 toast.fire({
+                    type: 'info',
+                    title: 'KYC Form is Required',
+                    timer: 10000,
+                })
+                this.$validator.validateAll().then(result => {
+                    if (result) {
+                    alert("Form Submitted!");
+                    return;
+                    }
+                });
+                this.step = 0;
+                return false;
+            }
+            else if(this.form.valid_id == null){
+                 toast.fire({
+                    type: 'info',
+                    title: 'Valid ID is Required',
+                    timer: 10000,
+                })
+                this.$validator.validateAll().then(result => {
+                    if (result) {
+                    alert("Form Submitted!");
+                    return;
+                    }
+                });
+                this.step = 0;
+                return false;
+            }
+            else {
+                this.errors.clear()
+                return true;
             }
         },
         ValidateSecondStep(){
@@ -850,14 +900,24 @@ export default {
         UpdateWalletAccount(){
             this.form.put('/api/walletaccount/UpdateWalletAccount')
             .then(res => {
+                if(res){
+                    axios.put('/api/walletaccount/UpdateServiceMatrixConfig/' + this.form.username, this.Services)
+                    .then(res => {
+                        console.log(res)
+                        this.form.clear()
+                        this.form.reset()
+                        toast.fire({
+                            type: 'success',
+                            title: 'Wallet Account Successfully updated!'
+                        })
+                        this.$router.push('/walletaccounts')
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                }
                 console.log(res)
-                this.form.clear()
-                this.form.reset()
-                toast.fire({
-                    type: 'success',
-                    title: 'Wallet Account Successfully updated!'
-                })
-                this.$router.push('/walletaccounts')
+               
             })
             .catch((err) => {
                 console.log(err)
@@ -991,14 +1051,32 @@ export default {
                 console.log(err)
             })
         },
+        GetKycForm(){
+            let photo = (this.form.photo.length > 200) ? this.form.photo : "img/profile/"+ this.form.photo ;
+            return photo; 
+        },
         uploadFile(e){
             this.form.kyc_form = this.$refs.file.files[0];
+            this.errors.clear()
+            return true;
         },
         uploadValidId(e){
             this.form.valid_id = this.$refs.valid_id.files[0];
+            this.errors.clear()
+            return true;
         },
         GetServices(){
-            axios.get('api/servicematrix/GetServices').then(({ data }) => (this.Services = data));
+            if(this.editmode == false){
+                axios.get('api/servicematrix/GetServices').then(({ data }) => (this.Services = data));
+            }
+        },
+        /**
+         * @ Get Service Matrix Config For Update 
+         **/
+        Getsmc(){
+            if(this.editmode == true){
+                axios.get('/api/walletaccount/GetServiceMatrixConfig/'+ this.$route.params.id).then(({ data }) => (this.Services = data));
+            }
         }
     },
 
@@ -1010,6 +1088,7 @@ export default {
         this.GetServices()
         if(this.editmode == true){
             this.GetWalletAccountDetails()
+            this.Getsmc()
         }
         
     },
