@@ -5259,7 +5259,12 @@ __webpack_require__.r(__webpack_exports__);
          * Approval 
          */
         approval: 0,
-        merchant_admin_id: null
+        merchant_admin_id: null,
+
+        /**
+         * Service Condition
+         */
+        service_condition: 'solo'
       })
     };
   },
@@ -5368,6 +5373,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -66796,7 +66802,7 @@ var render = function() {
                 staticClass: "btn btn-primary btn-custom",
                 attrs: { to: "/createservice" }
               },
-              [_vm._v("Create Services")]
+              [_vm._v("Create SOLO Services")]
             )
           ],
           1
@@ -66874,7 +66880,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Available In Wallet Type")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Merchant Wallet No.")]),
+        _c("th", [_vm._v("Service Condition")]),
         _vm._v(" "),
         _c("th", [_vm._v("Action")])
       ])

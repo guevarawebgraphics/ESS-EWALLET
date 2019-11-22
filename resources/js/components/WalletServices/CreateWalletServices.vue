@@ -360,8 +360,11 @@ data() {
        * Approval 
        */
       approval : 0,
-      merchant_admin_id : null
-
+      merchant_admin_id : null,
+      /**
+       * Service Condition
+       */
+      service_condition : 'solo'
     }),
   }
 },
