@@ -30,7 +30,7 @@ class ServiceMatrixRepository
         $user = auth('api')->user();
         foreach($service_matrix_data as $data){
             $service_matrix = $this->connection
-                    ->table('service_martix')
+                    ->table('service_matrix')
                     ->where('id', '=', $data['id'])
                     ->update(array(
                     // 'service_id' => 1,
@@ -56,24 +56,25 @@ class ServiceMatrixRepository
      **/
     public function GetServices(){
         $services = $this->connection
-                     ->table('service_martix')
-                     ->join('wservice', 'service_martix.service_id', '=', 'wservice.id')
-                     ->join('service_and_servicetype', 'service_martix.service_id', 'service_and_servicetype.service_id')
+                     ->table('service_matrix')
+                     ->join('wservice', 'service_matrix.service_id', '=', 'wservice.id')
+                     ->join('service_and_servicetype', 'service_matrix.service_id', 'service_and_servicetype.service_id')
                      ->join('servicetypedetails', 'service_and_servicetype.service_type_id', '=', 'servicetypedetails.id')
                      ->join('service_grouping', 'wservice.service_group_id', '=', 'service_grouping.id')
                      ->select(
-                         'service_martix.id',
+                         'service_matrix.id',
+                         'service_matrix.service_id',
                          'wservice.service_name',
                          'servicetypedetails.st_name',
                          'service_grouping.group_description',
-                         'service_martix.admin_all',
-                         'admin_some',
-                         'merchant_all',
-                         'merchant_some',
-                         'branch_all',
-                         'branch_some',
-                         'agent_all',
-                         'agent_some',
+                         'service_matrix.admin_all',
+                         'service_matrix.admin_some',
+                         'service_matrix.merchant_all',
+                         'service_matrix.merchant_some',
+                         'service_matrix.branch_all',
+                         'service_matrix.branch_some',
+                         'service_matrix.agent_all',
+                         'service_matrix.agent_some',
                      )
                      ->get();
         return $services;

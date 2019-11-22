@@ -17,10 +17,9 @@
                     <div class="form-group"> 
                       <h4 class="header-title mt-3">Service Details </h4>   
                       <label for="exampleInputEmail1">Avaible ONLY in Wallet Type:</label>
-                      <select class="custom-select" v-model="form.wallet_type" name="wallet_type">
+                      <select class="custom-select" v-model="form.wallet_type_id" name="wallet_type">
                       <option selected="selected" disabled>Select</option>
-                      <option value="Prepaid">Prepaid</option>
-                      <option value="Credit">Credit</option>
+                      <option v-bind:value="wt.id" v-for="wt in WalletTypes" :key="wt.id">{{wt.wallet_account_type}} -- {{wt.wallet_type}}</option>
                       </select>
                       <small id="emailHelp" class="form-text text-muted"></small>
                     </div>   
@@ -154,17 +153,16 @@
                   <div class="col-sm-6">
                     <div class="form-group">  
                       <label class="my-1" for="inlineFormCustomSelectPref">Assign Approver:</label>
-                    <select class="custom-select my-1" id="inlineFormCustomSelectPref" :disabled="this.form.approval==0">
-                      <option selected>Choose Merchant Admin</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                    <select class="custom-select my-1" id="assignapprover" :disabled="this.form.approval==0" v-model="this.form.merchant_admin_id"> 
+                      <option value="0">Choose Merchant Admin</option>
+                      <option value="1">Merchant One</option>
+                      <option value="2">Merchant Two</option>
+                      <option value="3">Merchant Three</option>
                     </select>
                   </div>   
                   </div> 
                   </div>
                 </div>
-
               </div>
           </div>
       </div>
@@ -318,7 +316,8 @@ export default {
 data() {
   return{
     ServiceGateway : {},
-    ServiceGroups :{}, 
+    ServiceGroups :{},  
+    WalletTypes : {},
     service_template : null,
     form : new Form({ 
       /**
@@ -327,7 +326,7 @@ data() {
       service_type_id :null,
       pr_wallet_id: null,
       ir_wallet_id:null,
-      wallet_type : null,
+      wallet_type_id : null,
       servicetype_code : null,
       servicetype_name: null,
       service_code: null,
@@ -361,13 +360,16 @@ data() {
        * Approval 
        */
       approval : 0,
-      merchand_admin_id : null
-
+      merchant_admin_id : null,
+      /**
+       * Service Condition
+       */
+      service_condition : 'solo'
     }),
   }
 },
 methods:{
-     onComplete: function(){
+      onComplete: function(){
        console.log('hi'); 
        this.form.post('/api/service/createservice')
         .then((response)=>{
@@ -380,7 +382,6 @@ methods:{
      showServiceTypeDetails(){
       axios.get('/api/service/getservicetype/'+ this.form.servicetype_code)
       .then(response => {
-
       this.form.servicetype_name = response.data['st_name'];  
       this.form.service_type_id = response.data['id'];
       
@@ -423,7 +424,7 @@ methods:{
           console.log('err');
        })
      },  
-     getServiceGateway(){
+    getServiceGateway(){
             axios.get('/api/service_gateway/getservicegateway')
             .then((response) => {
                 this.ServiceGateway = response.data;
@@ -441,14 +442,24 @@ methods:{
             this.service_template = e.target.files[0]['name'];
     }, 
     switchApproval(changeValue) {
-             changeValue == 0 ? this.form.approval  = 1 : this.form.approval  = 0 
-    }
+             if(changeValue == 0){
+                this.form.approval  = 1   
+             }
+             else {
+                this.form.approval  = 0;  
+             }
+    },
+    showWalletTypes() {
+                axios.get('api/walletaccount/GetAllWalletAccountType').then(({ data}) => (this.WalletTypes = data));
+        }
+
     
-    
+   
 },
 created() {
     this.getServiceGateway();
-    this.getServiceGroup();
+    this.getServiceGroup(); 
+    this.showWalletTypes();
 }
 }
 </script>

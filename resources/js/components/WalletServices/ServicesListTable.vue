@@ -4,7 +4,8 @@
         <div class="card shadow-custom">
             <div class="col-md-12">
                 <h4 class="header-title mt-3">E-Wallet Services </h4>   
-             <router-link to="/createservice" class="btn btn-primary btn-custom">Create Services</router-link> 
+             <router-link to="/createservice" class="btn btn-primary btn-custom">Create SOLO Services</router-link>  
+             
             </div>  
             <div class="card-body">
      
@@ -17,7 +18,7 @@
                         <th>Service Type Code</th>
                         <th>Service Type Name</th>
                         <th>Available In Wallet Type</th> 
-                        <th>Merchant Wallet No.</th>
+                        <th>Service Condition</th>
                         <th>Action</th>
                     </tr>  
                 </thead>
@@ -27,10 +28,11 @@
                         <td>{{s.service_name}}t </td>
                         <td>{{s.st_code}} </td>
                         <td>{{s.st_name}} </td>
-                        <td>---- </td>
+                        <td>{{s.wallet_account_type}} </td>
                         <td>---- </td>
                         <td> <router-link :to="{ name: '/test', params: { id: 1 }}" class="btn btn-primary btn-custom">Update</router-link> </td>   
-                    </tr> 
+                    </tr>  
+               
                 </tbody>
                 </table> 
 
