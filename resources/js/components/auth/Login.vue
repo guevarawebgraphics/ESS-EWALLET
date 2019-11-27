@@ -5,7 +5,7 @@
                     <div class="login-form-head">
                         <h4>E - Wallet</h4>
                     </div>
-                    <div class="login-form-body">
+                    <div class="login-form-body shadow-custom">
                         <div class="form-group">
                         <input v-model="form.username" type="text" name="username"
                             placeholder="Username"
