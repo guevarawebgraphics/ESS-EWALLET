@@ -4,10 +4,12 @@ namespace App\Repositories\ServiceType;
 
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 
-use Illuminate\Http\Request; 
+use Illuminate\Http\Request;  
+use Illuminate\Support\Facades\Storage;  
 use DB; 
+
 use App\Models\ServiceType\ServiceTypeDetails; 
-use App\Models\ServiceType\STBehavior;
+use App\Models\ServiceType\STBehavior; 
 /**
  * Class ServiceTypeRepository.
  */
@@ -92,7 +94,8 @@ class ServiceTypeRepository
                 if($service_type_data->file_acknowledgement_template != "null"){
                     if($service_type_data->file_acknowledgement_template != $acknowledgement_template){
                         $filename_with_extension_ack = $service_type_data->file_acknowledgement_template->getClientOriginalName(); /**Whole File Name w/ ext.*/
-                        $file_name_ack = pathinfo($filename_with_extension_ack, PATHINFO_FILENAME); /**Actual File Name */
+                        $file_name_ack = pathinfo($filename_with_extension_ack, PATHINFO_FILENAME); /**Actual File Name */ 
+                        Storage::delete('public/uploads/templates/acknowledgement_template/'.$acknowledgement_template); /** Delete old file */
                         $acknowledgement_template = time().'_'.$file_name_ack.'.'.$service_type_data->file_acknowledgement_template->getClientOriginalExtension();
                         $upload_ack = $service_type_data->file_acknowledgement_template->storeAs('public/uploads/templates/acknowledgement_template', $acknowledgement_template);    
                     }
@@ -101,6 +104,7 @@ class ServiceTypeRepository
                     if($service_type_data->file_approval_template != $approval_template){
                         $filename_with_extension_app = $service_type_data->file_approval_template->getClientOriginalName();
                         $file_name_app = pathinfo($filename_with_extension_app, PATHINFO_FILENAME);
+                        Storage::delete('public/uploads/templates/approval_template/'.$approval_template); 
                         $approval_template = time().'_'.$file_name_app.'.'.$service_type_data->file_approval_template->getClientOriginalExtension();
                         $upload_app = $service_type_data->file_approval_template->storeAs('public/uploads/templates/approval_template', $approval_template);     
                     } 
@@ -109,8 +113,9 @@ class ServiceTypeRepository
                     if($service_type_data->file_confirmation_template != $confirmation_template){
                         $filename_with_extension_con = $service_type_data->file_confirmation_template->getClientOriginalName();
                         $file_name_con = pathinfo($filename_with_extension_con, PATHINFO_FILENAME);
+                        Storage::delete('public/uploads/templates/confirmation_template/'.$confirmation_template);
                         $confirmation_template = time().'_'.$file_name_con.'.'.$service_type_data->file_confirmation_template->getClientOriginalExtension();
-                        $upload_con = $service_type_data->file_confirmation_template->storeAs('public/uploads/templates/confirmation_template', $confirmation_template);     
+                        $upload_con = $service_type_data->file_confirmation_template->storeAs('public/uploads/templates/confirmation_template', $confirmation_template);    
                     }
                 }
      
@@ -123,8 +128,7 @@ class ServiceTypeRepository
                 ));
                 return $update_template;
     }
-
-     public function create_service_type($service_type_data){  
+    public function create_service_type($service_type_data){  
                 $user = auth('api')->user();   
                 /**
                  * Declaration of Variables (Important)
