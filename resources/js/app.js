@@ -43,9 +43,9 @@ Vue.use(VeeValidate);
  * Uncomment below when compiling to production
  * Comment below if compiling to development
  **/
-// Vue.config.devtools = false
-// Vue.config.debug = false
-// Vue.config.silent = true
+Vue.config.devtools = false
+Vue.config.debug = false
+Vue.config.silent = true
 
 /**
  * The following block of code may be used to automatically register your

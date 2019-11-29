@@ -83259,10 +83259,10 @@ Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_5__["default"]);
  * Uncomment below when compiling to production
  * Comment below if compiling to development
  **/
-// Vue.config.devtools = false
-// Vue.config.debug = false
-// Vue.config.silent = true
 
+Vue.config.devtools = false;
+Vue.config.debug = false;
+Vue.config.silent = true;
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -84810,8 +84810,8 @@ function requireLogin(to, from, next) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\e-wallet\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\e-wallet\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\ewallet\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\ewallet\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
