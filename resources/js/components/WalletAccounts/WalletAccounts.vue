@@ -8,11 +8,11 @@
                         <div class="col-md-4">
                             <router-link class="btn btn-primary" to="/createwalletaccount">Create Wallet Account <i class="ti-arrow-right"></i></router-link>
                         </div>
-                            <h4 class="header-title mt-3">Elektronik Pitaka</h4>
+                            <h4 class="header-title mt-3">Wallet Accounts</h4>
                             <div class="data-tables datatable-dark">
                             <table class="table table-striped" id="table_id">
                             <thead>
-                                <tr>
+                                <tr class="th-table">
                                     <th>Wallet Type</th>
                                     <th>Account Type</th>
                                     <th>Account No</th>

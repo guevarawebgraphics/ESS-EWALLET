@@ -15,7 +15,7 @@
                                 <!-- Table -->
                                 <table class="table table-hover table-striped text-center" id="service_group_table">
                                     <thead class="text-capitalize">
-                                        <tr>
+                                        <tr class="th-table">
                                             <th>Group Code</th>
                                             <th>Group Description</th>
                                             <th>Action</th>
