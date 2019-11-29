@@ -49,7 +49,8 @@ const routes = [
       beforeEnter: requireLogin
     }, 
     { 
-      path: '/editservicetype/:id', name: '/test', 
+      path: '/editservicetype/:id', 
+      name: '/test', 
       component: require('../components/WalletServiceTypes/EditServiceType.vue').default, 
       beforeEnter: requireLogin
     },
@@ -98,7 +99,19 @@ const routes = [
       path:'/createservice',
       component: require('../components/WalletServices/CreateWalletServices.vue').default, 
       beforeEnter: requireLogin
-    },
+    }, 
+    
+    {
+      path:'/createjointservice',
+      component: require('../components/WalletServices/JointServices.vue').default, 
+      beforeEnter: requireLogin
+    },  
+    {
+      path:'/updateservice/:id', 
+      name: '/update-service',
+      component: require('../components/WalletServices/CreateWalletServices.vue').default, 
+      beforeEnter: requireLogin
+    }, 
     /**
      *@ Wallet Account Type 
      **/
