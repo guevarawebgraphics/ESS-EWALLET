@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Models\WalletAccount\wallet_account;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -53,6 +54,8 @@ class LoginController extends Controller
         $errors = [$this->username() => trans('auth.failed')];
         // Load user from database
         $user = User::where($this->username(), $request->{$this->username()})->first();
+        // Check Wallet Account
+        $wallet_account = wallet_account::where('ess_id', $request->{$this->username()})->first();
 
         $updated_at = $user->updated_at;
         $expiry_date = $user->expiry_date;
@@ -79,6 +82,21 @@ class LoginController extends Controller
                 return response()->json([
                     'message' => 'These credentials do not match our records.'
                 ]);
+        }
+        /**
+         * @ check if already registered
+         **/
+        elseif(empty($wallet_account)){
+            if($user->user_type_id != "1"){
+                $errors = [$this->username() => trans('auth.failed')];
+                auth()->logout();
+                //return redirect('login')->withErrors($errors);
+                return response()->json([
+                    'status' => '401',
+                    'message' => 'These credentials do not match our records.'
+                ]);
+            }
+            
         }
 
     }

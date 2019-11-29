@@ -5519,10 +5519,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       user: window.user,
+      status: null,
       form: new Form({
         username: '',
         password: '',
@@ -5536,10 +5538,17 @@ __webpack_require__.r(__webpack_exports__);
 
       this.form.post('/login').then(function (_ref) {
         var data = _ref.data;
-        console.log(data);
-        window.localStorage.setItem('user', JSON.stringify(_this.form.username));
-        window.location.href = "/dashboard";
-      })["catch"](function () {
+
+        if (data.status != '401') {
+          console.log(data);
+          window.localStorage.setItem('user', JSON.stringify(_this.form.username));
+          window.location.href = "/dashboard";
+        } else {
+          console.clear();
+          $('#username').addClass('is-invalid');
+          _this.status = data.status;
+        }
+      })["catch"](function (err) {
         console.clear();
       });
     }
@@ -10127,7 +10136,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\ninput[data-v-4221c3ad] {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\n}\r\n", ""]);
+exports.push([module.i, "\ninput[data-v-4221c3ad] {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\n}\n#form-header[data-v-4221c3ad] {\r\n    background-color: #283E4A !important;\n}\n#err-msg[data-v-4221c3ad] {\r\n    line-height: 1,5;\r\n    font-size: 14px;\n}\r\n", ""]);
 
 // exports
 
@@ -67115,7 +67124,8 @@ var render = function() {
                   attrs: {
                     type: "text",
                     name: "username",
-                    placeholder: "Username"
+                    placeholder: "Username",
+                    id: "username"
                   },
                   domProps: { value: _vm.form.username },
                   on: {
@@ -67130,7 +67140,15 @@ var render = function() {
                 _vm._v(" "),
                 _c("has-error", {
                   attrs: { form: _vm.form, field: "username" }
-                })
+                }),
+                _vm._v(" "),
+                _vm.status != null
+                  ? _c(
+                      "p",
+                      { staticClass: "text-danger", attrs: { id: "err-msg" } },
+                      [_vm._v("These credentials do not match our records")]
+                    )
+                  : _vm._e()
               ],
               1
             ),
@@ -67185,9 +67203,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "login-form-head" }, [
-      _c("h4", [_vm._v("E - Wallet")])
-    ])
+    return _c(
+      "div",
+      { staticClass: "login-form-head", attrs: { id: "form-header" } },
+      [_c("h4", [_vm._v("E - Wallet")])]
+    )
   },
   function() {
     var _vm = this
@@ -67195,7 +67215,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "submit-btn-area" }, [
       _c("button", { attrs: { id: "form_submit", type: "submit" } }, [
-        _vm._v("Submit "),
+        _vm._v("Login "),
         _c("i", { staticClass: "ti-arrow-right" })
       ])
     ])
