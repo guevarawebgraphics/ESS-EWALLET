@@ -3326,6 +3326,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3372,16 +3374,16 @@ __webpack_require__.r(__webpack_exports__);
         am_per_month: 0,
         am_per_year: 0,
         // Wallet Amount Limits
-        am_minimum: '',
-        am_maximum: '',
-        am_transaction_minimun: '',
-        am_transaction_maximum: '',
-        am_day_minimum: '',
-        am_day_maximum: '',
-        am_month_minimum: '',
-        am_month_maximum: '',
-        am_year_minimum: '',
-        am_year_maximum: '',
+        am_minimum: 0,
+        am_maximum: 0,
+        am_transaction_minimun: 0,
+        am_transaction_maximum: 0,
+        am_day_minimum: 0,
+        am_day_maximum: 0,
+        am_month_minimum: 0,
+        am_month_maximum: 0,
+        am_year_minimum: 0,
+        am_year_maximum: 0,
         // Wallet limit no of transaction config
         c_lm_per_day: 0,
         c_lm_per_month: 0,
@@ -3419,6 +3421,10 @@ __webpack_require__.r(__webpack_exports__);
     onComplete: function onComplete() {
       alert('Yay. Done!');
     },
+
+    /**
+     * @ Validate First Step 
+     **/
     ValidateFirstStep: function ValidateFirstStep() {
       // if(this.form.emailaddress != null){
       //     if(this.step == 1){
@@ -3478,6 +3484,10 @@ __webpack_require__.r(__webpack_exports__);
         return true;
       }
     },
+
+    /**
+     * @ Validate Second Step 
+     **/
     ValidateSecondStep: function ValidateSecondStep() {
       if (this.form.WalletAccountType != null && this.form.WalletType != null) {
         this.errors.clear();
@@ -3500,8 +3510,12 @@ __webpack_require__.r(__webpack_exports__);
         return true;
       }
     },
+
+    /**
+     * @ Validate Fourth Step 
+     **/
     ValidateFourthStep: function ValidateFourthStep() {
-      if (this.form.bank_name == null || this.form.Branch == null || this.form.account_type == null || this.form.account_name == null || this.form.account_no == null) {
+      if (this.form.bank_name == "" || this.form.Branch == "" || this.form.account_type == "" || this.form.account_name == "" || this.form.account_no == "") {
         toast.fire({
           type: 'info',
           title: 'Please fill required fields'
@@ -3610,27 +3624,73 @@ __webpack_require__.r(__webpack_exports__);
     UpdateWalletAccount: function UpdateWalletAccount() {
       var _this3 = this;
 
-      this.form.put('/api/walletaccount/UpdateWalletAccount').then(function (res) {
-        if (res) {
-          axios.put('/api/walletaccount/UpdateServiceMatrixConfig/' + _this3.form.username, _this3.Services).then(function (res) {
-            console.log(res);
+      var formData = new FormData(); // Wallet Account
 
-            _this3.form.clear();
+      formData.append('username', this.form.username);
+      formData.append('kyc_form', this.form.kyc_form);
+      formData.append('valid_id', this.form.valid_id);
+      formData.append('WalletType', this.form.WalletType);
+      formData.append('WalletAccountType', this.form.WalletAccountType);
+      formData.append('WalletAccountNo', this.form.WalletAccountNo);
+      formData.append('WalletAccountName', this.form.WalletAccountName);
+      formData.append('Wallettitle', this.form.Wallettitle); // //Wallet Bank Account
 
-            _this3.form.reset();
+      formData.append('Branch', this.form.Branch);
+      formData.append('bank_name', this.form.bank_name);
+      formData.append('account_type', this.form.account_type);
+      formData.append('account_name', this.form.account_name);
+      formData.append('account_no', this.form.account_no); // Wallet Amount limits config
 
-            toast.fire({
-              type: 'success',
-              title: 'Wallet Account Successfully updated!'
-            });
+      formData.append('amount_limit', this.form.amount_limit);
+      formData.append('am_per_transaction', this.form.am_per_transaction);
+      formData.append('am_per_day', this.form.am_per_day);
+      formData.append('am_per_month', this.form.am_per_month);
+      formData.append('am_per_year', this.form.am_per_year); // Wallet Amount Limits
 
-            _this3.$router.push('/walletaccounts');
-          })["catch"](function (err) {
-            console.log(err);
-          });
+      formData.append('am_minimum', this.form.am_minimum);
+      formData.append('am_maximum', this.form.am_maximum);
+      formData.append('am_transaction_minimum', this.form.am_transaction_minimun);
+      formData.append('am_transaction_maximum', this.form.am_transaction_maximum);
+      formData.append('am_day_minimum', this.form.am_day_minimum);
+      formData.append('am_day_maximum', this.form.am_day_maximum);
+      formData.append('am_month_minimum', this.form.am_month_minimum);
+      formData.append('am_month_maximum', this.form.am_month_maximum);
+      formData.append('am_year_minimum', this.form.am_year_minimum);
+      formData.append('am_year_minimum', this.form.am_year_minimum);
+      formData.append('am_year_maximum', this.form.am_year_maximum); // Wallet limit no of transaction config
+
+      formData.append('c_lm_per_day', this.form.c_lm_per_day);
+      formData.append('c_lm_per_month', this.form.c_lm_per_month);
+      formData.append('c_lm_per_year', this.form.c_lm_per_year);
+      formData.append('c_allow_negative_balance', this.form.c_allow_negative_balance);
+      formData.append('c_com_daily_balance', this.form.c_com_daily_balance);
+      formData.append('c_com_daily_usage', this.form.c_com_daily_usage); // Wallet limit no of transaction
+
+      formData.append('lm_per_day', this.form.lm_per_day);
+      formData.append('lm_per_month', this.form.lm_per_month);
+      formData.append('lm_per_year', this.form.lm_per_year);
+      formData.append('allow_negative_balance', this.form.allow_negative_balance);
+      formData.append('Services', JSON.stringify(this.Services));
+      axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+      axios.post('/api/walletaccount/UpdateWalletAccount', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-
+      }).then(function (res) {
         console.log(res);
+
+        _this3.form.clear();
+
+        _this3.form.reset();
+
+        toast.fire({
+          type: 'success',
+          title: 'Wallet Account Successfully Updated!'
+        });
+
+        _this3.$router.push('/walletaccounts');
+
+        console.log(res.data.status);
       })["catch"](function (err) {
         console.log(err);
       });
@@ -3688,32 +3748,26 @@ __webpack_require__.r(__webpack_exports__);
       formData.append('lm_per_month', this.form.lm_per_month);
       formData.append('lm_per_year', this.form.lm_per_year);
       formData.append('allow_negative_balance', this.form.allow_negative_balance);
+      formData.append('Services', JSON.stringify(this.Services));
       axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
       axios.post('api/walletaccount/StoreWalletAccount', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }).then(function (res) {
+        console.log(res);
+
         if (res) {
-          /**
-           * Store Wallet Service matrix Config 
-           **/
-          axios.post('/api/walletaccount/StoreServiceMatrixConfig/' + res.data.status, _this4.Services).then(function (res) {
-            console.log(res);
+          _this4.form.clear();
 
-            _this4.form.clear();
+          _this4.form.reset();
 
-            _this4.form.reset();
-
-            toast.fire({
-              type: 'success',
-              title: 'Wallet Account Successfully created!'
-            });
-
-            _this4.$router.push('/walletaccounts');
-          })["catch"](function (err) {
-            console.log(err);
+          toast.fire({
+            type: 'success',
+            title: 'Wallet Account Successfully created!'
           });
+
+          _this4.$router.push('/walletaccounts');
         }
 
         console.log(res.data.status);
@@ -3721,6 +3775,10 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err);
       });
     },
+
+    /**
+     * @ Get Wallet Account Type 
+     **/
     GetWalletAccountType: function GetWalletAccountType() {
       var _this5 = this;
 
@@ -3729,6 +3787,10 @@ __webpack_require__.r(__webpack_exports__);
         return _this5.walletAccountTypes = data;
       });
     },
+
+    /**
+     * @ Get Wallet Account Details 
+     **/
     GetWalletAccountDetails: function GetWalletAccountDetails() {
       var _this6 = this;
 
@@ -3748,12 +3810,12 @@ __webpack_require__.r(__webpack_exports__);
         _this6.form.am_minimum = res.data[0]['am_minimum'];
         _this6.form.am_maximum = res.data[0]['am_maximum'];
         _this6.form.am_transaction_minimun = res.data[0]['am_transaction_minimum'];
-        _this6.form.am_transaction_maximum = res.data[0]['am_transaction"_maximum'];
+        _this6.form.am_transaction_maximum = res.data[0]['am_transaction_maximum'];
         _this6.form.am_day_minimum = res.data[0]['am_day_minimum'];
         _this6.form.am_day_maximum = res.data[0]['am_day_maximum'];
         _this6.form.am_month_minimum = res.data[0]['am_month_minimum'];
         _this6.form.am_month_maximum = res.data[0]['am_month_maximum'];
-        _this6.form.am_year_minimum = res.data[0]['am_year_minumum'];
+        _this6.form.am_year_minimum = res.data[0]['am_year_minimum'];
         _this6.form.am_year_maximum = res.data[0]['am_year_maximum'];
         _this6.form.c_lm_per_day = res.data[0]['c_lm_per_day'];
         _this6.form.c_lm_per_month = res.data[0]['c_lm_per_month'];
@@ -3767,24 +3829,42 @@ __webpack_require__.r(__webpack_exports__);
         _this6.form.allow_negative_balance = res.data[0]['allow_negative_balance'];
         _this6.form.bank_name = res.data[0]['bank_name'];
         _this6.form.account_type = res.data[0]['account_type'];
+        _this6.form.kyc_form = 'wallet_account_files/kyc_form/' + res.data[0]['kyc_form'];
+        _this6.form.valid_id = 'wallet_account/valid_id/' + res.data[0]['valid_id'];
       })["catch"](function (err) {
         console.log(err);
       });
     },
+
+    /**
+     * @ Get Kyc Form File 
+     **/
     GetKycForm: function GetKycForm() {
       var photo = this.form.photo.length > 200 ? this.form.photo : "img/profile/" + this.form.photo;
       return photo;
     },
-    uploadFile: function uploadFile(e) {
+
+    /**
+     * @ Get Kyc Form File 
+     **/
+    uploadKycForm: function uploadKycForm() {
       this.form.kyc_form = this.$refs.file.files[0];
       this.errors.clear();
       return true;
     },
+
+    /**
+     * Upload Valid Id 
+     **/
     uploadValidId: function uploadValidId(e) {
       this.form.valid_id = this.$refs.valid_id.files[0];
       this.errors.clear();
       return true;
     },
+
+    /**
+     * @ Get Services 
+     **/
     GetServices: function GetServices() {
       var _this7 = this;
 
@@ -3811,11 +3891,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.GetWalletAccountType();
-    this.EditWalletAccount();
-    this.SearchESSID();
-    this.datatable();
-    this.GetServices();
+    if (this.editmode == false) {
+      this.GetWalletAccountType();
+      this.EditWalletAccount();
+      this.SearchESSID();
+      this.datatable();
+      this.GetServices();
+    }
 
     if (this.editmode == true) {
       this.GetWalletAccountDetails();
@@ -10117,7 +10199,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
 
 // exports
 
@@ -57456,18 +57538,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" })
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("h1", [_vm._v("Dashboard")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -58048,7 +58121,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "text-capitalize" }, [
-      _c("tr", [
+      _c("tr", { staticClass: "th-table" }, [
         _c("th", [_vm._v("Group Code")]),
         _vm._v(" "),
         _c("th", [_vm._v("Group Description")]),
@@ -58612,7 +58685,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "text-capitalize" }, [
-      _c("tr", { attrs: { sp: "" } }, [
+      _c("tr", { staticClass: "th-table" }, [
         _c("th", { attrs: { colspan: "3" } }, [
           _c("h3", [_vm._v("Service Matrix")])
         ]),
@@ -58626,7 +58699,7 @@ var staticRenderFns = [
         _c("th", { attrs: { colspan: "2" } }, [_vm._v("Agent")])
       ]),
       _vm._v(" "),
-      _c("tr", [
+      _c("tr", { staticClass: "th-table" }, [
         _c("th", [_vm._v("Service Type")]),
         _vm._v(" "),
         _c("th", [_vm._v("Service Name")]),
@@ -59122,7 +59195,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("tr", [
+      _c("tr", { staticClass: "th-table" }, [
         _c("th", [_vm._v("Type Code")]),
         _vm._v(" "),
         _c("th", [_vm._v("Wallet Account Type")]),
@@ -59752,19 +59825,32 @@ var render = function() {
                                   attrs: { type: "file", id: "kyc_form" },
                                   on: {
                                     change: function($event) {
-                                      return _vm.uploadFile()
+                                      return _vm.uploadKycForm()
                                     }
                                   }
                                 }),
                                 _vm._v(" "),
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "custom-file-label",
-                                    attrs: { for: "inputGroupFile02" }
-                                  },
-                                  [_vm._v("Filled-Up KYC Form")]
-                                )
+                                this.editmode == true
+                                  ? _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: { for: "kyc_form" }
+                                      },
+                                      [_vm._v("Filled-Up KYC Form")]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                this.editmode == false
+                                  ? _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: { for: "kyc_form" }
+                                      },
+                                      [_vm._v("Filled-Up KYC Form")]
+                                    )
+                                  : _vm._e()
                               ])
                             ]),
                             _vm._v(" "),
@@ -59781,14 +59867,27 @@ var render = function() {
                                   }
                                 }),
                                 _vm._v(" "),
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "custom-file-label",
-                                    attrs: { for: "inputGroupFile02" }
-                                  },
-                                  [_vm._v("Valid ID w/ Signature")]
-                                )
+                                this.editmode == true
+                                  ? _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: { for: "valid_id" }
+                                      },
+                                      [_vm._v("Valid ID w/ Signature")]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                this.editmode == false
+                                  ? _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: { for: "valid_id" }
+                                      },
+                                      [_vm._v("Valid ID w/ Signature")]
+                                    )
+                                  : _vm._e()
                               ])
                             ])
                           ])
@@ -61484,7 +61583,7 @@ var render = function() {
                                           attrs: {
                                             type: "number",
                                             min: "0",
-                                            name: "am_transaction_minimun",
+                                            name: "am_transaction_maximum",
                                             id: "",
                                             value: "200000"
                                           },
@@ -62711,7 +62810,7 @@ var render = function() {
                                   "thead",
                                   { staticClass: "text-capitalize" },
                                   [
-                                    _c("tr", { attrs: { sp: "" } }, [
+                                    _c("tr", { staticClass: "th-table" }, [
                                       _c("th", { attrs: { colspan: "3" } }, [
                                         _c("h3", [_vm._v("Service Matrix")])
                                       ]),
@@ -62733,7 +62832,7 @@ var render = function() {
                                       ])
                                     ]),
                                     _vm._v(" "),
-                                    _c("tr", [
+                                    _c("tr", { staticClass: "th-table" }, [
                                       _c("th", [_vm._v("Service Type")]),
                                       _vm._v(" "),
                                       _c("th", [_vm._v("Service Name")]),
@@ -63337,7 +63436,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("h4", { staticClass: "header-title mt-3" }, [
-                _vm._v("Elektronik Pitaka")
+                _vm._v("Wallet Accounts")
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "data-tables datatable-dark" }, [
@@ -63415,7 +63514,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("tr", [
+      _c("tr", { staticClass: "th-table" }, [
         _c("th", [_vm._v("Wallet Type")]),
         _vm._v(" "),
         _c("th", [_vm._v("Account Type")]),

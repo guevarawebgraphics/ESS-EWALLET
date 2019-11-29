@@ -15,7 +15,7 @@
                                 <!-- Table -->
                                 <table class="table table-hover text-center" id="wallet_account_types">
                                     <thead>
-                                        <tr>
+                                        <tr class="th-table">
                                             <th>Type Code</th>
                                             <th>Wallet Account Type</th>
                                             <th>Wallet Type</th>
