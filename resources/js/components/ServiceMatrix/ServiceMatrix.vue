@@ -17,7 +17,7 @@
                                     <!-- Table -->
                                     <table class="table table-hover table-bordered text-center" id="service_matrix">
                                         <thead class="text-capitalize">
-                                            <tr sp>
+                                            <tr class="th-table">
                                                  <th colspan="3"><h3>Service Matrix</h3></th>
                                                 <!-- <th>Applies To:</th> -->
                                                 <th colspan="2">Admin</th>
@@ -25,7 +25,7 @@
                                                 <th colspan="2">Branch</th>
                                                 <th colspan="2">Agent</th>
                                             </tr>
-                                            <tr>
+                                            <tr class="th-table">
                                                 <th>Service Type</th>
                                                 <th>Service Name</th>
                                                 <th>Group</th>

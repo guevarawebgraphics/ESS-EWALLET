@@ -97,7 +97,9 @@ class WalletAccountRepository
                                 'wallet_bank_account.account_type',
                                 'wallet_bank_account.account_name',
                                 'wallet_bank_account.account_no',
-                                'wallet_bank_account.status'
+                                'wallet_bank_account.status',
+                                'wallet_account.kyc_form',
+                                'wallet_account.valid_id'
                                 )
                             ->where('wallet_account.ess_id', '=', $essid)
                             ->get();
@@ -209,6 +211,31 @@ class WalletAccountRepository
 
                                      ]);
 
+        /**
+         * @ Store Wallet Service Matrix Config 
+         **/
+        $Services = json_decode($wallet_account_data->Services, true);
+        foreach($Services as $data){
+            $wallet_service_matrix_config = wallet_service_matrix_config::create([
+                                            'wallet_account_id' => $wallet_account->id,
+                                            'service_id' => $data['service_id'],
+                                            'redeem' => 'test',
+                                            'admin_all' => $data['admin_all'],
+                                            'admin_some' => $data['admin_some'],
+                                            'merchant_all' => $data['merchant_all'],
+                                            'merchant_some' => $data['merchant_some'],
+                                            'branch_all' => $data['branch_all'],
+                                            'branch_some' => $data['branch_some'],
+                                            'agent_all' => $data['agent_all'],
+                                            'agent_some' => $data['agent_some'],
+                                            'created_by' => $user->id,
+                                            'updated_by' => $user->id,
+                                            'created_at' => Carbon::now(),
+                                            'updated_at' => Carbon::now()
+                                        ]);
+        }
+            
+
         return $wallet_account->id;
     }
 
@@ -232,6 +259,7 @@ class WalletAccountRepository
          // Update to Wallet Bank Account
          $wallet_account_bank = wallet_bank_account::where('wallet_account_id', '=', $wallet_id->id)
          ->update([
+            'bank_name' => $wallet_account_data->bank_name,
             'branch' => $wallet_account_data->Branch,
             'account_type' => $wallet_account_data->account_type,
             'account_name' => $wallet_account_data->account_name,
@@ -242,11 +270,11 @@ class WalletAccountRepository
         // Update Wallet ammount limits config
         $wallet_amount_limits_config = wallet_amount_limits_config::where('wallet_account_id', '=', $wallet_id->id)
         ->update([
-            'amount_limit' => $wallet_account_data->amount_limit,
-            'am_per_transaction' => $wallet_account_data->am_per_transaction,
-            'am_per_day' => $wallet_account_data->am_per_day,
-            'am_per_month' => $wallet_account_data->am_per_month,
-            'am_per_year' => $wallet_account_data->am_per_year,
+            'amount_limit' => $this->checkValue($wallet_account_data->amount_limit),
+            'am_per_transaction' => $this->checkValue($wallet_account_data->am_per_transaction),
+            'am_per_day' => $this->checkValue($wallet_account_data->am_per_day),
+            'am_per_month' => $this->checkValue($wallet_account_data->am_per_month),
+            'am_per_year' => $this->checkValue($wallet_account_data->am_per_year),
             'updated_by' => $user->id,
             'updated_at' => Carbon::now()
             ]);
@@ -270,12 +298,12 @@ class WalletAccountRepository
          // Update Wallet Limit no Transaction Config
          $wallet_limit_no_transaction_config = wallet_limit_no_transaction_config::where('wallet_account_id', '=', $wallet_id->id)
          ->update([
-            'lm_per_day' => $wallet_account_data->c_lm_per_day,
-            'lm_per_month' => $wallet_account_data->c_lm_per_month,
-            'lm_per_year' => $wallet_account_data->c_lm_per_year,
-            'allow_negative_balance' => $wallet_account_data->c_allow_negative_balance,
-            'com_daily_balance' => $wallet_account_data->c_com_daily_balance,
-            'com_daily_usage' => $wallet_account_data->c_com_daily_usage,
+            'lm_per_day' => $this->checkValue($wallet_account_data->c_lm_per_day),
+            'lm_per_month' => $this->checkValue($wallet_account_data->c_lm_per_month),
+            'lm_per_year' => $this->checkValue($wallet_account_data->c_lm_per_year),
+            'allow_negative_balance' => $this->checkValue($wallet_account_data->c_allow_negative_balance),
+            'com_daily_balance' => $this->checkValue($wallet_account_data->c_com_daily_balance),
+            'com_daily_usage' => $this->checkValue($wallet_account_data->c_com_daily_usage),
             'updated_by' => $user->id,
             'updated_at' => Carbon::now()
 
@@ -292,6 +320,28 @@ class WalletAccountRepository
             'updated_at' => Carbon::now()
 
         ]);
+
+        /**
+         * @ Store Wallet Service Matrix Config 
+         **/
+        $test = json_decode($wallet_account_data->Services, true);
+        foreach($test as $data){
+            $wallet_service_matrix_config = wallet_service_matrix_config::where('wallet_account_id', '=', $data['wallet_account_id'])
+                                            ->where('service_id', '=', $data['service_id'])
+                                            ->update([
+                                            'redeem' => 'test',
+                                            'admin_all' => $data['admin_all'],
+                                            'admin_some' => $data['admin_some'],
+                                            'merchant_all' => $data['merchant_all'],
+                                            'merchant_some' => $data['merchant_some'],
+                                            'branch_all' => $data['branch_all'],
+                                            'branch_some' => $data['branch_some'],
+                                            'agent_all' => $data['agent_all'],
+                                            'agent_some' => $data['agent_some'],
+                                            'updated_by' => $user->id,
+                                            'updated_at' => Carbon::now()
+                                        ]);
+        }
 
         return $wallet_account . $wallet_account_bank;
     }
@@ -387,6 +437,24 @@ class WalletAccountRepository
                                     ->where('wallet_service_matrix_config.wallet_account_id', '=', $wallet_account->id)
                                     ->get();
         return $wallet_service_matrix_config;
+    }
+
+    /***********************************************************************
+     * Helpers Functions
+     * 
+     * 
+     ***********************************************************************/
+    /**
+     * @ Check Value of the $value
+     * @return $value 
+     **/
+    public function checkValue($value){
+        if($value == 'true'){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     
 }

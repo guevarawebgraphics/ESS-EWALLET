@@ -68,7 +68,7 @@ Route::prefix('walletaccount')->group(function(){
         'uses' => 'Api\\WalletAccount\WalletAccountController@StoreWalletAccount'
     ]);
     // api/walletaccount/UpdateWalletAccount
-    Route::put('/UpdateWalletAccount', [
+    Route::post('/UpdateWalletAccount', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@UpdateWalletAccount'
     ]);
     // api/walletaccount/GetWalletAccount

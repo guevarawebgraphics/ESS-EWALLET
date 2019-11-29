@@ -60,7 +60,7 @@ Vue.use(VeeValidate);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 // General Components
-Vue.component('Navbar', require('./components/General/Navbar.vue').default);
+Vue.component('Navbar', require('./components/inc/Navbar.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

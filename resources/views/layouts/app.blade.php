@@ -55,7 +55,7 @@
        @include('inc/sidebar')
        <Navbar></Navbar>
       @endif
-     <div class="main-content-inner">
+     <div class="main-content-inner" id="main-content">
         <router-view></router-view>
      </div>
     </div>
