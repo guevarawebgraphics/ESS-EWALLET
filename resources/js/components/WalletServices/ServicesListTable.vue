@@ -4,8 +4,8 @@
         <div class="card shadow-custom">
             <div class="col-md-12">
                 <h4 class="header-title mt-3">E-Wallet Services </h4>   
-             <router-link to="/createservice" class="btn btn-primary btn-custom">Create SOLO Services</router-link>  
-             
+                <router-link to="/createservice" class="btn btn-primary btn-custom">Create Solo Services</router-link>  
+            <!--    <router-link to="/createjointservice" class="btn btn-primary btn-custom">Create Joint Services</router-link>   -->
             </div>  
             <div class="card-body">
      
@@ -24,13 +24,37 @@
                 </thead>
                 <tbody>
                     <tr v-for="s in Services" :key="s.id"> 
-                        <td>{{s.service_code}} </td> 
-                        <td>{{s.service_name}}t </td>
-                        <td>{{s.st_code}} </td>
-                        <td>{{s.st_name}} </td>
-                        <td>{{s.wallet_account_type}} </td>
-                        <td>---- </td>
-                        <td> <router-link :to="{ name: '/test', params: { id: 1 }}" class="btn btn-primary btn-custom">Update</router-link> </td>   
+                        <td> 
+                            <p>
+                            {{s.service_code}}  
+                            </p>
+                        </td> 
+                        <td> 
+                            <p>
+                            {{s.service_name}} 
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                            {{s.st_code}}  
+                            </p>
+                        </td>
+                        <td> 
+                            <p>
+                            {{s.st_name}}  
+                            </p>
+                        </td>
+                        <td> 
+                            <p>
+                            {{s.wallet_account_type}}
+                            </p>
+                        </td>
+                        <td> 
+                            <p>
+                            {{s.wallet_condition}} 
+                            </p>
+                        </td>
+                        <td> <router-link :to="{ name: '/update-service', params: { id: s.id }}" class="btn btn-primary btn-custom">Update</router-link> </td>   
                     </tr>  
                
                 </tbody>
@@ -74,6 +98,7 @@ export default {
             axios.get('/api/service/getserviceslist')
             .then(response => {
                 this.Services = response.data;
+                
             })
             .catch(() => {
                 console.log("err");

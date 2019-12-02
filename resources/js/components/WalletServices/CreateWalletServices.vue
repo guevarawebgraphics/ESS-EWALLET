@@ -16,16 +16,24 @@
                  
                     <div class="form-group"> 
                       <h4 class="header-title mt-3">Service Details </h4>   
-                      <label for="exampleInputEmail1">Avaible ONLY in Wallet Type:</label>
-                      <select class="custom-select" v-model="form.wallet_type_id" name="wallet_type">
+                      <label for="exampleInputEmail1">Available ONLY in Wallet Type:</label>
+                   <!--   <select class="custom-select" v-model="form.wallet_type_id" name="wallet_type">
                       <option selected="selected" disabled>Select</option>
                       <option v-bind:value="wt.id" v-for="wt in WalletTypes" :key="wt.id">{{wt.wallet_account_type}} -- {{wt.wallet_type}}</option>
-                      </select>
+                      </select> --> 
+
+                      <select class="custom-select" v-model="form.wallet_type" name="wallet_type">
+                      <option selected="selected" disabled>Select</option>
+                      <option value="prepaid"> Prepaid </option>
+                      <option value="credit"> Credit </option> 
+                      <option value="prepaid/credit"> Prepaid/Credit </option> 
+                      <option value="admin"> Admin </option>
+                      </select> 
                       <small id="emailHelp" class="form-text text-muted"></small>
                     </div>   
                     <div class="form-group">
                       <label for="exampleInputEmail1">Service Type Code:</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" v-on:change="showServiceTypeDetails" aria-describedby="emailHelp" placeholder="Enter Service Type Code" v-model="form.servicetype_code" name="servicetype_code"  v-validate="'required'">
+                      <input type="number" class="form-control" id="exampleInputEmail1" v-on:change="showServiceTypeDetails" aria-describedby="emailHelp" placeholder="Enter Service Type Code" v-model="form.servicetype_code" name="servicetype_code"  v-validate="'required'">
                     </div>  
                     <div class="form-group">
                       <label for="exampleInputEmail1">Service Type Name:</label>
@@ -96,8 +104,8 @@
                       <label for="exampleInputEmail1">Service Template</label>
                       <div class="input-group">
                       <div class="custom-file">
-                      <input type="file" class="custom-file-input" v-on:change="onFileChangeAcknowledgeTemplate" id="inputGroupFile04">
-                      <label class="custom-file-label" for="inputGroupFile04" v-if="this.service_template == null">Choose file</label>
+                      <input type="file" class="custom-file-input" v-on:change="onFileChangeServiceTemplate" id="inputGroupFile04">
+                      <label class="custom-file-label" for="inputGroupFile04" v-if="this.service_template === 'empty'">Choose file</label>
                       <label class="custom-file-label" for="inputGroupFile04" v-else>{{this.service_template}}</label>
                       </div>
                       </div>
@@ -120,8 +128,8 @@
               </div>   
               <div class="card-body"> 
                        
-                <div class="data-tables datatable-dark">
-                <table class="table table-hover" id="table-services">
+                <div class="data-tables datatable-dark"> 
+                <table class="table table-hover" id="sdwalletsetup"> 
                 <thead>
                     <tr class="th-table">
                         <th>Value</th>
@@ -130,15 +138,22 @@
                         <th>Rates Table</th>
                     </tr>  
                 </thead>
-                <tbody>
-                    <tr> 
-                        <td>test </td> 
-                        <td>test </td> 
-                        <td>test </td> 
-                        <td>test </td> 
-                    </tr> 
+                <tbody> 
+                    <tr v-for="sd in sd_values" :key="sd.id"> 
+                        <td> {{sd.service_value}}</td>
+                        <td> {{sd.service_source_wallet}}</td>
+                        <td> {{sd.service_destination_wallet}}</td>
+                        <td> {{sd.service_rate_table}}</td>
+                    </tr>   
+                    <tr v-if="sd_values.length === 0">
+                        <td colspan="4"> No Available Items</td> 
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                 </tbody>
                 </table> 
+                <button type="button" class="btn btn-primary btn-custom" v-on:click="openModal()">Create </button>
 
                 </div> 
                 <div class="col-md-12">      
@@ -303,7 +318,52 @@
           </div>
       </div>
   </tab-content>
-</form-wizard>
+</form-wizard> 
+ <!-- Create ServiceModal -->
+        <div class="modal fade" id="serviceValueSDRates" tabindex="-1" role="dialog" aria-labelledby="serviceGatewayModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form @submit.prevent="createSD()">
+                <!-- <input type="hidden" name="_token" :value="csrf"> -->
+                <div class="modal-body">
+                    <div class="form-group">
+                    <label class="col-form-label">Value</label>
+                      <select class="custom-select" v-model="form.value">
+                      <option selected="selected" disabled>Select Value</option>
+                      <option value="principal">Principal</option>
+                      <option value="servicefee">Service Fee</option>
+                      <option value="interest">Interest</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" v-model="form.source_wallet" class="form-control" name="source_wallet" placeholder="Source Wallet" disabled>
+                    </div> 
+                    <div class="form-group">
+                    <label class="col-form-label">Destination Wallet</label>
+                      <select class="custom-select" v-model="form.destination_wallet">
+                      <option selected="selected" disabled>Select Value</option>
+                      <option value="Princial Redeem">Principal Redeem</option>
+                      <option value="Income Redeem">Income Redeem</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" v-model="form.rates_table" class="form-control" name="rates_table" placeholder="Rates Table">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-flat">Save changes</button>
+                </div>
+            </form>
+            </div>
+        </div>
+        </div>
 </div>  
 
 
@@ -315,18 +375,31 @@
 export default {
 data() {
   return{
+    edit_mode : false,
     ServiceGateway : {},
     ServiceGroups :{},  
-    WalletTypes : {},
-    service_template : null,
-    form : new Form({ 
+    sd_values : [], 
+    get_service_id : this.$route.params.id,
+   // WalletTypes : {},
+    service_template : 'empty', 
+
+    form : new Form({  
+      /**
+       *  Service ID for updating
+       */
+       service_id : '',
       /**
        * Form data For First Tab
+       */ 
+      /**
+       * Service Condition
        */
+      service_condition : 'solo',
       service_type_id :null,
       pr_wallet_id: null,
-      ir_wallet_id:null,
-      wallet_type_id : null,
+      ir_wallet_id:null, 
+      wallet_type : null, 
+     // wallet_type_id : null,
       servicetype_code : null,
       servicetype_name: null,
       service_code: null,
@@ -338,47 +411,125 @@ data() {
       ir_wallet_acc_no: null,
       ir_wallet_acc_name:null,
       service_group_id : null,
-      service_template: null,
+      service_template: 'empty', 
       /**
        * Form data for Second Tab
-       */ 
+       */  
+      approval : 0,
+      merchant_admin_id : null, 
+      value : null,
+      source_wallet :  'Initiator Wallet',
+      destination_wallet : null,
+      rates_table : null,
+
       /**
        * Form data for Third Tab
        */
-      limit_minimum : null,
-      limit_maximum : null,
-      amount_per_day : null,
-      amount_per_month : null,
-      amount_per_year : null,
+      limit_minimum : 0,
+      limit_maximum : 0,
+      amount_per_day : 0,
+      amount_per_month : 0,
+      amount_per_year : 0,
       /**
        * Form Data for Fourth Tab
        */
-      limit_per_day :null,
-      limit_per_month : null,
-      limit_per_year: null,
-      /**
-       * Approval 
-       */
-      approval : 0,
-      merchant_admin_id : null,
-      /**
-       * Service Condition
-       */
-      service_condition : 'solo'
+      limit_per_day :0,
+      limit_per_month : 0,
+      limit_per_year: 0,
     }),
   }
 },
 methods:{
       onComplete: function(){
-       console.log('hi'); 
-       this.form.post('/api/service/createservice')
-        .then((response)=>{
-            this.$router.push('serviceslist')
-        })
-        .catch(()=>{
-          console.log('error');
-        })
-     },
+      /**
+       * 
+       */ 
+        let Formtwo = new FormData(); 
+        Formtwo.append('service_condition', this.form.service_condition); 
+        if(this.edit_mode === true) {
+        
+        Formtwo.append('service_id', this.get_service_id); 
+        
+        }
+        /**
+         * First Tab 
+         */
+        Formtwo.append('wallet_type', this.form.wallet_type); 
+        Formtwo.append('service_type_id', this.form.service_type_id); 
+        Formtwo.append('pr_wallet_id', this.form.pr_wallet_id);
+        Formtwo.append('ir_wallet_id', this.form.ir_wallet_id); 
+        Formtwo.append('servicetype_code', this.form.servicetype_code);
+        Formtwo.append('servicetype_name', this.form.servicetype_name);
+        Formtwo.append('service_code', this.form.service_code);  
+        Formtwo.append('service_name', this.form.service_name);  
+        Formtwo.append('service_description', this.form.service_description);  
+        Formtwo.append('service_gateway', this.form.service_gateway); 
+        Formtwo.append('pr_wallet_acc_no', this.form.pr_wallet_acc_no);  
+        Formtwo.append('pr_wallet_acc_name', this.form.pr_wallet_acc_name);  
+        Formtwo.append('ir_wallet_acc_no', this.form.ir_wallet_acc_no); 
+        Formtwo.append('ir_wallet_acc_name', this.form.ir_wallet_acc_name); 
+        Formtwo.append('service_group_id', this.form.service_group_id);  
+        Formtwo.append('service_template', this.form.service_template);
+        /**
+         * Second Tab 
+        */
+        Formtwo.append('sd_values', JSON.stringify(this.sd_values));  
+        Formtwo.append('approval', this.form.approval);
+        Formtwo.append('merchant_admin_id', this.form.merchant_admin_id);     
+        /**
+         * Third Tab
+        */ 
+        Formtwo.append('limit_minimum', this.form.limit_minimum);    
+        Formtwo.append('limit_maximum', this.form.limit_maximum);
+        Formtwo.append('amount_per_day', this.form.amount_per_day);
+        Formtwo.append('amount_per_month', this.form.amount_per_month);
+        Formtwo.append('amount_per_year', this.form.amount_per_year);  
+        /**
+         * Fourth Tab
+         */
+        Formtwo.append('limit_per_day', this.form.limit_per_day);  
+        Formtwo.append('limit_per_month', this.form.limit_per_month);    
+        Formtwo.append('limit_per_year', this.form.limit_per_year);    
+        
+        //this.form.post('/api/service/createservice')  
+        if(this.edit_mode === false){
+                axios.post("/api/service/createservice",Formtwo)
+                .then((response)=>{
+                    this.$router.push('serviceslist') 
+                    console.log(response.data);
+                })
+                .catch(()=>{
+                  console.log('error');
+                })
+        }
+        else { 
+                axios.post("/api/service/updateservice",Formtwo)
+                .then((response)=>{ 
+                    this.$router.push('/serviceslist') 
+                    console.log('hah update');
+                })
+                .catch(()=>{
+                  console.log('error');
+                })
+              
+        }
+
+     }, 
+    showDatatable(){
+            setTimeout(function(){
+                let table = $('#sdwalletsetup').DataTable({
+                    // "searching": false,
+                    //"sDom": '<"customcontent">rt<"row"<"col-lg-4" i><"col-lg-4" p>><"clear">',
+                    "paging": true,
+                    "pageLength": 10,
+                    scrollY: true,
+                    "autoWidth": true,
+                    //lengthChange: false,
+                    responsive: true,
+                    fixedColumns: true,
+                });
+            }, 1000);
+    },
      showServiceTypeDetails(){
       axios.get('/api/service/getservicetype/'+ this.form.servicetype_code)
       .then(response => {
@@ -436,7 +587,7 @@ methods:{
            this.ServiceGroups = data
          ));  
     }, 
-    onFileChangeAcknowledgeTemplate(e){
+    onFileChangeServiceTemplate(e){
             console.log(e.target.files[0]);
             this.form.service_template = e.target.files[0];
             this.service_template = e.target.files[0]['name'];
@@ -448,10 +599,133 @@ methods:{
              else {
                 this.form.approval  = 0;  
              }
+    }, 
+    openModal(){
+            $('#serviceValueSDRates').modal('show');
+        },  
+    createSD(){ 
+          this.form.value == '';
+          this.form.destination_wallet == ''; 
+          this.form.rates_table == '';
+          this.sd_values.push({
+            'service_value' : this.form.value,
+            'service_source_wallet' : this.form.source_wallet,
+            'service_destination_wallet' : this.form.destination_wallet,
+            'service_rate_table' : this.form.rates_table
+          })  
+            console.log(this.sd_values);
+             $('#serviceValueSDRates').modal('hide');
     },
+    determineServiceMethod(){
+       if(this.get_service_id != undefined){
+          this.edit_mode = true;
+          this.form.service_id = this.get_service_id;
+          console.log('update'); 
+          this.retrieveServicesDetails();
+       }
+       else {
+          console.log('create')
+       }
+    },
+    retrieveServicesDetails(){
+        axios.get('/api/service/getservicedetails/'+ this.form.service_id)
+       .then(response => { 
+            console.log(response.data);
+            console.log(this.form.service_id);   
+            /**
+             * Services
+             */
+            this.form.service_code = response.data[0]['service_code'];
+            this.form.service_name = response.data[0]['service_name'];
+            this.form.service_description = response.data[0]['service_description']; 
+            /**
+             * Wallet Type
+             */
+            this.form.wallet_type = response.data[0]['s_wallet_type'];  
+            /**
+             * Wallet Details
+             */
+            this.form.pr_wallet_id = response.data[0]['pr_details_id'];
+            this.form.ir_wallet_id = response.data[0]['ir_details_id'];
+            /**
+             *  Service Type
+             */
+            this.form.servicetype_code = response.data[0]['st_code']; 
+            this.form.servicetype_name = response.data[0]['st_name'];  
+            this.form.service_type_id = response.data[0]['service_type_id'];
+            /**
+             * Service Gateway 
+             */
+            this.form.service_gateway = response.data[0]['service_gateway_id'];
+            this.form.service_group_id = response.data[0]['service_group_id']; 
+            /**
+             * Gets the details of PR/IR wallet Accounts based on their ID
+             */
+            this.getWalletAccountDetails(response.data[0]['pr_details_id'],'pr'); 
+            this.getWalletAccountDetails(response.data[0]['ir_details_id'],'ir');
+            /**
+             * Service Template
+             */
+            this.service_template = response.data[0]['service_template']; 
+            this.form.service_template = response.data[0]['service_template']; 
+            /**
+             * Values Source Destination Rates Table
+             */
+            this.getVSDR(this.form.service_id); 
+            /**
+             * Service Amount Limits
+             */ 
+            this.form.limit_minimum = response.data[0]['limit_minimum'];
+            this.form.limit_maximum = response.data[0]['limit_maximum'];
+            this.form.amount_per_day = response.data[0]['amount_per_day'];
+            this.form.amount_per_month = response.data[0]['amount_per_month'];
+            this.form.amount_per_year = response.data[0]['amount_per_year'];
+            /**
+             * Service Transaction Limits
+             */ 
+            this.form.limit_per_day = response.data[0]['limit_per_day'];
+            this.form.limit_per_month = response.data[0]['limit_per_month'];
+            this.form.limit_per_year = response.data[0]['limit_per_year'];
+       })
+       .catch(() =>{
+          console.log('error');
+       })
+    },
+    getWalletAccountDetails($id,$redeem){
+          axios.get('/api/service/getwalletdetails/'+ $id)
+          .then(response => {  
+                if($redeem == 'pr'){
+                   console.log(response.data); 
+                   this.form.pr_wallet_acc_no = response.data[0]['wallet_account_no'];
+                   this.form.pr_wallet_acc_name = response.data[0]['wallet_account_name'];
+                }
+                else {
+                   console.log(response.data); 
+                    this.form.ir_wallet_acc_no = response.data[0]['wallet_account_no'];
+                   this.form.ir_wallet_acc_name = response.data[0]['wallet_account_name'];
+                }
+          })
+          .catch(() =>{
+              console.log('error');
+          })
+    },
+    getVSDR($service_id){
+          axios.get('/api/service/getvsdr/'+ $service_id)
+          .then(response => {  
+              console.log('vsdr');
+              console.log(response.data)
+              this.sd_values = response.data;
+               
+          })
+          .catch(() =>{
+              console.log('error');
+          })
+    }
+    /*
     showWalletTypes() {
                 axios.get('api/walletaccount/GetAllWalletAccountType').then(({ data}) => (this.WalletTypes = data));
         }
+    */
 
     
    
@@ -459,7 +733,9 @@ methods:{
 created() {
     this.getServiceGateway();
     this.getServiceGroup(); 
-    this.showWalletTypes();
+   // this.showWalletTypes(); 
+    this.showDatatable(); 
+    this.determineServiceMethod();
 }
 }
 </script>

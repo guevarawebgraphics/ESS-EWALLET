@@ -113,6 +113,9 @@ Route::prefix('service')->group(function(){
     Route::post('/createservice',[
         'uses' => 'Api\\Services\ServiceController@InsertService' 
     ]);
+    Route::post('/updateservice',[
+        'uses' => 'Api\\Services\ServiceController@UpdateService' 
+    ]);
     
     Route::get('/getservicetype/{st_code}',[
         'uses' => 'Api\\Services\ServiceController@fillServiceType'
@@ -136,6 +139,17 @@ Route::prefix('service')->group(function(){
     
     Route::get('/getirwalletdetails/{ir_no}',[
         'uses' => 'Api\\Services\ServiceController@FillIrWalletMethod'
+    ]); 
+
+    Route::get('/getservicedetails/{service_id}',[
+        'uses' => 'Api\\Services\ServiceController@GetServiceDetails'
+    ]);
+
+    Route::get('/getwalletdetails/{id}',[
+        'uses' => 'Api\\Services\ServiceController@GetWalletDetails'
+    ]);
+    Route::get('/getvsdr/{service_id}',[
+        'uses' => 'Api\\Services\ServiceController@GetVSDR'
     ]);
     
 });
