@@ -38,6 +38,13 @@ window.toast = toast;
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
 
+// Vue Filters
+Vue.filter('substring', function(value){
+  if (!value) return ''
+  value = value.toString()
+  return value.substring(11, 60)
+})
+
 /**
  * @ Vue Js Production 
  * Uncomment below when compiling to production

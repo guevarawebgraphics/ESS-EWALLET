@@ -68,15 +68,15 @@
                                         <div class="input-group mb-3">
                                             <div class="custom-file">
                                                 <input type="file" v-on:change="uploadKycForm()" class="custom-file-input" id="kyc_form" ref="file">
-                                                <label v-if="this.editmode == true" class="custom-file-label" for="kyc_form">Filled-Up KYC Form</label>
-                                                <label v-if="this.editmode == false" class="custom-file-label" for="kyc_form">Filled-Up KYC Form</label>
+                                                <label v-if="this.editmode == true" class="custom-file-label" for="kyc_form" id="kyc_form_filename">{{ form.kyc_form | substring }}</label>
+                                                <label v-if="this.editmode == false" class="custom-file-label" for="kyc_form" id="kyc_form_filename">Filled-Up KYC Form</label>
                                             </div>
                                         </div>
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" v-on:change="uploadValidId()" class="custom-file-input" id="valid_id" ref="valid_id">
-                                                <label v-if="this.editmode == true" class="custom-file-label" for="valid_id">Valid ID w/ Signature</label>
-                                                <label v-if="this.editmode == false" class="custom-file-label" for="valid_id">Valid ID w/ Signature</label>
+                                                <label v-if="this.editmode == true" class="custom-file-label" for="valid_id" id="valid_id_filename">{{ form.valid_id | substring }}</label>
+                                                <label v-if="this.editmode == false" class="custom-file-label" for="valid_id" i="valid_id_filename">Valid ID w/ Signature</label>
                                             </div>
                                         </div>
                                     </div>
@@ -1097,8 +1097,8 @@ export default {
                 this.form.allow_negative_balance = res.data[0]['allow_negative_balance'];
                 this.form.bank_name = res.data[0]['bank_name'];
                 this.form.account_type = res.data[0]['account_type'];
-                this.form.kyc_form = 'wallet_account_files/kyc_form/' + res.data[0]['kyc_form'];
-                this.form.valid_id = 'wallet_account/valid_id/' + res.data[0]['valid_id'];
+                this.form.kyc_form =   res.data[0]['kyc_form'];
+                this.form.valid_id =  res.data[0]['valid_id'];
                 
             })
             .catch(err => {
@@ -1118,6 +1118,7 @@ export default {
         uploadKycForm(){
             this.form.kyc_form = this.$refs.file.files[0];
             this.errors.clear()
+            $('#kyc_form_filename').html(this.$refs.file.files[0].name);
             return true;
         },
         /**
@@ -1126,6 +1127,7 @@ export default {
         uploadValidId(e){
             this.form.valid_id = this.$refs.valid_id.files[0];
             this.errors.clear()
+            $('#valid_id_filename').html(this.$refs.file.files[0].name)
             return true;
         },
         /**
