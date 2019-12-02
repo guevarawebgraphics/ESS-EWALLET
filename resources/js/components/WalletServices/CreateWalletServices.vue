@@ -129,7 +129,7 @@
               <div class="card-body"> 
                        
                 <div class="data-tables datatable-dark"> 
-                <table class="table table-hover" id="sdwalletsetup"> 
+                <table class="table table-hover"> 
                 <thead>
                     <tr class="th-table">
                         <th>Value</th>
@@ -145,12 +145,7 @@
                         <td> {{sd.service_destination_wallet}}</td>
                         <td> {{sd.service_rate_table}}</td>
                     </tr>   
-                    <tr v-if="sd_values.length === 0">
-                        <td colspan="4"> No Available Items</td> 
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+    
                 </tbody>
                 </table> 
                 <button type="button" class="btn btn-primary btn-custom" v-on:click="openModal()">Create </button>
