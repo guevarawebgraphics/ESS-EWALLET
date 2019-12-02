@@ -14,6 +14,7 @@ use App\Models\WalletAccount\wallet_service_matrix_config;
 
 use DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 /**
  * Class WalletAccountRepository.
  */
@@ -246,6 +247,54 @@ class WalletAccountRepository
         $user = auth('api')->user();
         // Wallet ID
         $wallet_id = wallet_account::where('ess_id', '=', $wallet_account_data->username)->first();
+        /**
+         * @ Check kyc form 
+         **/
+        if($wallet_account_data->kyc_form != $wallet_id->kyc_form){
+            /**
+             * @ Handle File Upload 
+             **/
+            //gets the original file name
+            $kyc_form_ext = $wallet_account_data->kyc_form->getClientOriginalName();
+            //gets the original file name except the extension
+            $kyc_form_filename = pathinfo($kyc_form_ext, PATHINFO_FILENAME);
+            //get the client origignal extension
+            $kyc_form_file = time().'_'.$kyc_form_filename.'.'.$wallet_account_data->kyc_form->getClientOriginalExtension();
+            // Store File
+            $kyc_form = $wallet_account_data->kyc_form->storeAs('public/wallet_account_files/kyc_form', $kyc_form_file);
+            // Delete Old File
+            Storage::delete('public/wallet_account_files/kyc_form/'.$wallet_id->kyc_form);
+
+
+        }
+        else {
+            // New Updated File
+            $kyc_form_file = $wallet_id->kyc_form;
+        }
+        
+        /**
+         * @ Check for valid id 
+         **/
+        if($wallet_account_data->valid_id != $wallet_id->valid_id){
+            /**
+             * @ Handle File Upload 
+             **/
+            $valid_id_ext = $wallet_account_data->valid_id->getClientOriginalName();
+            //get the original file name excep the extension
+            $valid_id_name = pathinfo($valid_id_ext, PATHINFO_FILENAME);
+            //get the client original extension
+            $valid_id_file = time().'_'.$valid_id_name.'.'.$wallet_account_data->valid_id->getClientOriginalExtension();
+            // Store File
+            $valid_id = $wallet_account_data->valid_id->storeAs('public/wallet_account_files/valid_id', $valid_id_file);
+            // Delete Old file
+            Storage::delete('public/wallet_account_files/valid_id/'.$wallet_id->valid_id);
+        }
+        else {
+            // New Updated File
+            $valid_id_file = $wallet_id->valid_id;
+        }
+
+        
         // Update to Wallet Account
         $wallet_account = wallet_account::where('ess_id', '=', $wallet_account_data->username)
         ->update([
@@ -254,6 +303,8 @@ class WalletAccountRepository
             //'wallet_account_no' => $wallet_account_data->WalletAccountNo,
             'wallet_account_name' => $wallet_account_data->WalletAccountName,
             'wallet_title' => $wallet_account_data->Wallettitle,
+            'kyc_form' => $kyc_form_file,
+            'valid_id'=> $valid_id_file,
         ]);
 
          // Update to Wallet Bank Account
