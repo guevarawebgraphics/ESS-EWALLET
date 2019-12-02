@@ -5364,11 +5364,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -66720,68 +66715,43 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body" }, [
                   _c("div", { staticClass: "data-tables datatable-dark" }, [
-                    _c(
-                      "table",
-                      {
-                        staticClass: "table table-hover",
-                        attrs: { id: "sdwalletsetup" }
-                      },
-                      [
-                        _c("thead", [
-                          _c("tr", { staticClass: "th-table" }, [
-                            _c("th", [_vm._v("Value")]),
+                    _c("table", { staticClass: "table table-hover" }, [
+                      _c("thead", [
+                        _c("tr", { staticClass: "th-table" }, [
+                          _c("th", [_vm._v("Value")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Source Wallet")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Destination Wallet")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Rates Table")])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.sd_values, function(sd) {
+                          return _c("tr", { key: sd.id }, [
+                            _c("td", [_vm._v(" " + _vm._s(sd.service_value))]),
                             _vm._v(" "),
-                            _c("th", [_vm._v("Source Wallet")]),
+                            _c("td", [
+                              _vm._v(" " + _vm._s(sd.service_source_wallet))
+                            ]),
                             _vm._v(" "),
-                            _c("th", [_vm._v("Destination Wallet")]),
+                            _c("td", [
+                              _vm._v(
+                                " " + _vm._s(sd.service_destination_wallet)
+                              )
+                            ]),
                             _vm._v(" "),
-                            _c("th", [_vm._v("Rates Table")])
+                            _c("td", [
+                              _vm._v(" " + _vm._s(sd.service_rate_table))
+                            ])
                           ])
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "tbody",
-                          [
-                            _vm._l(_vm.sd_values, function(sd) {
-                              return _c("tr", { key: sd.id }, [
-                                _c("td", [
-                                  _vm._v(" " + _vm._s(sd.service_value))
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(" " + _vm._s(sd.service_source_wallet))
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    " " + _vm._s(sd.service_destination_wallet)
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(" " + _vm._s(sd.service_rate_table))
-                                ])
-                              ])
-                            }),
-                            _vm._v(" "),
-                            _vm.sd_values.length === 0
-                              ? _c("tr", [
-                                  _c("td", { attrs: { colspan: "4" } }, [
-                                    _vm._v(" No Available Items")
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td"),
-                                  _vm._v(" "),
-                                  _c("td"),
-                                  _vm._v(" "),
-                                  _c("td")
-                                ])
-                              : _vm._e()
-                          ],
-                          2
-                        )
-                      ]
-                    ),
+                        }),
+                        0
+                      )
+                    ]),
                     _vm._v(" "),
                     _c(
                       "button",
