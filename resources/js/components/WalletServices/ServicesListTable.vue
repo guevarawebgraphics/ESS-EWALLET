@@ -4,8 +4,8 @@
         <div class="card shadow-custom">
             <div class="col-md-12">
                 <h4 class="header-title mt-3">E-Wallet Services </h4>   
-                <router-link to="/createservice" class="btn btn-primary btn-custom">Create Solo Services</router-link>  
-            <!--    <router-link to="/createjointservice" class="btn btn-primary btn-custom">Create Joint Services</router-link>   -->
+                <router-link to="/createservice/create" class="btn btn-primary btn-custom" v-show="this.method_name == 'view'">Create Solo Services</router-link>  
+                <router-link to="/createjointservice" class="btn btn-primary btn-custom" v-show="this.method_name == 'view'">Create Joint Services</router-link> 
             </div>  
             <div class="card-body">
      
@@ -54,7 +54,10 @@
                             {{s.wallet_condition}} 
                             </p>
                         </td>
-                        <td> <router-link :to="{ name: '/update-service', params: { id: s.id }}" class="btn btn-primary btn-custom">Update</router-link> </td>   
+                        <td> 
+                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'view' }}" class="btn btn-primary btn-custom" v-if="method_name === 'view'">Update</router-link> 
+                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'joint' }}" class="btn btn-primary btn-custom" v-if="method_name === 'joint'">Add</router-link> 
+                        </td>   
                     </tr>  
                
                 </tbody>
@@ -74,7 +77,8 @@ export default {
  */
  data() {
      return {
-           Services : {}
+           Services : {},
+           method_name: this.$route.params.method_name
      }
    
  },
@@ -107,7 +111,8 @@ export default {
  },
  created() {
     this.showServices()
-    this.showDatatable()
+    this.showDatatable() 
+
  }
 
 }

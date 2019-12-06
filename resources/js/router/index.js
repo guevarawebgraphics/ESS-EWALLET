@@ -96,12 +96,13 @@ const routes = [
      * @ Services  
      */
     {
-      path:'/serviceslist',
+      path:'/serviceslist/:method_name', 
+      name : 'services-list',
       component: require('../components/WalletServices/ServicesListTable.vue').default, 
       beforeEnter: requireLogin
     },
     {
-      path:'/createservice',
+      path:'/createservice/:method_name',
       component: require('../components/WalletServices/CreateWalletServices.vue').default, 
       beforeEnter: requireLogin
     }, 
@@ -112,7 +113,7 @@ const routes = [
       beforeEnter: requireLogin
     },  
     {
-      path:'/updateservice/:id', 
+      path:'/updateservice/:id/:method_name', 
       name: '/update-service',
       component: require('../components/WalletServices/CreateWalletServices.vue').default, 
       beforeEnter: requireLogin
