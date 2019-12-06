@@ -263,6 +263,34 @@
                     </div>
                 </div>
             </tab-content>
+            <!-- E-Wallet Account Setup -->
+            <tab-content title="E-Wallet Acount Setup" :before-change="ValidateWalletAccountDetails">
+                <div class="box">
+                    <div class="card shadow-custom">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 offset-md-1">
+                                    <h4>Wallet Details</h4>
+                                    <hr>
+                                    <div class="form-group">
+                                            <label class="control-label custom-label" for="WalletAccountNameDetails">Account Name</label>
+                                            <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNameDetails') } "  name="WalletAccountNameDetails" v-validate="'required'" type="text" v-model="form.WalletAccountNameDetails" disabled>
+                                            <has-error :form="form" field="WalletAccountNameDetails"></has-error>
+                                            <p class="text-danger" v-if="errors.has('WalletAccountNameDetails')">{{errors.first('WalletAccountNameDetails')}}</p>
+                                    </div>
+                                    <div class="form-group">
+                                            <label class="control-label custom-label" for="WalletAccountNoDetails">Account No</label>
+                                            <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNoDetails') } " v-on:change="searchAccountNo"  name="WalletAccountNoDetails" v-validate="'required'" type="text" v-model="form.WalletAccountNoDetails">
+                                            <has-error :form="form" field="WalletAccountNoDetails"></has-error>
+                                            <p class="text-danger" v-if="errors.has('WalletAccountNoDetails')">{{errors.first('WalletAccountNoDetails')}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </tab-content>
+            <!-- ./ End E-Wallet Account Setup -->
             <!-- ./ E-Wallet Account Setup Step 2 -->
             <!-- E-Wallet Account Setup Step 3-->
             <!-- 
@@ -301,27 +329,32 @@
                         <div class="card-body">
                             <h5>Designated Bank Account/s:</h5>
                             <hr>
-                            <div class="row">
-                                <div class="col-md-4 offset-md-1">
+                            <div class="row" id="bankRow">
+                                <div class="col-md-4 offset-md-1" v-for="(key, index) in BankAccount" :key="index.id">
+                                    
+                                    <button class="float-right" @click.prevent="removeElement(index);" id="ba-close-button" style="cursor: pointer" v-if="index != 0">
+                                        <span class="ti-close"></span>
+                                    </button>
+                                    <hr>
                                     <!-- Name of Bank -->
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="bank_name">Name of Bank</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('bank_name') } "  name="bank_name" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="form.bank_name" placeholder="Name Of Bank">
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('bank_name') } "  name="bank_name" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.bank_name" placeholder="Name Of Bank">
                                             <has-error :form="form" field="bank_name"></has-error>
                                             <p class="text-danger" v-if="errors.has('bank_name')">{{errors.first('bank_name')}}</p>
                                     </div>
                                     <!-- Branch -->
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="Branch">Branch</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('Branch') } "  name="Branch" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="form.Branch" placeholder="Branch">
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('Branch') } "  name="Branch" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.Branch" placeholder="Branch">
                                             <has-error :form="form" field="Branch"></has-error>
                                             <p class="text-danger" v-if="errors.has('Branch')">{{errors.first('Branch')}}</p>
                                     </div>
                                     <!-- Account Type -->
                                     <div class="form-group">
-                                        <label class="control-label custom-label" for="account_type">Wallet Type</label>
+                                        <label class="control-label custom-label" for="account_type">Account Type</label>
                                         <!-- <input class="form-control" :class="{ 'is-invalid': errors.has('WalletType') } "  name="WalletType" v-validate="'required'" type="text" v-model="form.WalletType" placeholder="Account Type"> -->
-                                        <select class="custom-select" :class="{ 'is-invalid': errors.has('account_type') } "  name="account_type" v-validate="'required'" v-on:change="ValidateFourthStep" v-model="form.account_type">
+                                        <select class="custom-select" :class="{ 'is-invalid': errors.has('account_type') } "  name="account_type" v-validate="'required'" v-on:change="ValidateFourthStep" v-model="key.account_type">
                                                 <option value="" selected disabled>Select</option>
                                                 <option>Credit</option>
                                                 <option>Prepaid</option>
@@ -331,27 +364,33 @@
                                     </div>
                                     <!-- Account Name -->
                                     <div class="form-group">
-                                        <label class="control-label custom-label" for="WalletAccountName">Wallet Account Name</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('account_name') } "  name="account_name" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="form.account_name" placeholder="Account Name">
+                                        <label class="control-label custom-label" for="WalletAccountName">Account Name</label>
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('account_name') } "  name="account_name" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.account_name" placeholder="Account Name">
                                             <has-error :form="form" field="account_name"></has-error>
                                             <p class="text-danger" v-if="errors.has('account_name')">{{errors.first('account_name')}}</p>
                                     </div>
                                     <!-- Account No -->
                                     <div class="form-group">
-                                        <label class="control-label custom-label" for="account_no">Wallet Account No</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('account_no') } "  name="account_no" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="form.account_no" placeholder="Account No">
+                                        <label class="control-label custom-label" for="account_no">Account No</label>
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('account_no') } "  name="account_no" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.account_no" placeholder="Account No">
                                             <has-error :form="form" field="account_no"></has-error>
                                             <p class="text-danger" v-if="errors.has('account_no')">{{errors.first('account_no')}}</p>
                                     </div>
-                                    <!-- <div class="form-group">
+                                    <div class="form-group">
                                         <div class="form-check custom-control custom-checkbox"> 
-                                            <input type="checkbox" class="form-check-input" id="exampleCheck1"> 
-                                            <label class="form-check-label" for="exampleCheck1">Test</label>
+                                            <input type="checkbox" class="form-check-input" id="bank_default" name="default" v-model="key.default"> 
+                                            <label class="form-check-label" for="bank_default">Default</label>
                                         </div>
-                                    </div> -->
-                                    <!-- Add New Bank Account -->
-                                    <!-- <button class="btn btn-primary btn-flat"> Add New Account</button> -->
+                                        <div class="form-check custom-control custom-checkbox"> 
+                                            <input type="checkbox" class="form-check-input" id="bank_status" name="status" v-model="key.status"> 
+                                            <label class="form-check-label" for="bank_status">Active</label>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <!-- Add New Bank Account -->
+                                <button class="btn btn-primary btn-flat" @click.prevent="addBank" :hidden="BankAccount.length>2"> Add New Bank Account</button>
                             </div>
                         </div>
                     </div>
@@ -431,7 +470,7 @@
                                                 <div class="form-check custom-control custom-checkbox"> 
                                                     <input v-model="form.am_per_year" name="am_per_year" type="checkbox" class="form-check-input" id="exampleCheck5"> 
                                                     <label class="form-check-label custom-label" for="exampleCheck5">
-                                                        Limit of total transaction amount per year month Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_year_minimum" name="am_year_minimum" id="" value="0">
+                                                        Limit of total transaction amount per year Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_year_minimum" name="am_year_minimum" id="" value="0">
                                                         Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_year_maximum" name="am_year_maximum" id="" value="200000">
                                                     </label>
                                                 </div>
@@ -671,6 +710,17 @@ export default {
          wai: null,
          step: 0,
          account: [],
+         BankAccount: [
+           {
+            bank_name: null,
+            Branch: null,
+            account_type: null,
+            account_name: null,
+            account_no: null,
+            default: false,
+            status: false,
+           }
+         ],
          Services: {},
          walletAccountTypes: [],
          kyc_form_file_name: "Filled-Up KYC Form",
@@ -735,7 +785,10 @@ export default {
            allow_negative_balance: 0,
            // Files
            kyc_form: null,
-           valid_id: null
+           valid_id: null,
+           // Wallet Account Details
+           WalletAccountNoDetails: null,
+           WalletAccountNameDetails: null,
 
         })
         }
@@ -872,11 +925,36 @@ export default {
             }
         },
         /**
+         * @ ValidateWalletAccountDetails 
+         **/
+        ValidateWalletAccountDetails(){
+            console.log('asdfs')
+            if(this.form.WalletAccountNoDetails == null){
+                toast.fire({
+                    type: 'info',
+                    title: 'Please fill required fields'
+                })
+                this.$validator.validateAll().then(result => {
+                    if (result) {
+                        return;
+                    }
+                });
+                return false;
+            }
+            else {
+                this.errors.clear();
+                $('#nextTab').removeAttr('disabled')
+                return true;
+            }
+        },
+        /**
          *@ Search For Account ESS ID 
          **/
         SearchESSID(){
             if(!this.form.username){
                 if(this.step == 1){
+                    this.form.clear()
+                    this.form.reset()
                     $('#nextTab').attr('disabled', true)
                 }
             }
@@ -1011,7 +1089,10 @@ export default {
                     formData.append('lm_per_month', this.form.lm_per_month)
                     formData.append('lm_per_year', this.form.lm_per_year)
                     formData.append('allow_negative_balance', this.form.allow_negative_balance)
+                    formData.append('BankAccount', JSON.stringify(this.BankAccount))
                     formData.append('Services', JSON.stringify(this.Services))
+                    formData.append('WalletAccountNoDetails', this.form.WalletAccountNoDetails)
+                    formData.append('WalletAccountNameDetails', this.form.WalletAccountNameDetails)
                     axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
                     axios.post('/api/walletaccount/UpdateWalletAccount', formData, {
                         headers: {
@@ -1101,7 +1182,10 @@ export default {
                     formData.append('lm_per_month', this.form.lm_per_month)
                     formData.append('lm_per_year', this.form.lm_per_year)
                     formData.append('allow_negative_balance', this.form.allow_negative_balance)
+                    formData.append('BankAccount', JSON.stringify(this.BankAccount))
                     formData.append('Services', JSON.stringify(this.Services))
+                    formData.append('WalletAccountNoDetails', this.form.WalletAccountNoDetails)
+                    formData.append('WalletAccountNameDetails', this.form.WalletAccountNameDetails)
                     axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
                     axios.post('api/walletaccount/StoreWalletAccount', formData, {
                         headers: {
@@ -1145,7 +1229,7 @@ export default {
             //axios.get('api/walletaccount/GetWalletAccountDetails/'+ this.form.username).then(({ data}) => (console.log(data)));
             axios.get('/api/walletaccount/GetWalletAccountDetails/'+ this.$route.params.id)
             .then(res => {
-                console.log(res)
+                //console.log(res)
                 this.form.WalletAccountType = res.data[0]['wallet_account_type'];
                 this.form.WalletType = res.data[0]['wallet_type'];
                 this.form.Branch = res.data[0]['branch'];
@@ -1180,7 +1264,31 @@ export default {
                 this.form.account_type = res.data[0]['account_type'];
                 this.form.kyc_form =   res.data[0]['kyc_form'];
                 this.form.valid_id =  res.data[0]['valid_id'];
+                this.form.WalletAccountNoDetails = res.data[0]['WalletAccountNoDetails'];
+                this.form.WalletAccountNameDetails = res.data[0]['WalletAccountNameDetails'];
                 
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        },
+        GetWalletBankAccounts(){
+            this.BankAccount.splice(0, 1)
+            axios.get('/api/walletaccount/GetWalletBankAccount/'+ this.$route.params.id)
+            .then(res => {
+                var i;
+                for (i = 0; i < res.data.length; i++) {
+                    this.BankAccount.push({
+                        id: res.data[i].id,
+                        bank_name: res.data[i].bank_name,
+                        Branch: res.data[i].branch,
+                        account_type: res.data[i].account_type,
+                        account_name: res.data[i].account_name,
+                        account_no: res.data[i].account_no,
+                        default: res.data[i].default,
+                        status: res.data[i].status,
+                    })
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -1243,6 +1351,58 @@ export default {
                 return false;
             }
             return true;
+        },
+        /**
+         * @ Add Bank Account  
+         **/
+        addBank() {
+            this.BankAccount.push({
+                bank_name: null,
+                Branch: null,
+                account_type: null,
+                account_name: null,
+                account_no: null,
+                default: false,
+                status: false,
+            })
+        },
+        /**
+         * @ Remove Bank Account 
+         **/
+        removeElement(index) {
+            this.BankAccount.splice(index, 1);
+        },
+        searchAccountNo(){
+            axios.get('/api/walletaccount/SearchWalletAccountNo/' + this.form.WalletAccountNoDetails)
+            .then(res => {
+                console.log(res)
+                if(res){
+                    if(res.data == 404){
+                        this.form.WalletAccountNameDetails = null
+                        toast.fire({
+                            type: 'info',
+                            title: 'Wallet Account No Not Found'
+                        })
+                        this.$validator.validateAll().then(result => {
+                            if (result) {
+                                return;
+                            }
+                        });
+                        return false;
+                    }
+                    else{
+                        this.form.WalletAccountNameDetails = res.data
+                        this.errors.clear();
+                        $('#nextTab').removeAttr('disabled')
+                        return true;
+                    }
+                   
+                }
+
+            })
+            .catch(err => {
+                console.log(err)
+            })
         }
     },
 
@@ -1257,6 +1417,7 @@ export default {
        
         if(this.editmode == true){
             this.GetWalletAccountDetails()
+            this.GetWalletBankAccounts()
             this.Getsmc()
         }
         
@@ -1283,5 +1444,15 @@ export default {
 
 .custom-limit-input {
     width: 15%;
+}
+
+#ba-close-button{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    margin-bottom: "2px";
 }
 </style>

@@ -12,6 +12,7 @@ use App\Models\WalletAccount\wallet_limit_no_transaction_config;
 use App\Models\WalletAccount\wallet_limit_no_transaction;
 use App\Models\WalletAccount\wallet_service_matrix_config;
 use App\Models\WalletAccount\joint_wallet_account;
+use App\Models\WalletAccount\wallet_account_details;
 
 use DB;
 use Carbon\Carbon;
@@ -61,11 +62,12 @@ class WalletAccountRepository
         $wallet_account = $this->connection
                             ->table('wallet_account')
                             ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
-                            ->join('wallet_bank_account', 'wallet_account.id', '=', 'wallet_bank_account.wallet_account_id')
+                            // /->join('wallet_bank_account', 'wallet_account.id', '=', 'wallet_bank_account.wallet_account_id')
                             ->join('wallet_amount_limits_config', 'wallet_account.id', '=', 'wallet_amount_limits_config.wallet_account_id')
                             ->join('wallet_amount_limits', 'wallet_amount_limits_config.id', '=', 'wallet_amount_limits.wallet_amount_limits_config_id')
                             ->join('wallet_limit_no_transaction_config', 'wallet_account.id', '=', 'wallet_limit_no_transaction_config.wallet_account_id')
                             ->join('wallet_limit_no_transaction', 'wallet_limit_no_transaction_config.id', '=' , 'wallet_limit_no_transaction.wlnt_id')
+                            ->join('wallet_account_details', 'wallet_account.id', '=', 'wallet_account_details.wallet_account_id')
                             ->select(
                                 'wallet_account.wallet_account_type',
                                 'wallet_account.wallet_type',
@@ -94,16 +96,38 @@ class WalletAccountRepository
                                 'wallet_limit_no_transaction.lm_per_month',
                                 'wallet_limit_no_transaction.lm_per_year',
                                 'wallet_limit_no_transaction.allow_negative_balance',
-                                'wallet_bank_account.bank_name',
-                                'wallet_bank_account.branch',
-                                'wallet_bank_account.account_type',
-                                'wallet_bank_account.account_name',
-                                'wallet_bank_account.account_no',
-                                'wallet_bank_account.status',
+                                // 'wallet_bank_account.bank_name',
+                                // 'wallet_bank_account.branch',
+                                // 'wallet_bank_account.account_type',
+                                // 'wallet_bank_account.account_name',
+                                // 'wallet_bank_account.account_no',
+                                // 'wallet_bank_account.status',
                                 'wallet_account.kyc_form',
-                                'wallet_account.valid_id'
+                                'wallet_account.valid_id',
+                                'wallet_account_details.wallet_account_no as WalletAccountNoDetails',
+                                'wallet_account_details.wallet_account_name as WalletAccountNameDetails'
                                 )
                             ->where('wallet_account.ess_id', '=', $essid)
+                            ->get();
+        return $wallet_account;
+    }
+    /**
+     * @ Get Wallet Bank Accounts 
+     **/
+    public function GetWalletBankAccount($essid){
+        $user = auth('api')->user();
+        $wallet_account_id = wallet_account::where('ess_id', '=', $essid)->first();
+        $wallet_account = wallet_bank_account::where('wallet_account_id', '=', $wallet_account_id->id)
+                            ->select(
+                                'id',
+                                'bank_name',
+                                'branch',
+                                'account_type',
+                                'account_name',
+                                'account_no',
+                                'default',
+                                'status'
+                                )
                             ->get();
         return $wallet_account;
     }
@@ -141,20 +165,37 @@ class WalletAccountRepository
                             'created_by' => $user->id,
                             'updated_by' => $user->id,
                         ]);
-        // Store to Wallet Bank Account
-        $wallet_account_bank = wallet_bank_account::create([
-                                    'wallet_account_id' => $wallet_account->id,
-                                    'branch' => $wallet_account_data->Branch,
-                                    'bank_name' => $wallet_account_data->bank_name,
-                                    'account_type' => $wallet_account_data->account_type,
-                                    'account_name' => $wallet_account_data->account_name,
-                                    'account_no' => $wallet_account_data->account_no,
-                                    'status' => true,
-                                    'created_by' => $user->id,
-                                    'updated_by' => $user->id,
-                                    'created_at' => Carbon::now(),
-                                    'updated_at' => Carbon::now()
-                                ]);
+        
+        $BankAccount = json_decode($wallet_account_data->BankAccount, true);
+        foreach($BankAccount as $data){
+                    // Store to Wallet Bank Account
+                    $wallet_account_bank = wallet_bank_account::create([
+                        'wallet_account_id' => $wallet_account->id,
+                        'branch' => $data['Branch'],
+                        'bank_name' => $data['bank_name'],
+                        'account_type' => $data['account_type'],
+                        'account_name' => $data['account_name'],
+                        'account_no' => $data['account_no'],
+                        'default' => $data['default'],
+                        'status' => $data['status'],
+                        'created_by' => $user->id,
+                        'updated_by' => $user->id,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]);
+        }
+
+        // Store Wallet Account Details
+        $wallet_account_details = wallet_account_details::create([
+                        'wallet_account_id' => $wallet_account->id,
+                        'wallet_account_name' => $wallet_account_data->WalletAccountNameDetails,
+                        'wallet_account_no' => $wallet_account_data->WalletAccountNoDetails,
+                        'created_by' => $user->id,
+                        'updated_by' => $user->id,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+        ]);
+
         // Store Wallet ammount limits config
         $wallet_amount_limits_config = wallet_amount_limits_config::create([
                                             'wallet_account_id' => $wallet_account->id,
@@ -334,16 +375,54 @@ class WalletAccountRepository
             'valid_id'=> $valid_id_file,
         ]);
 
-         // Update to Wallet Bank Account
-         $wallet_account_bank = wallet_bank_account::where('wallet_account_id', '=', $wallet_id->id)
-         ->update([
-            'bank_name' => $wallet_account_data->bank_name,
-            'branch' => $wallet_account_data->Branch,
-            'account_type' => $wallet_account_data->account_type,
-            'account_name' => $wallet_account_data->account_name,
-            'account_no' => $wallet_account_data->account_no,
-            'updated_at' => Carbon::now()
-        ]);
+        $BankAccount = json_decode($wallet_account_data->BankAccount, true);
+        foreach($BankAccount as $data){
+                    
+                    // Create if ID is not exists
+                    if(empty($data['id'])){
+                        // Store to Wallet Bank Account
+                        $wallet_account_bank = wallet_bank_account::create([
+                            'wallet_account_id' => $wallet_id->id,
+                            'branch' => $data['Branch'],
+                            'bank_name' => $data['bank_name'],
+                            'account_type' => $data['account_type'],
+                            'account_name' => $data['account_name'],
+                            'account_no' => $data['account_no'],
+                            'default' => $data['default'],
+                            'status' => $data['status'],
+                            'created_by' => $user->id,
+                            'updated_by' => $user->id,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now()
+                        ]);
+                    }
+                    else {
+                        // Update to Wallet Bank Account
+                            $wallet_account_bank = wallet_bank_account::where('id', '=', $data['id'])
+                            ->where('wallet_account_id', '=', $wallet_id->id)
+                            ->update([
+                            'branch' => $data['Branch'],
+                            'bank_name' => $data['bank_name'],
+                            'account_type' => $data['account_type'],
+                            'account_name' => $data['account_name'],
+                            'account_no' => $data['account_no'],
+                            'default' => $data['default'],
+                            'status' => $data['status'],
+                            'updated_by' => $user->id,
+                            'updated_at' => Carbon::now()
+                        ]);
+                    }
+        }
+        // Store Wallet Account Details
+        $wallet_account_details = wallet_account_details::where('wallet_account_id', '=', $wallet_id->id)
+                        ->update([
+                            'wallet_account_name' => $wallet_account_data->WalletAccountNameDetails,
+                            'wallet_account_no' => $wallet_account_data->WalletAccountNoDetails,
+                            'created_by' => $user->id,
+                            'updated_by' => $user->id,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now()
+                        ]);
 
         // Update Wallet ammount limits config
         $wallet_amount_limits_config = wallet_amount_limits_config::where('wallet_account_id', '=', $wallet_id->id)
@@ -515,6 +594,17 @@ class WalletAccountRepository
                                     ->where('wallet_service_matrix_config.wallet_account_id', '=', $wallet_account->id)
                                     ->get();
         return $wallet_service_matrix_config;
+    }
+
+    /**
+     * @ Search Wallet Account No Details 
+     **/
+    public function SearchWalletAccountNo($wallet_account_no_details){
+        $account_details = wallet_account::where('wallet_account_no', '=', $wallet_account_no_details)->select('wallet_account_name')->first();
+        if(!$account_details){
+            return 404;
+        }
+        return $account_details->wallet_account_name;                     
     }
 
     /***********************************************************************
