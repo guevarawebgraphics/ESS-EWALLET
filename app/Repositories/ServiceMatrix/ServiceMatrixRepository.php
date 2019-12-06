@@ -48,9 +48,6 @@ class ServiceMatrixRepository
                     'updated_by' => $user->id
             ));
         } 
-        foreach($servicedata->setup as $data){
-        
-        }
         return $service_matrix_data;
     }
 

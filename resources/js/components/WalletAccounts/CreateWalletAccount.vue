@@ -67,16 +67,16 @@
                                     <div class="form-group">
                                         <div class="input-group mb-3">
                                             <div class="custom-file">
-                                                <input type="file" v-on:change="uploadKycForm()" class="custom-file-input" id="kyc_form" ref="file">
+                                                <input type="file" @change="uploadKycForm" class="custom-file-input" id="kyc_form" ref="file">
                                                 <label v-if="this.editmode == true" class="custom-file-label" for="kyc_form" id="kyc_form_filename">{{ form.kyc_form | substring }}</label>
-                                                <label v-if="this.editmode == false" class="custom-file-label" for="kyc_form" id="kyc_form_filename">Filled-Up KYC Form</label>
+                                                <label v-if="this.editmode == false" class="custom-file-label" for="kyc_form" id="kyc_form_filename">{{ kyc_form_file_name}}</label>
                                             </div>
                                         </div>
                                         <div class="input-group">
                                             <div class="custom-file">
-                                                <input type="file" v-on:change="uploadValidId()" class="custom-file-input" id="valid_id" ref="valid_id">
+                                                <input type="file" @change="uploadValidId" class="custom-file-input" id="valid_id" ref="valid_id">
                                                 <label v-if="this.editmode == true" class="custom-file-label" for="valid_id" id="valid_id_filename">{{ form.valid_id | substring }}</label>
-                                                <label v-if="this.editmode == false" class="custom-file-label" for="valid_id" i="valid_id_filename">Valid ID w/ Signature</label>
+                                                <label v-if="this.editmode == false" class="custom-file-label" for="valid_id" i="valid_id_filename">{{ valid_id_file_name }}</label>
                                             </div>
                                         </div>
                                     </div>
@@ -163,13 +163,13 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4 offset-md-1">
-                                    <hr>
+                                    <!-- <hr> -->
                                     <!-- ESSID/Username -->
-                                        <div class="form-group">
-                                        <label class="control-label custom-label" for="ess_id">ESS ID/Username</label>
-                                        <input class="form-control" v-model="form.username"  type="text" placeholder="ESSID/Username" disabled>
-                                        </div>
-                                        <hr>
+                                        <!-- <div class="form-group">
+                                            <label class="control-label custom-label" for="ess_id">ESS ID/Username</label>
+                                            <input class="form-control" v-model="form.username"  type="text" placeholder="ESSID/Username" disabled>
+                                        </div> -->
+                                        <!-- <hr> -->
                                         <h4>Wallet Details</h4>
                                         <!-- Wallet Type -->
                                         <div class="form-group mt-3">
@@ -214,6 +214,48 @@
                                         <input class="form-control" :class="{ 'is-invalid': errors.has('Wallettitle') } "  name="Wallettitle" v-validate="'required'" type="text" v-model="form.Wallettitle" placeholder="Wallet Title">
                                             <has-error :form="form" field="Wallettitle"></has-error>
                                             <p class="text-danger" v-if="errors.has('Wallettitle')">{{errors.first('Wallettitle')}}</p>
+                                        </div>
+
+                                </div>
+                                <!--Joint Column-->
+                                <div class="col-md-4 offset-md-1" :hidden="CheckWalletAccountType()">
+                                    <hr>
+                                    <h4>Joint Wallet Account</h4>
+                                        <!-- Joint Wallet Type -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="JointWalletType">Joint Wallet Type</label>
+                                            <select class="custom-select" :class="{ 'is-invalid' : errors.has('JointWalletType') }" name="JointWalletType" v-validate="'required'">
+                                                <option value="" selected disabled>Select Joint Wallet Type</option>
+                                                <option >Select Joint Wallet Type</option>
+                                            </select>
+                                        </div>
+                                        <!-- Joint Wallet Account Type -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="JointWalletAccountType">Joint Wallet Account Type</label>
+                                            <select class="custom-select" :class="{'is-invalid' : errors.has('JointWalletType') }" name="JointWalletType" v-validate="'required'">
+                                                <option value="" selected disabled>Select Wallet Account Type</option>
+                                                <option value="">Select Wallet Account Type</option>
+                                            </select>
+                                        </div>
+                                        <!-- Joint Wallet Account No -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="JointWalletAccountNo">Joint Wallet Account No</label>
+                                            <select class="custom-select" :class="{'is-invalid' : errors.has('JointWalletAccountNo') }" name="JointWalletAccountNo" v-validate="'required'" disabled>
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                        <!-- Joint Wallet Account Name -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="JointWalletAccountName">Joint Wallet Account Name</label>
+                                            <select class="custom-select" :class="{'is-invalid' : errors.has('JointWalletAccountName') }" name="JointWalletAccountName" v-validate="'required'" disabled>
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                        <!-- CMS Credit Account No -->
+                                        <div class="form-group" v-if="form.WalletAccountType == 17">
+                                            <label class="control-label custom-label" for="CMSCreditAccountNo">CMS Credit Account No</label>
+                                            <input class="form-control" :class="{'is-invalid': errors.has('CMSCreditAccountNo') }" name="CMSCreditAccountNo" v-validate="'required'" type="text" placeholder="CMS Credit Account No">
+                                            <p class="text-danger" v-if="errors.has('CMSCreditAccountNo')">{{errors.first('CMSCreditAccountNo')}}</p>
                                         </div>
                                 </div>
                             </div>
@@ -623,6 +665,7 @@
 export default {
     data() {
         return {
+         csrf_token: $('meta[name="csrf-token"]').attr('content'),
          editmode: false,
          switching: false,
          wai: null,
@@ -630,6 +673,8 @@ export default {
          account: [],
          Services: {},
          walletAccountTypes: [],
+         kyc_form_file_name: "Filled-Up KYC Form",
+         valid_id_file_name: "Valid ID w/ Signature",
          form: new Form({
            username: null,
            lastname: null,
@@ -909,147 +954,183 @@ export default {
          * @ UpdateWalletAccount
          **/
         UpdateWalletAccount(){
-            let formData = new FormData();
-            // Wallet Account
-            formData.append('username', this.form.username)
-            formData.append('kyc_form', this.form.kyc_form)
-            formData.append('valid_id', this.form.valid_id)
-            formData.append('WalletType', this.form.WalletType)
-            formData.append('WalletAccountType', this.form.WalletAccountType)
-            formData.append('WalletAccountNo', this.form.WalletAccountNo)
-            formData.append('WalletAccountName', this.form.WalletAccountName)
-            formData.append('Wallettitle', this.form.Wallettitle)
-            // //Wallet Bank Account
-            formData.append('Branch', this.form.Branch)
-            formData.append('bank_name', this.form.bank_name)
-            formData.append('account_type', this.form.account_type)
-            formData.append('account_name', this.form.account_name)
-            formData.append('account_no', this.form.account_no)
-            // Wallet Amount limits config
-            formData.append('amount_limit', this.form.amount_limit)
-            formData.append('am_per_transaction', this.form.am_per_transaction)
-            formData.append('am_per_day', this.form.am_per_day)
-            formData.append('am_per_month', this.form.am_per_month)
-            formData.append('am_per_year', this.form.am_per_year)
-            // Wallet Amount Limits
-            formData.append('am_minimum', this.form.am_minimum)
-            formData.append('am_maximum', this.form.am_maximum)
-            formData.append('am_transaction_minimum', this.form.am_transaction_minimun)
-            formData.append('am_transaction_maximum', this.form.am_transaction_maximum)
-            formData.append('am_day_minimum', this.form.am_day_minimum)
-            formData.append('am_day_maximum', this.form.am_day_maximum)
-            formData.append('am_month_minimum', this.form.am_month_minimum)
-            formData.append('am_month_maximum', this.form.am_month_maximum)
-            formData.append('am_year_minimum', this.form.am_year_minimum)
-            formData.append('am_year_minimum', this.form.am_year_minimum)
-            formData.append('am_year_maximum', this.form.am_year_maximum)
-            // Wallet limit no of transaction config
-            formData.append('c_lm_per_day', this.form.c_lm_per_day)
-            formData.append('c_lm_per_month', this.form.c_lm_per_month)
-            formData.append('c_lm_per_year', this.form.c_lm_per_year)
-            formData.append('c_allow_negative_balance', this.form.c_allow_negative_balance)
-            formData.append('c_com_daily_balance', this.form.c_com_daily_balance)
-            formData.append('c_com_daily_usage', this.form.c_com_daily_usage)
-            // Wallet limit no of transaction
-            formData.append('lm_per_day', this.form.lm_per_day)
-            formData.append('lm_per_month', this.form.lm_per_month)
-            formData.append('lm_per_year', this.form.lm_per_year)
-            formData.append('allow_negative_balance', this.form.allow_negative_balance)
-            formData.append('Services', JSON.stringify(this.Services))
-            axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-            axios.post('/api/walletaccount/UpdateWalletAccount', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
+            swal.fire({
+            title: 'Are you sure you want to save?',
+            type: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#0077B5',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Update!'
+            }).then((result) => {
+                if (result.value) {
+                    this.$Progress.start()
+                    let formData = new FormData();
+                    // Wallet Account
+                    formData.append('_token', this.csrf_token)
+                    formData.append('username', this.form.username)
+                    formData.append('kyc_form', this.form.kyc_form)
+                    formData.append('valid_id', this.form.valid_id)
+                    formData.append('WalletType', this.form.WalletType)
+                    formData.append('WalletAccountType', this.form.WalletAccountType)
+                    formData.append('WalletAccountNo', this.form.WalletAccountNo)
+                    formData.append('WalletAccountName', this.form.WalletAccountName)
+                    formData.append('Wallettitle', this.form.Wallettitle)
+                    // //Wallet Bank Account
+                    formData.append('Branch', this.form.Branch)
+                    formData.append('bank_name', this.form.bank_name)
+                    formData.append('account_type', this.form.account_type)
+                    formData.append('account_name', this.form.account_name)
+                    formData.append('account_no', this.form.account_no)
+                    // Wallet Amount limits config
+                    formData.append('amount_limit', this.form.amount_limit)
+                    formData.append('am_per_transaction', this.form.am_per_transaction)
+                    formData.append('am_per_day', this.form.am_per_day)
+                    formData.append('am_per_month', this.form.am_per_month)
+                    formData.append('am_per_year', this.form.am_per_year)
+                    // Wallet Amount Limits
+                    formData.append('am_minimum', this.form.am_minimum)
+                    formData.append('am_maximum', this.form.am_maximum)
+                    formData.append('am_transaction_minimum', this.form.am_transaction_minimun)
+                    formData.append('am_transaction_maximum', this.form.am_transaction_maximum)
+                    formData.append('am_day_minimum', this.form.am_day_minimum)
+                    formData.append('am_day_maximum', this.form.am_day_maximum)
+                    formData.append('am_month_minimum', this.form.am_month_minimum)
+                    formData.append('am_month_maximum', this.form.am_month_maximum)
+                    formData.append('am_year_minimum', this.form.am_year_minimum)
+                    formData.append('am_year_minimum', this.form.am_year_minimum)
+                    formData.append('am_year_maximum', this.form.am_year_maximum)
+                    // Wallet limit no of transaction config
+                    formData.append('c_lm_per_day', this.form.c_lm_per_day)
+                    formData.append('c_lm_per_month', this.form.c_lm_per_month)
+                    formData.append('c_lm_per_year', this.form.c_lm_per_year)
+                    formData.append('c_allow_negative_balance', this.form.c_allow_negative_balance)
+                    formData.append('c_com_daily_balance', this.form.c_com_daily_balance)
+                    formData.append('c_com_daily_usage', this.form.c_com_daily_usage)
+                    // Wallet limit no of transaction
+                    formData.append('lm_per_day', this.form.lm_per_day)
+                    formData.append('lm_per_month', this.form.lm_per_month)
+                    formData.append('lm_per_year', this.form.lm_per_year)
+                    formData.append('allow_negative_balance', this.form.allow_negative_balance)
+                    formData.append('Services', JSON.stringify(this.Services))
+                    axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+                    axios.post('/api/walletaccount/UpdateWalletAccount', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            'X-CSRF-TOKEN': this.csrf_token
+                        }
+                    })
+                    .then(res => {
+                    this.$Progress.increase(10)
+                    this.$Progress.finish()
+                    console.log(res)
+                        this.form.clear()
+                        this.form.reset()
+                        toast.fire({
+                            type: 'success',
+                            title: 'Wallet Account Successfully Updated!'
+                        })
+                        this.$router.push('/walletaccounts')
+                        console.log(res.data.status)
+                    })
+                    .catch((err) => {
+                        this.$Progress.fail()
+                        console.log(err)
+                    })
                 }
             })
-            .then(res => {
-               console.log(res)
-                this.form.clear()
-                this.form.reset()
-                toast.fire({
-                    type: 'success',
-                    title: 'Wallet Account Successfully Updated!'
-                })
-                this.$router.push('/walletaccounts')
-                console.log(res.data.status)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+            
         },
         /**
          * @ Store Wallet Account 
          **/
         StoreWalletAccount(){
-            let formData = new FormData();
-            // Wallet Account
-            formData.append('username', this.form.username)
-            formData.append('kyc_form', this.form.kyc_form)
-            formData.append('valid_id', this.form.valid_id)
-            formData.append('WalletType', this.form.WalletType)
-            formData.append('WalletAccountType', this.form.WalletAccountType)
-            formData.append('WalletAccountNo', this.form.WalletAccountNo)
-            formData.append('WalletAccountName', this.form.WalletAccountName)
-            formData.append('Wallettitle', this.form.Wallettitle)
-            // //Wallet Bank Account
-            formData.append('Branch', this.form.Branch)
-            formData.append('bank_name', this.form.bank_name)
-            formData.append('account_type', this.form.account_type)
-            formData.append('account_name', this.form.account_name)
-            formData.append('account_no', this.form.account_no)
-            // Wallet Amount limits config
-            formData.append('amount_limit', this.form.amount_limit)
-            formData.append('am_per_transaction', this.form.am_per_transaction)
-            formData.append('am_per_day', this.form.am_per_day)
-            formData.append('am_per_month', this.form.am_per_month)
-            formData.append('am_per_year', this.form.am_per_year)
-            // Wallet Amount Limits
-            formData.append('am_minimum', this.form.am_minimum)
-            formData.append('am_maximum', this.form.am_maximum)
-            formData.append('am_transaction_minimum', this.form.am_transaction_minimun)
-            formData.append('am_transaction_maximum', this.form.am_transaction_maximum)
-            formData.append('am_day_minimum', this.form.am_day_minimum)
-            formData.append('am_day_maximum', this.form.am_day_maximum)
-            formData.append('am_month_minimum', this.form.am_month_minimum)
-            formData.append('am_month_maximum', this.form.am_month_maximum)
-            formData.append('am_year_minimum', this.form.am_year_minimum)
-            formData.append('am_year_minimum', this.form.am_year_minimum)
-            formData.append('am_year_maximum', this.form.am_year_maximum)
-            // Wallet limit no of transaction config
-            formData.append('c_lm_per_day', this.form.c_lm_per_day)
-            formData.append('c_lm_per_month', this.form.c_lm_per_month)
-            formData.append('c_lm_per_year', this.form.c_lm_per_year)
-            formData.append('c_allow_negative_balance', this.form.c_allow_negative_balance)
-            formData.append('c_com_daily_balance', this.form.c_com_daily_balance)
-            formData.append('c_com_daily_usage', this.form.c_com_daily_usage)
-            // Wallet limit no of transaction
-            formData.append('lm_per_day', this.form.lm_per_day)
-            formData.append('lm_per_month', this.form.lm_per_month)
-            formData.append('lm_per_year', this.form.lm_per_year)
-            formData.append('allow_negative_balance', this.form.allow_negative_balance)
-            formData.append('Services', JSON.stringify(this.Services))
-            axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-            axios.post('api/walletaccount/StoreWalletAccount', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-            .then(res => {
-               console.log(res)
-                if(res){
-                    this.form.clear()
-                    this.form.reset()
-                    toast.fire({
-                        type: 'success',
-                        title: 'Wallet Account Successfully created!'
+            swal.fire({
+                title: 'Are you sure you want to save?',
+                type: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#0077B5',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Save!'
+            }).then((result) => {
+                if (result.value) {
+                    this.$Progress.start()
+                    let formData = new FormData();
+                    // Wallet Account
+                    formData.append('_token', this.csrf_token)
+                    formData.append('username', this.form.username)
+                    formData.append('kyc_form', this.form.kyc_form)
+                    formData.append('valid_id', this.form.valid_id)
+                    formData.append('WalletType', this.form.WalletType)
+                    formData.append('WalletAccountType', this.form.WalletAccountType)
+                    formData.append('WalletAccountNo', this.form.WalletAccountNo)
+                    formData.append('WalletAccountName', this.form.WalletAccountName)
+                    formData.append('Wallettitle', this.form.Wallettitle)
+                    // //Wallet Bank Account
+                    formData.append('Branch', this.form.Branch)
+                    formData.append('bank_name', this.form.bank_name)
+                    formData.append('account_type', this.form.account_type)
+                    formData.append('account_name', this.form.account_name)
+                    formData.append('account_no', this.form.account_no)
+                    // Wallet Amount limits config
+                    formData.append('amount_limit', this.form.amount_limit)
+                    formData.append('am_per_transaction', this.form.am_per_transaction)
+                    formData.append('am_per_day', this.form.am_per_day)
+                    formData.append('am_per_month', this.form.am_per_month)
+                    formData.append('am_per_year', this.form.am_per_year)
+                    // Wallet Amount Limits
+                    formData.append('am_minimum', this.form.am_minimum)
+                    formData.append('am_maximum', this.form.am_maximum)
+                    formData.append('am_transaction_minimum', this.form.am_transaction_minimun)
+                    formData.append('am_transaction_maximum', this.form.am_transaction_maximum)
+                    formData.append('am_day_minimum', this.form.am_day_minimum)
+                    formData.append('am_day_maximum', this.form.am_day_maximum)
+                    formData.append('am_month_minimum', this.form.am_month_minimum)
+                    formData.append('am_month_maximum', this.form.am_month_maximum)
+                    formData.append('am_year_minimum', this.form.am_year_minimum)
+                    formData.append('am_year_minimum', this.form.am_year_minimum)
+                    formData.append('am_year_maximum', this.form.am_year_maximum)
+                    // Wallet limit no of transaction config
+                    formData.append('c_lm_per_day', this.form.c_lm_per_day)
+                    formData.append('c_lm_per_month', this.form.c_lm_per_month)
+                    formData.append('c_lm_per_year', this.form.c_lm_per_year)
+                    formData.append('c_allow_negative_balance', this.form.c_allow_negative_balance)
+                    formData.append('c_com_daily_balance', this.form.c_com_daily_balance)
+                    formData.append('c_com_daily_usage', this.form.c_com_daily_usage)
+                    // Wallet limit no of transaction
+                    formData.append('lm_per_day', this.form.lm_per_day)
+                    formData.append('lm_per_month', this.form.lm_per_month)
+                    formData.append('lm_per_year', this.form.lm_per_year)
+                    formData.append('allow_negative_balance', this.form.allow_negative_balance)
+                    formData.append('Services', JSON.stringify(this.Services))
+                    axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+                    axios.post('api/walletaccount/StoreWalletAccount', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            'X-CSRF-TOKEN': this.csrf_token
+                        }
                     })
-                    this.$router.push('/walletaccounts')
+                    .then(res => {
+                    this.$Progress.increase(10)
+                    this.$Progress.finish()
+                    console.log(res)
+                        if(res){
+                            this.form.clear()
+                            this.form.reset()
+                            toast.fire({
+                                type: 'success',
+                                title: 'Wallet Account Successfully created!'
+                            })
+                            this.$router.push('/walletaccounts')
+                        }
+                        console.log(res.data.status)
+                    })
+                    .catch((err) => {
+                        this.$Progress.fail()
+                        console.log(err)
+                    })
                 }
-                console.log(res.data.status)
             })
-            .catch((err) => {
-                console.log(err)
-            })
+
         },
         /**
          * @ Get Wallet Account Type 
@@ -1115,19 +1196,24 @@ export default {
         /**
          * @ Get Kyc Form File 
          **/
-        uploadKycForm(){
+        uploadKycForm(e){
+            e.preventDefault()
             this.form.kyc_form = this.$refs.file.files[0];
             this.errors.clear()
-            $('#kyc_form_filename').html(this.$refs.file.files[0].name);
+            //$('#kyc_form_filename').html(this.$refs.file.files[0].name);
+            this.kyc_form_file_name = e.target.files[0].name;
+            console.log(e.target.files[0].name)
             return true;
         },
         /**
          * Upload Valid Id 
          **/
         uploadValidId(e){
+            e.preventDefault()
             this.form.valid_id = this.$refs.valid_id.files[0];
             this.errors.clear()
-            $('#valid_id_filename').html(this.$refs.file.files[0].name)
+            //$('#valid_id_filename').html(e.target.files.name);
+            this.valid_id_file_name = e.target.files[0].name;
             return true;
         },
         /**
@@ -1145,6 +1231,18 @@ export default {
             if(this.editmode == true){
                 axios.get('/api/walletaccount/GetServiceMatrixConfig/'+ this.$route.params.id).then(({ data }) => (this.Services = data));
             }
+        },
+        /**
+         * @ Check Wallet Account Type 
+         **/
+        CheckWalletAccountType(){
+            if(this.form.WalletAccountType == 16){
+                return false;
+            }
+            if(this.form.WalletAccountType == 17){
+                return false;
+            }
+            return true;
         }
     },
 
