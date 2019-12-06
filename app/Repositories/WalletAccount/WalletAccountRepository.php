@@ -11,6 +11,7 @@ use App\Models\WalletAccount\wallet_amount_limits;
 use App\Models\WalletAccount\wallet_limit_no_transaction_config;
 use App\Models\WalletAccount\wallet_limit_no_transaction;
 use App\Models\WalletAccount\wallet_service_matrix_config;
+use App\Models\WalletAccount\joint_wallet_account;
 
 use DB;
 use Carbon\Carbon;
@@ -134,7 +135,7 @@ class WalletAccountRepository
                             'wallet_account_no' => $wallet_account_data->WalletAccountNo,
                             'wallet_account_name' => $wallet_account_data->WalletAccountName,
                             'wallet_title' => $wallet_account_data->Wallettitle,
-                            'kyc_form' => $kyc_form,
+                            'kyc_form' => $kyc_form_file,
                             'valid_id'=> $valid_id_file,
                             'status' => true,
                             'created_by' => $user->id,
@@ -235,6 +236,32 @@ class WalletAccountRepository
                                             'updated_at' => Carbon::now()
                                         ]);
         }
+
+        /**
+         * @ Store joint wallet account
+         * @return joint_wallet_account
+         **/
+
+         // Check if Prepaid
+        if($wallet_account_data->WalletAccountType === "16"){
+            $store_joint_wallet_account_prepaid = joint_wallet_account::create([
+                                            'wallet_account_id' => $wallet_account->id,
+                                            'wallet_account_no' => $wallet_account_data->WalletAccountNo,
+                                            'joint_wallet_account_no' => '123-456-789'
+            ]);
+        }
+
+        // Check if Credit
+        if($wallet_account_data->WalletAccountType === "17"){
+            $store_joint_wallet_account_credit = joint_wallet_account::create([
+                                            'wallet_account_id' => $wallet_account->id,
+                                            'wallet_account_no' => $wallet_account_data->WalletAccountNo,
+                                            'joint_wallet_account_no' => '123-456-789',
+                                            'cms_credit_account_no' => '123-456-789'
+            ]);
+        }
+
+
             
 
         return $wallet_account->id;
@@ -492,7 +519,7 @@ class WalletAccountRepository
 
     /***********************************************************************
      * Helpers Functions
-     * 
+     * Below Add Helpers Function
      * 
      ***********************************************************************/
     /**

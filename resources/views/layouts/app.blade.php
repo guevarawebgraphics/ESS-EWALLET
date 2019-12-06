@@ -57,6 +57,8 @@
       @endif
      <div class="main-content-inner" id="main-content">
         <router-view></router-view>
+         <!-- set progressbar -->
+         <vue-progress-bar></vue-progress-bar>
      </div>
     </div>
     <!-- Scripts -->
