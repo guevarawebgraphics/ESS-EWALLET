@@ -45,7 +45,7 @@
                 </div>
             </div>
         </tab-content>
-        <tab-content title="Behavior">
+        <tab-content title="Behavior" :before-change="ValidateTabTwo">
             <div class="card shadow-custom">
             <div class="card-body" >
             <div class="col-sm-7">
@@ -236,7 +236,7 @@
             <wizard-button v-if="props.activeTabIndex > 0 && !props.isLastStep" @click.native="props.prevTab()" :style="props.fillButtonStyle">Previous</wizard-button>
             </div>
             <div class="wizard-footer-right">
-            <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" :disabled="errors.items.length>0" v-on:click="nextTabTwo" class="wizard-footer-right" :style="props.fillButtonStyle">Next</wizard-button>
+            <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" :disabled="errors.items.length>0" class="wizard-footer-right" id="nextbtn" :style="props.fillButtonStyle">Next</wizard-button>
 
             <wizard-button v-else @click.native="onComplete()" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">{{props.isLastStep ? 'Save Service Type' : 'Next'}}</wizard-button>
             </div>
@@ -250,8 +250,8 @@
 export default {
     data() {
         return { 
-    
         loadingWizard: false,
+        tabtwo : true,
         form  : new Form({
             servicetype_code : null,
             servicetype_name : null,
@@ -322,12 +322,16 @@ export default {
             }
             else {
                 this.tabone = false;
+
             }      
         }) 
         },
         nextTabTwo(){
-            this.tabone ==false;
+            this.tabone == false; 
+            $('.nextbtn').attr('disabled',true); 
+        
         },
+        
         IsDisabled(){
             if(errors.items.length>0)
             {
@@ -337,6 +341,7 @@ export default {
                 return true;
             }
         },
+        
         onFileChangeAcknowledgeTemplate(e){
             console.log(e.target.files[0]);
             this.form.acknowledgement_template = e.target.files[0];
@@ -349,6 +354,15 @@ export default {
             console.log(e.target.files[0]); 
             this.form.confirmation_template = e.target.files[0];
         },
+        ValidateTabTwo(){
+                if(this.form.behavior_value == null) {
+
+                   return false;
+                }
+                else {
+                   return true;
+                }
+        }
          /***
      * These methods are for changing the value of the form data
      */

@@ -4,10 +4,12 @@ namespace App\Repositories\ServiceType;
 
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 
-use Illuminate\Http\Request; 
+use Illuminate\Http\Request;  
+use Illuminate\Support\Facades\Storage;  
 use DB; 
+
 use App\Models\ServiceType\ServiceTypeDetails; 
-use App\Models\ServiceType\STBehavior;
+use App\Models\ServiceType\STBehavior; 
 /**
  * Class ServiceTypeRepository.
  */
@@ -92,7 +94,8 @@ class ServiceTypeRepository
                 if($service_type_data->file_acknowledgement_template != "null"){
                     if($service_type_data->file_acknowledgement_template != $acknowledgement_template){
                         $filename_with_extension_ack = $service_type_data->file_acknowledgement_template->getClientOriginalName(); /**Whole File Name w/ ext.*/
-                        $file_name_ack = pathinfo($filename_with_extension_ack, PATHINFO_FILENAME); /**Actual File Name */
+                        $file_name_ack = pathinfo($filename_with_extension_ack, PATHINFO_FILENAME); /**Actual File Name */ 
+                        Storage::delete('public/uploads/templates/acknowledgement_template/'.$acknowledgement_template); /** Delete old file */
                         $acknowledgement_template = time().'_'.$file_name_ack.'.'.$service_type_data->file_acknowledgement_template->getClientOriginalExtension();
                         $upload_ack = $service_type_data->file_acknowledgement_template->storeAs('public/uploads/templates/acknowledgement_template', $acknowledgement_template);    
                     }
@@ -101,6 +104,7 @@ class ServiceTypeRepository
                     if($service_type_data->file_approval_template != $approval_template){
                         $filename_with_extension_app = $service_type_data->file_approval_template->getClientOriginalName();
                         $file_name_app = pathinfo($filename_with_extension_app, PATHINFO_FILENAME);
+                        Storage::delete('public/uploads/templates/approval_template/'.$approval_template); 
                         $approval_template = time().'_'.$file_name_app.'.'.$service_type_data->file_approval_template->getClientOriginalExtension();
                         $upload_app = $service_type_data->file_approval_template->storeAs('public/uploads/templates/approval_template', $approval_template);     
                     } 
@@ -109,8 +113,9 @@ class ServiceTypeRepository
                     if($service_type_data->file_confirmation_template != $confirmation_template){
                         $filename_with_extension_con = $service_type_data->file_confirmation_template->getClientOriginalName();
                         $file_name_con = pathinfo($filename_with_extension_con, PATHINFO_FILENAME);
-                        $confirmation_template = time().'_'.$file_name_app.'.'.$service_type_data->file_confirmation_template->getClientOriginalExtension();
-                        $upload_con = $service_type_data->file_confirmation_template->storeAs('public/uploads/templates/confirmation_template', $confirmation_template);     
+                        Storage::delete('public/uploads/templates/confirmation_template/'.$confirmation_template);
+                        $confirmation_template = time().'_'.$file_name_con.'.'.$service_type_data->file_confirmation_template->getClientOriginalExtension();
+                        $upload_con = $service_type_data->file_confirmation_template->storeAs('public/uploads/templates/confirmation_template', $confirmation_template);    
                     }
                 }
      
@@ -123,8 +128,7 @@ class ServiceTypeRepository
                 ));
                 return $update_template;
     }
-
-     public function create_service_type($service_type_data){  
+    public function create_service_type($service_type_data){  
                 $user = auth('api')->user();   
                 /**
                  * Declaration of Variables (Important)
@@ -198,11 +202,11 @@ class ServiceTypeRepository
       */
      public function show_belong_services($st_id){
                 $show_services = DB::connection('mysql')
-                                    ->table('service_and_servicetype')
-                                    ->join('wservice','wservice.id','=','service_and_servicetype.service_id') 
-                                    ->join('service_gateway','wservice.service_gateway_id','=','service_gateway.id')
-                                    ->where('service_and_servicetype.service_type_id','=',$st_id)
-                                    ->select('wservice.service_code','wservice.service_name','service_gateway.gateway_name')
+                                    ->table('services_basetable')
+                                    ->join('services','services.id','=','services_basetable.service_id') 
+                                    ->join('service_gateway','services_basetable.service_gateway_id','=','service_gateway.id')
+                                    ->where('services_basetable.service_type_id','=',$st_id)
+                                    ->select('services.service_code','services.service_name','service_gateway.gateway_name')
                                     ->get();
                 return $show_services;
      }

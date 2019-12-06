@@ -9,6 +9,7 @@ use App\Http\Requests\WalletAccount\ValidateFirstStep;
  * @ Form Request 
  **/
 use App\Http\Requests\WalletAccount\StoreWalletAccount;
+use App\Http\Requests\WalletAccount\UpdateWalletAccount;
 
 /**
  * @ SOLID SRP
@@ -47,6 +48,16 @@ class WalletAccountController extends Controller
     public function StoreWalletAccount(StoreWalletAccount $request){
         $WalletAccount = $this->WalletAccount->StoreWalletAccount($request);
         return response()->json([
+            'status' => $WalletAccount
+        ]);
+    }
+    
+    /**
+     * @ Store Servicec Matrix Config 
+     **/
+    public function StoreServiceMatrixconfig(Request $request, $wallet_account_id){
+        $WalletAccount = $this->WalletAccount->StoreServiceMatrixConfig($request->all(), $wallet_account_id);
+        return response()->json([
             'status' => 'success'
         ]);
     }
@@ -54,7 +65,7 @@ class WalletAccountController extends Controller
     /**
      * @ Update Wallet Account
      **/
-    public function UpdateWalletAccount(StoreWalletAccount $request){
+    public function UpdateWalletAccount(UpdateWalletAccount $request){
         $WalletAccount = $this->WalletAccount->UpdateWalletAccount($request);
         return response()->json([
             'status' => 'success'
@@ -66,6 +77,39 @@ class WalletAccountController extends Controller
      **/
     public function GetWalletAccountDetails(Request $request , $essid){
         $WalletAccount = $this->WalletAccount->GetWalletAccountDetails($essid);
+        return response()->json($WalletAccount);
+    }
+
+    /**
+     * @ Get Wallet Bank Account 
+     **/
+    public function GetWalletBankAccount(Request $request, $essid){
+        $WalletAccount = $this->WalletAccount->GetWalletBankAccount($essid);
+            return response()->json($WalletAccount);
+        
+    }
+
+    /**
+     * @ Get Service Matrix Config 
+     **/
+    public function GetServiceMatrixConfig(Request $request, $essid){
+        $WalletAccount = $this->WalletAccount->GetServiceMatrixConfig($essid);
+        return response()->json($WalletAccount);
+    }
+
+    /**
+     * @ Update Servicec Matrix Config 
+     **/
+    public function UpdateServiceMatrixConfig(Request $request, $essid){
+        $WalletAccount = $this->WalletAccount->UpdateServiceMatrixConfig($request->all(), $essid);
+        return response()->json($WalletAccount);
+    }
+
+    /**
+     * @ Search Wallet Account Details 
+     **/
+    public function SearchWalletAccountNo($wallet_account_no_details){
+        $WalletAccount = $this->WalletAccount->SearchWalletAccountNo($wallet_account_no_details);
         return response()->json($WalletAccount);
     }
 

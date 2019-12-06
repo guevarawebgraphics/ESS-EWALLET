@@ -22,6 +22,13 @@ Vue.component(AlertError.name, AlertError)
 
 Vue.component('pagination', require('laravel-vue-pagination'));
 
+import VueProgressBar from 'vue-progressbar'
+Vue.use(VueProgressBar, {
+  color: 'rgb(0, 119, 181)',
+  failedColor: 'red',
+  height: '3px'
+})
+
 import swal from 'sweetalert2'
 window.swal = swal;
 
@@ -37,6 +44,23 @@ window.toast = toast;
 
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
+
+// Vue Filters
+Vue.filter('substring', function(value){
+  if (!value) return ''
+  value = value.toString()
+  return value.substring(11, 60)
+})
+
+/**
+ * @ Vue Js Production 
+ * Uncomment below when compiling to production
+ * Comment below if compiling to development
+ **/
+// Vue.config.devtools = false
+// Vue.config.debug = false
+// Vue.config.silent = true
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -50,7 +74,7 @@ Vue.use(VeeValidate);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 // General Components
-Vue.component('Navbar', require('./components/General/Navbar.vue').default);
+Vue.component('Navbar', require('./components/inc/Navbar.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -20,6 +20,11 @@
                         <th scope="row">{{Service.service_code}}</th>
                         <td>{{Service.service_name}}</td>
                         <td>{{Service.gateway_name}}</td>
+                    </tr> 
+                    <tr v-if="this.Services.length === 0">
+                            <td colspan="3"> 
+                                No Services Available
+                            </td>
                     </tr>
                     </tbody>
                     </table>

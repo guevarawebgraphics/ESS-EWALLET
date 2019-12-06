@@ -4,6 +4,8 @@ namespace App\Repositories\Account;
 
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 //use Your Model
+use App\Models\WalletAccount\wallet_account;
+
 use DB;
 use Keygen;
 use App\User;
@@ -121,16 +123,43 @@ class AccountRepository
         }
     }
 
+    /*****************************************************************************
+     * Helpers Functions
+     * Below Add Helpers Function
+     * Securities
+     *****************************************************************************/
+
     /**
      * @ Generate Wallet Account No
+     * @return WalletAccountNo
      **/
     public function generate_account_no(){
+        $account_no = $this->generate_no();
+
+        /**
+         * @ Check if there is existing Wallet Account No 
+         * @ Generate a new one if already exists
+         **/
+        while (wallet_account::where('ess_id', $account_no)->count() > 0){
+            $account_no = $this->generate_no();
+        }
+
+        return $account_no;
+    }
+
+    /**
+     * @ Generate No
+     * @return generate_no
+     **/
+    public function generate_no(){
         $account_no = Keygen::length(9)->numeric()->generate(
             function($key) {
                 // Add a (-) after every fourth character in the key
                 return join('-', str_split($key, 3));
             },
         );
+
         return $account_no;
+        
     }
 }

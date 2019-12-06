@@ -4,7 +4,8 @@
         <div class="card shadow-custom">
             <div class="col-md-12">
                 <h4 class="header-title mt-3">E-Wallet Services </h4>   
-             <router-link to="/createservice" class="btn btn-primary btn-custom">Create Services</router-link> 
+                <router-link to="/createservice/create" class="btn btn-primary btn-custom" v-show="this.method_name == 'view'">Create Solo Services</router-link>  
+                <router-link to="/createjointservice" class="btn btn-primary btn-custom">Create Joint Services</router-link> 
             </div>  
             <div class="card-body">
      
@@ -17,20 +18,49 @@
                         <th>Service Type Code</th>
                         <th>Service Type Name</th>
                         <th>Available In Wallet Type</th> 
-                        <th>Merchant Wallet No.</th>
+                        <th>Service Condition</th>
                         <th>Action</th>
                     </tr>  
                 </thead>
                 <tbody>
                     <tr v-for="s in Services" :key="s.id"> 
-                        <td>{{s.service_code}} </td> 
-                        <td>{{s.service_name}}t </td>
-                        <td>{{s.st_code}} </td>
-                        <td>{{s.st_name}} </td>
-                        <td>---- </td>
-                        <td>---- </td>
-                        <td> <router-link :to="{ name: '/test', params: { id: 1 }}" class="btn btn-primary btn-custom">Update</router-link> </td>   
-                    </tr> 
+                        <td> 
+                            <p>
+                            {{s.service_code}}  
+                            </p>
+                        </td> 
+                        <td> 
+                            <p>
+                            {{s.service_name}} 
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                            {{s.st_code}}  
+                            </p>
+                        </td>
+                        <td> 
+                            <p>
+                            {{s.st_name}}  
+                            </p>
+                        </td>
+                        <td> 
+                            <p>
+                            {{s.wallet_account_type}}
+                            </p>
+                        </td>
+                        <td> 
+                            <p>
+                            {{s.wallet_condition}} 
+                            </p>
+                        </td>
+                        <td> 
+                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'view' }}" class="btn btn-primary btn-custom" v-if="method_name === 'view'">Update</router-link> 
+                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'joint' }}" class="btn btn-primary btn-custom" v-if="method_name === 'joint'" :hidden="checksExistId(s.id)"> Add</router-link> 
+                            <a href="#" class="badge badge-secondary" v-show="checksExistId(s.id) && method_name === 'joint'">TAKEN</a>
+                        </td>   
+                    </tr>  
+               
                 </tbody>
                 </table> 
 
@@ -48,7 +78,9 @@ export default {
  */
  data() {
      return {
-           Services : {}
+           Services : {},
+           method_name: this.$route.params.method_name,
+           joint_services : JSON.parse(localStorage.getItem('list_services'))
      }
    
  },
@@ -72,15 +104,23 @@ export default {
             axios.get('/api/service/getserviceslist')
             .then(response => {
                 this.Services = response.data;
+                
             })
             .catch(() => {
                 console.log("err");
             })
-        }
+        },
+        checksExistId(id){
+                const joint_services = this.joint_services
+                const service = obj => obj.service_id === id;
+                if(joint_services !== null){
+                    return joint_services.some(service); 
+                }
+        },
  },
  created() {
     this.showServices()
-    this.showDatatable()
+    this.showDatatable() 
  }
 
 }

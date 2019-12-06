@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\ServiceMatrix;
+namespace App\Models\WalletAccount;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ServiceMatrix extends Model
+class wallet_account_details extends Model
 {
     /**
      * E-Wallet Connection Database 
@@ -13,7 +13,7 @@ class ServiceMatrix extends Model
     // Guarded
     protected $guarded = [];
     // Table Name
-    protected $table = 'service_matrix';
+    protected $table = 'wallet_account_details';
     // Primary Key
     public $primaryKey = 'id';
     // Timestamps
