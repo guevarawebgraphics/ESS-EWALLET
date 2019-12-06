@@ -49,7 +49,8 @@
                    if(data.status != '401'){
                        console.log(data);
                        window.localStorage.setItem('user', JSON.stringify(this.form.username));
-                       window.location.href = "/dashboard"
+                    //    window.location.href = "/dashboard"
+                       this.$router.go('/dashboard')
                    }
                    else {
                        console.clear()
