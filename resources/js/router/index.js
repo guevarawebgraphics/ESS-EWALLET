@@ -154,8 +154,9 @@ const routes = [
       if (user != null) {
           next(true);
       } else {
-        window.localStorage.removeItem('user');
-        location.reload();
+        //window.localStorage.removeItem('user');
+        //location.reload();
+        localStorage.clear();
         window.location.href="/";
       }
   }

@@ -3328,9 +3328,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      csrf_token: $('meta[name="csrf-token"]').attr('content'),
       editmode: false,
       switching: false,
       wai: null,
@@ -3338,6 +3381,8 @@ __webpack_require__.r(__webpack_exports__);
       account: [],
       Services: {},
       walletAccountTypes: [],
+      kyc_form_file_name: "Filled-Up KYC Form",
+      valid_id_file_name: "Valid ID w/ Signature",
       form: new Form({
         username: null,
         lastname: null,
@@ -3624,75 +3669,96 @@ __webpack_require__.r(__webpack_exports__);
     UpdateWalletAccount: function UpdateWalletAccount() {
       var _this3 = this;
 
-      var formData = new FormData(); // Wallet Account
+      swal.fire({
+        title: 'Are you sure you want to save?',
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#0077B5',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Update!'
+      }).then(function (result) {
+        if (result.value) {
+          _this3.$Progress.start();
 
-      formData.append('username', this.form.username);
-      formData.append('kyc_form', this.form.kyc_form);
-      formData.append('valid_id', this.form.valid_id);
-      formData.append('WalletType', this.form.WalletType);
-      formData.append('WalletAccountType', this.form.WalletAccountType);
-      formData.append('WalletAccountNo', this.form.WalletAccountNo);
-      formData.append('WalletAccountName', this.form.WalletAccountName);
-      formData.append('Wallettitle', this.form.Wallettitle); // //Wallet Bank Account
+          var formData = new FormData(); // Wallet Account
 
-      formData.append('Branch', this.form.Branch);
-      formData.append('bank_name', this.form.bank_name);
-      formData.append('account_type', this.form.account_type);
-      formData.append('account_name', this.form.account_name);
-      formData.append('account_no', this.form.account_no); // Wallet Amount limits config
+          formData.append('_token', _this3.csrf_token);
+          formData.append('username', _this3.form.username);
+          formData.append('kyc_form', _this3.form.kyc_form);
+          formData.append('valid_id', _this3.form.valid_id);
+          formData.append('WalletType', _this3.form.WalletType);
+          formData.append('WalletAccountType', _this3.form.WalletAccountType);
+          formData.append('WalletAccountNo', _this3.form.WalletAccountNo);
+          formData.append('WalletAccountName', _this3.form.WalletAccountName);
+          formData.append('Wallettitle', _this3.form.Wallettitle); // //Wallet Bank Account
 
-      formData.append('amount_limit', this.form.amount_limit);
-      formData.append('am_per_transaction', this.form.am_per_transaction);
-      formData.append('am_per_day', this.form.am_per_day);
-      formData.append('am_per_month', this.form.am_per_month);
-      formData.append('am_per_year', this.form.am_per_year); // Wallet Amount Limits
+          formData.append('Branch', _this3.form.Branch);
+          formData.append('bank_name', _this3.form.bank_name);
+          formData.append('account_type', _this3.form.account_type);
+          formData.append('account_name', _this3.form.account_name);
+          formData.append('account_no', _this3.form.account_no); // Wallet Amount limits config
 
-      formData.append('am_minimum', this.form.am_minimum);
-      formData.append('am_maximum', this.form.am_maximum);
-      formData.append('am_transaction_minimum', this.form.am_transaction_minimun);
-      formData.append('am_transaction_maximum', this.form.am_transaction_maximum);
-      formData.append('am_day_minimum', this.form.am_day_minimum);
-      formData.append('am_day_maximum', this.form.am_day_maximum);
-      formData.append('am_month_minimum', this.form.am_month_minimum);
-      formData.append('am_month_maximum', this.form.am_month_maximum);
-      formData.append('am_year_minimum', this.form.am_year_minimum);
-      formData.append('am_year_minimum', this.form.am_year_minimum);
-      formData.append('am_year_maximum', this.form.am_year_maximum); // Wallet limit no of transaction config
+          formData.append('amount_limit', _this3.form.amount_limit);
+          formData.append('am_per_transaction', _this3.form.am_per_transaction);
+          formData.append('am_per_day', _this3.form.am_per_day);
+          formData.append('am_per_month', _this3.form.am_per_month);
+          formData.append('am_per_year', _this3.form.am_per_year); // Wallet Amount Limits
 
-      formData.append('c_lm_per_day', this.form.c_lm_per_day);
-      formData.append('c_lm_per_month', this.form.c_lm_per_month);
-      formData.append('c_lm_per_year', this.form.c_lm_per_year);
-      formData.append('c_allow_negative_balance', this.form.c_allow_negative_balance);
-      formData.append('c_com_daily_balance', this.form.c_com_daily_balance);
-      formData.append('c_com_daily_usage', this.form.c_com_daily_usage); // Wallet limit no of transaction
+          formData.append('am_minimum', _this3.form.am_minimum);
+          formData.append('am_maximum', _this3.form.am_maximum);
+          formData.append('am_transaction_minimum', _this3.form.am_transaction_minimun);
+          formData.append('am_transaction_maximum', _this3.form.am_transaction_maximum);
+          formData.append('am_day_minimum', _this3.form.am_day_minimum);
+          formData.append('am_day_maximum', _this3.form.am_day_maximum);
+          formData.append('am_month_minimum', _this3.form.am_month_minimum);
+          formData.append('am_month_maximum', _this3.form.am_month_maximum);
+          formData.append('am_year_minimum', _this3.form.am_year_minimum);
+          formData.append('am_year_minimum', _this3.form.am_year_minimum);
+          formData.append('am_year_maximum', _this3.form.am_year_maximum); // Wallet limit no of transaction config
 
-      formData.append('lm_per_day', this.form.lm_per_day);
-      formData.append('lm_per_month', this.form.lm_per_month);
-      formData.append('lm_per_year', this.form.lm_per_year);
-      formData.append('allow_negative_balance', this.form.allow_negative_balance);
-      formData.append('Services', JSON.stringify(this.Services));
-      axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-      axios.post('/api/walletaccount/UpdateWalletAccount', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+          formData.append('c_lm_per_day', _this3.form.c_lm_per_day);
+          formData.append('c_lm_per_month', _this3.form.c_lm_per_month);
+          formData.append('c_lm_per_year', _this3.form.c_lm_per_year);
+          formData.append('c_allow_negative_balance', _this3.form.c_allow_negative_balance);
+          formData.append('c_com_daily_balance', _this3.form.c_com_daily_balance);
+          formData.append('c_com_daily_usage', _this3.form.c_com_daily_usage); // Wallet limit no of transaction
+
+          formData.append('lm_per_day', _this3.form.lm_per_day);
+          formData.append('lm_per_month', _this3.form.lm_per_month);
+          formData.append('lm_per_year', _this3.form.lm_per_year);
+          formData.append('allow_negative_balance', _this3.form.allow_negative_balance);
+          formData.append('Services', JSON.stringify(_this3.Services));
+          axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+          axios.post('/api/walletaccount/UpdateWalletAccount', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'X-CSRF-TOKEN': _this3.csrf_token
+            }
+          }).then(function (res) {
+            _this3.$Progress.increase(10);
+
+            _this3.$Progress.finish();
+
+            console.log(res);
+
+            _this3.form.clear();
+
+            _this3.form.reset();
+
+            toast.fire({
+              type: 'success',
+              title: 'Wallet Account Successfully Updated!'
+            });
+
+            _this3.$router.push('/walletaccounts');
+
+            console.log(res.data.status);
+          })["catch"](function (err) {
+            _this3.$Progress.fail();
+
+            console.log(err);
+          });
         }
-      }).then(function (res) {
-        console.log(res);
-
-        _this3.form.clear();
-
-        _this3.form.reset();
-
-        toast.fire({
-          type: 'success',
-          title: 'Wallet Account Successfully Updated!'
-        });
-
-        _this3.$router.push('/walletaccounts');
-
-        console.log(res.data.status);
-      })["catch"](function (err) {
-        console.log(err);
       });
     },
 
@@ -3702,77 +3768,98 @@ __webpack_require__.r(__webpack_exports__);
     StoreWalletAccount: function StoreWalletAccount() {
       var _this4 = this;
 
-      var formData = new FormData(); // Wallet Account
+      swal.fire({
+        title: 'Are you sure you want to save?',
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#0077B5',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Save!'
+      }).then(function (result) {
+        if (result.value) {
+          _this4.$Progress.start();
 
-      formData.append('username', this.form.username);
-      formData.append('kyc_form', this.form.kyc_form);
-      formData.append('valid_id', this.form.valid_id);
-      formData.append('WalletType', this.form.WalletType);
-      formData.append('WalletAccountType', this.form.WalletAccountType);
-      formData.append('WalletAccountNo', this.form.WalletAccountNo);
-      formData.append('WalletAccountName', this.form.WalletAccountName);
-      formData.append('Wallettitle', this.form.Wallettitle); // //Wallet Bank Account
+          var formData = new FormData(); // Wallet Account
 
-      formData.append('Branch', this.form.Branch);
-      formData.append('bank_name', this.form.bank_name);
-      formData.append('account_type', this.form.account_type);
-      formData.append('account_name', this.form.account_name);
-      formData.append('account_no', this.form.account_no); // Wallet Amount limits config
+          formData.append('_token', _this4.csrf_token);
+          formData.append('username', _this4.form.username);
+          formData.append('kyc_form', _this4.form.kyc_form);
+          formData.append('valid_id', _this4.form.valid_id);
+          formData.append('WalletType', _this4.form.WalletType);
+          formData.append('WalletAccountType', _this4.form.WalletAccountType);
+          formData.append('WalletAccountNo', _this4.form.WalletAccountNo);
+          formData.append('WalletAccountName', _this4.form.WalletAccountName);
+          formData.append('Wallettitle', _this4.form.Wallettitle); // //Wallet Bank Account
 
-      formData.append('amount_limit', this.form.amount_limit);
-      formData.append('am_per_transaction', this.form.am_per_transaction);
-      formData.append('am_per_day', this.form.am_per_day);
-      formData.append('am_per_month', this.form.am_per_month);
-      formData.append('am_per_year', this.form.am_per_year); // Wallet Amount Limits
+          formData.append('Branch', _this4.form.Branch);
+          formData.append('bank_name', _this4.form.bank_name);
+          formData.append('account_type', _this4.form.account_type);
+          formData.append('account_name', _this4.form.account_name);
+          formData.append('account_no', _this4.form.account_no); // Wallet Amount limits config
 
-      formData.append('am_minimum', this.form.am_minimum);
-      formData.append('am_maximum', this.form.am_maximum);
-      formData.append('am_transaction_minimum', this.form.am_transaction_minimun);
-      formData.append('am_transaction_maximum', this.form.am_transaction_maximum);
-      formData.append('am_day_minimum', this.form.am_day_minimum);
-      formData.append('am_day_maximum', this.form.am_day_maximum);
-      formData.append('am_month_minimum', this.form.am_month_minimum);
-      formData.append('am_month_maximum', this.form.am_month_maximum);
-      formData.append('am_year_minimum', this.form.am_year_minimum);
-      formData.append('am_year_minimum', this.form.am_year_minimum);
-      formData.append('am_year_maximum', this.form.am_year_maximum); // Wallet limit no of transaction config
+          formData.append('amount_limit', _this4.form.amount_limit);
+          formData.append('am_per_transaction', _this4.form.am_per_transaction);
+          formData.append('am_per_day', _this4.form.am_per_day);
+          formData.append('am_per_month', _this4.form.am_per_month);
+          formData.append('am_per_year', _this4.form.am_per_year); // Wallet Amount Limits
 
-      formData.append('c_lm_per_day', this.form.c_lm_per_day);
-      formData.append('c_lm_per_month', this.form.c_lm_per_month);
-      formData.append('c_lm_per_year', this.form.c_lm_per_year);
-      formData.append('c_allow_negative_balance', this.form.c_allow_negative_balance);
-      formData.append('c_com_daily_balance', this.form.c_com_daily_balance);
-      formData.append('c_com_daily_usage', this.form.c_com_daily_usage); // Wallet limit no of transaction
+          formData.append('am_minimum', _this4.form.am_minimum);
+          formData.append('am_maximum', _this4.form.am_maximum);
+          formData.append('am_transaction_minimum', _this4.form.am_transaction_minimun);
+          formData.append('am_transaction_maximum', _this4.form.am_transaction_maximum);
+          formData.append('am_day_minimum', _this4.form.am_day_minimum);
+          formData.append('am_day_maximum', _this4.form.am_day_maximum);
+          formData.append('am_month_minimum', _this4.form.am_month_minimum);
+          formData.append('am_month_maximum', _this4.form.am_month_maximum);
+          formData.append('am_year_minimum', _this4.form.am_year_minimum);
+          formData.append('am_year_minimum', _this4.form.am_year_minimum);
+          formData.append('am_year_maximum', _this4.form.am_year_maximum); // Wallet limit no of transaction config
 
-      formData.append('lm_per_day', this.form.lm_per_day);
-      formData.append('lm_per_month', this.form.lm_per_month);
-      formData.append('lm_per_year', this.form.lm_per_year);
-      formData.append('allow_negative_balance', this.form.allow_negative_balance);
-      formData.append('Services', JSON.stringify(this.Services));
-      axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-      axios.post('api/walletaccount/StoreWalletAccount', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(function (res) {
-        console.log(res);
+          formData.append('c_lm_per_day', _this4.form.c_lm_per_day);
+          formData.append('c_lm_per_month', _this4.form.c_lm_per_month);
+          formData.append('c_lm_per_year', _this4.form.c_lm_per_year);
+          formData.append('c_allow_negative_balance', _this4.form.c_allow_negative_balance);
+          formData.append('c_com_daily_balance', _this4.form.c_com_daily_balance);
+          formData.append('c_com_daily_usage', _this4.form.c_com_daily_usage); // Wallet limit no of transaction
 
-        if (res) {
-          _this4.form.clear();
+          formData.append('lm_per_day', _this4.form.lm_per_day);
+          formData.append('lm_per_month', _this4.form.lm_per_month);
+          formData.append('lm_per_year', _this4.form.lm_per_year);
+          formData.append('allow_negative_balance', _this4.form.allow_negative_balance);
+          formData.append('Services', JSON.stringify(_this4.Services));
+          axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+          axios.post('api/walletaccount/StoreWalletAccount', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'X-CSRF-TOKEN': _this4.csrf_token
+            }
+          }).then(function (res) {
+            _this4.$Progress.increase(10);
 
-          _this4.form.reset();
+            _this4.$Progress.finish();
 
-          toast.fire({
-            type: 'success',
-            title: 'Wallet Account Successfully created!'
+            console.log(res);
+
+            if (res) {
+              _this4.form.clear();
+
+              _this4.form.reset();
+
+              toast.fire({
+                type: 'success',
+                title: 'Wallet Account Successfully created!'
+              });
+
+              _this4.$router.push('/walletaccounts');
+            }
+
+            console.log(res.data.status);
+          })["catch"](function (err) {
+            _this4.$Progress.fail();
+
+            console.log(err);
           });
-
-          _this4.$router.push('/walletaccounts');
         }
-
-        console.log(res.data.status);
-      })["catch"](function (err) {
-        console.log(err);
       });
     },
 
@@ -3847,10 +3934,13 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Get Kyc Form File 
      **/
-    uploadKycForm: function uploadKycForm() {
+    uploadKycForm: function uploadKycForm(e) {
+      e.preventDefault();
       this.form.kyc_form = this.$refs.file.files[0];
-      this.errors.clear();
-      $('#kyc_form_filename').html(this.$refs.file.files[0].name);
+      this.errors.clear(); //$('#kyc_form_filename').html(this.$refs.file.files[0].name);
+
+      this.kyc_form_file_name = e.target.files[0].name;
+      console.log(e.target.files[0].name);
       return true;
     },
 
@@ -3858,9 +3948,11 @@ __webpack_require__.r(__webpack_exports__);
      * Upload Valid Id 
      **/
     uploadValidId: function uploadValidId(e) {
+      e.preventDefault();
       this.form.valid_id = this.$refs.valid_id.files[0];
-      this.errors.clear();
-      $('#valid_id_filename').html(this.$refs.file.files[0].name);
+      this.errors.clear(); //$('#valid_id_filename').html(e.target.files.name);
+
+      this.valid_id_file_name = e.target.files[0].name;
       return true;
     },
 
@@ -3890,6 +3982,21 @@ __webpack_require__.r(__webpack_exports__);
           return _this8.Services = data;
         });
       }
+    },
+
+    /**
+     * @ Check Wallet Account Type 
+     **/
+    CheckWalletAccountType: function CheckWalletAccountType() {
+      if (this.form.WalletAccountType == 16) {
+        return false;
+      }
+
+      if (this.form.WalletAccountType == 17) {
+        return false;
+      }
+
+      return true;
     }
   },
   created: function created() {
@@ -6106,8 +6213,9 @@ __webpack_require__.r(__webpack_exports__);
 
         if (data.status != '401') {
           console.log(data);
-          window.localStorage.setItem('user', JSON.stringify(_this.form.username));
-          window.location.href = "/dashboard";
+          window.localStorage.setItem('user', JSON.stringify(_this.form.username)); //    window.location.href = "/dashboard"
+
+          _this.$router.go('/dashboard');
         } else {
           console.clear();
           $('#username').addClass('is-invalid');
@@ -6174,10 +6282,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     logout: function logout() {
+      var _this = this;
+
       axios.post('/logout').then(function (res) {
-        window.localStorage.removeItem('user');
-        location.reload();
-        window.location.href = "/";
+        //window.localStorage.removeItem('user');
+        // location.reload();
+        // window.location.href="/";
+        localStorage.clear();
+
+        _this.$router.replace('/');
       })["catch"](function (err) {
         console.log(err);
       });
@@ -10682,7 +10795,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
 
 // exports
 
@@ -60306,11 +60419,7 @@ var render = function() {
                                   ref: "file",
                                   staticClass: "custom-file-input",
                                   attrs: { type: "file", id: "kyc_form" },
-                                  on: {
-                                    change: function($event) {
-                                      return _vm.uploadKycForm()
-                                    }
-                                  }
+                                  on: { change: _vm.uploadKycForm }
                                 }),
                                 _vm._v(" "),
                                 this.editmode == true
@@ -60345,7 +60454,7 @@ var render = function() {
                                           id: "kyc_form_filename"
                                         }
                                       },
-                                      [_vm._v("Filled-Up KYC Form")]
+                                      [_vm._v(_vm._s(_vm.kyc_form_file_name))]
                                     )
                                   : _vm._e()
                               ])
@@ -60357,11 +60466,7 @@ var render = function() {
                                   ref: "valid_id",
                                   staticClass: "custom-file-input",
                                   attrs: { type: "file", id: "valid_id" },
-                                  on: {
-                                    change: function($event) {
-                                      return _vm.uploadValidId()
-                                    }
-                                  }
+                                  on: { change: _vm.uploadValidId }
                                 }),
                                 _vm._v(" "),
                                 this.editmode == true
@@ -60396,7 +60501,7 @@ var render = function() {
                                           i: "valid_id_filename"
                                         }
                                       },
-                                      [_vm._v("Valid ID w/ Signature")]
+                                      [_vm._v(_vm._s(_vm.valid_id_file_name))]
                                     )
                                   : _vm._e()
                               ])
@@ -60910,51 +61015,6 @@ var render = function() {
                     _c("div", { staticClass: "card-body" }, [
                       _c("div", { staticClass: "row" }, [
                         _c("div", { staticClass: "col-md-4 offset-md-1" }, [
-                          _c("hr"),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: "control-label custom-label",
-                                attrs: { for: "ess_id" }
-                              },
-                              [_vm._v("ESS ID/Username")]
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.username,
-                                  expression: "form.username"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "text",
-                                placeholder: "ESSID/Username",
-                                disabled: ""
-                              },
-                              domProps: { value: _vm.form.username },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "username",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("hr"),
-                          _vm._v(" "),
                           _c("h4", [_vm._v("Wallet Details")]),
                           _vm._v(" "),
                           _c(
@@ -61390,7 +61450,237 @@ var render = function() {
                             ],
                             1
                           )
-                        ])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "col-md-4 offset-md-1",
+                            attrs: { hidden: _vm.CheckWalletAccountType() }
+                          },
+                          [
+                            _c("hr"),
+                            _vm._v(" "),
+                            _c("h4", [_vm._v("Joint Wallet Account")]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "JointWalletType" }
+                                },
+                                [_vm._v("Joint Wallet Type")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "validate",
+                                      rawName: "v-validate",
+                                      value: "required",
+                                      expression: "'required'"
+                                    }
+                                  ],
+                                  staticClass: "custom-select",
+                                  class: {
+                                    "is-invalid": _vm.errors.has(
+                                      "JointWalletType"
+                                    )
+                                  },
+                                  attrs: { name: "JointWalletType" }
+                                },
+                                [
+                                  _c(
+                                    "option",
+                                    {
+                                      attrs: {
+                                        value: "",
+                                        selected: "",
+                                        disabled: ""
+                                      }
+                                    },
+                                    [_vm._v("Select Joint Wallet Type")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("option", [
+                                    _vm._v("Select Joint Wallet Type")
+                                  ])
+                                ]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "JointWalletAccountType" }
+                                },
+                                [_vm._v("Joint Wallet Account Type")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "validate",
+                                      rawName: "v-validate",
+                                      value: "required",
+                                      expression: "'required'"
+                                    }
+                                  ],
+                                  staticClass: "custom-select",
+                                  class: {
+                                    "is-invalid": _vm.errors.has(
+                                      "JointWalletType"
+                                    )
+                                  },
+                                  attrs: { name: "JointWalletType" }
+                                },
+                                [
+                                  _c(
+                                    "option",
+                                    {
+                                      attrs: {
+                                        value: "",
+                                        selected: "",
+                                        disabled: ""
+                                      }
+                                    },
+                                    [_vm._v("Select Wallet Account Type")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("option", { attrs: { value: "" } }, [
+                                    _vm._v("Select Wallet Account Type")
+                                  ])
+                                ]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "JointWalletAccountNo" }
+                                },
+                                [_vm._v("Joint Wallet Account No")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "validate",
+                                      rawName: "v-validate",
+                                      value: "required",
+                                      expression: "'required'"
+                                    }
+                                  ],
+                                  staticClass: "custom-select",
+                                  class: {
+                                    "is-invalid": _vm.errors.has(
+                                      "JointWalletAccountNo"
+                                    )
+                                  },
+                                  attrs: {
+                                    name: "JointWalletAccountNo",
+                                    disabled: ""
+                                  }
+                                },
+                                [_c("option", { attrs: { value: "" } })]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "JointWalletAccountName" }
+                                },
+                                [_vm._v("Joint Wallet Account Name")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "validate",
+                                      rawName: "v-validate",
+                                      value: "required",
+                                      expression: "'required'"
+                                    }
+                                  ],
+                                  staticClass: "custom-select",
+                                  class: {
+                                    "is-invalid": _vm.errors.has(
+                                      "JointWalletAccountName"
+                                    )
+                                  },
+                                  attrs: {
+                                    name: "JointWalletAccountName",
+                                    disabled: ""
+                                  }
+                                },
+                                [_c("option", { attrs: { value: "" } })]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _vm.form.WalletAccountType == 17
+                              ? _c("div", { staticClass: "form-group" }, [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "CMSCreditAccountNo" }
+                                    },
+                                    [_vm._v("CMS Credit Account No")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has(
+                                        "CMSCreditAccountNo"
+                                      )
+                                    },
+                                    attrs: {
+                                      name: "CMSCreditAccountNo",
+                                      type: "text",
+                                      placeholder: "CMS Credit Account No"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("CMSCreditAccountNo")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.errors.first(
+                                              "CMSCreditAccountNo"
+                                            )
+                                          )
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ])
+                              : _vm._e()
+                          ]
+                        )
                       ])
                     ])
                   ])
@@ -68775,6 +69065,18 @@ function normalizeComponent (
     options: options
   }
 }
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-progressbar/dist/vue-progressbar.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/vue-progressbar/dist/vue-progressbar.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(t,o){ true?module.exports=o():undefined}(this,function(){"use strict";!function(){if("undefined"!=typeof document){var t=document.head||document.getElementsByTagName("head")[0],o=document.createElement("style"),i=" .__cov-progress { opacity: 1; z-index: 999999; } ";o.type="text/css",o.styleSheet?o.styleSheet.cssText=i:o.appendChild(document.createTextNode(i)),t.appendChild(o)}}();var t="undefined"!=typeof window,r={render:function(){var t=this,o=t.$createElement;return(t._self._c||o)("div",{staticClass:"__cov-progress",style:t.style})},staticRenderFns:[],name:"VueProgress",serverCacheKey:function(){return"Progress"},computed:{style:function(){var t=this.progress,o=t.options,i=!!o.show,e=o.location,s={"background-color":o.canSuccess?o.color:o.failedColor,opacity:o.show?1:0,position:o.position};return"top"===e||"bottom"===e?("top"===e?s.top="0px":s.bottom="0px",o.inverse?s.right="0px":s.left="0px",s.width=t.percent+"%",s.height=o.thickness,s.transition=(i?"width "+o.transition.speed+", ":"")+"opacity "+o.transition.opacity):"left"!==e&&"right"!==e||("left"===e?s.left="0px":s.right="0px",o.inverse?s.top="0px":s.bottom="0px",s.height=t.percent+"%",s.width=o.thickness,s.transition=(i?"height "+o.transition.speed+", ":"")+"opacity "+o.transition.opacity),s},progress:function(){return t?window.VueProgressBarEventBus.RADON_LOADING_BAR:{percent:0,options:{canSuccess:!0,show:!1,color:"rgb(19, 91, 55)",failedColor:"red",thickness:"2px",transition:{speed:"0.2s",opacity:"0.6s",termination:300},location:"top",autoRevert:!0,inverse:!1}}}}};return{install:function(o){var t=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{},i=(o.version.split(".")[0],"undefined"!=typeof window),e={$vm:null,state:{tFailColor:"",tColor:"",timer:null,cut:0},init:function(t){this.$vm=t},start:function(t){var o=this;this.$vm&&(t||(t=3e3),this.$vm.RADON_LOADING_BAR.percent=0,this.$vm.RADON_LOADING_BAR.options.show=!0,this.$vm.RADON_LOADING_BAR.options.canSuccess=!0,this.state.cut=1e4/Math.floor(t),clearInterval(this.state.timer),this.state.timer=setInterval(function(){o.increase(o.state.cut*Math.random()),95<o.$vm.RADON_LOADING_BAR.percent&&o.$vm.RADON_LOADING_BAR.options.autoFinish&&o.finish()},100))},set:function(t){this.$vm.RADON_LOADING_BAR.options.show=!0,this.$vm.RADON_LOADING_BAR.options.canSuccess=!0,this.$vm.RADON_LOADING_BAR.percent=Math.floor(t)},get:function(){return Math.floor(this.$vm.RADON_LOADING_BAR.percent)},increase:function(t){this.$vm.RADON_LOADING_BAR.percent=Math.min(99,this.$vm.RADON_LOADING_BAR.percent+Math.floor(t))},decrease:function(t){this.$vm.RADON_LOADING_BAR.percent=this.$vm.RADON_LOADING_BAR.percent-Math.floor(t)},hide:function(){var t=this;clearInterval(this.state.timer),this.state.timer=null,setTimeout(function(){t.$vm.RADON_LOADING_BAR.options.show=!1,o.nextTick(function(){setTimeout(function(){t.$vm.RADON_LOADING_BAR.percent=0},100),t.$vm.RADON_LOADING_BAR.options.autoRevert&&setTimeout(function(){t.revert()},300)})},this.$vm.RADON_LOADING_BAR.options.transition.termination)},pause:function(){clearInterval(this.state.timer)},finish:function(){this.$vm&&(this.$vm.RADON_LOADING_BAR.percent=100,this.hide())},fail:function(){this.$vm.RADON_LOADING_BAR.options.canSuccess=!1,this.$vm.RADON_LOADING_BAR.percent=100,this.hide()},setFailColor:function(t){this.$vm.RADON_LOADING_BAR.options.failedColor=t},setColor:function(t){this.$vm.RADON_LOADING_BAR.options.color=t},setLocation:function(t){this.$vm.RADON_LOADING_BAR.options.location=t},setTransition:function(t){this.$vm.RADON_LOADING_BAR.options.transition=t},tempFailColor:function(t){this.state.tFailColor=this.$vm.RADON_LOADING_BAR.options.failedColor,this.$vm.RADON_LOADING_BAR.options.failedColor=t},tempColor:function(t){this.state.tColor=this.$vm.RADON_LOADING_BAR.options.color,this.$vm.RADON_LOADING_BAR.options.color=t},tempLocation:function(t){this.state.tLocation=this.$vm.RADON_LOADING_BAR.options.location,this.$vm.RADON_LOADING_BAR.options.location=t},tempTransition:function(t){this.state.tTransition=this.$vm.RADON_LOADING_BAR.options.transition,this.$vm.RADON_LOADING_BAR.options.transition=t},revertColor:function(){this.$vm.RADON_LOADING_BAR.options.color=this.state.tColor,this.state.tColor=""},revertFailColor:function(){this.$vm.RADON_LOADING_BAR.options.failedColor=this.state.tFailColor,this.state.tFailColor=""},revertLocation:function(){this.$vm.RADON_LOADING_BAR.options.location=this.state.tLocation,this.state.tLocation=""},revertTransition:function(){this.$vm.RADON_LOADING_BAR.options.transition=this.state.tTransition,this.state.tTransition={}},revert:function(){this.$vm.RADON_LOADING_BAR.options.autoRevert&&(this.state.tColor&&this.revertColor(),this.state.tFailColor&&this.revertFailColor(),this.state.tLocation&&this.revertLocation(),!this.state.tTransition||void 0===this.state.tTransition.speed&&void 0===this.state.tTransition.opacity||this.revertTransition())},parseMeta:function(t){for(var o in t.func){var i=t.func[o];switch(i.call){case"color":switch(i.modifier){case"set":this.setColor(i.argument);break;case"temp":this.tempColor(i.argument)}break;case"fail":switch(i.modifier){case"set":this.setFailColor(i.argument);break;case"temp":this.tempFailColor(i.argument)}break;case"location":switch(i.modifier){case"set":this.setLocation(i.argument);break;case"temp":this.tempLocation(i.argument)}break;case"transition":switch(i.modifier){case"set":this.setTransition(i.argument);break;case"temp":this.tempTransition(i.argument)}}}}},s=function(t,o){for(var i,e,s=1;s<arguments.length;++s)for(i in e=arguments[s])Object.prototype.hasOwnProperty.call(e,i)&&(t[i]=e[i]);return t}({canSuccess:!0,show:!1,color:"#73ccec",position:"fixed",failedColor:"red",thickness:"2px",transition:{speed:"0.2s",opacity:"0.6s",termination:300},autoRevert:!0,location:"top",inverse:!1,autoFinish:!0},t),n=new o({data:{RADON_LOADING_BAR:{percent:0,options:s}}});i&&(window.VueProgressBarEventBus=n,e.init(n)),o.component("vue-progress-bar",r),o.prototype.$Progress=e}}});
 
 
 /***/ }),
@@ -83719,9 +84021,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_form_wizard__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_form_wizard__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var vue_form_wizard_dist_vue_form_wizard_min_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-form-wizard/dist/vue-form-wizard.min.css */ "./node_modules/vue-form-wizard/dist/vue-form-wizard.min.css");
 /* harmony import */ var vue_form_wizard_dist_vue_form_wizard_min_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_form_wizard_dist_vue_form_wizard_min_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-progressbar */ "./node_modules/vue-progressbar/dist/vue-progressbar.js");
+/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_progressbar__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -83741,8 +84045,14 @@ Vue.component(vform__WEBPACK_IMPORTED_MODULE_1__["HasError"].name, vform__WEBPAC
 Vue.component(vform__WEBPACK_IMPORTED_MODULE_1__["AlertError"].name, vform__WEBPACK_IMPORTED_MODULE_1__["AlertError"]);
 Vue.component('pagination', __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
 
-window.swal = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a;
-var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
+Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_4___default.a, {
+  color: 'rgb(0, 119, 181)',
+  failedColor: 'red',
+  height: '3px'
+});
+
+window.swal = sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a;
+var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.mixin({
   toast: true,
   position: 'top-end',
   showConfirmButton: false,
@@ -83750,7 +84060,7 @@ var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
 });
 window.toast = toast;
 
-Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_5__["default"]); // Vue Filters
+Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_6__["default"]); // Vue Filters
 
 Vue.filter('substring', function (value) {
   if (!value) return '';
@@ -85282,8 +85592,9 @@ function requireLogin(to, from, next) {
   if (user != null) {
     next(true);
   } else {
-    window.localStorage.removeItem('user');
-    location.reload();
+    //window.localStorage.removeItem('user');
+    //location.reload();
+    localStorage.clear();
     window.location.href = "/";
   }
 }
