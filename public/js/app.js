@@ -3370,6 +3370,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3379,6 +3418,15 @@ __webpack_require__.r(__webpack_exports__);
       wai: null,
       step: 0,
       account: [],
+      BankAccount: [{
+        bank_name: null,
+        Branch: null,
+        account_type: null,
+        account_name: null,
+        account_no: null,
+        "default": false,
+        status: false
+      }],
       Services: {},
       walletAccountTypes: [],
       kyc_form_file_name: "Filled-Up KYC Form",
@@ -3443,7 +3491,10 @@ __webpack_require__.r(__webpack_exports__);
         allow_negative_balance: 0,
         // Files
         kyc_form: null,
-        valid_id: null
+        valid_id: null,
+        // Wallet Account Details
+        WalletAccountNoDetails: null,
+        WalletAccountNameDetails: null
       })
     };
   },
@@ -3579,6 +3630,30 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     /**
+     * @ ValidateWalletAccountDetails 
+     **/
+    ValidateWalletAccountDetails: function ValidateWalletAccountDetails() {
+      console.log('asdfs');
+
+      if (this.form.WalletAccountNoDetails == null) {
+        toast.fire({
+          type: 'info',
+          title: 'Please fill required fields'
+        });
+        this.$validator.validateAll().then(function (result) {
+          if (result) {
+            return;
+          }
+        });
+        return false;
+      } else {
+        this.errors.clear();
+        $('#nextTab').removeAttr('disabled');
+        return true;
+      }
+    },
+
+    /**
      *@ Search For Account ESS ID 
      **/
     SearchESSID: function SearchESSID() {
@@ -3586,6 +3661,8 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!this.form.username) {
         if (this.step == 1) {
+          this.form.clear();
+          this.form.reset();
           $('#nextTab').attr('disabled', true);
         }
       } else {
@@ -3727,7 +3804,10 @@ __webpack_require__.r(__webpack_exports__);
           formData.append('lm_per_month', _this3.form.lm_per_month);
           formData.append('lm_per_year', _this3.form.lm_per_year);
           formData.append('allow_negative_balance', _this3.form.allow_negative_balance);
+          formData.append('BankAccount', JSON.stringify(_this3.BankAccount));
           formData.append('Services', JSON.stringify(_this3.Services));
+          formData.append('WalletAccountNoDetails', _this3.form.WalletAccountNoDetails);
+          formData.append('WalletAccountNameDetails', _this3.form.WalletAccountNameDetails);
           axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
           axios.post('/api/walletaccount/UpdateWalletAccount', formData, {
             headers: {
@@ -3826,7 +3906,10 @@ __webpack_require__.r(__webpack_exports__);
           formData.append('lm_per_month', _this4.form.lm_per_month);
           formData.append('lm_per_year', _this4.form.lm_per_year);
           formData.append('allow_negative_balance', _this4.form.allow_negative_balance);
+          formData.append('BankAccount', JSON.stringify(_this4.BankAccount));
           formData.append('Services', JSON.stringify(_this4.Services));
+          formData.append('WalletAccountNoDetails', _this4.form.WalletAccountNoDetails);
+          formData.append('WalletAccountNameDetails', _this4.form.WalletAccountNameDetails);
           axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
           axios.post('api/walletaccount/StoreWalletAccount', formData, {
             headers: {
@@ -3883,7 +3966,7 @@ __webpack_require__.r(__webpack_exports__);
 
       //axios.get('api/walletaccount/GetWalletAccountDetails/'+ this.form.username).then(({ data}) => (console.log(data)));
       axios.get('/api/walletaccount/GetWalletAccountDetails/' + this.$route.params.id).then(function (res) {
-        console.log(res);
+        //console.log(res)
         _this6.form.WalletAccountType = res.data[0]['wallet_account_type'];
         _this6.form.WalletType = res.data[0]['wallet_type'];
         _this6.form.Branch = res.data[0]['branch'];
@@ -3918,6 +4001,31 @@ __webpack_require__.r(__webpack_exports__);
         _this6.form.account_type = res.data[0]['account_type'];
         _this6.form.kyc_form = res.data[0]['kyc_form'];
         _this6.form.valid_id = res.data[0]['valid_id'];
+        _this6.form.WalletAccountNoDetails = res.data[0]['WalletAccountNoDetails'];
+        _this6.form.WalletAccountNameDetails = res.data[0]['WalletAccountNameDetails'];
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+    GetWalletBankAccounts: function GetWalletBankAccounts() {
+      var _this7 = this;
+
+      this.BankAccount.splice(0, 1);
+      axios.get('/api/walletaccount/GetWalletBankAccount/' + this.$route.params.id).then(function (res) {
+        var i;
+
+        for (i = 0; i < res.data.length; i++) {
+          _this7.BankAccount.push({
+            id: res.data[i].id,
+            bank_name: res.data[i].bank_name,
+            Branch: res.data[i].branch,
+            account_type: res.data[i].account_type,
+            account_name: res.data[i].account_name,
+            account_no: res.data[i].account_no,
+            "default": res.data[i]["default"],
+            status: res.data[i].status
+          });
+        }
       })["catch"](function (err) {
         console.log(err);
       });
@@ -3960,12 +4068,12 @@ __webpack_require__.r(__webpack_exports__);
      * @ Get Services 
      **/
     GetServices: function GetServices() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.editmode == false) {
         axios.get('api/servicematrix/GetServices').then(function (_ref2) {
           var data = _ref2.data;
-          return _this7.Services = data;
+          return _this8.Services = data;
         });
       }
     },
@@ -3974,12 +4082,12 @@ __webpack_require__.r(__webpack_exports__);
      * @ Get Service Matrix Config For Update 
      **/
     Getsmc: function Getsmc() {
-      var _this8 = this;
+      var _this9 = this;
 
       if (this.editmode == true) {
         axios.get('/api/walletaccount/GetServiceMatrixConfig/' + this.$route.params.id).then(function (_ref3) {
           var data = _ref3.data;
-          return _this8.Services = data;
+          return _this9.Services = data;
         });
       }
     },
@@ -3997,6 +4105,62 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return true;
+    },
+
+    /**
+     * @ Add Bank Account  
+     **/
+    addBank: function addBank() {
+      this.BankAccount.push({
+        bank_name: null,
+        Branch: null,
+        account_type: null,
+        account_name: null,
+        account_no: null,
+        "default": false,
+        status: false
+      });
+    },
+
+    /**
+     * @ Remove Bank Account 
+     **/
+    removeElement: function removeElement(index) {
+      this.BankAccount.splice(index, 1);
+    },
+    searchAccountNo: function searchAccountNo() {
+      var _this10 = this;
+
+      axios.get('/api/walletaccount/SearchWalletAccountNo/' + this.form.WalletAccountNoDetails).then(function (res) {
+        console.log(res);
+
+        if (res) {
+          if (res.data == 404) {
+            _this10.form.WalletAccountNameDetails = null;
+            toast.fire({
+              type: 'info',
+              title: 'Wallet Account No Not Found'
+            });
+
+            _this10.$validator.validateAll().then(function (result) {
+              if (result) {
+                return;
+              }
+            });
+
+            return false;
+          } else {
+            _this10.form.WalletAccountNameDetails = res.data;
+
+            _this10.errors.clear();
+
+            $('#nextTab').removeAttr('disabled');
+            return true;
+          }
+        }
+      })["catch"](function (err) {
+        console.log(err);
+      });
     }
   },
   created: function created() {
@@ -4010,6 +4174,7 @@ __webpack_require__.r(__webpack_exports__);
 
     if (this.editmode == true) {
       this.GetWalletAccountDetails();
+      this.GetWalletBankAccounts();
       this.Getsmc();
     }
   }
@@ -10834,7 +10999,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\n#ba-close-button[data-v-64a2c4d3]{\r\n    background-color: Transparent;\r\n    background-repeat:no-repeat;\r\n    border: none;\r\n    cursor:pointer;\r\n    overflow: hidden;\r\n    outline:none;\r\n    margin-bottom: \"2px\";\n}\r\n", ""]);
 
 // exports
 
@@ -61732,6 +61897,187 @@ var render = function() {
               {
                 attrs: {
                   title: "E-Wallet Acount Setup",
+                  "before-change": _vm.ValidateWalletAccountDetails
+                }
+              },
+              [
+                _c("div", { staticClass: "box" }, [
+                  _c("div", { staticClass: "card shadow-custom" }, [
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-4 offset-md-1" }, [
+                          _c("h4", [_vm._v("Wallet Details")]),
+                          _vm._v(" "),
+                          _c("hr"),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "form-group" },
+                            [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "WalletAccountNameDetails" }
+                                },
+                                [_vm._v("Account Name")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  },
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.WalletAccountNameDetails,
+                                    expression: "form.WalletAccountNameDetails"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "WalletAccountNameDetails"
+                                  )
+                                },
+                                attrs: {
+                                  name: "WalletAccountNameDetails",
+                                  type: "text",
+                                  disabled: ""
+                                },
+                                domProps: {
+                                  value: _vm.form.WalletAccountNameDetails
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "WalletAccountNameDetails",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("has-error", {
+                                attrs: {
+                                  form: _vm.form,
+                                  field: "WalletAccountNameDetails"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm.errors.has("WalletAccountNameDetails")
+                                ? _c("p", { staticClass: "text-danger" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.errors.first(
+                                          "WalletAccountNameDetails"
+                                        )
+                                      )
+                                    )
+                                  ])
+                                : _vm._e()
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "form-group" },
+                            [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "WalletAccountNoDetails" }
+                                },
+                                [_vm._v("Account No")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  },
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.WalletAccountNoDetails,
+                                    expression: "form.WalletAccountNoDetails"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "WalletAccountNoDetails"
+                                  )
+                                },
+                                attrs: {
+                                  name: "WalletAccountNoDetails",
+                                  type: "text"
+                                },
+                                domProps: {
+                                  value: _vm.form.WalletAccountNoDetails
+                                },
+                                on: {
+                                  change: _vm.searchAccountNo,
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "WalletAccountNoDetails",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("has-error", {
+                                attrs: {
+                                  form: _vm.form,
+                                  field: "WalletAccountNoDetails"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm.errors.has("WalletAccountNoDetails")
+                                ? _c("p", { staticClass: "text-danger" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.errors.first(
+                                          "WalletAccountNoDetails"
+                                        )
+                                      )
+                                    )
+                                  ])
+                                : _vm._e()
+                            ],
+                            1
+                          )
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "tab-content",
+              {
+                attrs: {
+                  title: "E-Wallet Acount Setup",
                   "before-change": _vm.ValidateFourthStep
                 }
               },
@@ -61743,373 +62089,589 @@ var render = function() {
                       _vm._v(" "),
                       _c("hr"),
                       _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-4 offset-md-1" }, [
-                          _c(
+                      _c(
+                        "div",
+                        { staticClass: "row", attrs: { id: "bankRow" } },
+                        _vm._l(_vm.BankAccount, function(key, index) {
+                          return _c(
                             "div",
-                            { staticClass: "form-group" },
+                            {
+                              key: index.id,
+                              staticClass: "col-md-4 offset-md-1"
+                            },
                             [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "bank_name" }
-                                },
-                                [_vm._v("Name of Bank")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.bank_name,
-                                    expression: "form.bank_name"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has("bank_name")
-                                },
-                                attrs: {
-                                  name: "bank_name",
-                                  type: "text",
-                                  placeholder: "Name Of Bank"
-                                },
-                                domProps: { value: _vm.form.bank_name },
-                                on: {
-                                  change: _vm.ValidateFourthStep,
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "bank_name",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "bank_name" }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("bank_name")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("bank_name"))
-                                    )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "Branch" }
-                                },
-                                [_vm._v("Branch")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.Branch,
-                                    expression: "form.Branch"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has("Branch")
-                                },
-                                attrs: {
-                                  name: "Branch",
-                                  type: "text",
-                                  placeholder: "Branch"
-                                },
-                                domProps: { value: _vm.form.Branch },
-                                on: {
-                                  change: _vm.ValidateFourthStep,
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "Branch",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "Branch" }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("Branch")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(_vm._s(_vm.errors.first("Branch")))
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "account_type" }
-                                },
-                                [_vm._v("Wallet Type")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "select",
-                                {
-                                  directives: [
+                              index != 0
+                                ? _c(
+                                    "button",
                                     {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    },
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.form.account_type,
-                                      expression: "form.account_type"
-                                    }
-                                  ],
-                                  staticClass: "custom-select",
-                                  class: {
-                                    "is-invalid": _vm.errors.has("account_type")
-                                  },
-                                  attrs: { name: "account_type" },
-                                  on: {
-                                    change: [
-                                      function($event) {
-                                        var $$selectedVal = Array.prototype.filter
-                                          .call($event.target.options, function(
-                                            o
-                                          ) {
-                                            return o.selected
-                                          })
-                                          .map(function(o) {
-                                            var val =
-                                              "_value" in o ? o._value : o.value
-                                            return val
-                                          })
-                                        _vm.$set(
-                                          _vm.form,
-                                          "account_type",
-                                          $event.target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        )
-                                      },
-                                      _vm.ValidateFourthStep
-                                    ]
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "option",
-                                    {
-                                      attrs: {
-                                        value: "",
-                                        selected: "",
-                                        disabled: ""
+                                      staticClass: "float-right",
+                                      staticStyle: { cursor: "pointer" },
+                                      attrs: { id: "ba-close-button" },
+                                      on: {
+                                        click: function($event) {
+                                          $event.preventDefault()
+                                          return _vm.removeElement(index)
+                                        }
                                       }
                                     },
-                                    [_vm._v("Select")]
+                                    [_c("span", { staticClass: "ti-close" })]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c("hr"),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "bank_name" }
+                                    },
+                                    [_vm._v("Name of Bank")]
                                   ),
                                   _vm._v(" "),
-                                  _c("option", [_vm._v("Credit")]),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      },
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: key.bank_name,
+                                        expression: "key.bank_name"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has("bank_name")
+                                    },
+                                    attrs: {
+                                      name: "bank_name",
+                                      type: "text",
+                                      placeholder: "Name Of Bank"
+                                    },
+                                    domProps: { value: key.bank_name },
+                                    on: {
+                                      change: _vm.ValidateFourthStep,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          key,
+                                          "bank_name",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
                                   _vm._v(" "),
-                                  _c("option", [_vm._v("Prepaid")])
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "account_type" }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("account_type")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("account_type"))
-                                    )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "WalletAccountName" }
-                                },
-                                [_vm._v("Wallet Account Name")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.account_name,
-                                    expression: "form.account_name"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has("account_name")
-                                },
-                                attrs: {
-                                  name: "account_name",
-                                  type: "text",
-                                  placeholder: "Account Name"
-                                },
-                                domProps: { value: _vm.form.account_name },
-                                on: {
-                                  change: _vm.ValidateFourthStep,
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
+                                  _c("has-error", {
+                                    attrs: {
+                                      form: _vm.form,
+                                      field: "bank_name"
                                     }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "account_name",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "account_name" }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("account_name")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("account_name"))
-                                    )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "account_no" }
-                                },
-                                [_vm._v("Wallet Account No")]
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("bank_name")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(_vm.errors.first("bank_name"))
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
                               ),
                               _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.account_no,
-                                    expression: "form.account_no"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has("account_no")
-                                },
-                                attrs: {
-                                  name: "account_no",
-                                  type: "text",
-                                  placeholder: "Account No"
-                                },
-                                domProps: { value: _vm.form.account_no },
-                                on: {
-                                  change: _vm.ValidateFourthStep,
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "Branch" }
+                                    },
+                                    [_vm._v("Branch")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      },
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: key.Branch,
+                                        expression: "key.Branch"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has("Branch")
+                                    },
+                                    attrs: {
+                                      name: "Branch",
+                                      type: "text",
+                                      placeholder: "Branch"
+                                    },
+                                    domProps: { value: key.Branch },
+                                    on: {
+                                      change: _vm.ValidateFourthStep,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          key,
+                                          "Branch",
+                                          $event.target.value
+                                        )
+                                      }
                                     }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "account_no",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
+                                  }),
+                                  _vm._v(" "),
+                                  _c("has-error", {
+                                    attrs: { form: _vm.form, field: "Branch" }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("Branch")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(_vm.errors.first("Branch"))
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
                               _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "account_no" }
-                              }),
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "account_type" }
+                                    },
+                                    [_vm._v("Account Type")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "validate",
+                                          rawName: "v-validate",
+                                          value: "required",
+                                          expression: "'required'"
+                                        },
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: key.account_type,
+                                          expression: "key.account_type"
+                                        }
+                                      ],
+                                      staticClass: "custom-select",
+                                      class: {
+                                        "is-invalid": _vm.errors.has(
+                                          "account_type"
+                                        )
+                                      },
+                                      attrs: { name: "account_type" },
+                                      on: {
+                                        change: [
+                                          function($event) {
+                                            var $$selectedVal = Array.prototype.filter
+                                              .call(
+                                                $event.target.options,
+                                                function(o) {
+                                                  return o.selected
+                                                }
+                                              )
+                                              .map(function(o) {
+                                                var val =
+                                                  "_value" in o
+                                                    ? o._value
+                                                    : o.value
+                                                return val
+                                              })
+                                            _vm.$set(
+                                              key,
+                                              "account_type",
+                                              $event.target.multiple
+                                                ? $$selectedVal
+                                                : $$selectedVal[0]
+                                            )
+                                          },
+                                          _vm.ValidateFourthStep
+                                        ]
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "option",
+                                        {
+                                          attrs: {
+                                            value: "",
+                                            selected: "",
+                                            disabled: ""
+                                          }
+                                        },
+                                        [_vm._v("Select")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("option", [_vm._v("Credit")]),
+                                      _vm._v(" "),
+                                      _c("option", [_vm._v("Prepaid")])
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("has-error", {
+                                    attrs: {
+                                      form: _vm.form,
+                                      field: "account_type"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("account_type")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.errors.first("account_type")
+                                          )
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
                               _vm._v(" "),
-                              _vm.errors.has("account_no")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("account_no"))
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "WalletAccountName" }
+                                    },
+                                    [_vm._v("Account Name")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      },
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: key.account_name,
+                                        expression: "key.account_name"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has(
+                                        "account_name"
+                                      )
+                                    },
+                                    attrs: {
+                                      name: "account_name",
+                                      type: "text",
+                                      placeholder: "Account Name"
+                                    },
+                                    domProps: { value: key.account_name },
+                                    on: {
+                                      change: _vm.ValidateFourthStep,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          key,
+                                          "account_name",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("has-error", {
+                                    attrs: {
+                                      form: _vm.form,
+                                      field: "account_name"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("account_name")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.errors.first("account_name")
+                                          )
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "account_no" }
+                                    },
+                                    [_vm._v("Account No")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      },
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: key.account_no,
+                                        expression: "key.account_no"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has("account_no")
+                                    },
+                                    attrs: {
+                                      name: "account_no",
+                                      type: "text",
+                                      placeholder: "Account No"
+                                    },
+                                    domProps: { value: key.account_no },
+                                    on: {
+                                      change: _vm.ValidateFourthStep,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          key,
+                                          "account_no",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("has-error", {
+                                    attrs: {
+                                      form: _vm.form,
+                                      field: "account_no"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("account_no")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(_vm.errors.first("account_no"))
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "form-group" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "form-check custom-control custom-checkbox"
+                                  },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: key.default,
+                                          expression: "key.default"
+                                        }
+                                      ],
+                                      staticClass: "form-check-input",
+                                      attrs: {
+                                        type: "checkbox",
+                                        id: "bank_default",
+                                        name: "default"
+                                      },
+                                      domProps: {
+                                        checked: Array.isArray(key.default)
+                                          ? _vm._i(key.default, null) > -1
+                                          : key.default
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = key.default,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = null,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                _vm.$set(
+                                                  key,
+                                                  "default",
+                                                  $$a.concat([$$v])
+                                                )
+                                            } else {
+                                              $$i > -1 &&
+                                                _vm.$set(
+                                                  key,
+                                                  "default",
+                                                  $$a
+                                                    .slice(0, $$i)
+                                                    .concat($$a.slice($$i + 1))
+                                                )
+                                            }
+                                          } else {
+                                            _vm.$set(key, "default", $$c)
+                                          }
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "label",
+                                      {
+                                        staticClass: "form-check-label",
+                                        attrs: { for: "bank_default" }
+                                      },
+                                      [_vm._v("Default")]
                                     )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "form-check custom-control custom-checkbox"
+                                  },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: key.status,
+                                          expression: "key.status"
+                                        }
+                                      ],
+                                      staticClass: "form-check-input",
+                                      attrs: {
+                                        type: "checkbox",
+                                        id: "bank_status",
+                                        name: "status"
+                                      },
+                                      domProps: {
+                                        checked: Array.isArray(key.status)
+                                          ? _vm._i(key.status, null) > -1
+                                          : key.status
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = key.status,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = null,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                _vm.$set(
+                                                  key,
+                                                  "status",
+                                                  $$a.concat([$$v])
+                                                )
+                                            } else {
+                                              $$i > -1 &&
+                                                _vm.$set(
+                                                  key,
+                                                  "status",
+                                                  $$a
+                                                    .slice(0, $$i)
+                                                    .concat($$a.slice($$i + 1))
+                                                )
+                                            }
+                                          } else {
+                                            _vm.$set(key, "status", $$c)
+                                          }
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "label",
+                                      {
+                                        staticClass: "form-check-label",
+                                        attrs: { for: "bank_status" }
+                                      },
+                                      [_vm._v("Active")]
+                                    )
+                                  ]
+                                )
+                              ])
+                            ]
                           )
-                        ])
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary btn-flat",
+                            attrs: { hidden: _vm.BankAccount.length > 2 },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.addBank($event)
+                              }
+                            }
+                          },
+                          [_vm._v(" Add New Bank Account")]
+                        )
                       ])
                     ])
                   ])
@@ -62842,7 +63404,7 @@ var render = function() {
                                       },
                                       [
                                         _vm._v(
-                                          "\n                                                        Limit of total transaction amount per year month Maximum Debit Amount: "
+                                          "\n                                                        Limit of total transaction amount per year Maximum Debit Amount: "
                                         ),
                                         _c("input", {
                                           directives: [
@@ -84687,14 +85249,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!************************************************************************!*\
   !*** ./resources/js/components/WalletAccounts/CreateWalletAccount.vue ***!
   \************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CreateWalletAccount_vue_vue_type_template_id_64a2c4d3_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateWalletAccount.vue?vue&type=template&id=64a2c4d3&scoped=true& */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=template&id=64a2c4d3&scoped=true&");
 /* harmony import */ var _CreateWalletAccount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateWalletAccount.vue?vue&type=script&lang=js& */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _CreateWalletAccount_vue_vue_type_style_index_0_id_64a2c4d3_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateWalletAccount.vue?vue&type=style&index=0&id=64a2c4d3&scoped=true&lang=css& */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=style&index=0&id=64a2c4d3&scoped=true&lang=css&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _CreateWalletAccount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _CreateWalletAccount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _CreateWalletAccount_vue_vue_type_style_index_0_id_64a2c4d3_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateWalletAccount.vue?vue&type=style&index=0&id=64a2c4d3&scoped=true&lang=css& */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=style&index=0&id=64a2c4d3&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -84726,7 +85289,7 @@ component.options.__file = "resources/js/components/WalletAccounts/CreateWalletA
 /*!*************************************************************************************************!*\
   !*** ./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=script&lang=js& ***!
   \*************************************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
