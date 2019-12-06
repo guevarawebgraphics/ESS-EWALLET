@@ -6164,19 +6164,45 @@ __webpack_require__.r(__webpack_exports__);
       }, 1000);
     },
     saveJointServices: function saveJointServices() {
-      /**
-       * Clears the local storage variabls for joining services
-       */
-      localStorage.removeItem('wallet_type');
-      localStorage.removeItem('service_code');
-      localStorage.removeItem('service_name');
-      localStorage.removeItem('service_description');
-      localStorage.removeItem('list_services');
-      this.showJointServiceTable();
-      toast.fire({
-        type: 'success',
-        title: 'Successfully Jointed Services'
-      });
+      var _this = this;
+
+      if (localStorage.getItem('list_services') === null || localStorage.getItem('list_services') === undefined) {
+        toast.fire({
+          type: 'warning',
+          title: 'Please choose service to join'
+        });
+        return false;
+      }
+
+      {
+        swal.fire({
+          title: 'Are you sure?',
+          text: "Save Joint Services",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Save'
+        }).then(function (result) {
+          if (result.value) {
+            /**
+             * Clears the local storage variable for joining services
+             */
+            localStorage.removeItem('wallet_type');
+            localStorage.removeItem('service_code');
+            localStorage.removeItem('service_name');
+            localStorage.removeItem('service_description');
+            localStorage.removeItem('list_services');
+
+            _this.showJointServiceTable();
+
+            toast.fire({
+              type: 'success',
+              title: 'Successfully Jointed Services'
+            });
+          }
+        });
+      }
     },
     showJointServiceTable: function showJointServiceTable() {
       /**
@@ -6274,6 +6300,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * This module is related with other modules to be completed.
@@ -6281,7 +6308,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       Services: {},
-      method_name: this.$route.params.method_name
+      method_name: this.$route.params.method_name,
+      joint_services: JSON.parse(localStorage.getItem('list_services'))
     };
   },
   methods: {
@@ -6308,6 +6336,17 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function () {
         console.log("err");
       });
+    },
+    checksExistId: function checksExistId(id) {
+      var joint_services = this.joint_services;
+
+      var service = function service(obj) {
+        return obj.service_id === id;
+      };
+
+      if (joint_services !== null) {
+        return joint_services.some(service);
+      }
     }
   },
   created: function created() {
@@ -68897,7 +68936,7 @@ var render = function() {
                       ],
                       staticClass: "form-control",
                       attrs: {
-                        type: "number",
+                        type: "text",
                         id: "exampleInputEmail1",
                         "aria-describedby": "emailHelp",
                         placeholder: "Enter Service Name",
@@ -68935,7 +68974,7 @@ var render = function() {
                       ],
                       staticClass: "form-control",
                       attrs: {
-                        type: "number",
+                        type: "text",
                         id: "exampleInputEmail1",
                         "aria-describedby": "emailHelp",
                         placeholder: "Enter Service Description",
@@ -69116,14 +69155,6 @@ var render = function() {
             _c(
               "router-link",
               {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: this.method_name == "view",
-                    expression: "this.method_name == 'view'"
-                  }
-                ],
                 staticClass: "btn btn-primary btn-custom",
                 attrs: { to: "/createjointservice" }
               },
@@ -69236,12 +69267,33 @@ var render = function() {
                                     to: {
                                       name: "/update-service",
                                       params: { id: s.id, method_name: "joint" }
-                                    }
+                                    },
+                                    hidden: _vm.checksExistId(s.id)
                                   }
                                 },
-                                [_vm._v("Add")]
+                                [_vm._v(" Add")]
                               )
-                            : _vm._e()
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value:
+                                    _vm.checksExistId(s.id) &&
+                                    _vm.method_name === "joint",
+                                  expression:
+                                    "checksExistId(s.id) && method_name === 'joint'"
+                                }
+                              ],
+                              staticClass: "badge badge-secondary",
+                              attrs: { href: "#" }
+                            },
+                            [_vm._v("TAKEN")]
+                          )
                         ],
                         1
                       )
