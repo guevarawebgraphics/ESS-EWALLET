@@ -28,11 +28,11 @@
                 </div>   
                 <div class="form-group row"> 
                         <label for="exampleInputEmail1">Service Name:</label>
-                        <input type="number" class="form-control" v-model="form.original_service_name" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Service Name" name="service_name" >
+                        <input type="text" class="form-control" v-model="form.original_service_name" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Service Name" name="service_name" >
                 </div>  
                 <div class="form-group row"> 
                         <label for="exampleInputEmail1">Service Description:</label>
-                        <input type="number" class="form-control" v-model="form.original_service_description" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Service Description" name="service_description" >
+                        <input type="text" class="form-control" v-model="form.original_service_description" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Service Description" name="service_description" >
                 </div>  
                   <router-link :to="{ name: 'services-list', params: { method_name: 'joint' }}" class="btn btn-flat btn-primary btn-lg mb-5 mt-3 float-left btn-custom" @click.native="addService(method_name)" >Add Service</router-link>  
              <!--     <button type="button" class="btn btn-flat btn-primary btn-lg mb-5 mt-3 float-left btn-custom" v-else disabled>Add Service </button> -->
@@ -119,20 +119,43 @@ methods : {
                 });
             }, 1000);
     },
-    saveJointServices(){  
-        /**
-         * Clears the local storage variabls for joining services
-         */
-            localStorage.removeItem('wallet_type');
-            localStorage.removeItem('service_code');
-            localStorage.removeItem('service_name');
-            localStorage.removeItem('service_description');
-            localStorage.removeItem('list_services');  
-            this.showJointServiceTable(); 
-                          toast.fire({
-                              type: 'success',
-                              title: 'Successfully Jointed Services'
-                          })
+    saveJointServices(){   
+        if(localStorage.getItem('list_services') === null || localStorage.getItem('list_services') === undefined){ 
+                toast.fire({
+                    type: 'warning',
+                    title: 'Please choose service to join'
+                }) 
+                return false;
+        }
+        {
+                swal.fire({
+                title: 'Are you sure?',
+                text: "Save Joint Services",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Save'
+                }).then((result) => {
+                    if (result.value) { 
+                /**
+                 * Clears the local storage variable for joining services
+                 */
+                localStorage.removeItem('wallet_type');
+                localStorage.removeItem('service_code');
+                localStorage.removeItem('service_name');
+                localStorage.removeItem('service_description');
+                localStorage.removeItem('list_services');  
+                this.showJointServiceTable(); 
+                            toast.fire({
+                                type: 'success',
+                                title: 'Successfully Jointed Services'
+                            })
+                    }
+                })
+        }   
+    
+
     },
     showJointServiceTable(){ 
             /**
@@ -143,7 +166,8 @@ methods : {
 },
 created () {
     this.showJointServiceTable();
-    this.showDatatable();
+    this.showDatatable(); 
+  
 }
 }
 </script>
