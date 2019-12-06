@@ -81,6 +81,15 @@ class WalletAccountController extends Controller
     }
 
     /**
+     * @ Get Wallet Bank Account 
+     **/
+    public function GetWalletBankAccount(Request $request, $essid){
+        $WalletAccount = $this->WalletAccount->GetWalletBankAccount($essid);
+            return response()->json($WalletAccount);
+        
+    }
+
+    /**
      * @ Get Service Matrix Config 
      **/
     public function GetServiceMatrixConfig(Request $request, $essid){
@@ -93,6 +102,14 @@ class WalletAccountController extends Controller
      **/
     public function UpdateServiceMatrixConfig(Request $request, $essid){
         $WalletAccount = $this->WalletAccount->UpdateServiceMatrixConfig($request->all(), $essid);
+        return response()->json($WalletAccount);
+    }
+
+    /**
+     * @ Search Wallet Account Details 
+     **/
+    public function SearchWalletAccountNo($wallet_account_no_details){
+        $WalletAccount = $this->WalletAccount->SearchWalletAccountNo($wallet_account_no_details);
         return response()->json($WalletAccount);
     }
 
