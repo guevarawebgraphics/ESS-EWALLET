@@ -109,6 +109,7 @@ const routes = [
     
     {
       path:'/createjointservice',
+      name: 'Create Joint Services',
       component: require('../components/WalletServices/JointServices.vue').default, 
       beforeEnter: requireLogin
     },  
