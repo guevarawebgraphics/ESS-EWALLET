@@ -53,7 +53,7 @@
                 <!-- <input type="hidden" name="_token" :value="csrf"> -->
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="text" v-model="form.gateway_code" class="form-control" name="gateway_code" placeholder="Service Gateway Code">
+                        <input type="number" v-model="form.gateway_code" class="form-control" name="gateway_code" placeholder="Service Gateway Code">
                     </div>
                     <div class="form-group">
                         <input type="text" v-model="form.gateway_name" class="form-control" name="gateway_name" placeholder="Service Gateway Name">

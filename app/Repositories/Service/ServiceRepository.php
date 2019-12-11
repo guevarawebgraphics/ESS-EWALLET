@@ -15,7 +15,8 @@ use App\Models\Services\ServiceTransactionLimit;
 use App\Models\ServiceMatrix\ServiceMatrix;
 use App\Models\Services\Services;
 use App\Models\Services\ServicesBaseTable; 
-use App\Models\Services\ValuesSourceDestinationRates;
+use App\Models\Services\ValuesSourceDestinationRates; 
+use App\Models\Services\JointService;
 
 
 /**
@@ -282,6 +283,22 @@ class ServiceRepository
                 ]); 
                 
     }
+    public function InsertJointServices($service_data){
+                $insert_services = Services::create([
+                    'service_code' => $service_data->original_service_code ,
+                    'service_name' => $service_data->original_service_name,
+                    'service_description' => $service_data->original_service_description,
+                    's_wallet_type' =>  $service_data->original_wallet_type,
+                    'wallet_condition' => 'joint', 
+                ]);  
+               
+                foreach($service_data->joint_services as $data){
+                    $store = JointService::create([
+                        'main_service_id' => $insert_services->id,
+                        'joint_service_id' => $data['service_id'],
+                    ]);
+                } 
+    }
 
      /*
       * For searching/filling Service Type 
@@ -326,9 +343,7 @@ class ServiceRepository
                                 return $getservicetable;*/
 
                   $getservices_table = DB::connection('mysql')
-                                    ->table('services_basetable')
-                                    ->join('services','services.id','services_basetable.service_id')
-                                   // ->join('servicetypedetails','servicetypedetails.id','services.service_type_id')
+                                    ->table('services')
                                     ->get(); 
                                     return $getservices_table;
     }

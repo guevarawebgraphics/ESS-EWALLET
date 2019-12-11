@@ -5687,6 +5687,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5763,17 +5764,32 @@ __webpack_require__.r(__webpack_exports__);
       if (this.method_name == 'view' || this.method_name == 'create') {
         this.submitServices();
       } else {
+        /**
+         * Creating Object for storing inside the local storage
+         */
         var list_services = [];
         list_services = JSON.parse(localStorage.getItem('list_services'));
-        list_services.push({
-          'service_id': this.get_service_id,
-          'wallet_type': this.form.wallet_type,
-          'service_name': this.form.service_name,
-          'service_code': this.form.service_code,
-          'service_description': this.form.service_description
-        });
-        localStorage.setItem('list_services', JSON.stringify(list_services));
-        this.$router.push('/createjointservice');
+
+        if (list_services.length != 2) {
+          list_services.push({
+            'service_id': this.get_service_id,
+            'wallet_type': this.form.wallet_type,
+            'service_name': this.form.service_name,
+            'service_code': this.form.service_code,
+            'service_description': this.form.service_description
+          });
+          localStorage.setItem('list_services', JSON.stringify(list_services));
+          this.$router.push('/createjointservice');
+        } else {
+          /**
+           * This will trigger once the user reached the tentative maximum number of jointing services which is 3 (Suggested by the Project Owner.)
+           */
+          toast.fire({
+            type: 'warning',
+            title: "Adding failed! You've reached the maximum limit! (3)"
+          });
+          this.$router.push('/createjointservice');
+        }
       }
     },
     submitServices: function submitServices() {
@@ -5866,6 +5882,10 @@ __webpack_require__.r(__webpack_exports__);
         });
       }, 1000);
     },
+
+    /**
+     * For showing Service Type Details by its service type code
+     */
     showServiceTypeDetails: function showServiceTypeDetails() {
       var _this2 = this;
 
@@ -5881,6 +5901,10 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function () {});
     },
+
+    /**
+     * For showing the owner name of the wallet principal account no
+     */
     showPRWallletAccountName: function showPRWallletAccountName() {
       var _this3 = this;
 
@@ -5906,6 +5930,10 @@ __webpack_require__.r(__webpack_exports__);
         console.log('err');
       });
     },
+
+    /**
+     * Gets the service gateway list from other module
+     */
     getServiceGateway: function getServiceGateway() {
       var _this5 = this;
 
@@ -5913,6 +5941,10 @@ __webpack_require__.r(__webpack_exports__);
         _this5.ServiceGateway = response.data;
       });
     },
+
+    /**
+     * Gets the service group list from other module
+     */
     getServiceGroup: function getServiceGroup() {
       var _this6 = this;
 
@@ -5921,11 +5953,19 @@ __webpack_require__.r(__webpack_exports__);
         return _this6.ServiceGroups = data;
       });
     },
+
+    /**
+     * Setting up the service template
+     */
     onFileChangeServiceTemplate: function onFileChangeServiceTemplate(e) {
       console.log(e.target.files[0]);
       this.form.service_template = e.target.files[0];
       this.service_template = e.target.files[0]['name'];
     },
+
+    /**
+     * For changing the approval status
+     */
     switchApproval: function switchApproval(changeValue) {
       if (changeValue == 0) {
         this.form.approval = 1;
@@ -5959,6 +5999,11 @@ __webpack_require__.r(__webpack_exports__);
         console.log('create');
       }
     },
+
+    /**
+     * This will trigger if the method used was 'update' method 
+     * It only shows the values retrieved using the service ID
+     */
     retrieveServicesDetails: function retrieveServicesDetails() {
       var _this7 = this;
 
@@ -6053,6 +6098,10 @@ __webpack_require__.r(__webpack_exports__);
         console.log('error');
       });
     },
+
+    /**
+     * Setting up the values, source wallet, destination wallet, rates table to the DATA return Array variable.
+     */
     getVSDR: function getVSDR($service_id) {
       var _this9 = this;
 
@@ -6193,8 +6242,8 @@ __webpack_require__.r(__webpack_exports__);
 
       window.localStorage.setItem('wallet_type', this.form.original_wallet_type);
       window.localStorage.setItem('service_code', this.form.original_service_code);
-      window.localStorage.setItem('service_name', this.form.original_service_name);
-      window.localStorage.setItem('service_description', this.form.original_service_description);
+      window.localStorage.setItem('service_name', this.form.original_service_name || '');
+      window.localStorage.setItem('service_description', this.form.original_service_description || '');
       window.localStorage.setItem('method_name', 'joint');
     },
     showDatatable: function showDatatable() {
@@ -6215,7 +6264,7 @@ __webpack_require__.r(__webpack_exports__);
     saveJointServices: function saveJointServices() {
       var _this = this;
 
-      if (localStorage.getItem('list_services') === null || localStorage.getItem('list_services') === undefined) {
+      if (localStorage.getItem('list_services') === null || localStorage.getItem('list_services') === undefined || localStorage.getItem('list_services') === '[]') {
         toast.fire({
           type: 'warning',
           title: 'Please choose service to join'
@@ -6235,13 +6284,31 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (result) {
           if (result.value) {
             /**
+             * Insert Joint Services
+             */
+            _this.form.post('/api/service/createjointservice').then(function (response) {
+              console.log(response.data);
+            })["catch"](function () {
+              console.log("eerrrrr");
+            });
+            /**
              * Clears the local storage variable for joining services
              */
+
+
             localStorage.removeItem('wallet_type');
             localStorage.removeItem('service_code');
             localStorage.removeItem('service_name');
             localStorage.removeItem('service_description');
             localStorage.removeItem('list_services');
+            /**
+             * Clears the UI
+             */
+
+            _this.form.original_wallet_type = '';
+            _this.form.original_service_code = '';
+            _this.form.original_service_name = '';
+            _this.form.original_service_description = '';
 
             _this.showJointServiceTable();
 
@@ -6277,6 +6344,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -58529,7 +58598,7 @@ var render = function() {
                         ],
                         staticClass: "form-control",
                         attrs: {
-                          type: "text",
+                          type: "number",
                           name: "gateway_code",
                           placeholder: "Service Gateway Code"
                         },
@@ -67966,61 +68035,36 @@ var render = function() {
                               [_vm._v("Assign Approver:")]
                             ),
                             _vm._v(" "),
-                            _c(
-                              "select",
-                              {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: this.form.merchant_admin_id,
-                                    expression: "this.form.merchant_admin_id"
-                                  }
-                                ],
-                                staticClass: "custom-select my-1",
-                                attrs: {
-                                  id: "assignapprover",
-                                  disabled: this.form.approval == 0
-                                },
-                                on: {
-                                  change: function($event) {
-                                    var $$selectedVal = Array.prototype.filter
-                                      .call($event.target.options, function(o) {
-                                        return o.selected
-                                      })
-                                      .map(function(o) {
-                                        var val =
-                                          "_value" in o ? o._value : o.value
-                                        return val
-                                      })
-                                    _vm.$set(
-                                      this.form,
-                                      "merchant_admin_id",
-                                      $event.target.multiple
-                                        ? $$selectedVal
-                                        : $$selectedVal[0]
-                                    )
-                                  }
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: this.form.merchant_admin_id,
+                                  expression: "this.form.merchant_admin_id"
                                 }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "text",
+                                disabled: this.form.approval == 0,
+                                name: "rates_table",
+                                placeholder: "*Underconstruction"
                               },
-                              [
-                                _c("option", { attrs: { value: "0" } }, [
-                                  _vm._v("Choose Merchant Admin")
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "1" } }, [
-                                  _vm._v("Merchant One")
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "2" } }, [
-                                  _vm._v("Merchant Two")
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "3" } }, [
-                                  _vm._v("Merchant Three")
-                                ])
-                              ]
-                            )
+                              domProps: { value: this.form.merchant_admin_id },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    this.form,
+                                    "merchant_admin_id",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
                           ])
                         ])
                       ])
@@ -68743,7 +68787,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "option",
-                            { attrs: { value: "Princial Redeem" } },
+                            { attrs: { value: "Principal Redeem" } },
                             [_vm._v("Principal Redeem")]
                           ),
                           _vm._v(" "),
@@ -68898,7 +68942,7 @@ var render = function() {
                           }
                         ],
                         staticClass: "custom-select",
-                        attrs: { name: "wallet_type" },
+                        attrs: { id: "wallet_type", name: "wallet_type" },
                         on: {
                           change: function($event) {
                             var $$selectedVal = Array.prototype.filter
@@ -68967,7 +69011,7 @@ var render = function() {
                       staticClass: "form-control",
                       attrs: {
                         type: "number",
-                        id: "exampleInputEmail1",
+                        id: "service_code",
                         "aria-describedby": "emailHelp",
                         placeholder: "Enter Service Code",
                         name: "service_code"
@@ -69005,7 +69049,7 @@ var render = function() {
                       staticClass: "form-control",
                       attrs: {
                         type: "text",
-                        id: "exampleInputEmail1",
+                        id: "service_name",
                         "aria-describedby": "emailHelp",
                         placeholder: "Enter Service Name",
                         name: "service_name"
@@ -69043,7 +69087,7 @@ var render = function() {
                       staticClass: "form-control",
                       attrs: {
                         type: "text",
-                        id: "exampleInputEmail1",
+                        id: "service_description",
                         "aria-describedby": "emailHelp",
                         placeholder: "Enter Service Description",
                         name: "service_description"
@@ -69267,31 +69311,15 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _c("td", [
-                        _c("p", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(s.st_code) +
-                              "  \n                        "
-                          )
-                        ])
-                      ]),
+                      _vm._m(1, true),
+                      _vm._v(" "),
+                      _vm._m(2, true),
                       _vm._v(" "),
                       _c("td", [
                         _c("p", [
                           _vm._v(
                             "\n                        " +
-                              _vm._s(s.st_name) +
-                              "  \n                        "
-                          )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("p", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(s.wallet_account_type) +
+                              _vm._s(s.s_wallet_type) +
                               "\n                        "
                           )
                         ])
@@ -69310,7 +69338,8 @@ var render = function() {
                       _c(
                         "td",
                         [
-                          _vm.method_name === "view"
+                          _vm.method_name === "view" &&
+                          s.wallet_condition == "solo"
                             ? _c(
                                 "router-link",
                                 {
@@ -69326,7 +69355,25 @@ var render = function() {
                               )
                             : _vm._e(),
                           _vm._v(" "),
-                          _vm.method_name === "joint"
+                          _vm.method_name === "view" &&
+                          s.wallet_condition == "joint"
+                            ? _c(
+                                "router-link",
+                                {
+                                  staticClass: "btn btn-primary btn-custom",
+                                  attrs: {
+                                    to: {
+                                      name: "/update-service",
+                                      params: { id: s.id, method_name: "view" }
+                                    }
+                                  }
+                                },
+                                [_vm._v("Manage")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.method_name === "joint" &&
+                          s.wallet_condition === "solo"
                             ? _c(
                                 "router-link",
                                 {
@@ -69361,6 +69408,26 @@ var render = function() {
                               attrs: { href: "#" }
                             },
                             [_vm._v("TAKEN")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value:
+                                    _vm.method_name === "joint" &&
+                                    s.wallet_condition === "joint",
+                                  expression:
+                                    "method_name === 'joint' && s.wallet_condition === 'joint'"
+                                }
+                              ],
+                              staticClass: "badge badge-secondary",
+                              attrs: { href: "#" }
+                            },
+                            [_vm._v("UNAVAILABLE")]
                           )
                         ],
                         1
@@ -69397,6 +69464,26 @@ var staticRenderFns = [
         _c("th", [_vm._v("Service Condition")]),
         _vm._v(" "),
         _c("th", [_vm._v("Action")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("p", [
+        _vm._v("\n                        -----\n                        ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("p", [
+        _vm._v("\n                        -----\n                        ")
       ])
     ])
   }
@@ -86232,6 +86319,7 @@ var routes = [{
   beforeEnter: requireLogin
 }, {
   path: '/createjointservice',
+  name: 'Create Joint Services',
   component: __webpack_require__(/*! ../components/WalletServices/JointServices.vue */ "./resources/js/components/WalletServices/JointServices.vue")["default"],
   beforeEnter: requireLogin
 }, {

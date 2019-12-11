@@ -162,12 +162,13 @@
                     <div class="col-sm-6">
                       <div class="form-group">  
                         <label class="my-1" for="inlineFormCustomSelectPref">Assign Approver:</label>
-                      <select class="custom-select my-1" id="assignapprover" :disabled="this.form.approval==0" v-model="this.form.merchant_admin_id"> 
-                        <option value="0">Choose Merchant Admin</option>
-                        <option value="1">Merchant One</option>
-                        <option value="2">Merchant Two</option>
-                        <option value="3">Merchant Three</option>
-                      </select>
+                        <!--
+                          <select class="custom-select my-1" id="assignapprover" :disabled="this.form.approval==0" v-model="this.form.merchant_admin_id"> 
+                            <option value="0">Choose Merchant Admin</option>
+                            <option value="1">Underconstruction</option>
+                          </select>
+                        --> 
+                        <input type="text" :disabled="this.form.approval==0" v-model="this.form.merchant_admin_id" class="form-control" name="rates_table" placeholder="*Underconstruction">
                     </div>   
                     </div> 
                     </div>
@@ -343,7 +344,7 @@
                     <label class="col-form-label">Destination Wallet</label>
                       <select class="custom-select" v-model="form.destination_wallet">
                       <option selected="selected" disabled>Select Value</option>
-                      <option value="Princial Redeem">Principal Redeem</option>
+                      <option value="Principal Redeem">Principal Redeem</option>
                       <option value="Income Redeem">Income Redeem</option>
                       </select>
                     </div>
@@ -441,19 +442,34 @@ methods:{
           this.submitServices();
         }
         else { 
+            /**
+             * Creating Object for storing inside the local storage
+             */
             var list_services = [];
-            list_services = JSON.parse(localStorage.getItem('list_services'));
-            list_services.push(
-              {'service_id': this.get_service_id,
-               'wallet_type' : this.form.wallet_type,
-               'service_name' : this.form.service_name,
-               'service_code' : this.form.service_code,
-               'service_description' : this.form.service_description,
-              });
-            localStorage.setItem('list_services', JSON.stringify(list_services));
-            this.$router.push('/createjointservice'); 
+            list_services = JSON.parse(localStorage.getItem('list_services')); 
+            if(list_services.length != 2){
+                list_services.push(
+                {'service_id': this.get_service_id,
+                'wallet_type' : this.form.wallet_type,
+                'service_name' : this.form.service_name,
+                'service_code' : this.form.service_code,
+                'service_description' : this.form.service_description,
+                });
+                localStorage.setItem('list_services', JSON.stringify(list_services));
+                this.$router.push('/createjointservice'); 
+            }
+            else { 
+            /**
+             * This will trigger once the user reached the tentative maximum number of jointing services which is 3 (Suggested by the Project Owner.)
+             */
+                toast.fire({
+                    type: 'warning',
+                    title: `Adding failed! You've reached the maximum limit! (3)`
+                })  
+                this.$router.push('/createjointservice');
+            }
+     
                
-
         }
         
      }, 
@@ -546,7 +562,10 @@ methods:{
                     fixedColumns: true,
                 });
             }, 1000);
-    },
+    }, 
+    /**
+     * For showing Service Type Details by its service type code
+     */
      showServiceTypeDetails(){
       axios.get('/api/service/getservicetype/'+ this.form.servicetype_code)
       .then(response => {
@@ -564,7 +583,10 @@ methods:{
       
       })
 
-     },
+     }, 
+     /**
+      * For showing the owner name of the wallet principal account no
+      */
      showPRWallletAccountName(){
        axios.get('/api/service/getprwalletdetails/'+ this.form.pr_wallet_acc_no)
        .then(response => {
@@ -591,24 +613,36 @@ methods:{
        .catch(() =>{
           console.log('err');
        })
-     },  
+     }, 
+    /**
+     * Gets the service gateway list from other module
+     */
     getServiceGateway(){
             axios.get('/api/service_gateway/getservicegateway')
             .then((response) => {
                 this.ServiceGateway = response.data;
             })
     },
+    /**
+     * Gets the service group list from other module
+     */
     getServiceGroup(){
          axios.get("/api/servicematrix/GetAllService")
          .then(({ data }) => (
            this.ServiceGroups = data
          ));  
-    }, 
+    },
+    /**
+     * Setting up the service template
+     */
     onFileChangeServiceTemplate(e){
             console.log(e.target.files[0]);
             this.form.service_template = e.target.files[0];
             this.service_template = e.target.files[0]['name'];
     }, 
+    /**
+     * For changing the approval status
+     */
     switchApproval(changeValue) {
              if(changeValue == 0){
                 this.form.approval  = 1   
@@ -643,7 +677,11 @@ methods:{
        else {
           console.log('create')
        }
-    },
+    }, 
+    /**
+     * This will trigger if the method used was 'update' method 
+     * It only shows the values retrieved using the service ID
+     */
     retrieveServicesDetails(){
         axios.get('/api/service/getservicedetails/'+ this.form.service_id)
        .then(response => { 
@@ -726,6 +764,9 @@ methods:{
               console.log('error');
           })
     },
+    /**
+     * Setting up the values, source wallet, destination wallet, rates table to the DATA return Array variable.
+     */
     getVSDR($service_id){
           axios.get('/api/service/getvsdr/'+ $service_id)
           .then(response => {  
@@ -743,10 +784,6 @@ methods:{
                 axios.get('api/walletaccount/GetAllWalletAccountType').then(({ data}) => (this.WalletTypes = data));
         }
     */
-
-
-    
-   
 },
 created() {
     this.getServiceGateway();
