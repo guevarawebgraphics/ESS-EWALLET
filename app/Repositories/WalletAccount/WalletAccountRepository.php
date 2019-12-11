@@ -11,7 +11,7 @@ use App\Models\WalletAccount\wallet_amount_limits;
 use App\Models\WalletAccount\wallet_limit_no_transaction_config;
 use App\Models\WalletAccount\wallet_limit_no_transaction;
 use App\Models\WalletAccount\wallet_service_matrix_config;
-use App\Models\WalletAccount\joint_wallet_account;
+use App\Models\WalletAccount\wallet_joint_account;
 use App\Models\WalletAccount\wallet_account_details;
 
 use DB;
@@ -280,12 +280,12 @@ class WalletAccountRepository
 
         /**
          * @ Store joint wallet account
-         * @return joint_wallet_account
+         * @return wallet_joint_account
          **/
 
          // Check if Prepaid
-        if($wallet_account_data->WalletAccountType === "16"){
-            $store_joint_wallet_account_prepaid = joint_wallet_account::create([
+        if($wallet_account_data->WalletAccountType === "5"){
+            $store_wallet_joint_account_prepaid = wallet_joint_account::create([
                                             'wallet_account_id' => $wallet_account->id,
                                             'wallet_account_no' => $wallet_account_data->WalletAccountNo,
                                             'joint_wallet_account_no' => '123-456-789'
@@ -293,8 +293,8 @@ class WalletAccountRepository
         }
 
         // Check if Credit
-        if($wallet_account_data->WalletAccountType === "17"){
-            $store_joint_wallet_account_credit = joint_wallet_account::create([
+        if($wallet_account_data->WalletAccountType === "8"){
+            $store_joint_wallet_account_credit = wallet_joint_account::create([
                                             'wallet_account_id' => $wallet_account->id,
                                             'wallet_account_no' => $wallet_account_data->WalletAccountNo,
                                             'joint_wallet_account_no' => '123-456-789',
@@ -366,10 +366,10 @@ class WalletAccountRepository
         // Update to Wallet Account
         $wallet_account = wallet_account::where('ess_id', '=', $wallet_account_data->username)
         ->update([
-            'wallet_type' => $wallet_account_data->WalletType,
-            'wallet_account_type' => $wallet_account_data->WalletAccountType,
+           // 'wallet_type' => $wallet_account_data->WalletType,
+            //'wallet_account_type' => $wallet_account_data->WalletAccountType,
             //'wallet_account_no' => $wallet_account_data->WalletAccountNo,
-            'wallet_account_name' => $wallet_account_data->WalletAccountName,
+            //'wallet_account_name' => $wallet_account_data->WalletAccountName,
             'wallet_title' => $wallet_account_data->Wallettitle,
             'kyc_form' => $kyc_form_file,
             'valid_id'=> $valid_id_file,

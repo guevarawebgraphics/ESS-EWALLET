@@ -252,7 +252,7 @@
                                             </select>
                                         </div>
                                         <!-- CMS Credit Account No -->
-                                        <div class="form-group" v-if="form.WalletAccountType == 17">
+                                        <div class="form-group" v-if="form.WalletAccountType == 8">
                                             <label class="control-label custom-label" for="CMSCreditAccountNo">CMS Credit Account No</label>
                                             <input class="form-control" :class="{'is-invalid': errors.has('CMSCreditAccountNo') }" name="CMSCreditAccountNo" v-validate="'required'" type="text" placeholder="CMS Credit Account No">
                                             <p class="text-danger" v-if="errors.has('CMSCreditAccountNo')">{{errors.first('CMSCreditAccountNo')}}</p>
@@ -887,10 +887,10 @@ export default {
                 return true;
             }
             if(this.form.WalletType == null || this.form.WalletAccountType == null){
-                toast.fire({
-                    type: 'info',
-                    title: 'Please fill required fields'
-                })
+                // toast.fire({
+                //     type: 'info',
+                //     title: 'Please fill required fields'
+                // })
                 this.$validator.validateAll().then(result => {
                     if (result) {
                         return;
@@ -906,29 +906,38 @@ export default {
          * @ Validate Fourth Step 
          **/
         ValidateFourthStep(){
-            if(this.form.bank_name == "" || this.form.Branch == "" || this.form.account_type == "" || this.form.account_name == "" || this.form.account_no == ""){
-                toast.fire({
-                    type: 'info',
-                    title: 'Please fill required fields'
-                })
-                this.$validator.validateAll().then(result => {
-                    if (result) {
-                        return;
-                    }
-                });
-                return false;
+            var i;
+            for (i = 0; i < this.BankAccount.length; i++) {
+                if(this.BankAccount[i].bank_name != null && this.BankAccount[i].Branch != null && this.BankAccount[i].account_type != null && this.BankAccount[i].account_name != null && this.BankAccount[i].account_no != null){
+                    this.errors.clear()
+                    $('#nextTab').removeAttr('disabled')
+                    return true;
+                }
+                if(this.BankAccount[i].bank_name == null || this.BankAccount[i].Branch == null || this.BankAccount[i].account_type == null || this.BankAccount[i].account_name == null || this.BankAccount[i].account_no == null){
+                    // toast.fire({
+                    //     type: 'info',
+                    //     title: 'Please fill required fields'
+                    // })
+                    this.$validator.validateAll().then(result => {
+                        if (result) {
+                            return;
+                        }
+                    });
+                    return false;
+                }
+                else {
+                    this.errors.clear()
+                    $('#nextTab').removeAttr('disabled')
+                    return true;
+                }
             }
-            else {
-                this.errors.clear();
-                $('#nextTab').removeAttr('disabled')
-                return true;
-            }
+
         },
         /**
          * @ ValidateWalletAccountDetails 
          **/
         ValidateWalletAccountDetails(){
-            console.log('asdfs')
+            // console.log('asdfs')
             if(this.form.WalletAccountNoDetails == null){
                 toast.fire({
                     type: 'info',
@@ -1206,11 +1215,18 @@ export default {
                             })
                             this.$router.push('/walletaccounts')
                         }
-                        console.log(res.data.status)
+                        console.log(res)
                     })
-                    .catch((err) => {
+                    .catch(err => {
                         this.$Progress.fail()
-                        console.log(err)
+                        //console.log(err)
+                        console.clear()
+                        if(err.response.status == 422){
+                            toast.fire({
+                                type: 'info',
+                                title: 'Wallet Account Already Exists!'
+                            })
+                        }
                     })
                 }
             })
@@ -1344,10 +1360,12 @@ export default {
          * @ Check Wallet Account Type 
          **/
         CheckWalletAccountType(){
-            if(this.form.WalletAccountType == 16){
+            // Check if Prepaid User
+            if(this.form.WalletAccountType == 5){
                 return false;
             }
-            if(this.form.WalletAccountType == 17){
+            // Check if Credit User
+            if(this.form.WalletAccountType == 8){
                 return false;
             }
             return true;

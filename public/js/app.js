@@ -2598,12 +2598,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       editmode: false,
       walletAccountTypes: {},
       form: new Form({
+        csrf_token: $('meta[name="csrf-token"]').attr('content'),
         id: '',
         type_code: '',
         wallet_account_type: '',
@@ -2623,9 +2629,9 @@ __webpack_require__.r(__webpack_exports__);
           //lengthChange: false,
           responsive: true,
           fixedColumns: true,
-          "order": [1, "desc"]
+          "order": [0, "desc"]
         });
-      }, 900);
+      }, 1000);
     },
     get_walle_account_type: function get_walle_account_type() {
       var _this = this;
@@ -2651,6 +2657,10 @@ __webpack_require__.r(__webpack_exports__);
     updateWalletType: function updateWalletType() {
       var _this2 = this;
 
+      $('#btnUpdate').attr('disabled', true);
+      $('#modalClose').attr('disabled', true);
+      $('#updateSpinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.put('api/walletaccount/UpdateWalletAccountType').then(function (res) {
         $('#walletAccountType').modal('hide');
         $(document.body).removeAttr('class');
@@ -2664,13 +2674,27 @@ __webpack_require__.r(__webpack_exports__);
           type: 'success',
           title: 'Saved!'
         });
+
+        _this2.$Progress.increase(10);
+
+        _this2.$Progress.finish();
+
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#updateSpinner').attr('hidden', true);
       })["catch"](function () {
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#updateSpinner').attr('hidden', true);
         console.clear();
+
+        _this2.$Progress.fail();
       });
     },
     createWalletAccountType: function createWalletAccountType() {
       var _this3 = this;
 
+      this.$Progress.start();
       this.form.post('api/walletaccount/StoreWalletAccountType').then(function (res) {
         console.log(res);
         $('#walletAccountType').modal('hide');
@@ -2685,8 +2709,14 @@ __webpack_require__.r(__webpack_exports__);
           type: 'success',
           title: 'Saved!'
         });
+
+        _this3.$Progress.increase(10);
+
+        _this3.$Progress.finish();
       })["catch"](function () {
         console.clear();
+
+        _this3.$Progress.fail();
       });
     }
   },
@@ -3592,10 +3622,10 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.form.WalletType == null || this.form.WalletAccountType == null) {
-        toast.fire({
-          type: 'info',
-          title: 'Please fill required fields'
-        });
+        // toast.fire({
+        //     type: 'info',
+        //     title: 'Please fill required fields'
+        // })
         this.$validator.validateAll().then(function (result) {
           if (result) {
             return;
@@ -3611,21 +3641,31 @@ __webpack_require__.r(__webpack_exports__);
      * @ Validate Fourth Step 
      **/
     ValidateFourthStep: function ValidateFourthStep() {
-      if (this.form.bank_name == "" || this.form.Branch == "" || this.form.account_type == "" || this.form.account_name == "" || this.form.account_no == "") {
-        toast.fire({
-          type: 'info',
-          title: 'Please fill required fields'
-        });
-        this.$validator.validateAll().then(function (result) {
-          if (result) {
-            return;
-          }
-        });
-        return false;
-      } else {
-        this.errors.clear();
-        $('#nextTab').removeAttr('disabled');
-        return true;
+      var i;
+
+      for (i = 0; i < this.BankAccount.length; i++) {
+        if (this.BankAccount[i].bank_name != null && this.BankAccount[i].Branch != null && this.BankAccount[i].account_type != null && this.BankAccount[i].account_name != null && this.BankAccount[i].account_no != null) {
+          this.errors.clear();
+          $('#nextTab').removeAttr('disabled');
+          return true;
+        }
+
+        if (this.BankAccount[i].bank_name == null || this.BankAccount[i].Branch == null || this.BankAccount[i].account_type == null || this.BankAccount[i].account_name == null || this.BankAccount[i].account_no == null) {
+          // toast.fire({
+          //     type: 'info',
+          //     title: 'Please fill required fields'
+          // })
+          this.$validator.validateAll().then(function (result) {
+            if (result) {
+              return;
+            }
+          });
+          return false;
+        } else {
+          this.errors.clear();
+          $('#nextTab').removeAttr('disabled');
+          return true;
+        }
       }
     },
 
@@ -3633,8 +3673,7 @@ __webpack_require__.r(__webpack_exports__);
      * @ ValidateWalletAccountDetails 
      **/
     ValidateWalletAccountDetails: function ValidateWalletAccountDetails() {
-      console.log('asdfs');
-
+      // console.log('asdfs')
       if (this.form.WalletAccountNoDetails == null) {
         toast.fire({
           type: 'info',
@@ -3936,11 +3975,19 @@ __webpack_require__.r(__webpack_exports__);
               _this4.$router.push('/walletaccounts');
             }
 
-            console.log(res.data.status);
+            console.log(res);
           })["catch"](function (err) {
-            _this4.$Progress.fail();
+            _this4.$Progress.fail(); //console.log(err)
 
-            console.log(err);
+
+            console.clear();
+
+            if (err.response.status == 422) {
+              toast.fire({
+                type: 'info',
+                title: 'Wallet Account Already Exists!'
+              });
+            }
           });
         }
       });
@@ -4096,11 +4143,13 @@ __webpack_require__.r(__webpack_exports__);
      * @ Check Wallet Account Type 
      **/
     CheckWalletAccountType: function CheckWalletAccountType() {
-      if (this.form.WalletAccountType == 16) {
+      // Check if Prepaid User
+      if (this.form.WalletAccountType == 5) {
         return false;
-      }
+      } // Check if Credit User
 
-      if (this.form.WalletAccountType == 17) {
+
+      if (this.form.WalletAccountType == 8) {
         return false;
       }
 
@@ -11068,7 +11117,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\n#ba-close-button[data-v-64a2c4d3]{\r\n    background-color: Transparent;\r\n    background-repeat:no-repeat;\r\n    border: none;\r\n    cursor:pointer;\r\n    overflow: hidden;\r\n    outline:none;\r\n    margin-bottom: \"2px\";\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\n#ba-close-button[data-v-64a2c4d3]{\r\n    background-color: Transparent;\r\n    background-repeat:no-repeat;\r\n    border: none;\r\n    cursor:pointer;\r\n    overflow: hidden;\r\n    outline:none;\r\n    margin-bottom: \"2px\";\n}\r\n", ""]);
 
 // exports
 
@@ -59646,7 +59695,7 @@ var render = function() {
                 _c(
                   "table",
                   {
-                    staticClass: "table table-hover text-center",
+                    staticClass: "table table-hover table-striped text-center",
                     attrs: { id: "wallet_account_types" }
                   },
                   [
@@ -59684,7 +59733,7 @@ var render = function() {
                             _c(
                               "a",
                               {
-                                staticClass: "btn btn-primary btn-xs",
+                                staticClass: "btn btn-primary btn-flat btn-xs",
                                 attrs: { href: "#EditServiceGroup" },
                                 on: {
                                   click: function($event) {
@@ -59707,21 +59756,6 @@ var render = function() {
                 )
               ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group row" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-flat btn-primary mb-3",
-                attrs: { type: "button" },
-                on: { click: _vm.openModal }
-              },
-              [
-                _c("i", { staticClass: "ti-plus text-white" }),
-                _vm._v(" Create New")
-              ]
-            )
           ])
         ])
       ])
@@ -59789,14 +59823,12 @@ var render = function() {
                               ],
                               staticClass: "form-control",
                               class: {
-                                "is-invalid": _vm.form.errors.has(
-                                  "wallet_account_type"
-                                )
+                                "is-invalid": _vm.form.errors.has("type_code")
                               },
                               attrs: {
                                 type: "text",
                                 name: "type_code",
-                                placeholder: "Wallet Account Type",
+                                placeholder: "Wallet Account Type Code",
                                 disabled: "true"
                               },
                               domProps: { value: _vm.form.type_code },
@@ -59815,10 +59847,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _c("has-error", {
-                              attrs: {
-                                form: _vm.form,
-                                field: "wallet_account_type"
-                              }
+                              attrs: { form: _vm.form, field: "type_code" }
                             })
                           ],
                           1
@@ -59905,7 +59934,7 @@ var render = function() {
                                   expression: "form.status"
                                 }
                               ],
-                              staticClass: "form-control",
+                              staticClass: "custom-select",
                               on: {
                                 change: function($event) {
                                   var $$selectedVal = Array.prototype.filter
@@ -59930,8 +59959,14 @@ var render = function() {
                             [
                               _c(
                                 "option",
-                                { attrs: { selected: "", value: "" } },
-                                [_vm._v("Select")]
+                                {
+                                  attrs: {
+                                    selected: "",
+                                    value: "",
+                                    disabled: ""
+                                  }
+                                },
+                                [_vm._v("Select Status")]
                               ),
                               _vm._v(" "),
                               _c("option", { attrs: { value: "1" } }, [
@@ -59967,7 +60002,7 @@ var render = function() {
                               expression: "form.wallet_type"
                             }
                           ],
-                          staticClass: "form-control",
+                          staticClass: "custom-select",
                           on: {
                             change: function($event) {
                               var $$selectedVal = Array.prototype.filter
@@ -59989,9 +60024,19 @@ var render = function() {
                           }
                         },
                         [
-                          _c("option", { attrs: { selected: "", value: "" } }, [
-                            _vm._v("Select")
-                          ]),
+                          _c(
+                            "option",
+                            {
+                              attrs: { selected: "", value: "", disabled: "" }
+                            },
+                            [_vm._v("Select Wallet Type")]
+                          ),
+                          _vm._v(" "),
+                          _vm.form.wallet_type == "Admin"
+                            ? _c("option", { attrs: { value: "Admin" } }, [
+                                _vm._v("Admin")
+                              ])
+                            : _vm._e(),
                           _vm._v(" "),
                           _c("option", { attrs: { value: "Credit" } }, [
                             _vm._v("Credit")
@@ -60006,14 +60051,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-secondary btn-flat",
-                        attrs: { type: "button", "data-dismiss": "modal" }
-                      },
-                      [_vm._v("Close")]
-                    ),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c(
                       "button",
@@ -60027,9 +60065,23 @@ var render = function() {
                           }
                         ],
                         staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        attrs: { type: "submit", id: "btnUpdate" }
                       },
-                      [_vm._v("Update")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(
+                          "\n                         Update\n                        "
+                        ),
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "updateSpinner"
+                          }
+                        })
+                      ]
                     ),
                     _vm._v(" "),
                     _c(
@@ -60046,7 +60098,10 @@ var render = function() {
                         staticClass: "btn btn-primary btn-flat",
                         attrs: { type: "submit" }
                       },
-                      [_vm._v("Save changes")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(" Save changes")
+                      ]
                     )
                   ])
                 ]
@@ -60104,6 +60159,19 @@ var staticRenderFns = [
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-secondary btn-flat",
+        attrs: { type: "button", "data-dismiss": "modal", id: "modalClose" }
+      },
+      [_c("i", { staticClass: "ti-close" }), _vm._v(" Close")]
+    )
   }
 ]
 render._withStripped = true
@@ -61906,7 +61974,7 @@ var render = function() {
                               )
                             ]),
                             _vm._v(" "),
-                            _vm.form.WalletAccountType == 17
+                            _vm.form.WalletAccountType == 8
                               ? _c("div", { staticClass: "form-group" }, [
                                   _c(
                                     "label",
