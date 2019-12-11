@@ -2598,12 +2598,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       editmode: false,
       walletAccountTypes: {},
       form: new Form({
+        csrf_token: $('meta[name="csrf-token"]').attr('content'),
         id: '',
         type_code: '',
         wallet_account_type: '',
@@ -2623,9 +2629,9 @@ __webpack_require__.r(__webpack_exports__);
           //lengthChange: false,
           responsive: true,
           fixedColumns: true,
-          "order": [1, "desc"]
+          "order": [0, "desc"]
         });
-      }, 900);
+      }, 1000);
     },
     get_walle_account_type: function get_walle_account_type() {
       var _this = this;
@@ -2651,6 +2657,10 @@ __webpack_require__.r(__webpack_exports__);
     updateWalletType: function updateWalletType() {
       var _this2 = this;
 
+      $('#btnUpdate').attr('disabled', true);
+      $('#modalClose').attr('disabled', true);
+      $('#updateSpinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.put('api/walletaccount/UpdateWalletAccountType').then(function (res) {
         $('#walletAccountType').modal('hide');
         $(document.body).removeAttr('class');
@@ -2664,13 +2674,27 @@ __webpack_require__.r(__webpack_exports__);
           type: 'success',
           title: 'Saved!'
         });
+
+        _this2.$Progress.increase(10);
+
+        _this2.$Progress.finish();
+
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#updateSpinner').attr('hidden', true);
       })["catch"](function () {
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#updateSpinner').attr('hidden', true);
         console.clear();
+
+        _this2.$Progress.fail();
       });
     },
     createWalletAccountType: function createWalletAccountType() {
       var _this3 = this;
 
+      this.$Progress.start();
       this.form.post('api/walletaccount/StoreWalletAccountType').then(function (res) {
         console.log(res);
         $('#walletAccountType').modal('hide');
@@ -2685,8 +2709,14 @@ __webpack_require__.r(__webpack_exports__);
           type: 'success',
           title: 'Saved!'
         });
+
+        _this3.$Progress.increase(10);
+
+        _this3.$Progress.finish();
       })["catch"](function () {
         console.clear();
+
+        _this3.$Progress.fail();
       });
     }
   },
@@ -59577,7 +59607,7 @@ var render = function() {
                 _c(
                   "table",
                   {
-                    staticClass: "table table-hover text-center",
+                    staticClass: "table table-hover table-striped text-center",
                     attrs: { id: "wallet_account_types" }
                   },
                   [
@@ -59615,7 +59645,7 @@ var render = function() {
                             _c(
                               "a",
                               {
-                                staticClass: "btn btn-primary btn-xs",
+                                staticClass: "btn btn-primary btn-flat btn-xs",
                                 attrs: { href: "#EditServiceGroup" },
                                 on: {
                                   click: function($event) {
@@ -59638,21 +59668,6 @@ var render = function() {
                 )
               ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group row" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-flat btn-primary mb-3",
-                attrs: { type: "button" },
-                on: { click: _vm.openModal }
-              },
-              [
-                _c("i", { staticClass: "ti-plus text-white" }),
-                _vm._v(" Create New")
-              ]
-            )
           ])
         ])
       ])
@@ -59720,14 +59735,12 @@ var render = function() {
                               ],
                               staticClass: "form-control",
                               class: {
-                                "is-invalid": _vm.form.errors.has(
-                                  "wallet_account_type"
-                                )
+                                "is-invalid": _vm.form.errors.has("type_code")
                               },
                               attrs: {
                                 type: "text",
                                 name: "type_code",
-                                placeholder: "Wallet Account Type",
+                                placeholder: "Wallet Account Type Code",
                                 disabled: "true"
                               },
                               domProps: { value: _vm.form.type_code },
@@ -59746,10 +59759,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _c("has-error", {
-                              attrs: {
-                                form: _vm.form,
-                                field: "wallet_account_type"
-                              }
+                              attrs: { form: _vm.form, field: "type_code" }
                             })
                           ],
                           1
@@ -59836,7 +59846,7 @@ var render = function() {
                                   expression: "form.status"
                                 }
                               ],
-                              staticClass: "form-control",
+                              staticClass: "custom-select",
                               on: {
                                 change: function($event) {
                                   var $$selectedVal = Array.prototype.filter
@@ -59861,8 +59871,14 @@ var render = function() {
                             [
                               _c(
                                 "option",
-                                { attrs: { selected: "", value: "" } },
-                                [_vm._v("Select")]
+                                {
+                                  attrs: {
+                                    selected: "",
+                                    value: "",
+                                    disabled: ""
+                                  }
+                                },
+                                [_vm._v("Select Status")]
                               ),
                               _vm._v(" "),
                               _c("option", { attrs: { value: "1" } }, [
@@ -59898,7 +59914,7 @@ var render = function() {
                               expression: "form.wallet_type"
                             }
                           ],
-                          staticClass: "form-control",
+                          staticClass: "custom-select",
                           on: {
                             change: function($event) {
                               var $$selectedVal = Array.prototype.filter
@@ -59920,9 +59936,19 @@ var render = function() {
                           }
                         },
                         [
-                          _c("option", { attrs: { selected: "", value: "" } }, [
-                            _vm._v("Select")
-                          ]),
+                          _c(
+                            "option",
+                            {
+                              attrs: { selected: "", value: "", disabled: "" }
+                            },
+                            [_vm._v("Select Wallet Type")]
+                          ),
+                          _vm._v(" "),
+                          _vm.form.wallet_type == "Admin"
+                            ? _c("option", { attrs: { value: "Admin" } }, [
+                                _vm._v("Admin")
+                              ])
+                            : _vm._e(),
                           _vm._v(" "),
                           _c("option", { attrs: { value: "Credit" } }, [
                             _vm._v("Credit")
@@ -59937,14 +59963,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-secondary btn-flat",
-                        attrs: { type: "button", "data-dismiss": "modal" }
-                      },
-                      [_vm._v("Close")]
-                    ),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c(
                       "button",
@@ -59958,9 +59977,23 @@ var render = function() {
                           }
                         ],
                         staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        attrs: { type: "submit", id: "btnUpdate" }
                       },
-                      [_vm._v("Update")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(
+                          "\n                         Update\n                        "
+                        ),
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "updateSpinner"
+                          }
+                        })
+                      ]
                     ),
                     _vm._v(" "),
                     _c(
@@ -59977,7 +60010,10 @@ var render = function() {
                         staticClass: "btn btn-primary btn-flat",
                         attrs: { type: "submit" }
                       },
-                      [_vm._v("Save changes")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(" Save changes")
+                      ]
                     )
                   ])
                 ]
@@ -60035,6 +60071,19 @@ var staticRenderFns = [
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-secondary btn-flat",
+        attrs: { type: "button", "data-dismiss": "modal", id: "modalClose" }
+      },
+      [_c("i", { staticClass: "ti-close" }), _vm._v(" Close")]
+    )
   }
 ]
 render._withStripped = true
@@ -85249,15 +85298,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!************************************************************************!*\
   !*** ./resources/js/components/WalletAccounts/CreateWalletAccount.vue ***!
   \************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CreateWalletAccount_vue_vue_type_template_id_64a2c4d3_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateWalletAccount.vue?vue&type=template&id=64a2c4d3&scoped=true& */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=template&id=64a2c4d3&scoped=true&");
 /* harmony import */ var _CreateWalletAccount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateWalletAccount.vue?vue&type=script&lang=js& */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _CreateWalletAccount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _CreateWalletAccount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _CreateWalletAccount_vue_vue_type_style_index_0_id_64a2c4d3_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateWalletAccount.vue?vue&type=style&index=0&id=64a2c4d3&scoped=true&lang=css& */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=style&index=0&id=64a2c4d3&scoped=true&lang=css&");
+/* empty/unused harmony star reexport *//* harmony import */ var _CreateWalletAccount_vue_vue_type_style_index_0_id_64a2c4d3_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateWalletAccount.vue?vue&type=style&index=0&id=64a2c4d3&scoped=true&lang=css& */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=style&index=0&id=64a2c4d3&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -85289,7 +85337,7 @@ component.options.__file = "resources/js/components/WalletAccounts/CreateWalletA
 /*!*************************************************************************************************!*\
   !*** ./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=script&lang=js& ***!
   \*************************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 use Illuminate\Http\Request;
 //use Your Model
+use App\Models\WalletAccountType\wallet_account_type;
 
 /**
  * Class WalletAccountTypeRepository.
@@ -30,15 +31,13 @@ class WalletAccountTypeRepository
      **/
     public function get_wallet_account_types(){
         $user = auth('api')->user();
-        $wallet_account_type = $this->connection
-                                ->table('wallet_account_types')
+        $wallet_account_type = wallet_account_type::where('created_by', '=', $user->id)
                                 ->select(
                                     'id',
                                     'type_code',
                                     'wallet_account_type',
                                     'wallet_type',
                                     'status')
-                                ->where('created_by', '=', $user->id)
                                 ->get();
         return $wallet_account_type;
 
@@ -51,9 +50,7 @@ class WalletAccountTypeRepository
     public function store_wallet_account_type($wallaccounttype){
         $user = auth('api')->user();
         $type_code = 'EW' . $this->generate_type_code();
-        $wallet_account_type = $this->connection
-                            ->table('wallet_account_types')
-                            ->insert([
+        $wallet_account_type = wallet_account_type::create([
                                 'type_code' => $type_code,
                                 'wallet_account_type' => $wallaccounttype->wallet_account_type,
                                 'wallet_type' => $wallaccounttype->wallet_type,
@@ -71,9 +68,7 @@ class WalletAccountTypeRepository
     public function update_wallet_account_type($wallaccounttype){
         $user = auth('api')->user();
         $type_code = 'EW' . $this->generate_type_code();
-        $wallet_account_type = $this->connection
-                            ->table('wallet_account_types')
-                            ->where('id', '=', $wallaccounttype->id)
+        $wallet_account_type = wallet_account_type::where('id', '=', $wallaccounttype->id)
                             ->where('created_by', '=', $user->id)
                             ->update([
                                 'wallet_account_type' => $wallaccounttype->wallet_account_type,
@@ -85,12 +80,37 @@ class WalletAccountTypeRepository
         return $wallet_account_type;
     }
 
+    /******************************************************************************************
+     *  Helpers Functions
+     *  Below Add Helpers Function
+     *  Securities
+     ******************************************************************************************/
+
     /**
      * @ Generate Wallet Account Type Code
      **/
     public function generate_type_code(){
-        $account_no = Keygen::length(6)->numeric()->generate();
-        return $account_no;
+        $type_code = $this->generate_no();
+
+        /**
+         * @ check if there is existing Wallet Account Type Code
+         * @ Generate a new one if already exists 
+         **/
+        while (wallet_account_type::where('type_code', '=', $type_code)->count() > 0){
+            $type_code = $this->generate_no();
+        }
+        return $type_code;
+    }
+
+
+    /**
+     * @ Generate No
+     * @return type_code 
+     **/
+    public function generate_no(){
+        $type_code = Keygen::length(6)->numeric()->generate();
+
+        return $type_code;
     }
 
 
