@@ -31,14 +31,27 @@ class WalletAccountTypeRepository
      **/
     public function get_wallet_account_types(){
         $user = auth('api')->user();
-        $wallet_account_type = wallet_account_type::where('created_by', '=', $user->id)
-                                ->select(
-                                    'id',
-                                    'type_code',
-                                    'wallet_account_type',
-                                    'wallet_type',
-                                    'status')
-                                ->get();
+        if($user->user_type_id == 1){
+            $wallet_account_type = wallet_account_type::where('created_by', '=', 1)
+                                    ->select(
+                                        'id',
+                                        'type_code',
+                                        'wallet_account_type',
+                                        'wallet_type',
+                                        'status')
+                                    ->get();
+        }
+        else {
+            $wallet_account_type = wallet_account_type::whereNotIn('id', [1, 2])
+                                    ->select(
+                                        'id',
+                                        'type_code',
+                                        'wallet_account_type',
+                                        'wallet_type',
+                                        'status')
+                                    ->get();
+        }
+
         return $wallet_account_type;
 
     }
