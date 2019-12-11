@@ -135,6 +135,10 @@ Route::prefix('service')->group(function(){
     
     Route::post('/createservice',[
         'uses' => 'Api\\Services\ServiceController@InsertService' 
+    ]);  
+
+    Route::post('/createjointservice',[
+        'uses' => 'Api\\Services\ServiceController@InsertJointService' 
     ]); 
     
     Route::get('/getservicetype/{st_code}',[

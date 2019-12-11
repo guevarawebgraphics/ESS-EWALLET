@@ -36,17 +36,17 @@
                         </td>
                         <td>
                             <p>
-                            {{s.st_code}}  
+                            -----
                             </p>
                         </td>
                         <td> 
                             <p>
-                            {{s.st_name}}  
+                            -----
                             </p>
                         </td>
                         <td> 
                             <p>
-                            {{s.wallet_account_type}}
+                            {{s.s_wallet_type}}
                             </p>
                         </td>
                         <td> 
@@ -55,9 +55,11 @@
                             </p>
                         </td>
                         <td> 
-                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'view' }}" class="btn btn-primary btn-custom" v-if="method_name === 'view'">Update</router-link> 
-                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'joint' }}" class="btn btn-primary btn-custom" v-if="method_name === 'joint'" :hidden="checksExistId(s.id)"> Add</router-link> 
-                            <a href="#" class="badge badge-secondary" v-show="checksExistId(s.id) && method_name === 'joint'">TAKEN</a>
+                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'view' }}" class="btn btn-primary btn-custom" v-if="method_name === 'view' && s.wallet_condition =='solo'">Update</router-link>  
+                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'view' }}" class="btn btn-primary btn-custom" v-if="method_name === 'view' && s.wallet_condition =='joint'">Manage</router-link> 
+                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'joint' }}" class="btn btn-primary btn-custom" v-if="method_name === 'joint' && s.wallet_condition === 'solo'" :hidden="checksExistId(s.id)"> Add</router-link> 
+                            <a href="#" class="badge badge-secondary" v-show="checksExistId(s.id) && method_name === 'joint'">TAKEN</a> 
+                            <a href="#" class="badge badge-secondary" v-show="method_name === 'joint' && s.wallet_condition === 'joint'">UNAVAILABLE</a>
                         </td>   
                     </tr>  
                
