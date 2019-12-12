@@ -90,6 +90,7 @@ git checkout develop
 cp .env.example .env
 php artisan key:generate
 composer install
+composer dump-autoload
 npm install
 php artisan key:generate
 php artisan passport:install

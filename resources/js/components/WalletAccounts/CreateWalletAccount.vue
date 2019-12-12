@@ -197,7 +197,7 @@
                                         <!-- Wallet Account No -->
                                         <div class="form-group">
                                             <label class="control-label custom-label" for="WalletAccountNo">Wallet Account No</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNo') } "  name="WalletAccountNo" v-validate="'required'" type="text" v-model="form.WalletAccountNo" placeholder="WalletAccountNo" disabled="disabled">
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNo') } " v-on:change="SerachJointWalletAccount"  name="WalletAccountNo" v-validate="'required'" type="text" v-model="form.WalletAccountNo" placeholder="WalletAccountNo" disabled="disabled">
                                             <has-error :form="form" field="WalletAccountNo"></has-error>
                                             <p class="text-danger" v-if="errors.has('WalletAccountNo')">{{errors.first('WalletAccountNo')}}</p>
                                         </div>
@@ -224,37 +224,38 @@
                                         <!-- Joint Wallet Type -->
                                         <div class="form-group">
                                             <label class="control-label custom-label" for="JointWalletType">Joint Wallet Type</label>
-                                            <select class="custom-select" :class="{ 'is-invalid' : errors.has('JointWalletType') }" name="JointWalletType" v-validate="'required'">
-                                                <option value="" selected disabled>Select Joint Wallet Type</option>
+                                            <input type="text" class="form-control" :class="{ 'is-invalid' : errors.has('JointWalletType') }" v-model="form.JointWalletType" name="JointWalletType" v-validate="'required'" disabled>
+                                                <!-- <option value="" selected disabled>Select Joint Wallet Type</option>
                                                 <option >Select Joint Wallet Type</option>
-                                            </select>
+                                            </select> -->
                                         </div>
                                         <!-- Joint Wallet Account Type -->
                                         <div class="form-group">
                                             <label class="control-label custom-label" for="JointWalletAccountType">Joint Wallet Account Type</label>
-                                            <select class="custom-select" :class="{'is-invalid' : errors.has('JointWalletType') }" name="JointWalletType" v-validate="'required'">
-                                                <option value="" selected disabled>Select Wallet Account Type</option>
+                                            <input type="text" class="form-control" :class="{'is-invalid' : errors.has('JointWalletType') }" v-model="form.jointWalletAccountType" name="JointWalletType" v-validate="'required'" disabled>
+                                                <!-- <option value="" selected disabled>Select Wallet Account Type</option>
                                                 <option value="">Select Wallet Account Type</option>
-                                            </select>
+                                            </select> -->
                                         </div>
                                         <!-- Joint Wallet Account No -->
                                         <div class="form-group">
                                             <label class="control-label custom-label" for="JointWalletAccountNo">Joint Wallet Account No</label>
-                                            <select class="custom-select" :class="{'is-invalid' : errors.has('JointWalletAccountNo') }" name="JointWalletAccountNo" v-validate="'required'" disabled>
+                                            <input type="text" class="form-control" :class="{'is-invalid' : errors.has('JointWalletAccountNo') }" name="JointWalletAccountNo" v-on:change="SerachJointWalletAccount" v-model="form.JointWalletAccountNo" v-validate="'required'" :disabled="editmode">
+                                            <!-- <select class="custom-select"  disabled>
                                                 <option value=""></option>
-                                            </select>
+                                            </select> -->
                                         </div>
                                         <!-- Joint Wallet Account Name -->
                                         <div class="form-group">
                                             <label class="control-label custom-label" for="JointWalletAccountName">Joint Wallet Account Name</label>
-                                            <select class="custom-select" :class="{'is-invalid' : errors.has('JointWalletAccountName') }" name="JointWalletAccountName" v-validate="'required'" disabled>
-                                                <option value=""></option>
-                                            </select>
+                                            <input type="text" class="form-control" :class="{'is-invalid' : errors.has('JointWalletAccountName') }" v-model="form.JointWalletAccountName" name="JointWalletAccountName" v-validate="'required'" disabled>
+                                                <!-- <option value=""></option>
+                                            </select> -->
                                         </div>
                                         <!-- CMS Credit Account No -->
                                         <div class="form-group" v-if="form.WalletAccountType == 8">
                                             <label class="control-label custom-label" for="CMSCreditAccountNo">CMS Credit Account No</label>
-                                            <input class="form-control" :class="{'is-invalid': errors.has('CMSCreditAccountNo') }" name="CMSCreditAccountNo" v-validate="'required'" type="text" placeholder="CMS Credit Account No">
+                                            <input class="form-control" :class="{'is-invalid': errors.has('CMSCreditAccountNo') }" v-model="form.CMSCreditAccountNo" name="CMSCreditAccountNo" v-validate="'required'" type="text" placeholder="CMS Credit Account No">
                                             <p class="text-danger" v-if="errors.has('CMSCreditAccountNo')">{{errors.first('CMSCreditAccountNo')}}</p>
                                         </div>
                                 </div>
@@ -789,6 +790,12 @@ export default {
            // Wallet Account Details
            WalletAccountNoDetails: null,
            WalletAccountNameDetails: null,
+           // Wallet Joint Account
+           JointWalletType: null,
+           jointWalletAccountType: null,
+           JointWalletAccountNo: null,
+           JointWalletAccountName: null,
+           CMSCreditAccountNo: null,
 
         })
         }
@@ -1195,6 +1202,9 @@ export default {
                     formData.append('Services', JSON.stringify(this.Services))
                     formData.append('WalletAccountNoDetails', this.form.WalletAccountNoDetails)
                     formData.append('WalletAccountNameDetails', this.form.WalletAccountNameDetails)
+                    // Joint Wallet Account
+                    formData.append('joint_wallet_account_no', this.form.JointWalletAccountNo)
+                    formData.append('CMSCreditAccountNo', this.form.CMSCreditAccountNo)
                     axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
                     axios.post('api/walletaccount/StoreWalletAccount', formData, {
                         headers: {
@@ -1282,6 +1292,9 @@ export default {
                 this.form.valid_id =  res.data[0]['valid_id'];
                 this.form.WalletAccountNoDetails = res.data[0]['WalletAccountNoDetails'];
                 this.form.WalletAccountNameDetails = res.data[0]['WalletAccountNameDetails'];
+                this.form.JointWalletAccountNo = res.data[0]['joint_wallet_account_no'];
+                this.SerachJointWalletAccount(res.data[0]['joint_wallet_account_no'])
+                this.form.WalletAccountNo = res.data[0]['wan'];
                 
             })
             .catch(err => {
@@ -1417,6 +1430,21 @@ export default {
                    
                 }
 
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        },
+        /**
+         * @ Search Joint Wallet Account 
+         **/
+        SerachJointWalletAccount($jwan = null){
+            axios.get('/api/walletaccount/SearchWalletJointAccount/' + this.form.JointWalletAccountNo)
+            .then(res => {
+                console.log(res)
+                this.form.JointWalletType = res.data[0].wallet_type;
+                this.form.jointWalletAccountType = res.data[0].wallet_account_type;
+                this.form.JointWalletAccountName = res.data[0].wallet_account_name;
             })
             .catch(err => {
                 console.log(err)
