@@ -93,7 +93,7 @@
                         <!-- Row Button -->
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary btn-flat float-right"><i class="ti-save"></i> Save Changes</button>
+                                <button type="submit" class="btn btn-primary float-right"><i class="ti-save"></i> Save Changes</button>
                             </div>
                         </div>
                         <!-- ./ Row button -->
@@ -141,6 +141,7 @@ export default {
             }, 1000);
         },
         SaveChanges(){
+            this.$Progress.start()
             swal.fire({
                 title: 'Are you sure?',
                 text: "Save Service Matrix Configuration Setup",
@@ -153,6 +154,8 @@ export default {
                 if (result.value) {
                     axios.post('api/servicematrix/StoreServiceMatrix', this.Services)
                     .then((response) => {
+                        this.$Progress.increase(10)
+                        this.$Progress.finish()
                         $("#service_matrix").DataTable().destroy()
                         this.datatable();
                         this.GetServices();
@@ -163,6 +166,7 @@ export default {
                         
                     })
                     .catch((err) => {
+                        this.$Progress.fail()
                         swal.fire(
                             'Something Went Wrong!',
                             'Something Went Wrong!',

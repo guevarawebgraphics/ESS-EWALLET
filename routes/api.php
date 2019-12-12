@@ -99,6 +99,10 @@ Route::prefix('walletaccount')->group(function(){
     Route::put('/UpdateServiceMatrixConfig/{essid}', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@UpdateServiceMatrixConfig'
     ]);
+    // api/walletaccount/SearchWalletJointAccount
+    Route::get('/SearchWalletJointAccount/{wan}', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@SearchWalletJointAccount'
+    ]);
 });
 /**
  *  @ Get Account

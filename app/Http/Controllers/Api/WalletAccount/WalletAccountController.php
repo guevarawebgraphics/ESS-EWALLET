@@ -113,6 +113,14 @@ class WalletAccountController extends Controller
         return response()->json($WalletAccount);
     }
 
+    /**
+     * @ Search Wallet Joint Account 
+     **/
+    public function SearchWalletJointAccount($wallet_account_no){
+        $wallet_account = $this->WalletAccount->SearchWalletJointAccount($wallet_account_no);
+        return response()->json($wallet_account);
+    }
+
 
     public function ValidateFirstStep(ValidateFirstStep $request){
         return response()->json('hello');
