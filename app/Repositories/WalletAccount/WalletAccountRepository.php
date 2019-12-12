@@ -59,7 +59,9 @@ class WalletAccountRepository
      **/
     public function GetWalletAccountDetails($essid){
         $user = auth('api')->user();
-        $wallet_account = $this->connection
+        // Check if the user is admin
+        if($user->user_type_id === 1){
+            $wallet_account = $this->connection
                             ->table('wallet_account')
                             ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
                             // /->join('wallet_bank_account', 'wallet_account.id', '=', 'wallet_bank_account.wallet_account_id')
@@ -71,6 +73,55 @@ class WalletAccountRepository
                             ->select(
                                 'wallet_account.wallet_account_type',
                                 'wallet_account.wallet_type',
+                                'wallet_account.wallet_account_no as wan',
+                                'wallet_amount_limits_config.amount_limit',
+                                'wallet_amount_limits_config.am_per_transaction',
+                                'wallet_amount_limits_config.am_per_day',
+                                'wallet_amount_limits_config.am_per_month',
+                                'wallet_amount_limits_config.am_per_year',
+                                'wallet_amount_limits.am_minimum',
+                                'wallet_amount_limits.am_maximum',
+                                'wallet_amount_limits.am_transaction_minimum',
+                                'wallet_amount_limits.am_transaction_maximum',
+                                'wallet_amount_limits.am_day_minimum',
+                                'wallet_amount_limits.am_day_maximum',
+                                'wallet_amount_limits.am_month_minimum',
+                                'wallet_amount_limits.am_month_maximum',
+                                'wallet_amount_limits.am_year_minimum',
+                                'wallet_amount_limits.am_year_maximum',
+                                'wallet_limit_no_transaction_config.lm_per_day as c_lm_per_day',
+                                'wallet_limit_no_transaction_config.lm_per_month as c_lm_per_month',
+                                'wallet_limit_no_transaction_config.lm_per_year as c_lm_per_year',
+                                'wallet_limit_no_transaction_config.allow_negative_balance as c_allow_negative_balance',
+                                'wallet_limit_no_transaction_config.com_daily_balance as c_com_daily_balance',
+                                'wallet_limit_no_transaction_config.com_daily_usage as c_com_daily_usage',
+                                'wallet_limit_no_transaction.lm_per_day',
+                                'wallet_limit_no_transaction.lm_per_month',
+                                'wallet_limit_no_transaction.lm_per_year',
+                                'wallet_limit_no_transaction.allow_negative_balance',
+                                'wallet_account.kyc_form',
+                                'wallet_account.valid_id',
+                                'wallet_account_details.wallet_account_no as WalletAccountNoDetails',
+                                'wallet_account_details.wallet_account_name as WalletAccountNameDetails',
+                                )
+                            ->where('wallet_account.ess_id', '=', $essid)
+                            ->get();
+        }
+        else {
+            $wallet_account = $this->connection
+                            ->table('wallet_account')
+                            ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
+                            // /->join('wallet_bank_account', 'wallet_account.id', '=', 'wallet_bank_account.wallet_account_id')
+                            ->join('wallet_amount_limits_config', 'wallet_account.id', '=', 'wallet_amount_limits_config.wallet_account_id')
+                            ->join('wallet_amount_limits', 'wallet_amount_limits_config.id', '=', 'wallet_amount_limits.wallet_amount_limits_config_id')
+                            ->join('wallet_limit_no_transaction_config', 'wallet_account.id', '=', 'wallet_limit_no_transaction_config.wallet_account_id')
+                            ->join('wallet_limit_no_transaction', 'wallet_limit_no_transaction_config.id', '=' , 'wallet_limit_no_transaction.wlnt_id')
+                            ->join('wallet_account_details', 'wallet_account.id', '=', 'wallet_account_details.wallet_account_id')
+                            ->join('wallet_joint_account', 'wallet_joint_account.wallet_account_id', '=', 'wallet_account.id')
+                            ->select(
+                                'wallet_account.wallet_account_type',
+                                'wallet_account.wallet_type',
+                                'wallet_account.wallet_account_no as wan',
                                 'wallet_amount_limits_config.amount_limit',
                                 'wallet_amount_limits_config.am_per_transaction',
                                 'wallet_amount_limits_config.am_per_day',
@@ -105,10 +156,13 @@ class WalletAccountRepository
                                 'wallet_account.kyc_form',
                                 'wallet_account.valid_id',
                                 'wallet_account_details.wallet_account_no as WalletAccountNoDetails',
-                                'wallet_account_details.wallet_account_name as WalletAccountNameDetails'
+                                'wallet_account_details.wallet_account_name as WalletAccountNameDetails',
+                                'wallet_joint_account.joint_wallet_account_no'
                                 )
                             ->where('wallet_account.ess_id', '=', $essid)
                             ->get();
+        }
+        
         return $wallet_account;
     }
     /**
@@ -288,7 +342,7 @@ class WalletAccountRepository
             $store_wallet_joint_account_prepaid = wallet_joint_account::create([
                                             'wallet_account_id' => $wallet_account->id,
                                             'wallet_account_no' => $wallet_account_data->WalletAccountNo,
-                                            'joint_wallet_account_no' => '123-456-789'
+                                            'joint_wallet_account_no' => $wallet_account_data->joint_wallet_account_no,
             ]);
         }
 
@@ -297,8 +351,8 @@ class WalletAccountRepository
             $store_joint_wallet_account_credit = wallet_joint_account::create([
                                             'wallet_account_id' => $wallet_account->id,
                                             'wallet_account_no' => $wallet_account_data->WalletAccountNo,
-                                            'joint_wallet_account_no' => '123-456-789',
-                                            'cms_credit_account_no' => '123-456-789'
+                                            'joint_wallet_account_no' => $wallet_account_data->joint_wallet_account_no,
+                                            'cms_credit_account_no' => $wallet_account_data->CMSCreditAccountNo
             ]);
         }
 
@@ -594,6 +648,24 @@ class WalletAccountRepository
                                     ->where('wallet_service_matrix_config.wallet_account_id', '=', $wallet_account->id)
                                     ->get();
         return $wallet_service_matrix_config;
+    }
+
+    /**
+     * @ Search Wallet Joint Account 
+     **/
+    public function SearchWalletJointAccount($wallet_account_no){
+        $wallet_account = $this->connection
+                            ->table('wallet_account')
+                            ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
+                            ->select(
+                                'wallet_account.wallet_account_no',
+                                'wallet_account.wallet_account_name',
+                                'wallet_account.wallet_type',
+                                'wallet_account_types.wallet_account_type'
+                            )
+                            ->where('wallet_account.wallet_account_no', '=', $wallet_account_no)
+                            ->get();
+        return $wallet_account;
     }
 
     /**

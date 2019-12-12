@@ -31,7 +31,7 @@
                                             <td v-if="wat.status == 1"><div class="badge badge-primary">Active</div></td>
                                             <td v-if="wat.status == 0"><div class="badge badge-info">Disabled</div></td>
                                             <td>
-                                                <a class="btn btn-primary btn-flat btn-xs" href="#EditServiceGroup" @click="editWalletAccountType(wat)">
+                                                <a class="btn btn-primary btn-xs" href="#EditServiceGroup" @click="editWalletAccountType(wat)">
                                                     <i class="fa fa-edit blue"></i>
                                                     <span>Update</span>
                                                 </a>
@@ -47,7 +47,7 @@
                     <!-- ./ Row Table -->
                     <!-- Row Button -->
                     <!-- <div class="form-group row">
-                        <button type="button" class="btn btn-flat btn-primary mb-3" @click="openModal"><i class="ti-plus text-white"></i> Create New</button>
+                        <button type="button" class="btn btn-primary mb-3" @click="openModal"><i class="ti-plus text-white"></i> Create New</button>
                     </div> -->
                     <!-- ./Row Button -->
                 </div>
@@ -99,13 +99,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal" id="modalClose"><i class="ti-close"></i> Close</button>
-                        <button v-show="editmode" type="submit" class="btn btn-primary btn-flat" id="btnUpdate">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="modalClose"><i class="ti-close"></i> Close</button>
+                        <button v-show="editmode" type="submit" class="btn btn-primary" id="btnUpdate">
                             <i class="ti-save"></i>
                              Update
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="true" id="updateSpinner"></span>
                         </button>
-                        <button v-show="!editmode" type="submit" class="btn btn-primary btn-flat"><i class="ti-save"></i> Save changes</button>
+                        <button v-show="!editmode" type="submit" class="btn btn-primary"><i class="ti-save"></i> Save changes</button>
                     </div>
                 </form>
             <!-- ./Form -->
