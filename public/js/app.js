@@ -6424,6 +6424,93 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/JointServicesList.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServices/JointServicesList.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      ListJointServices: [],
+      id: this.$route.params.id
+    };
+  },
+  methods: {
+    getListJointServices: function getListJointServices() {
+      var _this = this;
+
+      axios.get('/api/service/getjointservicelist/' + this.id).then(function (response) {
+        _this.ListJointServices = response.data;
+      })["catch"](function () {
+        console.log('error');
+      });
+    }
+  },
+  created: function created() {
+    this.getListJointServices();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/ServicesListTable.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServices/ServicesListTable.vue?vue&type=script&lang=js& ***!
@@ -69411,6 +69498,168 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/JointServicesList.vue?vue&type=template&id=07b0070e&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServices/JointServicesList.vue?vue&type=template&id=07b0070e& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "col-12 mt-5" }, [
+    _c("div", { staticClass: "card shadow-custom" }, [
+      _c("div", { staticClass: "col-md-12" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-6 " },
+          [
+            _c("h4", { staticClass: "header-title" }, [
+              _vm._v(" JOINT SERVICE")
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.ListJointServices, function(LJ) {
+              return _c("div", { key: LJ.id, staticClass: "list-group" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "list-group-item list-group-item-action flex-column align-items-start",
+                    attrs: { href: "#" }
+                  },
+                  [
+                    _vm._m(0, true),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row mt-1" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label mb-1",
+                          attrs: { for: "inputEmail3" }
+                        },
+                        [_vm._v("Wallet Type")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c("input", {
+                          staticClass: "form-control mb-1",
+                          attrs: {
+                            type: "text",
+                            id: "inputEmail3",
+                            placeholder: "Wallet Type",
+                            readonly: ""
+                          },
+                          domProps: { value: LJ.s_wallet_type }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row mt-1" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label mb-1",
+                          attrs: { for: "inputEmail3" }
+                        },
+                        [_vm._v("Service Code")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c("input", {
+                          staticClass: "form-control mb-1",
+                          attrs: {
+                            type: "text",
+                            id: "inputEmail3",
+                            placeholder: "Service Code",
+                            readonly: ""
+                          },
+                          domProps: { value: LJ.service_code }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row mt-1" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label mb-1",
+                          attrs: { for: "inputEmail3" }
+                        },
+                        [_vm._v("Service Name")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c("input", {
+                          staticClass: "form-control mb-1",
+                          attrs: {
+                            type: "text",
+                            id: "inputEmail3",
+                            placeholder: "Service Name",
+                            readonly: ""
+                          },
+                          domProps: { value: LJ.service_name }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row mt-1" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label mb-1",
+                          attrs: { for: "inputEmail3" }
+                        },
+                        [_vm._v("Service Description")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c("input", {
+                          staticClass: "form-control mb-1",
+                          attrs: {
+                            type: "text",
+                            id: "inputEmail3",
+                            placeholder: "Service Description",
+                            readonly: ""
+                          },
+                          domProps: { value: LJ.service_description }
+                        })
+                      ])
+                    ])
+                  ]
+                )
+              ])
+            })
+          ],
+          2
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex w-100 justify-content-between" }, [
+      _c("h5", { staticClass: "mb-1" }, [_vm._v("Joint Service Details")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/ServicesListTable.vue?vue&type=template&id=58ac2c76&":
 /*!***********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServices/ServicesListTable.vue?vue&type=template&id=58ac2c76& ***!
@@ -69553,12 +69802,12 @@ var render = function() {
                                   staticClass: "btn btn-primary btn-custom",
                                   attrs: {
                                     to: {
-                                      name: "/update-service",
-                                      params: { id: s.id, method_name: "view" }
+                                      name: "list-joint-services",
+                                      params: { id: s.id }
                                     }
                                   }
                                 },
-                                [_vm._v("Manage")]
+                                [_vm._v("View")]
                               )
                             : _vm._e(),
                           _vm._v(" "),
@@ -86178,6 +86427,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/WalletServices/JointServicesList.vue":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/WalletServices/JointServicesList.vue ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _JointServicesList_vue_vue_type_template_id_07b0070e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JointServicesList.vue?vue&type=template&id=07b0070e& */ "./resources/js/components/WalletServices/JointServicesList.vue?vue&type=template&id=07b0070e&");
+/* harmony import */ var _JointServicesList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JointServicesList.vue?vue&type=script&lang=js& */ "./resources/js/components/WalletServices/JointServicesList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _JointServicesList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _JointServicesList_vue_vue_type_template_id_07b0070e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _JointServicesList_vue_vue_type_template_id_07b0070e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/WalletServices/JointServicesList.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/WalletServices/JointServicesList.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/WalletServices/JointServicesList.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServicesList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./JointServicesList.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/JointServicesList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServicesList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/WalletServices/JointServicesList.vue?vue&type=template&id=07b0070e&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/WalletServices/JointServicesList.vue?vue&type=template&id=07b0070e& ***!
+  \*****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServicesList_vue_vue_type_template_id_07b0070e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./JointServicesList.vue?vue&type=template&id=07b0070e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/JointServicesList.vue?vue&type=template&id=07b0070e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServicesList_vue_vue_type_template_id_07b0070e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServicesList_vue_vue_type_template_id_07b0070e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/WalletServices/ServicesListTable.vue":
 /*!**********************************************************************!*\
   !*** ./resources/js/components/WalletServices/ServicesListTable.vue ***!
@@ -86516,6 +86834,11 @@ var routes = [{
   path: '/updateservice/:id/:method_name',
   name: '/update-service',
   component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"],
+  beforeEnter: requireLogin
+}, {
+  path: '/viewjointservices/:id',
+  name: 'list-joint-services',
+  component: __webpack_require__(/*! ../components/WalletServices/JointServicesList.vue */ "./resources/js/components/WalletServices/JointServicesList.vue")["default"],
   beforeEnter: requireLogin
 },
 /**
