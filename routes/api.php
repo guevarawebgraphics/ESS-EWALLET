@@ -163,6 +163,9 @@ Route::prefix('service')->group(function(){
     Route::get('/getvsdr/{service_id}',[
         'uses' => 'Api\\Services\ServiceController@GetVSDR'
     ]);
+    Route::get('/getjointservicelist/{id}',[
+        'uses' => 'Api\\Services\ServiceController@GetJointServicesList'
+    ]);
     
 });
     /**

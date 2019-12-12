@@ -56,7 +56,7 @@
                         </td>
                         <td> 
                             <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'view' }}" class="btn btn-primary btn-custom" v-if="method_name === 'view' && s.wallet_condition =='solo'">Update</router-link>  
-                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'view' }}" class="btn btn-primary btn-custom" v-if="method_name === 'view' && s.wallet_condition =='joint'">Manage</router-link> 
+                            <router-link :to="{ name: 'list-joint-services', params: { id: s.id }}" class="btn btn-primary btn-custom" v-if="method_name === 'view' && s.wallet_condition =='joint'">View</router-link> 
                             <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'joint' }}" class="btn btn-primary btn-custom" v-if="method_name === 'joint' && s.wallet_condition === 'solo'" :hidden="checksExistId(s.id)"> Add</router-link> 
                             <a href="#" class="badge badge-secondary" v-show="checksExistId(s.id) && method_name === 'joint'">TAKEN</a> 
                             <a href="#" class="badge badge-secondary" v-show="method_name === 'joint' && s.wallet_condition === 'joint'">UNAVAILABLE</a>
