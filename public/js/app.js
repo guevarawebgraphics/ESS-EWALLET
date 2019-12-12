@@ -1922,64 +1922,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/General/Navbar.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/General/Navbar.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {};
-  },
-  methods: {
-    logout: function logout() {
-      axios.post('/logout').then(function (res) {
-        window.localStorage.removeItem('user');
-        location.reload();
-        window.location.href = "/";
-      })["catch"](function (err) {
-        console.log(err);
-      });
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=script&lang=js& ***!
@@ -2455,8 +2397,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2658,12 +2598,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       editmode: false,
       walletAccountTypes: {},
       form: new Form({
+        csrf_token: $('meta[name="csrf-token"]').attr('content'),
         id: '',
         type_code: '',
         wallet_account_type: '',
@@ -2683,9 +2629,9 @@ __webpack_require__.r(__webpack_exports__);
           //lengthChange: false,
           responsive: true,
           fixedColumns: true,
-          "order": [1, "desc"]
+          "order": [0, "desc"]
         });
-      }, 900);
+      }, 1000);
     },
     get_walle_account_type: function get_walle_account_type() {
       var _this = this;
@@ -2711,6 +2657,10 @@ __webpack_require__.r(__webpack_exports__);
     updateWalletType: function updateWalletType() {
       var _this2 = this;
 
+      $('#btnUpdate').attr('disabled', true);
+      $('#modalClose').attr('disabled', true);
+      $('#updateSpinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.put('api/walletaccount/UpdateWalletAccountType').then(function (res) {
         $('#walletAccountType').modal('hide');
         $(document.body).removeAttr('class');
@@ -2724,13 +2674,27 @@ __webpack_require__.r(__webpack_exports__);
           type: 'success',
           title: 'Saved!'
         });
+
+        _this2.$Progress.increase(10);
+
+        _this2.$Progress.finish();
+
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#updateSpinner').attr('hidden', true);
       })["catch"](function () {
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#updateSpinner').attr('hidden', true);
         console.clear();
+
+        _this2.$Progress.fail();
       });
     },
     createWalletAccountType: function createWalletAccountType() {
       var _this3 = this;
 
+      this.$Progress.start();
       this.form.post('api/walletaccount/StoreWalletAccountType').then(function (res) {
         console.log(res);
         $('#walletAccountType').modal('hide');
@@ -2745,8 +2709,14 @@ __webpack_require__.r(__webpack_exports__);
           type: 'success',
           title: 'Saved!'
         });
+
+        _this3.$Progress.increase(10);
+
+        _this3.$Progress.finish();
       })["catch"](function () {
         console.clear();
+
+        _this3.$Progress.fail();
       });
     }
   },
@@ -3288,14 +3258,210 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      csrf_token: $('meta[name="csrf-token"]').attr('content'),
       editmode: false,
       switching: false,
+      wai: null,
       step: 0,
       account: [],
+      BankAccount: [{
+        bank_name: null,
+        Branch: null,
+        account_type: null,
+        account_name: null,
+        account_no: null,
+        "default": false,
+        status: false
+      }],
+      Services: {},
       walletAccountTypes: [],
+      kyc_form_file_name: "Filled-Up KYC Form",
+      valid_id_file_name: "Valid ID w/ Signature",
       form: new Form({
         username: null,
         lastname: null,
@@ -3332,16 +3498,16 @@ __webpack_require__.r(__webpack_exports__);
         am_per_month: 0,
         am_per_year: 0,
         // Wallet Amount Limits
-        am_minimum: '',
-        am_maximum: '',
-        am_transaction_minimun: '',
-        am_transaction_maximum: '',
-        am_day_minimum: '',
-        am_day_maximum: '',
-        am_month_minimum: '',
-        am_month_maximum: '',
-        am_year_minimum: '',
-        am_year_maximum: '',
+        am_minimum: 0,
+        am_maximum: 0,
+        am_transaction_minimun: 0,
+        am_transaction_maximum: 0,
+        am_day_minimum: 0,
+        am_day_maximum: 0,
+        am_month_minimum: 0,
+        am_month_maximum: 0,
+        am_year_minimum: 0,
+        am_year_maximum: 0,
         // Wallet limit no of transaction config
         c_lm_per_day: 0,
         c_lm_per_month: 0,
@@ -3356,27 +3522,55 @@ __webpack_require__.r(__webpack_exports__);
         allow_negative_balance: 0,
         // Files
         kyc_form: null,
-        valid_id: null
+        valid_id: null,
+        // Wallet Account Details
+        WalletAccountNoDetails: null,
+        WalletAccountNameDetails: null,
+        // Wallet Joint Account
+        JointWalletType: null,
+        jointWalletAccountType: null,
+        JointWalletAccountNo: null,
+        JointWalletAccountName: null,
+        CMSCreditAccountNo: null
       })
     };
   },
   methods: {
+    datatable: function datatable() {
+      setTimeout(function () {
+        var table = $('#service_matrix').DataTable({
+          // "searching": false,
+          //"sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+          "paging": true,
+          "pageLength": 10,
+          //scrollX: true,
+          "autoWidth": true,
+          lengthChange: true,
+          responsive: true,
+          fixedColumns: false
+        });
+      }, this.editmode == true ? 2000 : 1000);
+    },
     onComplete: function onComplete() {
       alert('Yay. Done!');
     },
-    ValidateFirstStep: function ValidateFirstStep() {
-      if (this.form.emailaddress != null) {
-        if (this.step == 1) {
-          this.errors.clear();
-          return true;
-        } else {
-          this.form.reset();
-          $('#nextTab').attr('disabled', true);
-          this.step = 0;
-          return false;
-        }
-      }
 
+    /**
+     * @ Validate First Step 
+     **/
+    ValidateFirstStep: function ValidateFirstStep() {
+      // if(this.form.emailaddress != null){
+      //     if(this.step == 1){
+      //         this.errors.clear()
+      //         return true;
+      //     }
+      //     else {
+      //         this.form.reset()
+      //         $('#nextTab').attr('disabled', true)
+      //         this.step = 0;
+      //         return false;
+      //     }
+      // }
       if (this.form.username == null) {
         toast.fire({
           type: 'info',
@@ -3390,8 +3584,43 @@ __webpack_require__.r(__webpack_exports__);
         });
         this.step = 0;
         return false;
+      } else if (this.form.kyc_form == null) {
+        toast.fire({
+          type: 'info',
+          title: 'KYC Form is Required',
+          timer: 10000
+        });
+        this.$validator.validateAll().then(function (result) {
+          if (result) {
+            alert("Form Submitted!");
+            return;
+          }
+        });
+        this.step = 0;
+        return false;
+      } else if (this.form.valid_id == null) {
+        toast.fire({
+          type: 'info',
+          title: 'Valid ID is Required',
+          timer: 10000
+        });
+        this.$validator.validateAll().then(function (result) {
+          if (result) {
+            alert("Form Submitted!");
+            return;
+          }
+        });
+        this.step = 0;
+        return false;
+      } else {
+        this.errors.clear();
+        return true;
       }
     },
+
+    /**
+     * @ Validate Second Step 
+     **/
     ValidateSecondStep: function ValidateSecondStep() {
       if (this.form.WalletAccountType != null && this.form.WalletType != null) {
         this.errors.clear();
@@ -3400,10 +3629,10 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.form.WalletType == null || this.form.WalletAccountType == null) {
-        toast.fire({
-          type: 'info',
-          title: 'Please fill required fields'
-        });
+        // toast.fire({
+        //     type: 'info',
+        //     title: 'Please fill required fields'
+        // })
         this.$validator.validateAll().then(function (result) {
           if (result) {
             return;
@@ -3414,8 +3643,45 @@ __webpack_require__.r(__webpack_exports__);
         return true;
       }
     },
+
+    /**
+     * @ Validate Fourth Step 
+     **/
     ValidateFourthStep: function ValidateFourthStep() {
-      if (this.form.bank_name == null || this.form.Branch == null || this.form.account_type == null || this.form.account_name == null || this.form.account_no == null) {
+      var i;
+
+      for (i = 0; i < this.BankAccount.length; i++) {
+        if (this.BankAccount[i].bank_name != null && this.BankAccount[i].Branch != null && this.BankAccount[i].account_type != null && this.BankAccount[i].account_name != null && this.BankAccount[i].account_no != null) {
+          this.errors.clear();
+          $('#nextTab').removeAttr('disabled');
+          return true;
+        }
+
+        if (this.BankAccount[i].bank_name == null || this.BankAccount[i].Branch == null || this.BankAccount[i].account_type == null || this.BankAccount[i].account_name == null || this.BankAccount[i].account_no == null) {
+          // toast.fire({
+          //     type: 'info',
+          //     title: 'Please fill required fields'
+          // })
+          this.$validator.validateAll().then(function (result) {
+            if (result) {
+              return;
+            }
+          });
+          return false;
+        } else {
+          this.errors.clear();
+          $('#nextTab').removeAttr('disabled');
+          return true;
+        }
+      }
+    },
+
+    /**
+     * @ ValidateWalletAccountDetails 
+     **/
+    ValidateWalletAccountDetails: function ValidateWalletAccountDetails() {
+      // console.log('asdfs')
+      if (this.form.WalletAccountNoDetails == null) {
         toast.fire({
           type: 'info',
           title: 'Please fill required fields'
@@ -3441,6 +3707,8 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!this.form.username) {
         if (this.step == 1) {
+          this.form.clear();
+          this.form.reset();
           $('#nextTab').attr('disabled', true);
         }
       } else {
@@ -3509,11 +3777,13 @@ __webpack_require__.r(__webpack_exports__);
     GenerateAccountNo: function GenerateAccountNo() {
       var _this2 = this;
 
-      axios.get('/api/GenerateAccountNo').then(function (response) {
-        _this2.form.WalletAccountNo = response.data;
-      })["catch"](function (err) {
-        console.log(err);
-      });
+      if (!this.editmode) {
+        axios.get('/api/GenerateAccountNo').then(function (response) {
+          _this2.form.WalletAccountNo = response.data;
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      }
     },
 
     /**
@@ -3522,21 +3792,99 @@ __webpack_require__.r(__webpack_exports__);
     UpdateWalletAccount: function UpdateWalletAccount() {
       var _this3 = this;
 
-      this.form.put('/api/walletaccount/UpdateWalletAccount').then(function (res) {
-        console.log(res);
+      swal.fire({
+        title: 'Are you sure you want to save?',
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#0077B5',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Update!'
+      }).then(function (result) {
+        if (result.value) {
+          _this3.$Progress.start();
 
-        _this3.form.clear();
+          var formData = new FormData(); // Wallet Account
 
-        _this3.form.reset();
+          formData.append('_token', _this3.csrf_token);
+          formData.append('username', _this3.form.username);
+          formData.append('kyc_form', _this3.form.kyc_form);
+          formData.append('valid_id', _this3.form.valid_id);
+          formData.append('WalletType', _this3.form.WalletType);
+          formData.append('WalletAccountType', _this3.form.WalletAccountType);
+          formData.append('WalletAccountNo', _this3.form.WalletAccountNo);
+          formData.append('WalletAccountName', _this3.form.WalletAccountName);
+          formData.append('Wallettitle', _this3.form.Wallettitle); // //Wallet Bank Account
 
-        toast.fire({
-          type: 'success',
-          title: 'Wallet Account Successfully updated!'
-        });
+          formData.append('Branch', _this3.form.Branch);
+          formData.append('bank_name', _this3.form.bank_name);
+          formData.append('account_type', _this3.form.account_type);
+          formData.append('account_name', _this3.form.account_name);
+          formData.append('account_no', _this3.form.account_no); // Wallet Amount limits config
 
-        _this3.$router.push('/walletaccounts');
-      })["catch"](function (err) {
-        console.log(err);
+          formData.append('amount_limit', _this3.form.amount_limit);
+          formData.append('am_per_transaction', _this3.form.am_per_transaction);
+          formData.append('am_per_day', _this3.form.am_per_day);
+          formData.append('am_per_month', _this3.form.am_per_month);
+          formData.append('am_per_year', _this3.form.am_per_year); // Wallet Amount Limits
+
+          formData.append('am_minimum', _this3.form.am_minimum);
+          formData.append('am_maximum', _this3.form.am_maximum);
+          formData.append('am_transaction_minimum', _this3.form.am_transaction_minimun);
+          formData.append('am_transaction_maximum', _this3.form.am_transaction_maximum);
+          formData.append('am_day_minimum', _this3.form.am_day_minimum);
+          formData.append('am_day_maximum', _this3.form.am_day_maximum);
+          formData.append('am_month_minimum', _this3.form.am_month_minimum);
+          formData.append('am_month_maximum', _this3.form.am_month_maximum);
+          formData.append('am_year_minimum', _this3.form.am_year_minimum);
+          formData.append('am_year_minimum', _this3.form.am_year_minimum);
+          formData.append('am_year_maximum', _this3.form.am_year_maximum); // Wallet limit no of transaction config
+
+          formData.append('c_lm_per_day', _this3.form.c_lm_per_day);
+          formData.append('c_lm_per_month', _this3.form.c_lm_per_month);
+          formData.append('c_lm_per_year', _this3.form.c_lm_per_year);
+          formData.append('c_allow_negative_balance', _this3.form.c_allow_negative_balance);
+          formData.append('c_com_daily_balance', _this3.form.c_com_daily_balance);
+          formData.append('c_com_daily_usage', _this3.form.c_com_daily_usage); // Wallet limit no of transaction
+
+          formData.append('lm_per_day', _this3.form.lm_per_day);
+          formData.append('lm_per_month', _this3.form.lm_per_month);
+          formData.append('lm_per_year', _this3.form.lm_per_year);
+          formData.append('allow_negative_balance', _this3.form.allow_negative_balance);
+          formData.append('BankAccount', JSON.stringify(_this3.BankAccount));
+          formData.append('Services', JSON.stringify(_this3.Services));
+          formData.append('WalletAccountNoDetails', _this3.form.WalletAccountNoDetails);
+          formData.append('WalletAccountNameDetails', _this3.form.WalletAccountNameDetails);
+          axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+          axios.post('/api/walletaccount/UpdateWalletAccount', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'X-CSRF-TOKEN': _this3.csrf_token
+            }
+          }).then(function (res) {
+            _this3.$Progress.increase(10);
+
+            _this3.$Progress.finish();
+
+            console.log(res);
+
+            _this3.form.clear();
+
+            _this3.form.reset();
+
+            toast.fire({
+              type: 'success',
+              title: 'Wallet Account Successfully Updated!'
+            });
+
+            _this3.$router.push('/walletaccounts');
+
+            console.log(res.data.status);
+          })["catch"](function (err) {
+            _this3.$Progress.fail();
+
+            console.log(err);
+          });
+        }
       });
     },
 
@@ -3546,74 +3894,118 @@ __webpack_require__.r(__webpack_exports__);
     StoreWalletAccount: function StoreWalletAccount() {
       var _this4 = this;
 
-      var formData = new FormData(); // Wallet Account
+      swal.fire({
+        title: 'Are you sure you want to save?',
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#0077B5',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Save!'
+      }).then(function (result) {
+        if (result.value) {
+          _this4.$Progress.start();
 
-      formData.append('username', this.form.username);
-      formData.append('kyc_form', this.form.kyc_form);
-      formData.append('valid_id', this.form.valid_id);
-      formData.append('WalletType', this.form.WalletType);
-      formData.append('WalletAccountType', this.form.WalletAccountType);
-      formData.append('WalletAccountNo', this.form.WalletAccountNo);
-      formData.append('WalletAccountName', this.form.WalletAccountName);
-      formData.append('Wallettitle', this.form.Wallettitle); // //Wallet Bank Account
+          var formData = new FormData(); // Wallet Account
 
-      formData.append('Branch', this.form.Branch);
-      formData.append('bank_name', this.form.bank_name);
-      formData.append('account_type', this.form.account_type);
-      formData.append('account_name', this.form.account_name);
-      formData.append('account_no', this.form.account_no); // Wallet Amount limits config
+          formData.append('_token', _this4.csrf_token);
+          formData.append('username', _this4.form.username);
+          formData.append('kyc_form', _this4.form.kyc_form);
+          formData.append('valid_id', _this4.form.valid_id);
+          formData.append('WalletType', _this4.form.WalletType);
+          formData.append('WalletAccountType', _this4.form.WalletAccountType);
+          formData.append('WalletAccountNo', _this4.form.WalletAccountNo);
+          formData.append('WalletAccountName', _this4.form.WalletAccountName);
+          formData.append('Wallettitle', _this4.form.Wallettitle); // //Wallet Bank Account
 
-      formData.append('amount_limit', this.form.amount_limit);
-      formData.append('am_per_transaction', this.form.am_per_transaction);
-      formData.append('am_per_day', this.form.am_per_day);
-      formData.append('am_per_month', this.form.am_per_month);
-      formData.append('am_per_year', this.form.am_per_year); // Wallet Amount Limits
+          formData.append('Branch', _this4.form.Branch);
+          formData.append('bank_name', _this4.form.bank_name);
+          formData.append('account_type', _this4.form.account_type);
+          formData.append('account_name', _this4.form.account_name);
+          formData.append('account_no', _this4.form.account_no); // Wallet Amount limits config
 
-      formData.append('am_minimum', this.form.am_minimum);
-      formData.append('am_maximum', this.form.am_maximum);
-      formData.append('am_transaction_minimum', this.form.am_transaction_minimun);
-      formData.append('am_transaction_maximum', this.form.am_transaction_maximum);
-      formData.append('am_day_minimum', this.form.am_day_minimum);
-      formData.append('am_day_maximum', this.form.am_day_maximum);
-      formData.append('am_month_minimum', this.form.am_month_minimum);
-      formData.append('am_month_maximum', this.form.am_month_maximum);
-      formData.append('am_year_minimum', this.form.am_year_minimum);
-      formData.append('am_year_minimum', this.form.am_year_minimum);
-      formData.append('am_year_maximum', this.form.am_year_maximum); // Wallet limit no of transaction config
+          formData.append('amount_limit', _this4.form.amount_limit);
+          formData.append('am_per_transaction', _this4.form.am_per_transaction);
+          formData.append('am_per_day', _this4.form.am_per_day);
+          formData.append('am_per_month', _this4.form.am_per_month);
+          formData.append('am_per_year', _this4.form.am_per_year); // Wallet Amount Limits
 
-      formData.append('c_lm_per_day', this.form.c_lm_per_day);
-      formData.append('c_lm_per_month', this.form.c_lm_per_month);
-      formData.append('c_lm_per_year', this.form.c_lm_per_year);
-      formData.append('c_allow_negative_balance', this.form.c_allow_negative_balance);
-      formData.append('c_com_daily_balance', this.form.c_com_daily_balance);
-      formData.append('c_com_daily_usage', this.form.c_com_daily_usage); // Wallet limit no of transaction
+          formData.append('am_minimum', _this4.form.am_minimum);
+          formData.append('am_maximum', _this4.form.am_maximum);
+          formData.append('am_transaction_minimum', _this4.form.am_transaction_minimun);
+          formData.append('am_transaction_maximum', _this4.form.am_transaction_maximum);
+          formData.append('am_day_minimum', _this4.form.am_day_minimum);
+          formData.append('am_day_maximum', _this4.form.am_day_maximum);
+          formData.append('am_month_minimum', _this4.form.am_month_minimum);
+          formData.append('am_month_maximum', _this4.form.am_month_maximum);
+          formData.append('am_year_minimum', _this4.form.am_year_minimum);
+          formData.append('am_year_minimum', _this4.form.am_year_minimum);
+          formData.append('am_year_maximum', _this4.form.am_year_maximum); // Wallet limit no of transaction config
 
-      formData.append('lm_per_day', this.form.lm_per_day);
-      formData.append('lm_per_month', this.form.lm_per_month);
-      formData.append('lm_per_year', this.form.lm_per_year);
-      formData.append('allow_negative_balance', this.form.allow_negative_balance);
-      axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-      axios.post('api/walletaccount/StoreWalletAccount', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+          formData.append('c_lm_per_day', _this4.form.c_lm_per_day);
+          formData.append('c_lm_per_month', _this4.form.c_lm_per_month);
+          formData.append('c_lm_per_year', _this4.form.c_lm_per_year);
+          formData.append('c_allow_negative_balance', _this4.form.c_allow_negative_balance);
+          formData.append('c_com_daily_balance', _this4.form.c_com_daily_balance);
+          formData.append('c_com_daily_usage', _this4.form.c_com_daily_usage); // Wallet limit no of transaction
+
+          formData.append('lm_per_day', _this4.form.lm_per_day);
+          formData.append('lm_per_month', _this4.form.lm_per_month);
+          formData.append('lm_per_year', _this4.form.lm_per_year);
+          formData.append('allow_negative_balance', _this4.form.allow_negative_balance);
+          formData.append('BankAccount', JSON.stringify(_this4.BankAccount));
+          formData.append('Services', JSON.stringify(_this4.Services));
+          formData.append('WalletAccountNoDetails', _this4.form.WalletAccountNoDetails);
+          formData.append('WalletAccountNameDetails', _this4.form.WalletAccountNameDetails); // Joint Wallet Account
+
+          formData.append('joint_wallet_account_no', _this4.form.JointWalletAccountNo);
+          formData.append('CMSCreditAccountNo', _this4.form.CMSCreditAccountNo);
+          axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+          axios.post('api/walletaccount/StoreWalletAccount', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'X-CSRF-TOKEN': _this4.csrf_token
+            }
+          }).then(function (res) {
+            _this4.$Progress.increase(10);
+
+            _this4.$Progress.finish();
+
+            console.log(res);
+
+            if (res) {
+              _this4.form.clear();
+
+              _this4.form.reset();
+
+              toast.fire({
+                type: 'success',
+                title: 'Wallet Account Successfully created!'
+              });
+
+              _this4.$router.push('/walletaccounts');
+            }
+
+            console.log(res);
+          })["catch"](function (err) {
+            _this4.$Progress.fail(); //console.log(err)
+
+
+            console.clear();
+
+            if (err.response.status == 422) {
+              toast.fire({
+                type: 'info',
+                title: 'Wallet Account Already Exists!'
+              });
+            }
+          });
         }
-      }).then(function (res) {
-        console.log(res);
-
-        _this4.form.clear();
-
-        _this4.form.reset();
-
-        toast.fire({
-          type: 'success',
-          title: 'Wallet Account Successfully created!'
-        });
-
-        _this4.$router.push('/walletaccounts');
-      })["catch"](function (err) {
-        console.log(err);
       });
     },
+
+    /**
+     * @ Get Wallet Account Type 
+     **/
     GetWalletAccountType: function GetWalletAccountType() {
       var _this5 = this;
 
@@ -3622,12 +4014,16 @@ __webpack_require__.r(__webpack_exports__);
         return _this5.walletAccountTypes = data;
       });
     },
+
+    /**
+     * @ Get Wallet Account Details 
+     **/
     GetWalletAccountDetails: function GetWalletAccountDetails() {
       var _this6 = this;
 
       //axios.get('api/walletaccount/GetWalletAccountDetails/'+ this.form.username).then(({ data}) => (console.log(data)));
       axios.get('/api/walletaccount/GetWalletAccountDetails/' + this.$route.params.id).then(function (res) {
-        console.log(res);
+        //console.log(res)
         _this6.form.WalletAccountType = res.data[0]['wallet_account_type'];
         _this6.form.WalletType = res.data[0]['wallet_type'];
         _this6.form.Branch = res.data[0]['branch'];
@@ -3641,12 +4037,12 @@ __webpack_require__.r(__webpack_exports__);
         _this6.form.am_minimum = res.data[0]['am_minimum'];
         _this6.form.am_maximum = res.data[0]['am_maximum'];
         _this6.form.am_transaction_minimun = res.data[0]['am_transaction_minimum'];
-        _this6.form.am_transaction_maximum = res.data[0]['am_transaction"_maximum'];
+        _this6.form.am_transaction_maximum = res.data[0]['am_transaction_maximum'];
         _this6.form.am_day_minimum = res.data[0]['am_day_minimum'];
         _this6.form.am_day_maximum = res.data[0]['am_day_maximum'];
         _this6.form.am_month_minimum = res.data[0]['am_month_minimum'];
         _this6.form.am_month_maximum = res.data[0]['am_month_maximum'];
-        _this6.form.am_year_minimum = res.data[0]['am_year_minumum'];
+        _this6.form.am_year_minimum = res.data[0]['am_year_minimum'];
         _this6.form.am_year_maximum = res.data[0]['am_year_maximum'];
         _this6.form.c_lm_per_day = res.data[0]['c_lm_per_day'];
         _this6.form.c_lm_per_month = res.data[0]['c_lm_per_month'];
@@ -3660,24 +4056,207 @@ __webpack_require__.r(__webpack_exports__);
         _this6.form.allow_negative_balance = res.data[0]['allow_negative_balance'];
         _this6.form.bank_name = res.data[0]['bank_name'];
         _this6.form.account_type = res.data[0]['account_type'];
+        _this6.form.kyc_form = res.data[0]['kyc_form'];
+        _this6.form.valid_id = res.data[0]['valid_id'];
+        _this6.form.WalletAccountNoDetails = res.data[0]['WalletAccountNoDetails'];
+        _this6.form.WalletAccountNameDetails = res.data[0]['WalletAccountNameDetails'];
+        _this6.form.JointWalletAccountNo = res.data[0]['joint_wallet_account_no'];
+
+        _this6.SerachJointWalletAccount(res.data[0]['joint_wallet_account_no']);
+
+        _this6.form.WalletAccountNo = res.data[0]['wan'];
       })["catch"](function (err) {
         console.log(err);
       });
     },
-    uploadFile: function uploadFile(e) {
-      this.form.kyc_form = this.$refs.file.files[0];
+    GetWalletBankAccounts: function GetWalletBankAccounts() {
+      var _this7 = this;
+
+      this.BankAccount.splice(0, 1);
+      axios.get('/api/walletaccount/GetWalletBankAccount/' + this.$route.params.id).then(function (res) {
+        var i;
+
+        for (i = 0; i < res.data.length; i++) {
+          _this7.BankAccount.push({
+            id: res.data[i].id,
+            bank_name: res.data[i].bank_name,
+            Branch: res.data[i].branch,
+            account_type: res.data[i].account_type,
+            account_name: res.data[i].account_name,
+            account_no: res.data[i].account_no,
+            "default": res.data[i]["default"],
+            status: res.data[i].status
+          });
+        }
+      })["catch"](function (err) {
+        console.log(err);
+      });
     },
+
+    /**
+     * @ Get Kyc Form File 
+     **/
+    GetKycForm: function GetKycForm() {
+      var photo = this.form.photo.length > 200 ? this.form.photo : "img/profile/" + this.form.photo;
+      return photo;
+    },
+
+    /**
+     * @ Get Kyc Form File 
+     **/
+    uploadKycForm: function uploadKycForm(e) {
+      e.preventDefault();
+      this.form.kyc_form = this.$refs.file.files[0];
+      this.errors.clear(); //$('#kyc_form_filename').html(this.$refs.file.files[0].name);
+
+      this.kyc_form_file_name = e.target.files[0].name;
+      console.log(e.target.files[0].name);
+      return true;
+    },
+
+    /**
+     * Upload Valid Id 
+     **/
     uploadValidId: function uploadValidId(e) {
+      e.preventDefault();
       this.form.valid_id = this.$refs.valid_id.files[0];
+      this.errors.clear(); //$('#valid_id_filename').html(e.target.files.name);
+
+      this.valid_id_file_name = e.target.files[0].name;
+      return true;
+    },
+
+    /**
+     * @ Get Services 
+     **/
+    GetServices: function GetServices() {
+      var _this8 = this;
+
+      if (this.editmode == false) {
+        axios.get('api/servicematrix/GetServices').then(function (_ref2) {
+          var data = _ref2.data;
+          return _this8.Services = data;
+        });
+      }
+    },
+
+    /**
+     * @ Get Service Matrix Config For Update 
+     **/
+    Getsmc: function Getsmc() {
+      var _this9 = this;
+
+      if (this.editmode == true) {
+        axios.get('/api/walletaccount/GetServiceMatrixConfig/' + this.$route.params.id).then(function (_ref3) {
+          var data = _ref3.data;
+          return _this9.Services = data;
+        });
+      }
+    },
+
+    /**
+     * @ Check Wallet Account Type 
+     **/
+    CheckWalletAccountType: function CheckWalletAccountType() {
+      // Check if Prepaid User
+      if (this.form.WalletAccountType == 5) {
+        return false;
+      } // Check if Credit User
+
+
+      if (this.form.WalletAccountType == 8) {
+        return false;
+      }
+
+      return true;
+    },
+
+    /**
+     * @ Add Bank Account  
+     **/
+    addBank: function addBank() {
+      this.BankAccount.push({
+        bank_name: null,
+        Branch: null,
+        account_type: null,
+        account_name: null,
+        account_no: null,
+        "default": false,
+        status: false
+      });
+    },
+
+    /**
+     * @ Remove Bank Account 
+     **/
+    removeElement: function removeElement(index) {
+      this.BankAccount.splice(index, 1);
+    },
+    searchAccountNo: function searchAccountNo() {
+      var _this10 = this;
+
+      axios.get('/api/walletaccount/SearchWalletAccountNo/' + this.form.WalletAccountNoDetails).then(function (res) {
+        console.log(res);
+
+        if (res) {
+          if (res.data == 404) {
+            _this10.form.WalletAccountNameDetails = null;
+            toast.fire({
+              type: 'info',
+              title: 'Wallet Account No Not Found'
+            });
+
+            _this10.$validator.validateAll().then(function (result) {
+              if (result) {
+                return;
+              }
+            });
+
+            return false;
+          } else {
+            _this10.form.WalletAccountNameDetails = res.data;
+
+            _this10.errors.clear();
+
+            $('#nextTab').removeAttr('disabled');
+            return true;
+          }
+        }
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+
+    /**
+     * @ Search Joint Wallet Account 
+     **/
+    SerachJointWalletAccount: function SerachJointWalletAccount() {
+      var _this11 = this;
+
+      var $jwan = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      axios.get('/api/walletaccount/SearchWalletJointAccount/' + this.form.JointWalletAccountNo).then(function (res) {
+        console.log(res);
+        _this11.form.JointWalletType = res.data[0].wallet_type;
+        _this11.form.jointWalletAccountType = res.data[0].wallet_account_type;
+        _this11.form.JointWalletAccountName = res.data[0].wallet_account_name;
+      })["catch"](function (err) {
+        console.log(err);
+      });
     }
   },
   created: function created() {
-    this.GetWalletAccountType();
-    this.EditWalletAccount();
-    this.SearchESSID();
+    if (this.editmode == false) {
+      this.GetWalletAccountType();
+      this.EditWalletAccount();
+      this.SearchESSID();
+      this.datatable();
+      this.GetServices();
+    }
 
     if (this.editmode == true) {
       this.GetWalletAccountDetails();
+      this.GetWalletBankAccounts();
+      this.Getsmc();
     }
   }
 });
@@ -4063,6 +4642,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       loadingWizard: false,
+      tabtwo: true,
       form: new Form({
         servicetype_code: null,
         servicetype_name: null,
@@ -4138,6 +4718,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     nextTabTwo: function nextTabTwo() {
       this.tabone == false;
+      $('.nextbtn').attr('disabled', true);
     },
     IsDisabled: function IsDisabled() {
       if (errors.items.length > 0) {
@@ -4157,6 +4738,13 @@ __webpack_require__.r(__webpack_exports__);
     onFileChangeConfirmationTemplate: function onFileChangeConfirmationTemplate(e) {
       console.log(e.target.files[0]);
       this.form.confirmation_template = e.target.files[0];
+    },
+    ValidateTabTwo: function ValidateTabTwo() {
+      if (this.form.behavior_value == null) {
+        return false;
+      } else {
+        return true;
+      }
     }
     /***
     * These methods are for changing the value of the form data
@@ -4502,6 +5090,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5072,20 +5665,91 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      edit_mode: false,
       ServiceGateway: {},
       ServiceGroups: {},
-      service_template: null,
+      sd_values: [],
+      get_service_id: this.$route.params.id,
+      method_name: this.$route.params.method_name,
+      // WalletTypes : {},
+      service_template: 'empty',
       form: new Form({
+        /**
+         *  Service ID for updating
+         */
+        service_id: '',
+
         /**
          * Form data For First Tab
          */
+
+        /**
+         * Service Condition
+         */
+        service_condition: 'solo',
         service_type_id: null,
         pr_wallet_id: null,
         ir_wallet_id: null,
         wallet_type: null,
+        // wallet_type_id : null,
         servicetype_code: null,
         servicetype_name: null,
         service_code: null,
@@ -5097,47 +5761,163 @@ __webpack_require__.r(__webpack_exports__);
         ir_wallet_acc_no: null,
         ir_wallet_acc_name: null,
         service_group_id: null,
-        service_template: null,
+        service_template: 'empty',
 
         /**
          * Form data for Second Tab
          */
+        approval: 0,
+        merchant_admin_id: null,
+        value: null,
+        source_wallet: 'Initiator Wallet',
+        destination_wallet: null,
+        rates_table: null,
 
         /**
          * Form data for Third Tab
          */
-        limit_minimum: null,
-        limit_maximum: null,
-        amount_per_day: null,
-        amount_per_month: null,
-        amount_per_year: null,
+        limit_minimum: 0,
+        limit_maximum: 0,
+        amount_per_day: 0,
+        amount_per_month: 0,
+        amount_per_year: 0,
 
         /**
          * Form Data for Fourth Tab
          */
-        limit_per_day: null,
-        limit_per_month: null,
-        limit_per_year: null,
-
-        /**
-         * Approval 
-         */
-        approval: 0,
-        merchant_admin_id: null
+        limit_per_day: 0,
+        limit_per_month: 0,
+        limit_per_year: 0
       })
     };
   },
   methods: {
     onComplete: function onComplete() {
+      if (this.method_name == 'view' || this.method_name == 'create') {
+        this.submitServices();
+      } else {
+        /**
+         * Creating Object for storing inside the local storage
+         */
+        var list_services = [];
+        list_services = JSON.parse(localStorage.getItem('list_services'));
+
+        if (list_services.length != 2) {
+          list_services.push({
+            'service_id': this.get_service_id,
+            'wallet_type': this.form.wallet_type,
+            'service_name': this.form.service_name,
+            'service_code': this.form.service_code,
+            'service_description': this.form.service_description
+          });
+          localStorage.setItem('list_services', JSON.stringify(list_services));
+          this.$router.push('/createjointservice');
+        } else {
+          /**
+           * This will trigger once the user reached the tentative maximum number of jointing services which is 3 (Suggested by the Project Owner.)
+           */
+          toast.fire({
+            type: 'warning',
+            title: "Adding failed! You've reached the maximum limit! (3)"
+          });
+          this.$router.push('/createjointservice');
+        }
+      }
+    },
+    submitServices: function submitServices() {
       var _this = this;
 
-      console.log('hi');
-      this.form.post('/api/service/createservice').then(function (response) {
-        _this.$router.push('serviceslist');
-      })["catch"](function () {
-        console.log('error');
-      });
+      /**
+      * 
+      */
+      var Formtwo = new FormData();
+      Formtwo.append('service_condition', this.form.service_condition);
+
+      if (this.edit_mode === true) {
+        Formtwo.append('service_id', this.get_service_id);
+      }
+      /**
+       * First Tab 
+       */
+
+
+      Formtwo.append('wallet_type', this.form.wallet_type);
+      Formtwo.append('service_type_id', this.form.service_type_id);
+      Formtwo.append('pr_wallet_id', this.form.pr_wallet_id);
+      Formtwo.append('ir_wallet_id', this.form.ir_wallet_id);
+      Formtwo.append('servicetype_code', this.form.servicetype_code);
+      Formtwo.append('servicetype_name', this.form.servicetype_name);
+      Formtwo.append('service_code', this.form.service_code);
+      Formtwo.append('service_name', this.form.service_name);
+      Formtwo.append('service_description', this.form.service_description);
+      Formtwo.append('service_gateway', this.form.service_gateway);
+      Formtwo.append('pr_wallet_acc_no', this.form.pr_wallet_acc_no);
+      Formtwo.append('pr_wallet_acc_name', this.form.pr_wallet_acc_name);
+      Formtwo.append('ir_wallet_acc_no', this.form.ir_wallet_acc_no);
+      Formtwo.append('ir_wallet_acc_name', this.form.ir_wallet_acc_name);
+      Formtwo.append('service_group_id', this.form.service_group_id);
+      Formtwo.append('service_template', this.form.service_template);
+      /**
+       * Second Tab 
+      */
+
+      Formtwo.append('sd_values', JSON.stringify(this.sd_values));
+      Formtwo.append('approval', this.form.approval);
+      Formtwo.append('merchant_admin_id', this.form.merchant_admin_id);
+      /**
+       * Third Tab
+      */
+
+      Formtwo.append('limit_minimum', this.form.limit_minimum);
+      Formtwo.append('limit_maximum', this.form.limit_maximum);
+      Formtwo.append('amount_per_day', this.form.amount_per_day);
+      Formtwo.append('amount_per_month', this.form.amount_per_month);
+      Formtwo.append('amount_per_year', this.form.amount_per_year);
+      /**
+       * Fourth Tab
+       */
+
+      Formtwo.append('limit_per_day', this.form.limit_per_day);
+      Formtwo.append('limit_per_month', this.form.limit_per_month);
+      Formtwo.append('limit_per_year', this.form.limit_per_year); //this.form.post('/api/service/createservice')  
+
+      if (this.edit_mode === false) {
+        axios.post("/api/service/createservice", Formtwo).then(function (response) {
+          _this.$router.push('/serviceslist/view');
+
+          console.log(response.data);
+        })["catch"](function () {
+          console.log('error');
+        });
+      } else {
+        axios.post("/api/service/updateservice", Formtwo).then(function (response) {
+          _this.$router.push('/serviceslist/view');
+
+          console.log('hah update');
+        })["catch"](function () {
+          console.log('error');
+        });
+      }
     },
+    showDatatable: function showDatatable() {
+      setTimeout(function () {
+        var table = $('#sdwalletsetup').DataTable({
+          // "searching": false,
+          //"sDom": '<"customcontent">rt<"row"<"col-lg-4" i><"col-lg-4" p>><"clear">',
+          "paging": true,
+          "pageLength": 10,
+          scrollY: true,
+          "autoWidth": true,
+          //lengthChange: false,
+          responsive: true,
+          fixedColumns: true
+        });
+      }, 1000);
+    },
+
+    /**
+     * For showing Service Type Details by its service type code
+     */
     showServiceTypeDetails: function showServiceTypeDetails() {
       var _this2 = this;
 
@@ -5153,6 +5933,10 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function () {});
     },
+
+    /**
+     * For showing the owner name of the wallet principal account no
+     */
     showPRWallletAccountName: function showPRWallletAccountName() {
       var _this3 = this;
 
@@ -5178,6 +5962,10 @@ __webpack_require__.r(__webpack_exports__);
         console.log('err');
       });
     },
+
+    /**
+     * Gets the service gateway list from other module
+     */
     getServiceGateway: function getServiceGateway() {
       var _this5 = this;
 
@@ -5185,6 +5973,10 @@ __webpack_require__.r(__webpack_exports__);
         _this5.ServiceGateway = response.data;
       });
     },
+
+    /**
+     * Gets the service group list from other module
+     */
     getServiceGroup: function getServiceGroup() {
       var _this6 = this;
 
@@ -5193,24 +5985,383 @@ __webpack_require__.r(__webpack_exports__);
         return _this6.ServiceGroups = data;
       });
     },
-    onFileChangeAcknowledgeTemplate: function onFileChangeAcknowledgeTemplate(e) {
+
+    /**
+     * Setting up the service template
+     */
+    onFileChangeServiceTemplate: function onFileChangeServiceTemplate(e) {
       console.log(e.target.files[0]);
       this.form.service_template = e.target.files[0];
       this.service_template = e.target.files[0]['name'];
     },
+
+    /**
+     * For changing the approval status
+     */
     switchApproval: function switchApproval(changeValue) {
       if (changeValue == 0) {
         this.form.approval = 1;
       } else {
         this.form.approval = 0;
-        /*this.form.merchant_admin_id === "0";  
-        $('#assignapprover').attr('hidden');*/
       }
+    },
+    openModal: function openModal() {
+      $('#serviceValueSDRates').modal('show');
+    },
+    createSD: function createSD() {
+      this.form.value == '';
+      this.form.destination_wallet == '';
+      this.form.rates_table == '';
+      this.sd_values.push({
+        'service_value': this.form.value,
+        'service_source_wallet': this.form.source_wallet,
+        'service_destination_wallet': this.form.destination_wallet,
+        'service_rate_table': this.form.rates_table
+      });
+      console.log(this.sd_values);
+      $('#serviceValueSDRates').modal('hide');
+    },
+    determineServiceMethod: function determineServiceMethod() {
+      if (this.get_service_id != undefined) {
+        this.edit_mode = true;
+        this.form.service_id = this.get_service_id;
+        console.log('update');
+        this.retrieveServicesDetails();
+      } else {
+        console.log('create');
+      }
+    },
+
+    /**
+     * This will trigger if the method used was 'update' method 
+     * It only shows the values retrieved using the service ID
+     */
+    retrieveServicesDetails: function retrieveServicesDetails() {
+      var _this7 = this;
+
+      axios.get('/api/service/getservicedetails/' + this.form.service_id).then(function (response) {
+        console.log(response.data);
+        console.log(_this7.form.service_id);
+        /**
+         * Services
+         */
+
+        _this7.form.service_code = response.data[0]['service_code'];
+        _this7.form.service_name = response.data[0]['service_name'];
+        _this7.form.service_description = response.data[0]['service_description'];
+        /**
+         * Wallet Type
+         */
+
+        _this7.form.wallet_type = response.data[0]['s_wallet_type'];
+        /**
+         * Wallet Details
+         */
+
+        _this7.form.pr_wallet_id = response.data[0]['pr_details_id'];
+        _this7.form.ir_wallet_id = response.data[0]['ir_details_id'];
+        /**
+         *  Service Type
+         */
+
+        _this7.form.servicetype_code = response.data[0]['st_code'];
+        _this7.form.servicetype_name = response.data[0]['st_name'];
+        _this7.form.service_type_id = response.data[0]['service_type_id'];
+        /**
+         * Service Gateway 
+         */
+
+        _this7.form.service_gateway = response.data[0]['service_gateway_id'];
+        _this7.form.service_group_id = response.data[0]['service_group_id'];
+        /**
+         * Gets the details of PR/IR wallet Accounts based on their ID
+         */
+
+        _this7.getWalletAccountDetails(response.data[0]['pr_details_id'], 'pr');
+
+        _this7.getWalletAccountDetails(response.data[0]['ir_details_id'], 'ir');
+        /**
+         * Service Template
+         */
+
+
+        _this7.service_template = response.data[0]['service_template'];
+        _this7.form.service_template = response.data[0]['service_template'];
+        /**
+         * Values Source Destination Rates Table
+         */
+
+        _this7.getVSDR(_this7.form.service_id);
+        /**
+         * Service Amount Limits
+         */
+
+
+        _this7.form.limit_minimum = response.data[0]['limit_minimum'];
+        _this7.form.limit_maximum = response.data[0]['limit_maximum'];
+        _this7.form.amount_per_day = response.data[0]['amount_per_day'];
+        _this7.form.amount_per_month = response.data[0]['amount_per_month'];
+        _this7.form.amount_per_year = response.data[0]['amount_per_year'];
+        /**
+         * Service Transaction Limits
+         */
+
+        _this7.form.limit_per_day = response.data[0]['limit_per_day'];
+        _this7.form.limit_per_month = response.data[0]['limit_per_month'];
+        _this7.form.limit_per_year = response.data[0]['limit_per_year'];
+      })["catch"](function () {
+        console.log('error');
+      });
+    },
+    getWalletAccountDetails: function getWalletAccountDetails($id, $redeem) {
+      var _this8 = this;
+
+      axios.get('/api/service/getwalletdetails/' + $id).then(function (response) {
+        if ($redeem == 'pr') {
+          console.log(response.data);
+          _this8.form.pr_wallet_acc_no = response.data[0]['wallet_account_no'];
+          _this8.form.pr_wallet_acc_name = response.data[0]['wallet_account_name'];
+        } else {
+          console.log(response.data);
+          _this8.form.ir_wallet_acc_no = response.data[0]['wallet_account_no'];
+          _this8.form.ir_wallet_acc_name = response.data[0]['wallet_account_name'];
+        }
+      })["catch"](function () {
+        console.log('error');
+      });
+    },
+
+    /**
+     * Setting up the values, source wallet, destination wallet, rates table to the DATA return Array variable.
+     */
+    getVSDR: function getVSDR($service_id) {
+      var _this9 = this;
+
+      axios.get('/api/service/getvsdr/' + $service_id).then(function (response) {
+        console.log('vsdr');
+        console.log(response.data);
+        _this9.sd_values = response.data;
+      })["catch"](function () {
+        console.log('error');
+      });
     }
+    /*
+    showWalletTypes() {
+                axios.get('api/walletaccount/GetAllWalletAccountType').then(({ data}) => (this.WalletTypes = data));
+        }
+    */
+
   },
   created: function created() {
     this.getServiceGateway();
-    this.getServiceGroup();
+    this.getServiceGroup(); // this.showWalletTypes(); 
+
+    this.showDatatable();
+    this.determineServiceMethod();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/JointServices.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServices/JointServices.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      method_name: 'joint',
+      form: new Form({
+        original_wallet_type: window.localStorage.getItem('wallet_type'),
+        original_service_code: window.localStorage.getItem('service_code'),
+        original_service_name: window.localStorage.getItem('service_name'),
+        original_service_description: window.localStorage.getItem('service_description'),
+        joint_services: null
+      })
+    };
+  },
+  methods: {
+    addService: function addService(method) {
+      if (localStorage.getItem('list_services') == null || localStorage.getItem('list_services') == undefined) {
+        /**
+         * For creating localstorage object in array for joint services
+         */
+        var joint_services = [];
+        localStorage.setItem('list_services', JSON.stringify(joint_services));
+      }
+      /**
+       * Sets local storage variables for fields below
+       */
+
+
+      window.localStorage.setItem('wallet_type', this.form.original_wallet_type);
+      window.localStorage.setItem('service_code', this.form.original_service_code);
+      window.localStorage.setItem('service_name', this.form.original_service_name || '');
+      window.localStorage.setItem('service_description', this.form.original_service_description || '');
+      window.localStorage.setItem('method_name', 'joint');
+    },
+    showDatatable: function showDatatable() {
+      setTimeout(function () {
+        var table = $('#jointservicestable').DataTable({
+          // "searching": false,
+          //"sDom": '<"customcontent">rt<"row"<"col-lg-4" i><"col-lg-4" p>><"clear">',
+          "paging": true,
+          "pageLength": 10,
+          scrollY: true,
+          "autoWidth": true,
+          //lengthChange: false,
+          responsive: true,
+          fixedColumns: true
+        });
+      }, 1000);
+    },
+    saveJointServices: function saveJointServices() {
+      var _this = this;
+
+      if (localStorage.getItem('list_services') === null || localStorage.getItem('list_services') === undefined || localStorage.getItem('list_services') === '[]') {
+        toast.fire({
+          type: 'warning',
+          title: 'Please choose service to join'
+        });
+        return false;
+      }
+
+      {
+        swal.fire({
+          title: 'Are you sure?',
+          text: "Save Joint Services",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Save'
+        }).then(function (result) {
+          if (result.value) {
+            /**
+             * Insert Joint Services
+             */
+            _this.form.post('/api/service/createjointservice').then(function (response) {
+              console.log(response.data);
+            })["catch"](function () {
+              console.log("eerrrrr");
+            });
+            /**
+             * Clears the local storage variable for joining services
+             */
+
+
+            localStorage.removeItem('wallet_type');
+            localStorage.removeItem('service_code');
+            localStorage.removeItem('service_name');
+            localStorage.removeItem('service_description');
+            localStorage.removeItem('list_services');
+            /**
+             * Clears the UI
+             */
+
+            _this.form.original_wallet_type = '';
+            _this.form.original_service_code = '';
+            _this.form.original_service_name = '';
+            _this.form.original_service_description = '';
+
+            _this.showJointServiceTable();
+
+            toast.fire({
+              type: 'success',
+              title: 'Successfully Jointed Services'
+            });
+          }
+        });
+      }
+    },
+    showJointServiceTable: function showJointServiceTable() {
+      /**
+       * Setting up the stored localstorage data into an actual JS array
+       */
+      this.form.joint_services = JSON.parse(localStorage.getItem('list_services'));
+    }
+  },
+  created: function created() {
+    this.showJointServiceTable();
+    this.showDatatable();
   }
 });
 
@@ -5268,13 +6419,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * This module is related with other modules to be completed.
    */
   data: function data() {
     return {
-      Services: {}
+      Services: {},
+      method_name: this.$route.params.method_name,
+      joint_services: JSON.parse(localStorage.getItem('list_services'))
     };
   },
   methods: {
@@ -5301,6 +6486,17 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function () {
         console.log("err");
       });
+    },
+    checksExistId: function checksExistId(id) {
+      var joint_services = this.joint_services;
+
+      var service = function service(obj) {
+        return obj.service_id === id;
+      };
+
+      if (joint_services !== null) {
+        return joint_services.some(service);
+      }
     }
   },
   created: function created() {
@@ -5349,10 +6545,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       user: window.user,
+      status: null,
       form: new Form({
         username: '',
         password: '',
@@ -5366,10 +6564,18 @@ __webpack_require__.r(__webpack_exports__);
 
       this.form.post('/login').then(function (_ref) {
         var data = _ref.data;
-        console.log(data);
-        window.localStorage.setItem('user', JSON.stringify(_this.form.username));
-        window.location.href = "/dashboard";
-      })["catch"](function () {
+
+        if (data.status != '401') {
+          console.log(data);
+          window.localStorage.setItem('user', JSON.stringify(_this.form.username)); //    window.location.href = "/dashboard"
+
+          _this.$router.go('/dashboard');
+        } else {
+          console.clear();
+          $('#username').addClass('is-invalid');
+          _this.status = data.status;
+        }
+      })["catch"](function (err) {
         console.clear();
       });
     }
@@ -5377,6 +6583,71 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     if (this.user) {
       this.$router.push('/dashboard');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inc/Navbar.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/inc/Navbar.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      username: window.user.username
+    };
+  },
+  methods: {
+    logout: function logout() {
+      var _this = this;
+
+      axios.post('/logout').then(function (res) {
+        //window.localStorage.removeItem('user');
+        // location.reload();
+        // window.location.href="/";
+        localStorage.clear();
+
+        _this.$router.replace('/');
+      })["catch"](function (err) {
+        console.log(err);
+      });
     }
   }
 });
@@ -9878,7 +11149,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\n#ba-close-button[data-v-64a2c4d3]{\r\n    background-color: Transparent;\r\n    background-repeat:no-repeat;\r\n    border: none;\r\n    cursor:pointer;\r\n    overflow: hidden;\r\n    outline:none;\r\n    margin-bottom: \"2px\";\n}\r\n", ""]);
 
 // exports
 
@@ -9897,7 +11168,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\ninput[data-v-4221c3ad] {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\n}\r\n", ""]);
+exports.push([module.i, "\ninput[data-v-4221c3ad] {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\n}\n#form-header[data-v-4221c3ad] {\r\n    background-color: #283E4A !important;\n}\n#err-msg[data-v-4221c3ad] {\r\n    line-height: 1,5;\r\n    font-size: 14px;\n}\r\n", ""]);
 
 // exports
 
@@ -57217,122 +58488,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" })
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("h1", [_vm._v("Dashboard")])
-    ])
-  }
-]
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2&":
-/*!*****************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2& ***!
-  \*****************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "page-title-area" }, [
-    _c("div", { staticClass: "row align-items-center" }, [
-      _c("div", { staticClass: "col-sm-6" }, [
-        _c("div", { staticClass: "breadcrumbs-area clearfix" }, [
-          _c("h4", { staticClass: "page-title pull-left" }, [
-            _vm._v("Dashboard")
-          ]),
-          _vm._v(" "),
-          _c("ul", { staticClass: "breadcrumbs pull-left" }, [
-            _c(
-              "li",
-              [
-                _c("router-link", { attrs: { to: "/dashboard" } }, [
-                  _vm._v("Home")
-                ])
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _vm._m(0)
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-6 clearfix" }, [
-        _c("div", { staticClass: "user-profile pull-right btn-custom" }, [
-          _c("img", {
-            staticClass: "avatar user-thumb",
-            attrs: { src: "/str_dash/images/author/avatar.png", alt: "avatar" }
-          }),
-          _vm._v(" "),
-          _vm._m(1),
-          _vm._v(" "),
-          _c("div", { staticClass: "dropdown-menu" }, [
-            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-              _vm._v("Message")
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-              _vm._v("Settings")
-            ]),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "dropdown-item",
-                attrs: { href: "#" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.logout($event)
-                  }
-                }
-              },
-              [_vm._v("Logout")]
-            )
-          ])
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [_c("span", [_vm._v("Dashboard")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "h4",
-      {
-        staticClass: "user-name dropdown-toggle",
-        attrs: { "data-toggle": "dropdown" }
-      },
-      [_vm._v("Admin "), _c("i", { staticClass: "fa fa-angle-down" })]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -57472,7 +58630,7 @@ var render = function() {
                         ],
                         staticClass: "form-control",
                         attrs: {
-                          type: "text",
+                          type: "number",
                           name: "gateway_code",
                           placeholder: "Service Gateway Code"
                         },
@@ -57913,7 +59071,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "text-capitalize" }, [
-      _c("tr", [
+      _c("tr", { staticClass: "th-table" }, [
         _c("th", [_vm._v("Group Code")]),
         _vm._v(" "),
         _c("th", [_vm._v("Group Description")]),
@@ -58014,346 +59172,444 @@ var render = function() {
                               _vm._v(" "),
                               _c("td", [_vm._v(_vm._s(sm.group_description))]),
                               _vm._v(" "),
-                              _c("td", [_vm._v("Test")]),
-                              _vm._v(" "),
                               _c("td", [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "custom-control custom-switch"
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: sm.admin_all,
+                                      expression: "sm.admin_all"
+                                    }
+                                  ],
+                                  key: sm.id,
+                                  staticClass: "form-check-input",
+                                  attrs: {
+                                    type: "checkbox",
+                                    name: "admin_all[]",
+                                    id: "admin_all"
                                   },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: sm.admin,
-                                          expression: "sm.admin"
+                                  domProps: {
+                                    checked: Array.isArray(sm.admin_all)
+                                      ? _vm._i(sm.admin_all, null) > -1
+                                      : sm.admin_all
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$a = sm.admin_all,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            _vm.$set(
+                                              sm,
+                                              "admin_all",
+                                              $$a.concat([$$v])
+                                            )
+                                        } else {
+                                          $$i > -1 &&
+                                            _vm.$set(
+                                              sm,
+                                              "admin_all",
+                                              $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1))
+                                            )
                                         }
-                                      ],
-                                      key: sm.id,
-                                      staticClass: "custom-control-input",
-                                      attrs: {
-                                        type: "checkbox",
-                                        name: "admin[]",
-                                        id: "admin" + sm.id
-                                      },
-                                      domProps: {
-                                        checked: Array.isArray(sm.admin)
-                                          ? _vm._i(sm.admin, null) > -1
-                                          : sm.admin
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$a = sm.admin,
-                                            $$el = $event.target,
-                                            $$c = $$el.checked ? true : false
-                                          if (Array.isArray($$a)) {
-                                            var $$v = null,
-                                              $$i = _vm._i($$a, $$v)
-                                            if ($$el.checked) {
-                                              $$i < 0 &&
-                                                _vm.$set(
-                                                  sm,
-                                                  "admin",
-                                                  $$a.concat([$$v])
-                                                )
-                                            } else {
-                                              $$i > -1 &&
-                                                _vm.$set(
-                                                  sm,
-                                                  "admin",
-                                                  $$a
-                                                    .slice(0, $$i)
-                                                    .concat($$a.slice($$i + 1))
-                                                )
-                                            }
-                                          } else {
-                                            _vm.$set(sm, "admin", $$c)
-                                          }
-                                        }
+                                      } else {
+                                        _vm.$set(sm, "admin_all", $$c)
                                       }
-                                    }),
-                                    _vm._v(" "),
-                                    sm.admin == true
-                                      ? _c(
-                                          "label",
-                                          {
-                                            staticClass: "custom-control-label",
-                                            attrs: { for: "admin" + sm.id }
-                                          },
-                                          [_vm._v("ALL")]
-                                        )
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    sm.admin == false
-                                      ? _c(
-                                          "label",
-                                          {
-                                            staticClass: "custom-control-label",
-                                            attrs: { for: "admin" + sm.id }
-                                          },
-                                          [_vm._v("SOME")]
-                                        )
-                                      : _vm._e()
-                                  ]
-                                )
+                                    }
+                                  }
+                                })
                               ]),
                               _vm._v(" "),
                               _c("td", [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "custom-control custom-switch"
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: sm.admin_some,
+                                      expression: "sm.admin_some"
+                                    }
+                                  ],
+                                  key: sm.id,
+                                  staticClass: "form-check-input",
+                                  attrs: {
+                                    type: "checkbox",
+                                    name: "admin_some[]",
+                                    id: "admin_some"
                                   },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: sm.merchant,
-                                          expression: "sm.merchant"
+                                  domProps: {
+                                    checked: Array.isArray(sm.admin_some)
+                                      ? _vm._i(sm.admin_some, null) > -1
+                                      : sm.admin_some
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$a = sm.admin_some,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            _vm.$set(
+                                              sm,
+                                              "admin_some",
+                                              $$a.concat([$$v])
+                                            )
+                                        } else {
+                                          $$i > -1 &&
+                                            _vm.$set(
+                                              sm,
+                                              "admin_some",
+                                              $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1))
+                                            )
                                         }
-                                      ],
-                                      key: sm.id,
-                                      staticClass: "custom-control-input",
-                                      attrs: {
-                                        type: "checkbox",
-                                        name: "merchant[]",
-                                        id: "merchant" + sm.id
-                                      },
-                                      domProps: {
-                                        checked: Array.isArray(sm.merchant)
-                                          ? _vm._i(sm.merchant, null) > -1
-                                          : sm.merchant
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$a = sm.merchant,
-                                            $$el = $event.target,
-                                            $$c = $$el.checked ? true : false
-                                          if (Array.isArray($$a)) {
-                                            var $$v = null,
-                                              $$i = _vm._i($$a, $$v)
-                                            if ($$el.checked) {
-                                              $$i < 0 &&
-                                                _vm.$set(
-                                                  sm,
-                                                  "merchant",
-                                                  $$a.concat([$$v])
-                                                )
-                                            } else {
-                                              $$i > -1 &&
-                                                _vm.$set(
-                                                  sm,
-                                                  "merchant",
-                                                  $$a
-                                                    .slice(0, $$i)
-                                                    .concat($$a.slice($$i + 1))
-                                                )
-                                            }
-                                          } else {
-                                            _vm.$set(sm, "merchant", $$c)
-                                          }
-                                        }
+                                      } else {
+                                        _vm.$set(sm, "admin_some", $$c)
                                       }
-                                    }),
-                                    _vm._v(" "),
-                                    sm.merchant == true
-                                      ? _c(
-                                          "label",
-                                          {
-                                            staticClass: "custom-control-label",
-                                            attrs: { for: "merchant" + sm.id }
-                                          },
-                                          [_vm._v("ALL")]
-                                        )
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    sm.merchant == false
-                                      ? _c(
-                                          "label",
-                                          {
-                                            staticClass: "custom-control-label",
-                                            attrs: { for: "merchant" + sm.id }
-                                          },
-                                          [_vm._v("SOME")]
-                                        )
-                                      : _vm._e()
-                                  ]
-                                )
+                                    }
+                                  }
+                                })
                               ]),
                               _vm._v(" "),
                               _c("td", [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "custom-control custom-switch"
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: sm.merchant_all,
+                                      expression: "sm.merchant_all"
+                                    }
+                                  ],
+                                  key: sm.id,
+                                  staticClass: "form-check-input",
+                                  attrs: {
+                                    type: "checkbox",
+                                    name: "merchant_all[]",
+                                    id: "merchant_all"
                                   },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: sm.branch,
-                                          expression: "sm.branch"
+                                  domProps: {
+                                    checked: Array.isArray(sm.merchant_all)
+                                      ? _vm._i(sm.merchant_all, null) > -1
+                                      : sm.merchant_all
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$a = sm.merchant_all,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            _vm.$set(
+                                              sm,
+                                              "merchant_all",
+                                              $$a.concat([$$v])
+                                            )
+                                        } else {
+                                          $$i > -1 &&
+                                            _vm.$set(
+                                              sm,
+                                              "merchant_all",
+                                              $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1))
+                                            )
                                         }
-                                      ],
-                                      key: sm.id,
-                                      staticClass: "custom-control-input",
-                                      attrs: {
-                                        type: "checkbox",
-                                        name: "branch[]",
-                                        id: "branch" + sm.id
-                                      },
-                                      domProps: {
-                                        checked: Array.isArray(sm.branch)
-                                          ? _vm._i(sm.branch, null) > -1
-                                          : sm.branch
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$a = sm.branch,
-                                            $$el = $event.target,
-                                            $$c = $$el.checked ? true : false
-                                          if (Array.isArray($$a)) {
-                                            var $$v = null,
-                                              $$i = _vm._i($$a, $$v)
-                                            if ($$el.checked) {
-                                              $$i < 0 &&
-                                                _vm.$set(
-                                                  sm,
-                                                  "branch",
-                                                  $$a.concat([$$v])
-                                                )
-                                            } else {
-                                              $$i > -1 &&
-                                                _vm.$set(
-                                                  sm,
-                                                  "branch",
-                                                  $$a
-                                                    .slice(0, $$i)
-                                                    .concat($$a.slice($$i + 1))
-                                                )
-                                            }
-                                          } else {
-                                            _vm.$set(sm, "branch", $$c)
-                                          }
-                                        }
+                                      } else {
+                                        _vm.$set(sm, "merchant_all", $$c)
                                       }
-                                    }),
-                                    _vm._v(" "),
-                                    sm.branch == true
-                                      ? _c(
-                                          "label",
-                                          {
-                                            staticClass: "custom-control-label",
-                                            attrs: { for: "branch" + sm.id }
-                                          },
-                                          [_vm._v("ALL")]
-                                        )
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    sm.branch == false
-                                      ? _c(
-                                          "label",
-                                          {
-                                            staticClass: "custom-control-label",
-                                            attrs: { for: "branch" + sm.id }
-                                          },
-                                          [_vm._v("SOME")]
-                                        )
-                                      : _vm._e()
-                                  ]
-                                )
+                                    }
+                                  }
+                                })
                               ]),
                               _vm._v(" "),
                               _c("td", [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "custom-control custom-switch"
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: sm.merchant_some,
+                                      expression: "sm.merchant_some"
+                                    }
+                                  ],
+                                  key: sm.id,
+                                  staticClass: "form-check-input",
+                                  attrs: {
+                                    type: "checkbox",
+                                    name: "merchant_some[]",
+                                    id: "merchant_some"
                                   },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: sm.agent,
-                                          expression: "sm.agent"
+                                  domProps: {
+                                    checked: Array.isArray(sm.merchant_some)
+                                      ? _vm._i(sm.merchant_some, null) > -1
+                                      : sm.merchant_some
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$a = sm.merchant_some,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            _vm.$set(
+                                              sm,
+                                              "merchant_some",
+                                              $$a.concat([$$v])
+                                            )
+                                        } else {
+                                          $$i > -1 &&
+                                            _vm.$set(
+                                              sm,
+                                              "merchant_some",
+                                              $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1))
+                                            )
                                         }
-                                      ],
-                                      key: sm.id,
-                                      staticClass: "custom-control-input",
-                                      attrs: {
-                                        type: "checkbox",
-                                        name: "agent[]",
-                                        id: "agent" + sm.id
-                                      },
-                                      domProps: {
-                                        checked: Array.isArray(sm.agent)
-                                          ? _vm._i(sm.agent, null) > -1
-                                          : sm.agent
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$a = sm.agent,
-                                            $$el = $event.target,
-                                            $$c = $$el.checked ? true : false
-                                          if (Array.isArray($$a)) {
-                                            var $$v = null,
-                                              $$i = _vm._i($$a, $$v)
-                                            if ($$el.checked) {
-                                              $$i < 0 &&
-                                                _vm.$set(
-                                                  sm,
-                                                  "agent",
-                                                  $$a.concat([$$v])
-                                                )
-                                            } else {
-                                              $$i > -1 &&
-                                                _vm.$set(
-                                                  sm,
-                                                  "agent",
-                                                  $$a
-                                                    .slice(0, $$i)
-                                                    .concat($$a.slice($$i + 1))
-                                                )
-                                            }
-                                          } else {
-                                            _vm.$set(sm, "agent", $$c)
-                                          }
-                                        }
+                                      } else {
+                                        _vm.$set(sm, "merchant_some", $$c)
                                       }
-                                    }),
-                                    _vm._v(" "),
-                                    sm.agent == true
-                                      ? _c(
-                                          "label",
-                                          {
-                                            staticClass: "custom-control-label",
-                                            attrs: { for: "agent" + sm.id }
-                                          },
-                                          [_vm._v("ALL")]
-                                        )
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    sm.agent == false
-                                      ? _c(
-                                          "label",
-                                          {
-                                            staticClass: "custom-control-label",
-                                            attrs: { for: "agent" + sm.id }
-                                          },
-                                          [_vm._v("SOME")]
-                                        )
-                                      : _vm._e()
-                                  ]
-                                )
+                                    }
+                                  }
+                                })
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: sm.branch_all,
+                                      expression: "sm.branch_all"
+                                    }
+                                  ],
+                                  key: sm.id,
+                                  staticClass: "form-check-input",
+                                  attrs: {
+                                    type: "checkbox",
+                                    name: "branch_all[]",
+                                    id: "branch_all"
+                                  },
+                                  domProps: {
+                                    checked: Array.isArray(sm.branch_all)
+                                      ? _vm._i(sm.branch_all, null) > -1
+                                      : sm.branch_all
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$a = sm.branch_all,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            _vm.$set(
+                                              sm,
+                                              "branch_all",
+                                              $$a.concat([$$v])
+                                            )
+                                        } else {
+                                          $$i > -1 &&
+                                            _vm.$set(
+                                              sm,
+                                              "branch_all",
+                                              $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1))
+                                            )
+                                        }
+                                      } else {
+                                        _vm.$set(sm, "branch_all", $$c)
+                                      }
+                                    }
+                                  }
+                                })
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: sm.branch_some,
+                                      expression: "sm.branch_some"
+                                    }
+                                  ],
+                                  key: sm.id,
+                                  staticClass: "form-check-input",
+                                  attrs: {
+                                    type: "checkbox",
+                                    name: "branch_some[]",
+                                    id: "branch_some"
+                                  },
+                                  domProps: {
+                                    checked: Array.isArray(sm.branch_some)
+                                      ? _vm._i(sm.branch_some, null) > -1
+                                      : sm.branch_some
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$a = sm.branch_some,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            _vm.$set(
+                                              sm,
+                                              "branch_some",
+                                              $$a.concat([$$v])
+                                            )
+                                        } else {
+                                          $$i > -1 &&
+                                            _vm.$set(
+                                              sm,
+                                              "branch_some",
+                                              $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1))
+                                            )
+                                        }
+                                      } else {
+                                        _vm.$set(sm, "branch_some", $$c)
+                                      }
+                                    }
+                                  }
+                                })
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: sm.agent_all,
+                                      expression: "sm.agent_all"
+                                    }
+                                  ],
+                                  key: sm.id,
+                                  staticClass: "form-check-input",
+                                  attrs: {
+                                    type: "checkbox",
+                                    name: "agent_all[]",
+                                    id: "agent_all"
+                                  },
+                                  domProps: {
+                                    checked: Array.isArray(sm.agent_all)
+                                      ? _vm._i(sm.agent_all, null) > -1
+                                      : sm.agent_all
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$a = sm.agent_all,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            _vm.$set(
+                                              sm,
+                                              "agent_all",
+                                              $$a.concat([$$v])
+                                            )
+                                        } else {
+                                          $$i > -1 &&
+                                            _vm.$set(
+                                              sm,
+                                              "agent_all",
+                                              $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1))
+                                            )
+                                        }
+                                      } else {
+                                        _vm.$set(sm, "agent_all", $$c)
+                                      }
+                                    }
+                                  }
+                                })
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: sm.agent_some,
+                                      expression: "sm.agent_some"
+                                    }
+                                  ],
+                                  key: sm.id,
+                                  staticClass: "form-check-input",
+                                  attrs: {
+                                    type: "checkbox",
+                                    name: "agent_some[]",
+                                    id: "agent_some"
+                                  },
+                                  domProps: {
+                                    checked: Array.isArray(sm.agent_some)
+                                      ? _vm._i(sm.agent_some, null) > -1
+                                      : sm.agent_some
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$a = sm.agent_some,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            _vm.$set(
+                                              sm,
+                                              "agent_some",
+                                              $$a.concat([$$v])
+                                            )
+                                        } else {
+                                          $$i > -1 &&
+                                            _vm.$set(
+                                              sm,
+                                              "agent_some",
+                                              $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1))
+                                            )
+                                        }
+                                      } else {
+                                        _vm.$set(sm, "agent_some", $$c)
+                                      }
+                                    }
+                                  }
+                                })
                               ])
                             ])
                           }),
@@ -58379,32 +59635,42 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "text-capitalize" }, [
-      _c("tr", { attrs: { sp: "" } }, [
+      _c("tr", { staticClass: "th-table" }, [
         _c("th", { attrs: { colspan: "3" } }, [
           _c("h3", [_vm._v("Service Matrix")])
         ]),
         _vm._v(" "),
-        _c("th", [_vm._v("Applies To:")]),
+        _c("th", { attrs: { colspan: "2" } }, [_vm._v("Admin")]),
         _vm._v(" "),
-        _c("th", { attrs: { colspan: "4" } })
+        _c("th", { attrs: { colspan: "2" } }, [_vm._v("Merchant")]),
+        _vm._v(" "),
+        _c("th", { attrs: { colspan: "2" } }, [_vm._v("Branch")]),
+        _vm._v(" "),
+        _c("th", { attrs: { colspan: "2" } }, [_vm._v("Agent")])
       ]),
       _vm._v(" "),
-      _c("tr", [
+      _c("tr", { staticClass: "th-table" }, [
         _c("th", [_vm._v("Service Type")]),
         _vm._v(" "),
         _c("th", [_vm._v("Service Name")]),
         _vm._v(" "),
         _c("th", [_vm._v("Group")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Inc. Redeem")]),
+        _c("th", [_vm._v("All")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Admin")]),
+        _c("th", [_vm._v("Some")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Merchant")]),
+        _c("th", [_vm._v("All")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Branch")]),
+        _c("th", [_vm._v("Some")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Agent")])
+        _c("th", [_vm._v("All")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Some")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("All")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Some")])
       ])
     ])
   },
@@ -58461,7 +59727,7 @@ var render = function() {
                 _c(
                   "table",
                   {
-                    staticClass: "table table-hover text-center",
+                    staticClass: "table table-hover table-striped text-center",
                     attrs: { id: "wallet_account_types" }
                   },
                   [
@@ -58522,21 +59788,6 @@ var render = function() {
                 )
               ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group row" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-flat btn-primary mb-3",
-                attrs: { type: "button" },
-                on: { click: _vm.openModal }
-              },
-              [
-                _c("i", { staticClass: "ti-plus text-white" }),
-                _vm._v(" Create New")
-              ]
-            )
           ])
         ])
       ])
@@ -58604,14 +59855,12 @@ var render = function() {
                               ],
                               staticClass: "form-control",
                               class: {
-                                "is-invalid": _vm.form.errors.has(
-                                  "wallet_account_type"
-                                )
+                                "is-invalid": _vm.form.errors.has("type_code")
                               },
                               attrs: {
                                 type: "text",
                                 name: "type_code",
-                                placeholder: "Wallet Account Type",
+                                placeholder: "Wallet Account Type Code",
                                 disabled: "true"
                               },
                               domProps: { value: _vm.form.type_code },
@@ -58630,10 +59879,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _c("has-error", {
-                              attrs: {
-                                form: _vm.form,
-                                field: "wallet_account_type"
-                              }
+                              attrs: { form: _vm.form, field: "type_code" }
                             })
                           ],
                           1
@@ -58720,7 +59966,7 @@ var render = function() {
                                   expression: "form.status"
                                 }
                               ],
-                              staticClass: "form-control",
+                              staticClass: "custom-select",
                               on: {
                                 change: function($event) {
                                   var $$selectedVal = Array.prototype.filter
@@ -58745,8 +59991,14 @@ var render = function() {
                             [
                               _c(
                                 "option",
-                                { attrs: { selected: "", value: "" } },
-                                [_vm._v("Select")]
+                                {
+                                  attrs: {
+                                    selected: "",
+                                    value: "",
+                                    disabled: ""
+                                  }
+                                },
+                                [_vm._v("Select Status")]
                               ),
                               _vm._v(" "),
                               _c("option", { attrs: { value: "1" } }, [
@@ -58782,7 +60034,7 @@ var render = function() {
                               expression: "form.wallet_type"
                             }
                           ],
-                          staticClass: "form-control",
+                          staticClass: "custom-select",
                           on: {
                             change: function($event) {
                               var $$selectedVal = Array.prototype.filter
@@ -58804,9 +60056,19 @@ var render = function() {
                           }
                         },
                         [
-                          _c("option", { attrs: { selected: "", value: "" } }, [
-                            _vm._v("Select")
-                          ]),
+                          _c(
+                            "option",
+                            {
+                              attrs: { selected: "", value: "", disabled: "" }
+                            },
+                            [_vm._v("Select Wallet Type")]
+                          ),
+                          _vm._v(" "),
+                          _vm.form.wallet_type == "Admin"
+                            ? _c("option", { attrs: { value: "Admin" } }, [
+                                _vm._v("Admin")
+                              ])
+                            : _vm._e(),
                           _vm._v(" "),
                           _c("option", { attrs: { value: "Credit" } }, [
                             _vm._v("Credit")
@@ -58821,14 +60083,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-secondary btn-flat",
-                        attrs: { type: "button", "data-dismiss": "modal" }
-                      },
-                      [_vm._v("Close")]
-                    ),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c(
                       "button",
@@ -58841,10 +60096,24 @@ var render = function() {
                             expression: "editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit", id: "btnUpdate" }
                       },
-                      [_vm._v("Update")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(
+                          "\n                         Update\n                        "
+                        ),
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "updateSpinner"
+                          }
+                        })
+                      ]
                     ),
                     _vm._v(" "),
                     _c(
@@ -58858,10 +60127,13 @@ var render = function() {
                             expression: "!editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
+                        staticClass: "btn btn-primary",
                         attrs: { type: "submit" }
                       },
-                      [_vm._v("Save changes")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(" Save changes")
+                      ]
                     )
                   ])
                 ]
@@ -58879,7 +60151,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("tr", [
+      _c("tr", { staticClass: "th-table" }, [
         _c("th", [_vm._v("Type Code")]),
         _vm._v(" "),
         _c("th", [_vm._v("Wallet Account Type")]),
@@ -58919,6 +60191,19 @@ var staticRenderFns = [
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-secondary",
+        attrs: { type: "button", "data-dismiss": "modal", id: "modalClose" }
+      },
+      [_c("i", { staticClass: "ti-close" }), _vm._v(" Close")]
+    )
   }
 ]
 render._withStripped = true
@@ -59507,21 +60792,44 @@ var render = function() {
                                   ref: "file",
                                   staticClass: "custom-file-input",
                                   attrs: { type: "file", id: "kyc_form" },
-                                  on: {
-                                    change: function($event) {
-                                      return _vm.uploadFile()
-                                    }
-                                  }
+                                  on: { change: _vm.uploadKycForm }
                                 }),
                                 _vm._v(" "),
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "custom-file-label",
-                                    attrs: { for: "inputGroupFile02" }
-                                  },
-                                  [_vm._v("Filled-Up KYC Form")]
-                                )
+                                this.editmode == true
+                                  ? _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: {
+                                          for: "kyc_form",
+                                          id: "kyc_form_filename"
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm._f("substring")(
+                                              _vm.form.kyc_form
+                                            )
+                                          )
+                                        )
+                                      ]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                this.editmode == false
+                                  ? _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: {
+                                          for: "kyc_form",
+                                          id: "kyc_form_filename"
+                                        }
+                                      },
+                                      [_vm._v(_vm._s(_vm.kyc_form_file_name))]
+                                    )
+                                  : _vm._e()
                               ])
                             ]),
                             _vm._v(" "),
@@ -59531,21 +60839,44 @@ var render = function() {
                                   ref: "valid_id",
                                   staticClass: "custom-file-input",
                                   attrs: { type: "file", id: "valid_id" },
-                                  on: {
-                                    change: function($event) {
-                                      return _vm.uploadValidId()
-                                    }
-                                  }
+                                  on: { change: _vm.uploadValidId }
                                 }),
                                 _vm._v(" "),
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "custom-file-label",
-                                    attrs: { for: "inputGroupFile02" }
-                                  },
-                                  [_vm._v("Valid ID w/ Signature")]
-                                )
+                                this.editmode == true
+                                  ? _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: {
+                                          for: "valid_id",
+                                          id: "valid_id_filename"
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm._f("substring")(
+                                              _vm.form.valid_id
+                                            )
+                                          )
+                                        )
+                                      ]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                this.editmode == false
+                                  ? _c(
+                                      "label",
+                                      {
+                                        staticClass: "custom-file-label",
+                                        attrs: {
+                                          for: "valid_id",
+                                          i: "valid_id_filename"
+                                        }
+                                      },
+                                      [_vm._v(_vm._s(_vm.valid_id_file_name))]
+                                    )
+                                  : _vm._e()
                               ])
                             ])
                           ])
@@ -60057,51 +61388,6 @@ var render = function() {
                     _c("div", { staticClass: "card-body" }, [
                       _c("div", { staticClass: "row" }, [
                         _c("div", { staticClass: "col-md-4 offset-md-1" }, [
-                          _c("hr"),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: "control-label custom-label",
-                                attrs: { for: "ess_id" }
-                              },
-                              [_vm._v("ESS ID/Username")]
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.username,
-                                  expression: "form.username"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "text",
-                                placeholder: "ESSID/Username",
-                                disabled: ""
-                              },
-                              domProps: { value: _vm.form.username },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "username",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("hr"),
-                          _vm._v(" "),
                           _c("h4", [_vm._v("Wallet Details")]),
                           _vm._v(" "),
                           _c(
@@ -60363,6 +61649,7 @@ var render = function() {
                                 },
                                 domProps: { value: _vm.form.WalletAccountNo },
                                 on: {
+                                  change: _vm.SerachJointWalletAccount,
                                   input: function($event) {
                                     if ($event.target.composing) {
                                       return
@@ -60537,6 +61824,483 @@ var render = function() {
                             ],
                             1
                           )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "col-md-4 offset-md-1",
+                            attrs: { hidden: _vm.CheckWalletAccountType() }
+                          },
+                          [
+                            _c("hr"),
+                            _vm._v(" "),
+                            _c("h4", [_vm._v("Joint Wallet Account")]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "JointWalletType" }
+                                },
+                                [_vm._v("Joint Wallet Type")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.JointWalletType,
+                                    expression: "form.JointWalletType"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "JointWalletType"
+                                  )
+                                },
+                                attrs: {
+                                  type: "text",
+                                  name: "JointWalletType",
+                                  disabled: ""
+                                },
+                                domProps: { value: _vm.form.JointWalletType },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "JointWalletType",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "JointWalletAccountType" }
+                                },
+                                [_vm._v("Joint Wallet Account Type")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.jointWalletAccountType,
+                                    expression: "form.jointWalletAccountType"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "JointWalletType"
+                                  )
+                                },
+                                attrs: {
+                                  type: "text",
+                                  name: "JointWalletType",
+                                  disabled: ""
+                                },
+                                domProps: {
+                                  value: _vm.form.jointWalletAccountType
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "jointWalletAccountType",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "JointWalletAccountNo" }
+                                },
+                                [_vm._v("Joint Wallet Account No")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.JointWalletAccountNo,
+                                    expression: "form.JointWalletAccountNo"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "JointWalletAccountNo"
+                                  )
+                                },
+                                attrs: {
+                                  type: "text",
+                                  name: "JointWalletAccountNo",
+                                  disabled: _vm.editmode
+                                },
+                                domProps: {
+                                  value: _vm.form.JointWalletAccountNo
+                                },
+                                on: {
+                                  change: _vm.SerachJointWalletAccount,
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "JointWalletAccountNo",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "JointWalletAccountName" }
+                                },
+                                [_vm._v("Joint Wallet Account Name")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.JointWalletAccountName,
+                                    expression: "form.JointWalletAccountName"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "JointWalletAccountName"
+                                  )
+                                },
+                                attrs: {
+                                  type: "text",
+                                  name: "JointWalletAccountName",
+                                  disabled: ""
+                                },
+                                domProps: {
+                                  value: _vm.form.JointWalletAccountName
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "JointWalletAccountName",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _vm.form.WalletAccountType == 8
+                              ? _c("div", { staticClass: "form-group" }, [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "CMSCreditAccountNo" }
+                                    },
+                                    [_vm._v("CMS Credit Account No")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.form.CMSCreditAccountNo,
+                                        expression: "form.CMSCreditAccountNo"
+                                      },
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has(
+                                        "CMSCreditAccountNo"
+                                      )
+                                    },
+                                    attrs: {
+                                      name: "CMSCreditAccountNo",
+                                      type: "text",
+                                      placeholder: "CMS Credit Account No"
+                                    },
+                                    domProps: {
+                                      value: _vm.form.CMSCreditAccountNo
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.form,
+                                          "CMSCreditAccountNo",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("CMSCreditAccountNo")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.errors.first(
+                                              "CMSCreditAccountNo"
+                                            )
+                                          )
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ])
+                              : _vm._e()
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "tab-content",
+              {
+                attrs: {
+                  title: "E-Wallet Acount Setup",
+                  "before-change": _vm.ValidateWalletAccountDetails
+                }
+              },
+              [
+                _c("div", { staticClass: "box" }, [
+                  _c("div", { staticClass: "card shadow-custom" }, [
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-4 offset-md-1" }, [
+                          _c("h4", [_vm._v("Wallet Details")]),
+                          _vm._v(" "),
+                          _c("hr"),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "form-group" },
+                            [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "WalletAccountNameDetails" }
+                                },
+                                [_vm._v("Account Name")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  },
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.WalletAccountNameDetails,
+                                    expression: "form.WalletAccountNameDetails"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "WalletAccountNameDetails"
+                                  )
+                                },
+                                attrs: {
+                                  name: "WalletAccountNameDetails",
+                                  type: "text",
+                                  disabled: ""
+                                },
+                                domProps: {
+                                  value: _vm.form.WalletAccountNameDetails
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "WalletAccountNameDetails",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("has-error", {
+                                attrs: {
+                                  form: _vm.form,
+                                  field: "WalletAccountNameDetails"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm.errors.has("WalletAccountNameDetails")
+                                ? _c("p", { staticClass: "text-danger" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.errors.first(
+                                          "WalletAccountNameDetails"
+                                        )
+                                      )
+                                    )
+                                  ])
+                                : _vm._e()
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "form-group" },
+                            [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "WalletAccountNoDetails" }
+                                },
+                                [_vm._v("Account No")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  },
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.WalletAccountNoDetails,
+                                    expression: "form.WalletAccountNoDetails"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "WalletAccountNoDetails"
+                                  )
+                                },
+                                attrs: {
+                                  name: "WalletAccountNoDetails",
+                                  type: "text"
+                                },
+                                domProps: {
+                                  value: _vm.form.WalletAccountNoDetails
+                                },
+                                on: {
+                                  change: _vm.searchAccountNo,
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "WalletAccountNoDetails",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("has-error", {
+                                attrs: {
+                                  form: _vm.form,
+                                  field: "WalletAccountNoDetails"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm.errors.has("WalletAccountNoDetails")
+                                ? _c("p", { staticClass: "text-danger" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.errors.first(
+                                          "WalletAccountNoDetails"
+                                        )
+                                      )
+                                    )
+                                  ])
+                                : _vm._e()
+                            ],
+                            1
+                          )
                         ])
                       ])
                     ])
@@ -60561,401 +62325,589 @@ var render = function() {
                       _vm._v(" "),
                       _c("hr"),
                       _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-4 offset-md-1" }, [
-                          _c(
+                      _c(
+                        "div",
+                        { staticClass: "row", attrs: { id: "bankRow" } },
+                        _vm._l(_vm.BankAccount, function(key, index) {
+                          return _c(
                             "div",
-                            { staticClass: "form-group" },
+                            {
+                              key: index.id,
+                              staticClass: "col-md-4 offset-md-1"
+                            },
                             [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "bank_name" }
-                                },
-                                [_vm._v("Name of Bank")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.bank_name,
-                                    expression: "form.bank_name"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has("bank_name")
-                                },
-                                attrs: {
-                                  name: "bank_name",
-                                  type: "text",
-                                  placeholder: "Name Of Bank"
-                                },
-                                domProps: { value: _vm.form.bank_name },
-                                on: {
-                                  change: _vm.ValidateFourthStep,
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "bank_name",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "bank_name" }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("bank_name")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("bank_name"))
-                                    )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "Branch" }
-                                },
-                                [_vm._v("Branch")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.Branch,
-                                    expression: "form.Branch"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has("Branch")
-                                },
-                                attrs: {
-                                  name: "Branch",
-                                  type: "text",
-                                  placeholder: "Branch"
-                                },
-                                domProps: { value: _vm.form.Branch },
-                                on: {
-                                  change: _vm.ValidateFourthStep,
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "Branch",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "Branch" }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("Branch")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(_vm._s(_vm.errors.first("Branch")))
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "account_type" }
-                                },
-                                [_vm._v("Wallet Type")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "select",
-                                {
-                                  directives: [
+                              index != 0
+                                ? _c(
+                                    "button",
                                     {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    },
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.form.account_type,
-                                      expression: "form.account_type"
-                                    }
-                                  ],
-                                  staticClass: "custom-select",
-                                  class: {
-                                    "is-invalid": _vm.errors.has("account_type")
-                                  },
-                                  attrs: { name: "account_type" },
-                                  on: {
-                                    change: [
-                                      function($event) {
-                                        var $$selectedVal = Array.prototype.filter
-                                          .call($event.target.options, function(
-                                            o
-                                          ) {
-                                            return o.selected
-                                          })
-                                          .map(function(o) {
-                                            var val =
-                                              "_value" in o ? o._value : o.value
-                                            return val
-                                          })
-                                        _vm.$set(
-                                          _vm.form,
-                                          "account_type",
-                                          $event.target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        )
-                                      },
-                                      _vm.ValidateFourthStep
-                                    ]
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "option",
-                                    {
-                                      attrs: {
-                                        value: "",
-                                        selected: "",
-                                        disabled: ""
+                                      staticClass: "float-right",
+                                      staticStyle: { cursor: "pointer" },
+                                      attrs: { id: "ba-close-button" },
+                                      on: {
+                                        click: function($event) {
+                                          $event.preventDefault()
+                                          return _vm.removeElement(index)
+                                        }
                                       }
                                     },
-                                    [_vm._v("Select")]
+                                    [_c("span", { staticClass: "ti-close" })]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c("hr"),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "bank_name" }
+                                    },
+                                    [_vm._v("Name of Bank")]
                                   ),
                                   _vm._v(" "),
-                                  _c("option", [_vm._v("Credit")]),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      },
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: key.bank_name,
+                                        expression: "key.bank_name"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has("bank_name")
+                                    },
+                                    attrs: {
+                                      name: "bank_name",
+                                      type: "text",
+                                      placeholder: "Name Of Bank"
+                                    },
+                                    domProps: { value: key.bank_name },
+                                    on: {
+                                      change: _vm.ValidateFourthStep,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          key,
+                                          "bank_name",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
                                   _vm._v(" "),
-                                  _c("option", [_vm._v("Prepaid")])
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "account_type" }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("account_type")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("account_type"))
-                                    )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "WalletAccountName" }
-                                },
-                                [_vm._v("Wallet Account Name")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.account_name,
-                                    expression: "form.account_name"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has("account_name")
-                                },
-                                attrs: {
-                                  name: "account_name",
-                                  type: "text",
-                                  placeholder: "Account Name"
-                                },
-                                domProps: { value: _vm.form.account_name },
-                                on: {
-                                  change: _vm.ValidateFourthStep,
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
+                                  _c("has-error", {
+                                    attrs: {
+                                      form: _vm.form,
+                                      field: "bank_name"
                                     }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "account_name",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "account_name" }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("account_name")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("account_name"))
-                                    )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "account_no" }
-                                },
-                                [_vm._v("Wallet Account No")]
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("bank_name")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(_vm.errors.first("bank_name"))
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
                               ),
                               _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.account_no,
-                                    expression: "form.account_no"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has("account_no")
-                                },
-                                attrs: {
-                                  name: "account_no",
-                                  type: "text",
-                                  placeholder: "Account No"
-                                },
-                                domProps: { value: _vm.form.account_no },
-                                on: {
-                                  change: _vm.ValidateFourthStep,
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "Branch" }
+                                    },
+                                    [_vm._v("Branch")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      },
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: key.Branch,
+                                        expression: "key.Branch"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has("Branch")
+                                    },
+                                    attrs: {
+                                      name: "Branch",
+                                      type: "text",
+                                      placeholder: "Branch"
+                                    },
+                                    domProps: { value: key.Branch },
+                                    on: {
+                                      change: _vm.ValidateFourthStep,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          key,
+                                          "Branch",
+                                          $event.target.value
+                                        )
+                                      }
                                     }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "account_no",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
+                                  }),
+                                  _vm._v(" "),
+                                  _c("has-error", {
+                                    attrs: { form: _vm.form, field: "Branch" }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("Branch")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(_vm.errors.first("Branch"))
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
                               _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "account_no" }
-                              }),
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "account_type" }
+                                    },
+                                    [_vm._v("Account Type")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "validate",
+                                          rawName: "v-validate",
+                                          value: "required",
+                                          expression: "'required'"
+                                        },
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: key.account_type,
+                                          expression: "key.account_type"
+                                        }
+                                      ],
+                                      staticClass: "custom-select",
+                                      class: {
+                                        "is-invalid": _vm.errors.has(
+                                          "account_type"
+                                        )
+                                      },
+                                      attrs: { name: "account_type" },
+                                      on: {
+                                        change: [
+                                          function($event) {
+                                            var $$selectedVal = Array.prototype.filter
+                                              .call(
+                                                $event.target.options,
+                                                function(o) {
+                                                  return o.selected
+                                                }
+                                              )
+                                              .map(function(o) {
+                                                var val =
+                                                  "_value" in o
+                                                    ? o._value
+                                                    : o.value
+                                                return val
+                                              })
+                                            _vm.$set(
+                                              key,
+                                              "account_type",
+                                              $event.target.multiple
+                                                ? $$selectedVal
+                                                : $$selectedVal[0]
+                                            )
+                                          },
+                                          _vm.ValidateFourthStep
+                                        ]
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "option",
+                                        {
+                                          attrs: {
+                                            value: "",
+                                            selected: "",
+                                            disabled: ""
+                                          }
+                                        },
+                                        [_vm._v("Select")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("option", [_vm._v("Credit")]),
+                                      _vm._v(" "),
+                                      _c("option", [_vm._v("Prepaid")])
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("has-error", {
+                                    attrs: {
+                                      form: _vm.form,
+                                      field: "account_type"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("account_type")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.errors.first("account_type")
+                                          )
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
                               _vm._v(" "),
-                              _vm.errors.has("account_no")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("account_no"))
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "WalletAccountName" }
+                                    },
+                                    [_vm._v("Account Name")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      },
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: key.account_name,
+                                        expression: "key.account_name"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has(
+                                        "account_name"
+                                      )
+                                    },
+                                    attrs: {
+                                      name: "account_name",
+                                      type: "text",
+                                      placeholder: "Account Name"
+                                    },
+                                    domProps: { value: key.account_name },
+                                    on: {
+                                      change: _vm.ValidateFourthStep,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          key,
+                                          "account_name",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("has-error", {
+                                    attrs: {
+                                      form: _vm.form,
+                                      field: "account_name"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("account_name")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.errors.first("account_name")
+                                          )
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "account_no" }
+                                    },
+                                    [_vm._v("Account No")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      },
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: key.account_no,
+                                        expression: "key.account_no"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has("account_no")
+                                    },
+                                    attrs: {
+                                      name: "account_no",
+                                      type: "text",
+                                      placeholder: "Account No"
+                                    },
+                                    domProps: { value: key.account_no },
+                                    on: {
+                                      change: _vm.ValidateFourthStep,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          key,
+                                          "account_no",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("has-error", {
+                                    attrs: {
+                                      form: _vm.form,
+                                      field: "account_no"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("account_no")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(_vm.errors.first("account_no"))
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "form-group" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "form-check custom-control custom-checkbox"
+                                  },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: key.default,
+                                          expression: "key.default"
+                                        }
+                                      ],
+                                      staticClass: "form-check-input",
+                                      attrs: {
+                                        type: "checkbox",
+                                        id: "bank_default",
+                                        name: "default"
+                                      },
+                                      domProps: {
+                                        checked: Array.isArray(key.default)
+                                          ? _vm._i(key.default, null) > -1
+                                          : key.default
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = key.default,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = null,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                _vm.$set(
+                                                  key,
+                                                  "default",
+                                                  $$a.concat([$$v])
+                                                )
+                                            } else {
+                                              $$i > -1 &&
+                                                _vm.$set(
+                                                  key,
+                                                  "default",
+                                                  $$a
+                                                    .slice(0, $$i)
+                                                    .concat($$a.slice($$i + 1))
+                                                )
+                                            }
+                                          } else {
+                                            _vm.$set(key, "default", $$c)
+                                          }
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "label",
+                                      {
+                                        staticClass: "form-check-label",
+                                        attrs: { for: "bank_default" }
+                                      },
+                                      [_vm._v("Default")]
                                     )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "form-check custom-control custom-checkbox"
-                              },
-                              [
-                                _c("input", {
-                                  staticClass: "form-check-input",
-                                  attrs: {
-                                    type: "checkbox",
-                                    id: "exampleCheck1"
-                                  }
-                                }),
+                                  ]
+                                ),
                                 _vm._v(" "),
                                 _c(
-                                  "label",
+                                  "div",
                                   {
-                                    staticClass: "form-check-label",
-                                    attrs: { for: "exampleCheck1" }
+                                    staticClass:
+                                      "form-check custom-control custom-checkbox"
                                   },
-                                  [_vm._v("Test")]
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: key.status,
+                                          expression: "key.status"
+                                        }
+                                      ],
+                                      staticClass: "form-check-input",
+                                      attrs: {
+                                        type: "checkbox",
+                                        id: "bank_status",
+                                        name: "status"
+                                      },
+                                      domProps: {
+                                        checked: Array.isArray(key.status)
+                                          ? _vm._i(key.status, null) > -1
+                                          : key.status
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = key.status,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = null,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                _vm.$set(
+                                                  key,
+                                                  "status",
+                                                  $$a.concat([$$v])
+                                                )
+                                            } else {
+                                              $$i > -1 &&
+                                                _vm.$set(
+                                                  key,
+                                                  "status",
+                                                  $$a
+                                                    .slice(0, $$i)
+                                                    .concat($$a.slice($$i + 1))
+                                                )
+                                            }
+                                          } else {
+                                            _vm.$set(key, "status", $$c)
+                                          }
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "label",
+                                      {
+                                        staticClass: "form-check-label",
+                                        attrs: { for: "bank_status" }
+                                      },
+                                      [_vm._v("Active")]
+                                    )
+                                  ]
                                 )
-                              ]
-                            )
-                          ])
-                        ])
+                              ])
+                            ]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary btn-flat",
+                            attrs: { hidden: _vm.BankAccount.length > 2 },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.addBank($event)
+                              }
+                            }
+                          },
+                          [_vm._v(" Add New Bank Account")]
+                        )
                       ])
                     ])
                   ])
@@ -61269,7 +63221,7 @@ var render = function() {
                                           attrs: {
                                             type: "number",
                                             min: "0",
-                                            name: "am_transaction_minimun",
+                                            name: "am_transaction_maximum",
                                             id: "",
                                             value: "200000"
                                           },
@@ -61688,7 +63640,7 @@ var render = function() {
                                       },
                                       [
                                         _vm._v(
-                                          "\n                                                        Limit of total transaction amount per year month Maximum Debit Amount: "
+                                          "\n                                                        Limit of total transaction amount per year Maximum Debit Amount: "
                                         ),
                                         _c("input", {
                                           directives: [
@@ -62464,6 +64416,607 @@ var render = function() {
                   ])
                 ])
               ])
+            ]),
+            _vm._v(" "),
+            _c("tab-content", { attrs: { title: "E-Wallet Acount Setup" } }, [
+              _c("div", { staticClass: "box" }, [
+                _c("div", { staticClass: "card shadow-custom" }, [
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("h5", [_vm._v("Service Matrix")]),
+                    _vm._v(" "),
+                    _c("hr"),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c("div", { staticClass: "col-md-12" }, [
+                        _c("div", { staticClass: "header-title" }, [
+                          _vm._v("Services Matrix Setup")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "data-tables datatable-dark" },
+                          [
+                            _c(
+                              "table",
+                              {
+                                staticClass:
+                                  "table table-hover table-bordered text-center",
+                                attrs: { id: "service_matrix" }
+                              },
+                              [
+                                _c(
+                                  "thead",
+                                  { staticClass: "text-capitalize" },
+                                  [
+                                    _c("tr", { staticClass: "th-table" }, [
+                                      _c("th", { attrs: { colspan: "3" } }, [
+                                        _c("h3", [_vm._v("Service Matrix")])
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("th", { attrs: { colspan: "2" } }, [
+                                        _vm._v("Admin")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("th", { attrs: { colspan: "2" } }, [
+                                        _vm._v("Merchant")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("th", { attrs: { colspan: "2" } }, [
+                                        _vm._v("Branch")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("th", { attrs: { colspan: "2" } }, [
+                                        _vm._v("Agent")
+                                      ])
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("tr", { staticClass: "th-table" }, [
+                                      _c("th", [_vm._v("Service Type")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Service Name")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Group")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("All")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Some")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("All")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Some")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("All")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Some")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("All")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Some")])
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "tbody",
+                                  _vm._l(_vm.Services, function(sm) {
+                                    return _c("tr", { key: sm.id }, [
+                                      _c("td", [_vm._v(_vm._s(sm.st_name))]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(_vm._s(sm.service_name))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(_vm._s(sm.group_description))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: sm.admin_all,
+                                              expression: "sm.admin_all"
+                                            }
+                                          ],
+                                          key: sm.id,
+                                          staticClass: "form-check-input",
+                                          attrs: {
+                                            type: "checkbox",
+                                            name: "admin_all[]",
+                                            id: "admin_all"
+                                          },
+                                          domProps: {
+                                            checked: Array.isArray(sm.admin_all)
+                                              ? _vm._i(sm.admin_all, null) > -1
+                                              : sm.admin_all
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = sm.admin_all,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "admin_all",
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "admin_all",
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
+                                              } else {
+                                                _vm.$set(sm, "admin_all", $$c)
+                                              }
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: sm.admin_some,
+                                              expression: "sm.admin_some"
+                                            }
+                                          ],
+                                          key: sm.id,
+                                          staticClass: "form-check-input",
+                                          attrs: {
+                                            type: "checkbox",
+                                            name: "admin_some[]",
+                                            id: "admin_some"
+                                          },
+                                          domProps: {
+                                            checked: Array.isArray(
+                                              sm.admin_some
+                                            )
+                                              ? _vm._i(sm.admin_some, null) > -1
+                                              : sm.admin_some
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = sm.admin_some,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "admin_some",
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "admin_some",
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
+                                              } else {
+                                                _vm.$set(sm, "admin_some", $$c)
+                                              }
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: sm.merchant_all,
+                                              expression: "sm.merchant_all"
+                                            }
+                                          ],
+                                          key: sm.id,
+                                          staticClass: "form-check-input",
+                                          attrs: {
+                                            type: "checkbox",
+                                            name: "merchant_all[]",
+                                            id: "merchant_all"
+                                          },
+                                          domProps: {
+                                            checked: Array.isArray(
+                                              sm.merchant_all
+                                            )
+                                              ? _vm._i(sm.merchant_all, null) >
+                                                -1
+                                              : sm.merchant_all
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = sm.merchant_all,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "merchant_all",
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "merchant_all",
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
+                                              } else {
+                                                _vm.$set(
+                                                  sm,
+                                                  "merchant_all",
+                                                  $$c
+                                                )
+                                              }
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: sm.merchant_some,
+                                              expression: "sm.merchant_some"
+                                            }
+                                          ],
+                                          key: sm.id,
+                                          staticClass: "form-check-input",
+                                          attrs: {
+                                            type: "checkbox",
+                                            name: "merchant_some[]",
+                                            id: "merchant_some"
+                                          },
+                                          domProps: {
+                                            checked: Array.isArray(
+                                              sm.merchant_some
+                                            )
+                                              ? _vm._i(sm.merchant_some, null) >
+                                                -1
+                                              : sm.merchant_some
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = sm.merchant_some,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "merchant_some",
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "merchant_some",
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
+                                              } else {
+                                                _vm.$set(
+                                                  sm,
+                                                  "merchant_some",
+                                                  $$c
+                                                )
+                                              }
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: sm.branch_all,
+                                              expression: "sm.branch_all"
+                                            }
+                                          ],
+                                          key: sm.id,
+                                          staticClass: "form-check-input",
+                                          attrs: {
+                                            type: "checkbox",
+                                            name: "branch_all[]",
+                                            id: "branch_all"
+                                          },
+                                          domProps: {
+                                            checked: Array.isArray(
+                                              sm.branch_all
+                                            )
+                                              ? _vm._i(sm.branch_all, null) > -1
+                                              : sm.branch_all
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = sm.branch_all,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "branch_all",
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "branch_all",
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
+                                              } else {
+                                                _vm.$set(sm, "branch_all", $$c)
+                                              }
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: sm.branch_some,
+                                              expression: "sm.branch_some"
+                                            }
+                                          ],
+                                          key: sm.id,
+                                          staticClass: "form-check-input",
+                                          attrs: {
+                                            type: "checkbox",
+                                            name: "branch_some[]",
+                                            id: "branch_some"
+                                          },
+                                          domProps: {
+                                            checked: Array.isArray(
+                                              sm.branch_some
+                                            )
+                                              ? _vm._i(sm.branch_some, null) >
+                                                -1
+                                              : sm.branch_some
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = sm.branch_some,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "branch_some",
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "branch_some",
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
+                                              } else {
+                                                _vm.$set(sm, "branch_some", $$c)
+                                              }
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: sm.agent_all,
+                                              expression: "sm.agent_all"
+                                            }
+                                          ],
+                                          key: sm.id,
+                                          staticClass: "form-check-input",
+                                          attrs: {
+                                            type: "checkbox",
+                                            name: "agent_all[]",
+                                            id: "agent_all"
+                                          },
+                                          domProps: {
+                                            checked: Array.isArray(sm.agent_all)
+                                              ? _vm._i(sm.agent_all, null) > -1
+                                              : sm.agent_all
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = sm.agent_all,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "agent_all",
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "agent_all",
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
+                                              } else {
+                                                _vm.$set(sm, "agent_all", $$c)
+                                              }
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: sm.agent_some,
+                                              expression: "sm.agent_some"
+                                            }
+                                          ],
+                                          key: sm.id,
+                                          staticClass: "form-check-input",
+                                          attrs: {
+                                            type: "checkbox",
+                                            name: "agent_some[]",
+                                            id: "agent_some"
+                                          },
+                                          domProps: {
+                                            checked: Array.isArray(
+                                              sm.agent_some
+                                            )
+                                              ? _vm._i(sm.agent_some, null) > -1
+                                              : sm.agent_some
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = sm.agent_some,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "agent_some",
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      sm,
+                                                      "agent_some",
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
+                                              } else {
+                                                _vm.$set(sm, "agent_some", $$c)
+                                              }
+                                            }
+                                          }
+                                        })
+                                      ])
+                                    ])
+                                  }),
+                                  0
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ])
             ])
           ],
           1
@@ -62521,7 +65074,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("h4", { staticClass: "header-title mt-3" }, [
-                _vm._v("Elektronik Pitaka")
+                _vm._v("Wallet Accounts")
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "data-tables datatable-dark" }, [
@@ -62599,7 +65152,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("tr", [
+      _c("tr", { staticClass: "th-table" }, [
         _c("th", [_vm._v("Wallet Type")]),
         _vm._v(" "),
         _c("th", [_vm._v("Account Type")]),
@@ -62700,8 +65253,10 @@ var render = function() {
                             {
                               staticClass: "wizard-footer-right",
                               style: props.fillButtonStyle,
-                              attrs: { disabled: _vm.errors.items.length > 0 },
-                              on: { click: _vm.nextTabTwo },
+                              attrs: {
+                                disabled: _vm.errors.items.length > 0,
+                                id: "nextbtn"
+                              },
                               nativeOn: {
                                 click: function($event) {
                                   return props.nextTab()
@@ -62954,401 +65509,439 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _c("tab-content", { attrs: { title: "Behavior" } }, [
-            _c("div", { staticClass: "card shadow-custom" }, [
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "col-sm-7" }, [
-                  _c("h4", { staticClass: "header-title" }, [
-                    _vm._v("Behavior")
-                  ]),
-                  _vm._v(" "),
-                  _c("ul", { staticClass: "list-group list-group-flush" }, [
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "added_ssw_sdw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "added_ssw_sdw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "added_ssw_sdw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+          _c(
+            "tab-content",
+            {
+              attrs: { title: "Behavior", "before-change": _vm.ValidateTabTwo }
+            },
+            [
+              _c("div", { staticClass: "card shadow-custom" }, [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "col-sm-7" }, [
+                    _c("h4", { staticClass: "header-title" }, [
+                      _vm._v("Behavior")
+                    ]),
+                    _vm._v(" "),
+                    _c("ul", { staticClass: "list-group list-group-flush" }, [
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer initiated in single source wallet, added to single destination wallet"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "added_ssw_sdw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "added_ssw_sdw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "added_ssw_sdw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in single source wallet, added to single destination wallet"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "added_ssw_mdw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "added_ssw_mdw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "added_ssw_mdw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer intiated in single source wallet, added to multiple destination wallets"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "added_ssw_mdw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "added_ssw_mdw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "added_ssw_mdw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer intiated in single source wallet, added to multiple destination wallets"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "added_msw_sdw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "added_msw_sdw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "added_msw_sdw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer initiated in multiple source wallets, added to single destination wallet"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "added_msw_sdw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "added_msw_sdw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "added_msw_sdw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in multiple source wallets, added to single destination wallet"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "added_msw_mdw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "added_msw_mdw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "added_msw_mdw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer initiated in multiple source wallets, added to multiple destination wallets"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "added_msw_mdw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "added_msw_mdw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "added_msw_mdw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in multiple source wallets, added to multiple destination wallets"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "deducted_sdw_ssw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "deducted_sdw_ssw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "deducted_sdw_ssw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer intiated in single destination wallets, deducted from single source wallet"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "deducted_sdw_ssw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "deducted_sdw_ssw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "deducted_sdw_ssw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer intiated in single destination wallets, deducted from single source wallet"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "deducted_sdw_msw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "deducted_sdw_msw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "deducted_sdw_msw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer initiated in single destination wallet, deducted from multiple source wallets"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "deducted_sdw_msw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "deducted_sdw_msw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "deducted_sdw_msw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in single destination wallet, deducted from multiple source wallets"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "deducted_mdw_ssw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "deducted_mdw_ssw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "deducted_mdw_ssw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer initiated in multiple destination wallets, deducted from single source wallet"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "deducted_mdw_ssw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "deducted_mdw_ssw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "deducted_mdw_ssw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in multiple destination wallets, deducted from single source wallet"
+                                )
+                              ]
                             )
                           ]
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c("div", { staticClass: "form-check custom-control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.behavior_value,
-                              expression: "form.behavior_value"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "radio",
-                            id: "exampleCheck1",
-                            value: "deducted_mdw_msw"
-                          },
-                          domProps: {
-                            checked: _vm._q(
-                              _vm.form.behavior_value,
-                              "deducted_mdw_msw"
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.$set(
-                                _vm.form,
-                                "behavior_value",
-                                "deducted_mdw_msw"
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "list-group-item" }, [
                         _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "exampleCheck1" }
-                          },
+                          "div",
+                          { staticClass: "form-check custom-control" },
                           [
-                            _vm._v(
-                              "Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.behavior_value,
+                                  expression: "form.behavior_value"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                id: "exampleCheck1",
+                                value: "deducted_mdw_msw"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.form.behavior_value,
+                                  "deducted_mdw_msw"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.form,
+                                    "behavior_value",
+                                    "deducted_mdw_msw"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "exampleCheck1" }
+                              },
+                              [
+                                _vm._v(
+                                  "Balance transfer initiated in multiple destination wallets, deducted from multiple source wallets"
+                                )
+                              ]
                             )
                           ]
                         )
@@ -63357,8 +65950,8 @@ var render = function() {
                   ])
                 ])
               ])
-            ])
-          ]),
+            ]
+          ),
           _vm._v(" "),
           _c("tab-content", { attrs: { title: "Template" } }, [
             _c("div", { staticClass: "card shadow-custom" }, [
@@ -64271,18 +66864,30 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "tbody",
-                      _vm._l(_vm.Services, function(Service) {
-                        return _c("tr", { key: Service.id }, [
-                          _c("th", { attrs: { scope: "row" } }, [
-                            _vm._v(_vm._s(Service.service_code))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(Service.service_name))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(Service.gateway_name))])
-                        ])
-                      }),
-                      0
+                      [
+                        _vm._l(_vm.Services, function(Service) {
+                          return _c("tr", { key: Service.id }, [
+                            _c("th", { attrs: { scope: "row" } }, [
+                              _vm._v(_vm._s(Service.service_code))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(Service.service_name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(Service.gateway_name))])
+                          ])
+                        }),
+                        _vm._v(" "),
+                        this.Services.length === 0
+                          ? _c("tr", [
+                              _c("td", { attrs: { colspan: "3" } }, [
+                                _vm._v(
+                                  " \n                            No Services Available\n                        "
+                                )
+                              ])
+                            ])
+                          : _vm._e()
+                      ],
+                      2
                     )
                   ]
                 )
@@ -64621,35 +67226,34 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { attrs: { id: "container" } },
-    [
-      _c(
-        "form-wizard",
-        {
-          attrs: {
-            title: "Create Service",
-            subtitle: "Services",
-            color: "#3498db"
+  return _c("div", { attrs: { id: "container" } }, [
+    _c(
+      "form",
+      [
+        _c(
+          "form-wizard",
+          {
+            attrs: {
+              title: "Create Service",
+              subtitle: "Services",
+              color: "#3498db"
+            },
+            on: { "on-complete": _vm.onComplete }
           },
-          on: { "on-complete": _vm.onComplete }
-        },
-        [
-          _c("tab-content", { attrs: { title: "Service details" } }, [
-            _c("div", { staticClass: "col-12 mt-5" }, [
-              _c("div", { staticClass: "card shadow-custom" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c("h4", { staticClass: "header-title mt-3 text-center" }, [
-                    _vm._v(
-                      _vm._s(this.form.service_name) + " ( Service Set Up I )"
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body" }, [
-                  _c("div", { staticClass: "data-tables datatable-dark" }, [
-                    _c("form", [
+          [
+            _c("tab-content", { attrs: { title: "Service details" } }, [
+              _c("div", { staticClass: "col-12 mt-5" }, [
+                _c("div", { staticClass: "card shadow-custom" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("h4", { staticClass: "header-title mt-3 text-center" }, [
+                      _vm._v(
+                        _vm._s(this.form.service_name) + " ( Service Set Up I )"
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "data-tables datatable-dark" }, [
                       _c("div", { staticClass: "form-group row" }, [
                         _c("div", { staticClass: "col-sm-6" }, [
                           _c("div", { staticClass: "form-group" }, [
@@ -64660,7 +67264,7 @@ var render = function() {
                             _c(
                               "label",
                               { attrs: { for: "exampleInputEmail1" } },
-                              [_vm._v("Avaible ONLY in Wallet Type:")]
+                              [_vm._v("Available ONLY in Wallet Type:")]
                             ),
                             _vm._v(" "),
                             _c(
@@ -64675,7 +67279,10 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "custom-select",
-                                attrs: { name: "wallet_type" },
+                                attrs: {
+                                  name: "wallet_type",
+                                  disabled: this.method_name == "joint"
+                                },
                                 on: {
                                   change: function($event) {
                                     var $$selectedVal = Array.prototype.filter
@@ -64709,12 +67316,22 @@ var render = function() {
                                   [_vm._v("Select")]
                                 ),
                                 _vm._v(" "),
-                                _c("option", { attrs: { value: "Prepaid" } }, [
-                                  _vm._v("Prepaid")
+                                _c("option", { attrs: { value: "prepaid" } }, [
+                                  _vm._v(" Prepaid ")
                                 ]),
                                 _vm._v(" "),
-                                _c("option", { attrs: { value: "Credit" } }, [
-                                  _vm._v("Credit")
+                                _c("option", { attrs: { value: "credit" } }, [
+                                  _vm._v(" Credit ")
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "option",
+                                  { attrs: { value: "prepaid/credit" } },
+                                  [_vm._v(" Prepaid/Credit ")]
+                                ),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "admin" } }, [
+                                  _vm._v(" Admin ")
                                 ])
                               ]
                             ),
@@ -64749,11 +67366,12 @@ var render = function() {
                               ],
                               staticClass: "form-control",
                               attrs: {
-                                type: "text",
+                                type: "number",
                                 id: "exampleInputEmail1",
                                 "aria-describedby": "emailHelp",
                                 placeholder: "Enter Service Type Code",
-                                name: "servicetype_code"
+                                name: "servicetype_code",
+                                disabled: this.method_name == "joint"
                               },
                               domProps: { value: _vm.form.servicetype_code },
                               on: {
@@ -64847,7 +67465,8 @@ var render = function() {
                                 id: "exampleInputEmail1",
                                 "aria-describedby": "emailHelp",
                                 placeholder: "Enter Service Code",
-                                name: "service_code"
+                                name: "service_code",
+                                disabled: this.method_name == "joint"
                               },
                               domProps: { value: _vm.form.service_code },
                               on: {
@@ -64909,7 +67528,8 @@ var render = function() {
                                 id: "exampleInputEmail1",
                                 "aria-describedby": "emailHelp",
                                 placeholder: "Enter Service Name",
-                                name: "service_name"
+                                name: "service_name",
+                                disabled: this.method_name == "joint"
                               },
                               domProps: { value: _vm.form.service_name },
                               on: {
@@ -64960,7 +67580,8 @@ var render = function() {
                                 id: "exampleInputEmail1",
                                 "aria-describedby": "emailHelp",
                                 placeholder: "Enter Service Description",
-                                name: "service_description"
+                                name: "service_description",
+                                disabled: this.method_name == "joint"
                               },
                               domProps: { value: _vm.form.service_description },
                               on: {
@@ -65002,7 +67623,10 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "custom-select",
-                                attrs: { name: "service_gateway" },
+                                attrs: {
+                                  name: "service_gateway",
+                                  disabled: this.method_name == "joint"
+                                },
                                 on: {
                                   change: function($event) {
                                     var $$selectedVal = Array.prototype.filter
@@ -65067,7 +67691,10 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "custom-select",
-                                attrs: { name: "service_gateway" },
+                                attrs: {
+                                  name: "service_gateway",
+                                  disabled: this.method_name == "joint"
+                                },
                                 on: {
                                   change: function($event) {
                                     var $$selectedVal = Array.prototype.filter
@@ -65148,7 +67775,8 @@ var render = function() {
                                 "aria-describedby": "emailHelp",
                                 placeholder:
                                   "Enter Principal Redeem Wallet Account No:",
-                                name: "pr_wallet_acc_no"
+                                name: "pr_wallet_acc_no",
+                                disabled: this.method_name == "joint"
                               },
                               domProps: { value: _vm.form.pr_wallet_acc_no },
                               on: {
@@ -65254,7 +67882,8 @@ var render = function() {
                                 "aria-describedby": "emailHelp",
                                 placeholder:
                                   "Enter Income Reddem Wallet Account No",
-                                name: "ir_wallet_acc_no"
+                                name: "ir_wallet_acc_no",
+                                disabled: this.method_name == "joint"
                               },
                               domProps: { value: _vm.form.ir_wallet_acc_no },
                               on: {
@@ -65344,14 +67973,15 @@ var render = function() {
                                   staticClass: "custom-file-input",
                                   attrs: {
                                     type: "file",
-                                    id: "inputGroupFile04"
+                                    id: "inputGroupFile04",
+                                    disabled: this.method_name == "joint"
                                   },
                                   on: {
-                                    change: _vm.onFileChangeAcknowledgeTemplate
+                                    change: _vm.onFileChangeServiceTemplate
                                   }
                                 }),
                                 _vm._v(" "),
-                                this.service_template == null
+                                this.service_template === "empty"
                                   ? _c(
                                       "label",
                                       {
@@ -65377,29 +68007,23 @@ var render = function() {
                   ])
                 ])
               ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tab-content", { attrs: { title: "Set up" } }, [
-            _c("div", { staticClass: "col-12 mt-5" }, [
-              _c("div", { staticClass: "card shadow-custom" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c("h4", { staticClass: "header-title mt-3 text-center" }, [
-                    _vm._v(
-                      _vm._s(this.form.service_name) + " ( Service Set Up II )"
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body" }, [
-                  _c("div", { staticClass: "data-tables datatable-dark" }, [
-                    _c(
-                      "table",
-                      {
-                        staticClass: "table table-hover",
-                        attrs: { id: "table-services" }
-                      },
-                      [
+            ]),
+            _vm._v(" "),
+            _c("tab-content", { attrs: { title: "Set up" } }, [
+              _c("div", { staticClass: "col-12 mt-5" }, [
+                _c("div", { staticClass: "card shadow-custom" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("h4", { staticClass: "header-title mt-3 text-center" }, [
+                      _vm._v(
+                        _vm._s(this.form.service_name) +
+                          " ( Service Set Up II )"
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "data-tables datatable-dark" }, [
+                      _c("table", { staticClass: "table table-hover" }, [
                         _c("thead", [
                           _c("tr", { staticClass: "th-table" }, [
                             _c("th", [_vm._v("Value")]),
@@ -65412,74 +68036,105 @@ var render = function() {
                           ])
                         ]),
                         _vm._v(" "),
-                        _c("tbody", [
-                          _c("tr", [
-                            _c("td", [_vm._v("test ")]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v("test ")]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v("test ")]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v("test ")])
-                          ])
-                        ])
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-sm-6" }, [
                         _c(
-                          "div",
-                          { staticClass: "custom-control custom-switch" },
-                          [
-                            _c("input", {
-                              staticClass: "custom-control-input",
-                              attrs: { type: "checkbox", id: "customSwitch1" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.switchApproval(_vm.form.approval)
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            this.form.approval == 0
-                              ? _c(
-                                  "label",
-                                  {
-                                    staticClass: "custom-control-label",
-                                    attrs: { for: "customSwitch1" }
-                                  },
-                                  [_vm._v(" Require Approval : NO  ")]
+                          "tbody",
+                          _vm._l(_vm.sd_values, function(sd) {
+                            return _c("tr", { key: sd.id }, [
+                              _c("td", [
+                                _vm._v(" " + _vm._s(sd.service_value))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(" " + _vm._s(sd.service_source_wallet))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  " " + _vm._s(sd.service_destination_wallet)
                                 )
-                              : _c(
-                                  "label",
-                                  {
-                                    staticClass: "custom-control-label",
-                                    attrs: { for: "customSwitch1" }
-                                  },
-                                  [_vm._v(" Require Approval : YES  ")]
-                                )
-                          ]
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(" " + _vm._s(sd.service_rate_table))
+                              ])
+                            ])
+                          }),
+                          0
                         )
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-sm-6" }, [
-                        _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary btn-custom",
+                          attrs: {
+                            type: "button",
+                            disabled: this.method_name == "joint"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.openModal()
+                            }
+                          }
+                        },
+                        [_vm._v("Create ")]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-6" }, [
                           _c(
-                            "label",
-                            {
-                              staticClass: "my-1",
-                              attrs: { for: "inlineFormCustomSelectPref" }
-                            },
-                            [_vm._v("Assign Approver:")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "select",
-                            {
-
+                            "div",
+                            { staticClass: "custom-control custom-switch" },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: {
+                                  type: "checkbox",
+                                  id: "customSwitch1",
+                                  disabled: this.method_name == "joint"
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.switchApproval(_vm.form.approval)
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              this.form.approval == 0
+                                ? _c(
+                                    "label",
+                                    {
+                                      staticClass: "custom-control-label",
+                                      attrs: { for: "customSwitch1" }
+                                    },
+                                    [_vm._v(" Require Approval : NO  ")]
+                                  )
+                                : _c(
+                                    "label",
+                                    {
+                                      staticClass: "custom-control-label",
+                                      attrs: { for: "customSwitch1" }
+                                    },
+                                    [_vm._v(" Require Approval : YES  ")]
+                                  )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-sm-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "my-1",
+                                attrs: { for: "inlineFormCustomSelectPref" }
+                              },
+                              [_vm._v("Assign Approver:")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
                               directives: [
                                 {
                                   name: "model",
@@ -65488,347 +68143,562 @@ var render = function() {
                                   expression: "this.form.merchant_admin_id"
                                 }
                               ],
-                              staticClass: "custom-select my-1",
+                              staticClass: "form-control",
                               attrs: {
-                                id: "assignapprover",
-                                disabled: this.form.approval == 0
+                                type: "text",
+                                disabled: this.form.approval == 0,
+                                name: "rates_table",
+                                placeholder: "*Underconstruction"
+                              },
+                              domProps: { value: this.form.merchant_admin_id },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    this.form,
+                                    "merchant_admin_id",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            },
-                            [
-                              _c(
-                                "option",
-                                { attrs: { selected: "", disabled: "" } },
-                                [_vm._v("Choose Merchant Admin")]
-                              ),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "1" } }, [
-                                _vm._v("Merchant One")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "2" } }, [
-                                _vm._v("Merchant Two")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "3" } }, [
-                                _vm._v("Merchant Three")
-                              ])
-                            ]
-                          )
+                            })
+                          ])
                         ])
                       ])
                     ])
                   ])
                 ])
               ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tab-content", { attrs: { title: "Last step" } }, [
-            _c("div", { staticClass: "col-12 mt-5" }, [
-              _c("div", { staticClass: "card shadow-custom" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c("h4", { staticClass: "header-title mt-3 text-center" }, [
-                    _vm._v(
-                      _vm._s(this.form.service_name) + " ( Service Set Up III )"
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body" }, [
-                  _c("h4", { staticClass: "header-title" }, [
-                    _vm._v("AMOUNT LIMITS")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
+            ]),
+            _vm._v(" "),
+            _c("tab-content", { attrs: { title: "Last step" } }, [
+              _c("div", { staticClass: "col-12 mt-5" }, [
+                _c("div", { staticClass: "card shadow-custom" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("h4", { staticClass: "header-title mt-3 text-center" }, [
                       _vm._v(
-                        "Amount limit (minimum and maximum) per transaction"
+                        _vm._s(this.form.service_name) +
+                          " ( Service Set Up III )"
                       )
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-3 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Minimum Amount : ")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-9" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.limit_minimum,
-                                expression: "form.limit_minimum"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Minimum Amount"
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("h4", { staticClass: "header-title" }, [
+                      _vm._v("AMOUNT LIMITS")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v(
+                          "Amount limit (minimum and maximum) per transaction"
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-3 col-form-label",
+                              attrs: { for: "inputEmail3" }
                             },
-                            domProps: { value: _vm.form.limit_minimum },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                            [_vm._v("Minimum Amount : ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-9" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.limit_minimum,
+                                  expression: "form.limit_minimum"
                                 }
-                                _vm.$set(
-                                  _vm.form,
-                                  "limit_minimum",
-                                  $event.target.value
-                                )
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder: "Enter Minimum Amount",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.limit_minimum },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "limit_minimum",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            }
-                          })
+                            })
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-3 col-form-label",
+                              attrs: { for: "inputEmail3" }
+                            },
+                            [_vm._v("Maximum Amount : ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-9" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.limit_maximum,
+                                  expression: "form.limit_maximum"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder: "Enter Maximum Amount",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.limit_maximum },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "limit_maximum",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
                         ])
                       ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-3 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum Amount : ")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-9" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.limit_maximum,
-                                expression: "form.limit_maximum"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum Amount"
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v("Limit of total transaction amount per day")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-3 col-form-label",
+                              attrs: { for: "inputEmail3" }
                             },
-                            domProps: { value: _vm.form.limit_maximum },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                            [_vm._v("Maximum Amount : ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-9" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.amount_per_day,
+                                  expression: "form.amount_per_day"
                                 }
-                                _vm.$set(
-                                  _vm.form,
-                                  "limit_maximum",
-                                  $event.target.value
-                                )
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder: "Enter Maximum Amount",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.amount_per_day },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "amount_per_day",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            }
-                          })
+                            })
+                          ])
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v("Limit of total transaction amount per month")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-3 col-form-label",
+                              attrs: { for: "inputEmail3" }
+                            },
+                            [_vm._v("Maximum Amount : ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-9" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.amount_per_month,
+                                  expression: "form.amount_per_month"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder: "Enter Maximum Amount",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.amount_per_month },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "amount_per_month",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v("Limit of total transaction amount per year")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-3 col-form-label",
+                              attrs: { for: "inputEmail3" }
+                            },
+                            [_vm._v("Maximum Amount : ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-9" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.amount_per_year,
+                                  expression: "form.amount_per_year"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder: "Enter Maximum Amount",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.amount_per_year },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "amount_per_year",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
                         ])
                       ])
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
-                      _vm._v("Limit of total transaction amount per day")
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tab-content", { attrs: { title: "Last step" } }, [
+              _c("div", { staticClass: "col-12 mt-5" }, [
+                _c("div", { staticClass: "card shadow-custom" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("h4", { staticClass: "header-title mt-3 text-center" }, [
+                      _vm._v(
+                        _vm._s(this.form.service_name) +
+                          " ( Service Set Up IV )"
+                      )
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-3 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum Amount : ")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-9" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.amount_per_day,
-                                expression: "form.amount_per_day"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum Amount"
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("h4", { staticClass: "header-title" }, [
+                      _vm._v("LIMIT NO. OF TRANSACTION")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v("Limit no. of transactions per day")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-4 col-form-label",
+                              attrs: { for: "inputEmail3" }
                             },
-                            domProps: { value: _vm.form.amount_per_day },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                            [_vm._v("Maximum No. of Transactions: ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-8" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.limit_per_day,
+                                  expression: "form.limit_per_day"
                                 }
-                                _vm.$set(
-                                  _vm.form,
-                                  "amount_per_day",
-                                  $event.target.value
-                                )
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder:
+                                  "Enter Maximum No. of Transactions",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.limit_per_day },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "limit_per_day",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            }
-                          })
+                            })
+                          ])
                         ])
                       ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
+                    ]),
                     _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
-                      _vm._v("Limit of total transaction amount per month")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-3 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum Amount : ")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-9" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.amount_per_month,
-                                expression: "form.amount_per_month"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum Amount"
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v("Limit no. of transactions per month")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-4 col-form-label",
+                              attrs: { for: "inputEmail3" }
                             },
-                            domProps: { value: _vm.form.amount_per_month },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                            [_vm._v("Maximum No. of Transactions: ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-8" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.limit_per_month,
+                                  expression: "form.limit_per_month"
                                 }
-                                _vm.$set(
-                                  _vm.form,
-                                  "amount_per_month",
-                                  $event.target.value
-                                )
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder:
+                                  "Enter Maximum No. of Transactions",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.limit_per_month },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "limit_per_month",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            }
-                          })
+                            })
+                          ])
                         ])
                       ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
+                    ]),
                     _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
-                      _vm._v("Limit of total transaction amount per year")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-3 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum Amount : ")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-9" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.amount_per_year,
-                                expression: "form.amount_per_year"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum Amount"
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v("Limit no. of transactions per year")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-4 col-form-label",
+                              attrs: { for: "inputEmail3" }
                             },
-                            domProps: { value: _vm.form.amount_per_year },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                            [_vm._v("Maximum No. of Transactions: ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-8" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.limit_per_year,
+                                  expression: "form.limit_per_year"
                                 }
-                                _vm.$set(
-                                  _vm.form,
-                                  "amount_per_year",
-                                  $event.target.value
-                                )
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder:
+                                  "Enter Maximum No. of Transactions",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.limit_per_year },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "limit_per_year",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            }
-                          })
+                            })
+                          ])
                         ])
                       ])
                     ])
@@ -65836,221 +68706,614 @@ var render = function() {
                 ])
               ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("tab-content", { attrs: { title: "Last step" } }, [
-            _c("div", { staticClass: "col-12 mt-5" }, [
-              _c("div", { staticClass: "card shadow-custom" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c("h4", { staticClass: "header-title mt-3 text-center" }, [
-                    _vm._v(
-                      _vm._s(this.form.service_name) + " ( Service Set Up IV )"
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body" }, [
-                  _c("h4", { staticClass: "header-title" }, [
-                    _vm._v("LIMIT NO. OF TRANSACTION")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
+          ],
+          1
+        )
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "serviceValueSDRates",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "serviceGatewayModal",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.createSD()
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { staticClass: "col-form-label" }, [
+                        _vm._v("Value")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.value,
+                              expression: "form.value"
+                            }
+                          ],
+                          staticClass: "custom-select",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "value",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "option",
+                            { attrs: { selected: "selected", disabled: "" } },
+                            [_vm._v("Select Value")]
+                          ),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "principal" } }, [
+                            _vm._v("Principal")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "servicefee" } }, [
+                            _vm._v("Service Fee")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "interest" } }, [
+                            _vm._v("Interest")
+                          ])
+                        ]
+                      )
+                    ]),
                     _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
-                      _vm._v("Limit no. of transactions per day")
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.source_wallet,
+                            expression: "form.source_wallet"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          name: "source_wallet",
+                          placeholder: "Source Wallet",
+                          disabled: ""
+                        },
+                        domProps: { value: _vm.form.source_wallet },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "source_wallet",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { staticClass: "col-form-label" }, [
+                        _vm._v("Destination Wallet")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.destination_wallet,
+                              expression: "form.destination_wallet"
+                            }
+                          ],
+                          staticClass: "custom-select",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "destination_wallet",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "option",
+                            { attrs: { selected: "selected", disabled: "" } },
+                            [_vm._v("Select Value")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "option",
+                            { attrs: { value: "Principal Redeem" } },
+                            [_vm._v("Principal Redeem")]
+                          ),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Income Redeem" } }, [
+                            _vm._v("Income Redeem")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.rates_table,
+                            expression: "form.rates_table"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          name: "rates_table",
+                          placeholder: "Rates Table"
+                        },
+                        domProps: { value: _vm.form.rates_table },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "rates_table",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
+                  _vm._m(1)
+                ]
+              )
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", {
+        staticClass: "modal-title",
+        attrs: { id: "exampleModalCenterTitle" }
+      }),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary btn-flat",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Close")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary btn-flat", attrs: { type: "submit" } },
+        [_vm._v("Save changes")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/JointServices.vue?vue&type=template&id=b1a41f8a&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServices/JointServices.vue?vue&type=template&id=b1a41f8a& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "col-12 mt-5" }, [
+    _c("div", { staticClass: "card shadow-custom" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "data-tables datatable-dark" }, [
+          _c("form", [
+            _c("div", { staticClass: "row" }, [
+              _c(
+                "div",
+                { staticClass: "col-sm-6" },
+                [
+                  _c("h4", { staticClass: "header-title mt-3" }, [
+                    _vm._v("JOINT SERVICE ")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                      _vm._v("Available ONLY in Wallet Type:")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
                           {
-                            staticClass: "col-sm-4 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum No. of Transactions: ")]
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.original_wallet_type,
+                            expression: "form.original_wallet_type"
+                          }
+                        ],
+                        staticClass: "custom-select",
+                        attrs: { id: "wallet_type", name: "wallet_type" },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.form,
+                              "original_wallet_type",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "option",
+                          { attrs: { selected: "selected", disabled: "" } },
+                          [_vm._v("Select")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-8" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.limit_per_day,
-                                expression: "form.limit_per_day"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum No. of Transactions"
-                            },
-                            domProps: { value: _vm.form.limit_per_day },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.form,
-                                  "limit_per_day",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
-                      _vm._v("Limit no. of transactions per month")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-4 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum No. of Transactions: ")]
-                        ),
+                        _c("option", { attrs: { value: "prepaid" } }, [
+                          _vm._v(" Prepaid ")
+                        ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-8" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.limit_per_month,
-                                expression: "form.limit_per_month"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum No. of Transactions"
-                            },
-                            domProps: { value: _vm.form.limit_per_month },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.form,
-                                  "limit_per_month",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
-                      _vm._v("Limit no. of transactions per year")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-4 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum No. of Transactions: ")]
-                        ),
+                        _c("option", { attrs: { value: "credit" } }, [
+                          _vm._v(" Credit ")
+                        ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-8" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.limit_per_year,
-                                expression: "form.limit_per_year"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum No. of Transactions"
-                            },
-                            domProps: { value: _vm.form.limit_per_year },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.form,
-                                  "limit_per_year",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
+                        _c("option", { attrs: { value: "prepaid/credit" } }, [
+                          _vm._v(" Prepaid/Credit ")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "admin" } }, [
+                          _vm._v(" Admin ")
                         ])
-                      ])
-                    ])
-                  ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("small", {
+                      staticClass: "form-text text-muted",
+                      attrs: { id: "emailHelp" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                      _vm._v("Service Code:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.original_service_code,
+                          expression: "form.original_service_code"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "number",
+                        id: "service_code",
+                        "aria-describedby": "emailHelp",
+                        placeholder: "Enter Service Code",
+                        name: "service_code"
+                      },
+                      domProps: { value: _vm.form.original_service_code },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.form,
+                            "original_service_code",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                      _vm._v("Service Name:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.original_service_name,
+                          expression: "form.original_service_name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        id: "service_name",
+                        "aria-describedby": "emailHelp",
+                        placeholder: "Enter Service Name",
+                        name: "service_name"
+                      },
+                      domProps: { value: _vm.form.original_service_name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.form,
+                            "original_service_name",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                      _vm._v("Service Description:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.original_service_description,
+                          expression: "form.original_service_description"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        id: "service_description",
+                        "aria-describedby": "emailHelp",
+                        placeholder: "Enter Service Description",
+                        name: "service_description"
+                      },
+                      domProps: {
+                        value: _vm.form.original_service_description
+                      },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.form,
+                            "original_service_description",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass:
+                        "btn btn-flat btn-primary btn-lg mb-5 mt-3 float-left btn-custom",
+                      attrs: {
+                        to: {
+                          name: "services-list",
+                          params: { method_name: "joint" }
+                        }
+                      },
+                      nativeOn: {
+                        click: function($event) {
+                          return _vm.addService(_vm.method_name)
+                        }
+                      }
+                    },
+                    [_vm._v("Add Service")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.saveJointServices()
+                        }
+                      }
+                    },
+                    [_vm._v(" Save Joint Service")]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-6" }, [
+                _c("div", { staticClass: "data-tables datatable-dark" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass: "table table-hover",
+                      attrs: { id: "jointservicestable" }
+                    },
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.form.joint_services, function(js) {
+                          return _c("tr", { key: js.id }, [
+                            _c("td", [_vm._v(" " + _vm._s(js.wallet_type))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(" " + _vm._s(js.service_code))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(" " + _vm._s(js.service_name))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(" " + _vm._s(js.service_description))
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ]
+                  )
                 ])
               ])
             ])
           ])
-        ],
-        1
-      )
-    ],
-    1
-  )
+        ])
+      ])
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-12" }, [
+      _c("h4", { staticClass: "header-title mt-3 text-center" }, [
+        _vm._v("  Joint Services ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", { staticClass: "th-table" }, [
+        _c("th", [_vm._v("Wallet Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Service Code")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Service Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Service Description")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -66086,10 +69349,27 @@ var render = function() {
             _c(
               "router-link",
               {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: this.method_name == "view",
+                    expression: "this.method_name == 'view'"
+                  }
+                ],
                 staticClass: "btn btn-primary btn-custom",
-                attrs: { to: "/createservice" }
+                attrs: { to: "/createservice/create" }
               },
-              [_vm._v("Create Services")]
+              [_vm._v("Create Solo Services")]
+            ),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                staticClass: "btn btn-primary btn-custom",
+                attrs: { to: "/createjointservice" }
+              },
+              [_vm._v("Create Joint Services")]
             )
           ],
           1
@@ -66110,30 +69390,143 @@ var render = function() {
                   "tbody",
                   _vm._l(_vm.Services, function(s) {
                     return _c("tr", { key: s.id }, [
-                      _c("td", [_vm._v(_vm._s(s.service_code) + " ")]),
+                      _c("td", [
+                        _c("p", [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(s.service_code) +
+                              "  \n                        "
+                          )
+                        ])
+                      ]),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(s.service_name) + "t ")]),
+                      _c("td", [
+                        _c("p", [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(s.service_name) +
+                              " \n                        "
+                          )
+                        ])
+                      ]),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(s.st_code) + " ")]),
+                      _vm._m(1, true),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(s.st_name) + " ")]),
+                      _vm._m(2, true),
                       _vm._v(" "),
-                      _c("td", [_vm._v("---- ")]),
+                      _c("td", [
+                        _c("p", [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(s.s_wallet_type) +
+                              "\n                        "
+                          )
+                        ])
+                      ]),
                       _vm._v(" "),
-                      _c("td", [_vm._v("---- ")]),
+                      _c("td", [
+                        _c("p", [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(s.wallet_condition) +
+                              " \n                        "
+                          )
+                        ])
+                      ]),
                       _vm._v(" "),
                       _c(
                         "td",
                         [
+                          _vm.method_name === "view" &&
+                          s.wallet_condition == "solo"
+                            ? _c(
+                                "router-link",
+                                {
+                                  staticClass: "btn btn-primary btn-custom",
+                                  attrs: {
+                                    to: {
+                                      name: "/update-service",
+                                      params: { id: s.id, method_name: "view" }
+                                    }
+                                  }
+                                },
+                                [_vm._v("Update")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.method_name === "view" &&
+                          s.wallet_condition == "joint"
+                            ? _c(
+                                "router-link",
+                                {
+                                  staticClass: "btn btn-primary btn-custom",
+                                  attrs: {
+                                    to: {
+                                      name: "/update-service",
+                                      params: { id: s.id, method_name: "view" }
+                                    }
+                                  }
+                                },
+                                [_vm._v("Manage")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.method_name === "joint" &&
+                          s.wallet_condition === "solo"
+                            ? _c(
+                                "router-link",
+                                {
+                                  staticClass: "btn btn-primary btn-custom",
+                                  attrs: {
+                                    to: {
+                                      name: "/update-service",
+                                      params: { id: s.id, method_name: "joint" }
+                                    },
+                                    hidden: _vm.checksExistId(s.id)
+                                  }
+                                },
+                                [_vm._v(" Add")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
-                            "router-link",
+                            "a",
                             {
-                              staticClass: "btn btn-primary btn-custom",
-                              attrs: {
-                                to: { name: "/test", params: { id: 1 } }
-                              }
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value:
+                                    _vm.checksExistId(s.id) &&
+                                    _vm.method_name === "joint",
+                                  expression:
+                                    "checksExistId(s.id) && method_name === 'joint'"
+                                }
+                              ],
+                              staticClass: "badge badge-secondary",
+                              attrs: { href: "#" }
                             },
-                            [_vm._v("Update")]
+                            [_vm._v("TAKEN")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value:
+                                    _vm.method_name === "joint" &&
+                                    s.wallet_condition === "joint",
+                                  expression:
+                                    "method_name === 'joint' && s.wallet_condition === 'joint'"
+                                }
+                              ],
+                              staticClass: "badge badge-secondary",
+                              attrs: { href: "#" }
+                            },
+                            [_vm._v("UNAVAILABLE")]
                           )
                         ],
                         1
@@ -66167,9 +69560,29 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Available In Wallet Type")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Merchant Wallet No.")]),
+        _c("th", [_vm._v("Service Condition")]),
         _vm._v(" "),
         _c("th", [_vm._v("Action")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("p", [
+        _vm._v("\n                        -----\n                        ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("p", [
+        _vm._v("\n                        -----\n                        ")
       ])
     ])
   }
@@ -66213,7 +69626,7 @@ var render = function() {
         [
           _vm._m(0),
           _vm._v(" "),
-          _c("div", { staticClass: "login-form-body" }, [
+          _c("div", { staticClass: "login-form-body shadow-custom" }, [
             _c(
               "div",
               { staticClass: "form-group" },
@@ -66232,7 +69645,8 @@ var render = function() {
                   attrs: {
                     type: "text",
                     name: "username",
-                    placeholder: "Username"
+                    placeholder: "Username",
+                    id: "username"
                   },
                   domProps: { value: _vm.form.username },
                   on: {
@@ -66247,7 +69661,15 @@ var render = function() {
                 _vm._v(" "),
                 _c("has-error", {
                   attrs: { form: _vm.form, field: "username" }
-                })
+                }),
+                _vm._v(" "),
+                _vm.status != null
+                  ? _c(
+                      "p",
+                      { staticClass: "text-danger", attrs: { id: "err-msg" } },
+                      [_vm._v("These credentials do not match our records")]
+                    )
+                  : _vm._e()
               ],
               1
             ),
@@ -66302,9 +69724,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "login-form-head" }, [
-      _c("h4", [_vm._v("Elektronik Pitaka")])
-    ])
+    return _c(
+      "div",
+      { staticClass: "login-form-head", attrs: { id: "form-header" } },
+      [_c("h4", [_vm._v("E - Wallet")])]
+    )
   },
   function() {
     var _vm = this
@@ -66312,12 +69736,94 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "submit-btn-area" }, [
       _c("button", { attrs: { id: "form_submit", type: "submit" } }, [
-        _vm._v("Submit "),
+        _vm._v("Login "),
         _c("i", { staticClass: "ti-arrow-right" })
       ])
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inc/Navbar.vue?vue&type=template&id=bd00d8e8&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/inc/Navbar.vue?vue&type=template&id=bd00d8e8& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "page-title-area" }, [
+    _c("div", { staticClass: "row align-items-center" }, [
+      _c("div", { staticClass: "col-sm-6" }, [
+        _c("div", { staticClass: "breadcrumbs-area clearfix" }, [
+          _c("ul", { staticClass: "breadcrumbs pull-left" }, [
+            _c(
+              "li",
+              [
+                _c("router-link", { attrs: { to: "/dashboard" } }, [
+                  _vm._v("Dashboard")
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("li", [_c("span", [_vm._v(_vm._s(this.$route.name))])])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-6 clearfix" }, [
+        _c("div", { staticClass: "user-profile pull-right btn-custom" }, [
+          _c("img", {
+            staticClass: "avatar user-thumb",
+            attrs: { src: "/str_dash/images/author/avatar.png", alt: "avatar" }
+          }),
+          _vm._v(" "),
+          _c(
+            "h4",
+            {
+              staticClass: "user-name dropdown-toggle",
+              attrs: { "data-toggle": "dropdown" }
+            },
+            [
+              _vm._v(_vm._s(_vm.username) + " "),
+              _c("i", { staticClass: "fa fa-angle-down" })
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "dropdown-menu" }, [
+            _c(
+              "a",
+              {
+                staticClass: "dropdown-item",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.logout($event)
+                  }
+                }
+              },
+              [_vm._v("Logout")]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -66427,6 +69933,18 @@ function normalizeComponent (
     options: options
   }
 }
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-progressbar/dist/vue-progressbar.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/vue-progressbar/dist/vue-progressbar.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(t,o){ true?module.exports=o():undefined}(this,function(){"use strict";!function(){if("undefined"!=typeof document){var t=document.head||document.getElementsByTagName("head")[0],o=document.createElement("style"),i=" .__cov-progress { opacity: 1; z-index: 999999; } ";o.type="text/css",o.styleSheet?o.styleSheet.cssText=i:o.appendChild(document.createTextNode(i)),t.appendChild(o)}}();var t="undefined"!=typeof window,r={render:function(){var t=this,o=t.$createElement;return(t._self._c||o)("div",{staticClass:"__cov-progress",style:t.style})},staticRenderFns:[],name:"VueProgress",serverCacheKey:function(){return"Progress"},computed:{style:function(){var t=this.progress,o=t.options,i=!!o.show,e=o.location,s={"background-color":o.canSuccess?o.color:o.failedColor,opacity:o.show?1:0,position:o.position};return"top"===e||"bottom"===e?("top"===e?s.top="0px":s.bottom="0px",o.inverse?s.right="0px":s.left="0px",s.width=t.percent+"%",s.height=o.thickness,s.transition=(i?"width "+o.transition.speed+", ":"")+"opacity "+o.transition.opacity):"left"!==e&&"right"!==e||("left"===e?s.left="0px":s.right="0px",o.inverse?s.top="0px":s.bottom="0px",s.height=t.percent+"%",s.width=o.thickness,s.transition=(i?"height "+o.transition.speed+", ":"")+"opacity "+o.transition.opacity),s},progress:function(){return t?window.VueProgressBarEventBus.RADON_LOADING_BAR:{percent:0,options:{canSuccess:!0,show:!1,color:"rgb(19, 91, 55)",failedColor:"red",thickness:"2px",transition:{speed:"0.2s",opacity:"0.6s",termination:300},location:"top",autoRevert:!0,inverse:!1}}}}};return{install:function(o){var t=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{},i=(o.version.split(".")[0],"undefined"!=typeof window),e={$vm:null,state:{tFailColor:"",tColor:"",timer:null,cut:0},init:function(t){this.$vm=t},start:function(t){var o=this;this.$vm&&(t||(t=3e3),this.$vm.RADON_LOADING_BAR.percent=0,this.$vm.RADON_LOADING_BAR.options.show=!0,this.$vm.RADON_LOADING_BAR.options.canSuccess=!0,this.state.cut=1e4/Math.floor(t),clearInterval(this.state.timer),this.state.timer=setInterval(function(){o.increase(o.state.cut*Math.random()),95<o.$vm.RADON_LOADING_BAR.percent&&o.$vm.RADON_LOADING_BAR.options.autoFinish&&o.finish()},100))},set:function(t){this.$vm.RADON_LOADING_BAR.options.show=!0,this.$vm.RADON_LOADING_BAR.options.canSuccess=!0,this.$vm.RADON_LOADING_BAR.percent=Math.floor(t)},get:function(){return Math.floor(this.$vm.RADON_LOADING_BAR.percent)},increase:function(t){this.$vm.RADON_LOADING_BAR.percent=Math.min(99,this.$vm.RADON_LOADING_BAR.percent+Math.floor(t))},decrease:function(t){this.$vm.RADON_LOADING_BAR.percent=this.$vm.RADON_LOADING_BAR.percent-Math.floor(t)},hide:function(){var t=this;clearInterval(this.state.timer),this.state.timer=null,setTimeout(function(){t.$vm.RADON_LOADING_BAR.options.show=!1,o.nextTick(function(){setTimeout(function(){t.$vm.RADON_LOADING_BAR.percent=0},100),t.$vm.RADON_LOADING_BAR.options.autoRevert&&setTimeout(function(){t.revert()},300)})},this.$vm.RADON_LOADING_BAR.options.transition.termination)},pause:function(){clearInterval(this.state.timer)},finish:function(){this.$vm&&(this.$vm.RADON_LOADING_BAR.percent=100,this.hide())},fail:function(){this.$vm.RADON_LOADING_BAR.options.canSuccess=!1,this.$vm.RADON_LOADING_BAR.percent=100,this.hide()},setFailColor:function(t){this.$vm.RADON_LOADING_BAR.options.failedColor=t},setColor:function(t){this.$vm.RADON_LOADING_BAR.options.color=t},setLocation:function(t){this.$vm.RADON_LOADING_BAR.options.location=t},setTransition:function(t){this.$vm.RADON_LOADING_BAR.options.transition=t},tempFailColor:function(t){this.state.tFailColor=this.$vm.RADON_LOADING_BAR.options.failedColor,this.$vm.RADON_LOADING_BAR.options.failedColor=t},tempColor:function(t){this.state.tColor=this.$vm.RADON_LOADING_BAR.options.color,this.$vm.RADON_LOADING_BAR.options.color=t},tempLocation:function(t){this.state.tLocation=this.$vm.RADON_LOADING_BAR.options.location,this.$vm.RADON_LOADING_BAR.options.location=t},tempTransition:function(t){this.state.tTransition=this.$vm.RADON_LOADING_BAR.options.transition,this.$vm.RADON_LOADING_BAR.options.transition=t},revertColor:function(){this.$vm.RADON_LOADING_BAR.options.color=this.state.tColor,this.state.tColor=""},revertFailColor:function(){this.$vm.RADON_LOADING_BAR.options.failedColor=this.state.tFailColor,this.state.tFailColor=""},revertLocation:function(){this.$vm.RADON_LOADING_BAR.options.location=this.state.tLocation,this.state.tLocation=""},revertTransition:function(){this.$vm.RADON_LOADING_BAR.options.transition=this.state.tTransition,this.state.tTransition={}},revert:function(){this.$vm.RADON_LOADING_BAR.options.autoRevert&&(this.state.tColor&&this.revertColor(),this.state.tFailColor&&this.revertFailColor(),this.state.tLocation&&this.revertLocation(),!this.state.tTransition||void 0===this.state.tTransition.speed&&void 0===this.state.tTransition.opacity||this.revertTransition())},parseMeta:function(t){for(var o in t.func){var i=t.func[o];switch(i.call){case"color":switch(i.modifier){case"set":this.setColor(i.argument);break;case"temp":this.tempColor(i.argument)}break;case"fail":switch(i.modifier){case"set":this.setFailColor(i.argument);break;case"temp":this.tempFailColor(i.argument)}break;case"location":switch(i.modifier){case"set":this.setLocation(i.argument);break;case"temp":this.tempLocation(i.argument)}break;case"transition":switch(i.modifier){case"set":this.setTransition(i.argument);break;case"temp":this.tempTransition(i.argument)}}}}},s=function(t,o){for(var i,e,s=1;s<arguments.length;++s)for(i in e=arguments[s])Object.prototype.hasOwnProperty.call(e,i)&&(t[i]=e[i]);return t}({canSuccess:!0,show:!1,color:"#73ccec",position:"fixed",failedColor:"red",thickness:"2px",transition:{speed:"0.2s",opacity:"0.6s",termination:300},autoRevert:!0,location:"top",inverse:!1,autoFinish:!0},t),n=new o({data:{RADON_LOADING_BAR:{percent:0,options:s}}});i&&(window.VueProgressBarEventBus=n,e.init(n)),o.component("vue-progress-bar",r),o.prototype.$Progress=e}}});
 
 
 /***/ }),
@@ -81371,9 +84889,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_form_wizard__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_form_wizard__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var vue_form_wizard_dist_vue_form_wizard_min_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-form-wizard/dist/vue-form-wizard.min.css */ "./node_modules/vue-form-wizard/dist/vue-form-wizard.min.css");
 /* harmony import */ var vue_form_wizard_dist_vue_form_wizard_min_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_form_wizard_dist_vue_form_wizard_min_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-progressbar */ "./node_modules/vue-progressbar/dist/vue-progressbar.js");
+/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_progressbar__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -81393,8 +84913,14 @@ Vue.component(vform__WEBPACK_IMPORTED_MODULE_1__["HasError"].name, vform__WEBPAC
 Vue.component(vform__WEBPACK_IMPORTED_MODULE_1__["AlertError"].name, vform__WEBPACK_IMPORTED_MODULE_1__["AlertError"]);
 Vue.component('pagination', __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
 
-window.swal = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a;
-var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
+Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_4___default.a, {
+  color: 'rgb(0, 119, 181)',
+  failedColor: 'red',
+  height: '3px'
+});
+
+window.swal = sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a;
+var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.mixin({
   toast: true,
   position: 'top-end',
   showConfirmButton: false,
@@ -81402,7 +84928,22 @@ var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
 });
 window.toast = toast;
 
-Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_5__["default"]);
+Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_6__["default"]); // Vue Filters
+
+Vue.filter('substring', function (value) {
+  if (!value) return '';
+  value = value.toString();
+  return value.substring(11, 60);
+});
+/**
+ * @ Vue Js Production 
+ * Uncomment below when compiling to production
+ * Comment below if compiling to development
+ **/
+// Vue.config.devtools = false
+// Vue.config.debug = false
+// Vue.config.silent = true
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -81415,7 +84956,7 @@ Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_5__["default"]);
 
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]); // General Components
 
-Vue.component('Navbar', __webpack_require__(/*! ./components/General/Navbar.vue */ "./resources/js/components/General/Navbar.vue")["default"]);
+Vue.component('Navbar', __webpack_require__(/*! ./components/inc/Navbar.vue */ "./resources/js/components/inc/Navbar.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -81677,75 +85218,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_0ed2d4b2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_0ed2d4b2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/js/components/General/Navbar.vue":
-/*!****************************************************!*\
-  !*** ./resources/js/components/General/Navbar.vue ***!
-  \****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Navbar.vue?vue&type=template&id=641d82e2& */ "./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2&");
-/* harmony import */ var _Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Navbar.vue?vue&type=script&lang=js& */ "./resources/js/components/General/Navbar.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/General/Navbar.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/General/Navbar.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************!*\
-  !*** ./resources/js/components/General/Navbar.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Navbar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/General/Navbar.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2&":
-/*!***********************************************************************************!*\
-  !*** ./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2& ***!
-  \***********************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Navbar.vue?vue&type=template&id=641d82e2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/General/Navbar.vue?vue&type=template&id=641d82e2&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_641d82e2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -82546,6 +86018,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/WalletServices/JointServices.vue":
+/*!******************************************************************!*\
+  !*** ./resources/js/components/WalletServices/JointServices.vue ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _JointServices_vue_vue_type_template_id_b1a41f8a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JointServices.vue?vue&type=template&id=b1a41f8a& */ "./resources/js/components/WalletServices/JointServices.vue?vue&type=template&id=b1a41f8a&");
+/* harmony import */ var _JointServices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JointServices.vue?vue&type=script&lang=js& */ "./resources/js/components/WalletServices/JointServices.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _JointServices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _JointServices_vue_vue_type_template_id_b1a41f8a___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _JointServices_vue_vue_type_template_id_b1a41f8a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/WalletServices/JointServices.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/WalletServices/JointServices.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/WalletServices/JointServices.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./JointServices.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/JointServices.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/WalletServices/JointServices.vue?vue&type=template&id=b1a41f8a&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/WalletServices/JointServices.vue?vue&type=template&id=b1a41f8a& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServices_vue_vue_type_template_id_b1a41f8a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./JointServices.vue?vue&type=template&id=b1a41f8a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/JointServices.vue?vue&type=template&id=b1a41f8a&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServices_vue_vue_type_template_id_b1a41f8a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServices_vue_vue_type_template_id_b1a41f8a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/WalletServices/ServicesListTable.vue":
 /*!**********************************************************************!*\
   !*** ./resources/js/components/WalletServices/ServicesListTable.vue ***!
@@ -82702,6 +86243,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/inc/Navbar.vue":
+/*!************************************************!*\
+  !*** ./resources/js/components/inc/Navbar.vue ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Navbar_vue_vue_type_template_id_bd00d8e8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Navbar.vue?vue&type=template&id=bd00d8e8& */ "./resources/js/components/inc/Navbar.vue?vue&type=template&id=bd00d8e8&");
+/* harmony import */ var _Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Navbar.vue?vue&type=script&lang=js& */ "./resources/js/components/inc/Navbar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Navbar_vue_vue_type_template_id_bd00d8e8___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Navbar_vue_vue_type_template_id_bd00d8e8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/inc/Navbar.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/inc/Navbar.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/inc/Navbar.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Navbar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inc/Navbar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/inc/Navbar.vue?vue&type=template&id=bd00d8e8&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/inc/Navbar.vue?vue&type=template&id=bd00d8e8& ***!
+  \*******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_bd00d8e8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Navbar.vue?vue&type=template&id=bd00d8e8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inc/Navbar.vue?vue&type=template&id=bd00d8e8&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_bd00d8e8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_bd00d8e8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/router/index.js":
 /*!**************************************!*\
   !*** ./resources/js/router/index.js ***!
@@ -82728,6 +86338,7 @@ var routes = [{
 }, {
   path: '/dashboard',
   component: __webpack_require__(/*! ../components/General/Dashboard.vue */ "./resources/js/components/General/Dashboard.vue")["default"],
+  name: 'Dashboard',
   beforeEnter: requireLogin
 },
 /* 
@@ -82736,14 +86347,17 @@ var routes = [{
 {
   path: '/walletaccounts',
   component: __webpack_require__(/*! ../components/WalletAccounts/WalletAccounts.vue */ "./resources/js/components/WalletAccounts/WalletAccounts.vue")["default"],
+  name: 'Wallet Accounts',
   beforeEnter: requireLogin
 }, {
   path: '/createwalletaccount',
   component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"],
+  name: 'Create Wallet Account',
   beforeEnter: requireLogin
 }, {
   path: '/updatewalletaccount/:id',
   component: __webpack_require__(/*! ../components/WalletAccounts/CreateWalletAccount.vue */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue")["default"],
+  name: 'Update Wallet Account',
   beforeEnter: requireLogin
 },
 /**
@@ -82782,6 +86396,7 @@ var routes = [{
 {
   path: '/serviceGroup',
   component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceGroup.vue */ "./resources/js/components/ServiceMatrix/ServiceGroup.vue")["default"],
+  name: 'Service Group',
   beforeEnter: requireLogin
 }, {
   path: '/serviceMatrix',
@@ -82793,11 +86408,22 @@ var routes = [{
  * @ Services  
  */
 {
-  path: '/serviceslist',
+  path: '/serviceslist/:method_name',
+  name: 'services-list',
   component: __webpack_require__(/*! ../components/WalletServices/ServicesListTable.vue */ "./resources/js/components/WalletServices/ServicesListTable.vue")["default"],
   beforeEnter: requireLogin
 }, {
-  path: '/createservice',
+  path: '/createservice/:method_name',
+  component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"],
+  beforeEnter: requireLogin
+}, {
+  path: '/createjointservice',
+  name: 'Create Joint Services',
+  component: __webpack_require__(/*! ../components/WalletServices/JointServices.vue */ "./resources/js/components/WalletServices/JointServices.vue")["default"],
+  beforeEnter: requireLogin
+}, {
+  path: '/updateservice/:id/:method_name',
+  name: '/update-service',
   component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"],
   beforeEnter: requireLogin
 },
@@ -82807,6 +86433,7 @@ var routes = [{
 {
   path: '/walletaccounttype',
   component: __webpack_require__(/*! ../components/WalletAccountTypes/WalletAccountType.vue */ "./resources/js/components/WalletAccountTypes/WalletAccountType.vue")["default"],
+  name: 'Wallet Account Type',
   beforeEnter: requireLogin
 },
 /**
@@ -82834,8 +86461,9 @@ function requireLogin(to, from, next) {
   if (user != null) {
     next(true);
   } else {
-    window.localStorage.removeItem('user');
-    location.reload();
+    //window.localStorage.removeItem('user');
+    //location.reload();
+    localStorage.clear();
     window.location.href = "/";
   }
 }

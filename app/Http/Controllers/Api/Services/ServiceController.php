@@ -25,9 +25,21 @@ class ServiceController extends Controller
      */
     public function InsertService(ServiceValidate $request){
         $InsertService = $this->services->InsertServiceMethod($request);
-        return response()->json([
-            'status' => 'success'
-        ]);    
+        return response()->json($InsertService);    
+    } 
+    /**
+     * For Updating Services , Wallet Details etc.
+     */
+    public function UpdateService(ServiceValidate $request){
+        $UpdateService = $this->services->UpdateServiceMethod($request);
+        return response()->json($UpdateService);    
+    }
+    /**
+     * For Inserting Joint Services 
+     */
+    public function InsertJointService(Request $request){
+        $InsertJointService = $this->services->InsertJointServices($request);
+        return response()->json($InsertJointService);
     }
     /**
      * For getting Service Name using service code 
@@ -53,6 +65,18 @@ class ServiceController extends Controller
     public function GetService(){
         $get_services = $this->services->GetAllServices();
         return response()->json($get_services);
+    }
+    public function GetServiceDetails($service_id){
+        $get_service_details = $this->services->GetServiceDetails($service_id);
+        return response()->json($get_service_details);
+    }
+    public function GetWalletDetails($id){
+        $get_wallet_details = $this->services->GetWalletDetails($id);
+        return response()->json($get_wallet_details);
+    }
+    public function GetVSDR($service_id){
+        $get_vsdr = $this->services->GetVSDR($service_id);
+        return response()->json($get_vsdr);
     }
 
 }
