@@ -13,7 +13,7 @@
                    <h4 class="header-title mt-3">JOINT SERVICE </h4>  
                 <div class="form-group row">
                         <label for="exampleInputEmail1">Available ONLY in Wallet Type:</label>
-                        <select class="custom-select" v-model="form.original_wallet_type" name="wallet_type">
+                        <select class="custom-select" id="wallet_type" v-model="form.original_wallet_type" name="wallet_type">
                         <option selected="selected" disabled>Select</option>
                         <option value="prepaid"> Prepaid </option>
                         <option value="credit"> Credit </option> 
@@ -24,15 +24,15 @@
                 </div> 
                 <div class="form-group row"> 
                         <label for="exampleInputEmail1">Service Code:</label>
-                        <input type="number" class="form-control" v-model="form.original_service_code" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Service Code" name="service_code" >
+                        <input type="number" id="service_code" class="form-control" v-model="form.original_service_code" aria-describedby="emailHelp" placeholder="Enter Service Code" name="service_code" >
                 </div>   
                 <div class="form-group row"> 
                         <label for="exampleInputEmail1">Service Name:</label>
-                        <input type="text" class="form-control" v-model="form.original_service_name" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Service Name" name="service_name" >
+                        <input type="text" id="service_name" class="form-control" v-model="form.original_service_name" aria-describedby="emailHelp" placeholder="Enter Service Name" name="service_name" >
                 </div>  
                 <div class="form-group row"> 
                         <label for="exampleInputEmail1">Service Description:</label>
-                        <input type="text" class="form-control" v-model="form.original_service_description" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Service Description" name="service_description" >
+                        <input type="text" id="service_description" class="form-control" v-model="form.original_service_description" aria-describedby="emailHelp" placeholder="Enter Service Description" name="service_description" >
                 </div>  
                   <router-link :to="{ name: 'services-list', params: { method_name: 'joint' }}" class="btn btn-flat btn-primary btn-lg mb-5 mt-3 float-left btn-custom" @click.native="addService(method_name)" >Add Service</router-link>  
              <!--     <button type="button" class="btn btn-flat btn-primary btn-lg mb-5 mt-3 float-left btn-custom" v-else disabled>Add Service </button> -->
@@ -100,8 +100,8 @@ methods : {
                  */
             window.localStorage.setItem('wallet_type',this.form.original_wallet_type);
             window.localStorage.setItem('service_code', this.form.original_service_code); 
-            window.localStorage.setItem('service_name', this.form.original_service_name); 
-            window.localStorage.setItem('service_description',this.form.original_service_description);  
+            window.localStorage.setItem('service_name', this.form.original_service_name || ''); 
+            window.localStorage.setItem('service_description',this.form.original_service_description || '');  
             window.localStorage.setItem('method_name','joint');        
     },
     showDatatable(){
@@ -120,7 +120,7 @@ methods : {
             }, 1000);
     },
     saveJointServices(){   
-        if(localStorage.getItem('list_services') === null || localStorage.getItem('list_services') === undefined){ 
+        if(localStorage.getItem('list_services') === null || localStorage.getItem('list_services') === undefined || localStorage.getItem('list_services')  === '[]'){ 
                 toast.fire({
                     type: 'warning',
                     title: 'Please choose service to join'
@@ -137,20 +137,40 @@ methods : {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Save'
                 }).then((result) => {
-                    if (result.value) { 
-                /**
-                 * Clears the local storage variable for joining services
-                 */
-                localStorage.removeItem('wallet_type');
-                localStorage.removeItem('service_code');
-                localStorage.removeItem('service_name');
-                localStorage.removeItem('service_description');
-                localStorage.removeItem('list_services');  
-                this.showJointServiceTable(); 
-                            toast.fire({
-                                type: 'success',
-                                title: 'Successfully Jointed Services'
+                if (result.value) { 
+                        /**
+                         * Insert Joint Services
+                         */
+                        this.form.post('/api/service/createjointservice')
+                        .then((response) => {
+                            console.log(response.data);  
+                        
                             })
+                        .catch(()=> {
+                        console.log("eerrrrr");  
+                        })        
+                            /**
+                             * Clears the local storage variable for joining services
+                             */
+                            localStorage.removeItem('wallet_type');
+                            localStorage.removeItem('service_code');
+                            localStorage.removeItem('service_name');
+                            localStorage.removeItem('service_description');
+                            localStorage.removeItem('list_services');   
+                            /**
+                             * Clears the UI
+                             */
+                            this.form.original_wallet_type = '';
+                            this.form.original_service_code = ''; 
+                            this.form.original_service_name = '';
+                            this.form.original_service_description = '';
+                        
+                            this.showJointServiceTable(); 
+                                        toast.fire({
+                                            type: 'success',
+                                            title: 'Successfully Jointed Services'
+                                        })
+                        
                     }
                 })
         }   
