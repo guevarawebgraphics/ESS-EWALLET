@@ -41,7 +41,7 @@
                     <!-- ./ Row Table -->
                     <!-- Row Button -->
                     <div class="form-group row">
-                        <button type="button" class="btn btn-flat btn-primary mb-3" @click="openModal"><i class="ti-plus text-white"></i> Create New</button>
+                        <button type="button" class="btn btn-primary mb-3" @click="openModal"><i class="ti-plus text-white"></i> Create New</button>
                     </div>
                     <!-- ./Row Button -->
                 </div>
@@ -74,9 +74,17 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
-                    <button v-show="editmode" type="submit" class="btn btn-primary btn-flat">Update</button>
-                    <button v-show="!editmode" type="submit" class="btn btn-primary btn-flat">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="modalClose"><i class="ti-close"></i> Close</button>
+                    <button v-show="editmode" type="submit" class="btn btn-primary" id="btnUpdate">
+                        <i class="ti-save"></i>
+                         Update
+                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="true" id="Spinner"></span>
+                    </button>
+                    <button v-show="!editmode" type="submit" class="btn btn-primary" id="btnSave">
+                        <i class="ti-save"></i> 
+                         Save changes
+                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="true" id="saveSpinner"></span>
+                    </button>
                 </div>
             </form>
             </div>
@@ -124,7 +132,7 @@ export default {
                     fixedColumns: true,
                     "order": [2, "desc"]
                 });
-            }, 500);
+            }, 1000);
         },
         get_service_group(){
             axios.get("api/servicematrix/GetAllService").then(({ data }) => (this.serviceGroups = data));  
@@ -138,30 +146,64 @@ export default {
             this.form.fill(sg)
         },
         updateGroup(){
+            $('#btnUpdate').attr('disabled', true)
+            $('#modalClose').attr('disabled', true)
+            $('#Spinner').removeAttr('hidden')
+            this.$Progress.start()
             this.form.put('api/servicematrix/UpdateServiceGroup/'+this.form.id)
             .then((response) => {
+                this.$Progress.increase(10)
+                this.$Progress.finish()
                  $('#serviceGroupModal').modal('hide')
                 $(document.body).removeAttr('class')
                 $("#service_group_table").DataTable().destroy()
                 this.get_service_group()
                 this.datatable()
+                $('#btnUpdate').removeAttr('disabled')
+                $('#modalClose').removeAttr('disabled')
+                $('#Spinner').attr('hidden', true)
+                toast.fire({
+                    type: 'success',
+                    title: 'Saved!'
+                })
             })
             .catch(() => {
+                this.$Progress.fail()
                 console.clear()
+                $('#btnUpdate').removeAttr('disabled')
+                $('#modalClose').removeAttr('disabled')
+                $('#Spinner').attr('hidden', true)
             })
         },
         createGroup(){
+            $('#btnSave').attr('disabled', true)
+            $('#modalClose').attr('disabled', true)
+            $('#saveSpinner').removeAttr('hidden')
+            this.$Progress.start()
             this.form.post('api/servicematrix/StoreServiceGroup')
             .then((response) => {
+                this.$Progress.increase(10)
+                this.$Progress.finish()
                 $('#serviceGroupModal').modal('hide')
                 $(document.body).removeAttr('class')
                 $("#service_group_table").DataTable().destroy()
                 this.get_service_group()
                 this.datatable()
+                $('#btnSave').removeAttr('disabled')
+                $('#modalClose').removeAttr('disabled')
+                $('#saveSpinner').attr('hidden', true)
+                toast.fire({
+                    type: 'success',
+                    title: 'Saved!'
+                })
                 
             })
             .catch(() => {
+                this.$Progress.fail()
                 console.clear()
+                $('#btnSave').removeAttr('disabled')
+                $('#modalClose').removeAttr('disabled')
+                $('#saveSpinner').attr('hidden', true)
             })
         },
         openModal(){
