@@ -2179,6 +2179,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 $(document).ready(function () {
   $('#serviceGroupModal').on('shown.bs.modal', function (e) {
     // Show the backdrop
@@ -2217,7 +2225,7 @@ $(document).ready(function () {
           fixedColumns: true,
           "order": [2, "desc"]
         });
-      }, 500);
+      }, 1000);
     },
     get_service_group: function get_service_group() {
       var _this = this;
@@ -2237,7 +2245,15 @@ $(document).ready(function () {
     updateGroup: function updateGroup() {
       var _this2 = this;
 
+      $('#btnUpdate').attr('disabled', true);
+      $('#modalClose').attr('disabled', true);
+      $('#Spinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.put('api/servicematrix/UpdateServiceGroup/' + this.form.id).then(function (response) {
+        _this2.$Progress.increase(10);
+
+        _this2.$Progress.finish();
+
         $('#serviceGroupModal').modal('hide');
         $(document.body).removeAttr('class');
         $("#service_group_table").DataTable().destroy();
@@ -2245,14 +2261,35 @@ $(document).ready(function () {
         _this2.get_service_group();
 
         _this2.datatable();
+
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#Spinner').attr('hidden', true);
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
       })["catch"](function () {
+        _this2.$Progress.fail();
+
         console.clear();
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#Spinner').attr('hidden', true);
       });
     },
     createGroup: function createGroup() {
       var _this3 = this;
 
+      $('#btnSave').attr('disabled', true);
+      $('#modalClose').attr('disabled', true);
+      $('#saveSpinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.post('api/servicematrix/StoreServiceGroup').then(function (response) {
+        _this3.$Progress.increase(10);
+
+        _this3.$Progress.finish();
+
         $('#serviceGroupModal').modal('hide');
         $(document.body).removeAttr('class');
         $("#service_group_table").DataTable().destroy();
@@ -2260,8 +2297,21 @@ $(document).ready(function () {
         _this3.get_service_group();
 
         _this3.datatable();
+
+        $('#btnSave').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#saveSpinner').attr('hidden', true);
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
       })["catch"](function () {
+        _this3.$Progress.fail();
+
         console.clear();
+        $('#btnSave').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#saveSpinner').attr('hidden', true);
       });
     },
     openModal: function openModal() {
@@ -2432,6 +2482,7 @@ __webpack_require__.r(__webpack_exports__);
     SaveChanges: function SaveChanges() {
       var _this = this;
 
+      this.$Progress.start();
       swal.fire({
         title: 'Are you sure?',
         text: "Save Service Matrix Configuration Setup",
@@ -2443,6 +2494,10 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value) {
           axios.post('api/servicematrix/StoreServiceMatrix', _this.Services).then(function (response) {
+            _this.$Progress.increase(10);
+
+            _this.$Progress.finish();
+
             $("#service_matrix").DataTable().destroy();
 
             _this.datatable();
@@ -2454,6 +2509,8 @@ __webpack_require__.r(__webpack_exports__);
               title: 'Saved!'
             });
           })["catch"](function (err) {
+            _this.$Progress.fail();
+
             swal.fire('Something Went Wrong!', 'Something Went Wrong!', 'error');
           });
         }
@@ -3439,6 +3496,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3524,7 +3582,13 @@ __webpack_require__.r(__webpack_exports__);
         valid_id: null,
         // Wallet Account Details
         WalletAccountNoDetails: null,
-        WalletAccountNameDetails: null
+        WalletAccountNameDetails: null,
+        // Wallet Joint Account
+        JointWalletType: null,
+        jointWalletAccountType: null,
+        JointWalletAccountNo: null,
+        JointWalletAccountName: null,
+        CMSCreditAccountNo: null
       })
     };
   },
@@ -3948,7 +4012,10 @@ __webpack_require__.r(__webpack_exports__);
           formData.append('BankAccount', JSON.stringify(_this4.BankAccount));
           formData.append('Services', JSON.stringify(_this4.Services));
           formData.append('WalletAccountNoDetails', _this4.form.WalletAccountNoDetails);
-          formData.append('WalletAccountNameDetails', _this4.form.WalletAccountNameDetails);
+          formData.append('WalletAccountNameDetails', _this4.form.WalletAccountNameDetails); // Joint Wallet Account
+
+          formData.append('joint_wallet_account_no', _this4.form.JointWalletAccountNo);
+          formData.append('CMSCreditAccountNo', _this4.form.CMSCreditAccountNo);
           axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
           axios.post('api/walletaccount/StoreWalletAccount', formData, {
             headers: {
@@ -4050,6 +4117,11 @@ __webpack_require__.r(__webpack_exports__);
         _this6.form.valid_id = res.data[0]['valid_id'];
         _this6.form.WalletAccountNoDetails = res.data[0]['WalletAccountNoDetails'];
         _this6.form.WalletAccountNameDetails = res.data[0]['WalletAccountNameDetails'];
+        _this6.form.JointWalletAccountNo = res.data[0]['joint_wallet_account_no'];
+
+        _this6.SerachJointWalletAccount(res.data[0]['joint_wallet_account_no']);
+
+        _this6.form.WalletAccountNo = res.data[0]['wan'];
       })["catch"](function (err) {
         console.log(err);
       });
@@ -4207,6 +4279,23 @@ __webpack_require__.r(__webpack_exports__);
             return true;
           }
         }
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+
+    /**
+     * @ Search Joint Wallet Account 
+     **/
+    SerachJointWalletAccount: function SerachJointWalletAccount() {
+      var _this11 = this;
+
+      var $jwan = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      axios.get('/api/walletaccount/SearchWalletJointAccount/' + this.form.JointWalletAccountNo).then(function (res) {
+        console.log(res);
+        _this11.form.JointWalletType = res.data[0].wallet_type;
+        _this11.form.jointWalletAccountType = res.data[0].wallet_account_type;
+        _this11.form.JointWalletAccountName = res.data[0].wallet_account_name;
       })["catch"](function (err) {
         console.log(err);
       });
@@ -11204,7 +11293,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\n#ba-close-button[data-v-64a2c4d3]{\r\n    background-color: Transparent;\r\n    background-repeat:no-repeat;\r\n    border: none;\r\n    cursor:pointer;\r\n    overflow: hidden;\r\n    outline:none;\r\n    margin-bottom: \"2px\";\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\n#ba-close-button[data-v-64a2c4d3]{\r\n    background-color: Transparent;\r\n    background-repeat:no-repeat;\r\n    border: none;\r\n    cursor:pointer;\r\n    overflow: hidden;\r\n    outline:none;\r\n    margin-bottom: \"2px\";\n}\r\n", ""]);
 
 // exports
 
@@ -58927,7 +59016,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-flat btn-primary mb-3",
+                staticClass: "btn btn-primary mb-3",
                 attrs: { type: "button" },
                 on: { click: _vm.openModal }
               },
@@ -59068,14 +59157,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-secondary btn-flat",
-                        attrs: { type: "button", "data-dismiss": "modal" }
-                      },
-                      [_vm._v("Close")]
-                    ),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c(
                       "button",
@@ -59088,10 +59170,24 @@ var render = function() {
                             expression: "editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit", id: "btnUpdate" }
                       },
-                      [_vm._v("Update")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(
+                          "\n                     Update\n                     "
+                        ),
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "Spinner"
+                          }
+                        })
+                      ]
                     ),
                     _vm._v(" "),
                     _c(
@@ -59105,10 +59201,24 @@ var render = function() {
                             expression: "!editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit", id: "btnSave" }
                       },
-                      [_vm._v("Save changes")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(
+                          " \n                     Save changes\n                     "
+                        ),
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "saveSpinner"
+                          }
+                        })
+                      ]
                     )
                   ])
                 ]
@@ -59162,6 +59272,19 @@ var staticRenderFns = [
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-secondary",
+        attrs: { type: "button", "data-dismiss": "modal", id: "modalClose" }
+      },
+      [_c("i", { staticClass: "ti-close" }), _vm._v(" Close")]
+    )
   }
 ]
 render._withStripped = true
@@ -59738,7 +59861,7 @@ var staticRenderFns = [
         _c(
           "button",
           {
-            staticClass: "btn btn-primary btn-flat float-right",
+            staticClass: "btn btn-primary float-right",
             attrs: { type: "submit" }
           },
           [_c("i", { staticClass: "ti-save" }), _vm._v(" Save Changes")]
@@ -59820,7 +59943,7 @@ var render = function() {
                             _c(
                               "a",
                               {
-                                staticClass: "btn btn-primary btn-flat btn-xs",
+                                staticClass: "btn btn-primary btn-xs",
                                 attrs: { href: "#EditServiceGroup" },
                                 on: {
                                   click: function($event) {
@@ -60151,7 +60274,7 @@ var render = function() {
                             expression: "editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
+                        staticClass: "btn btn-primary",
                         attrs: { type: "submit", id: "btnUpdate" }
                       },
                       [
@@ -60182,7 +60305,7 @@ var render = function() {
                             expression: "!editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
+                        staticClass: "btn btn-primary",
                         attrs: { type: "submit" }
                       },
                       [
@@ -60254,7 +60377,7 @@ var staticRenderFns = [
     return _c(
       "button",
       {
-        staticClass: "btn btn-secondary btn-flat",
+        staticClass: "btn btn-secondary",
         attrs: { type: "button", "data-dismiss": "modal", id: "modalClose" }
       },
       [_c("i", { staticClass: "ti-close" }), _vm._v(" Close")]
@@ -61704,6 +61827,7 @@ var render = function() {
                                 },
                                 domProps: { value: _vm.form.WalletAccountNo },
                                 on: {
+                                  change: _vm.SerachJointWalletAccount,
                                   input: function($event) {
                                     if ($event.target.composing) {
                                       return
@@ -61901,43 +62025,46 @@ var render = function() {
                                 [_vm._v("Joint Wallet Type")]
                               ),
                               _vm._v(" "),
-                              _c(
-                                "select",
-                                {
-                                  directives: [
-                                    {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    }
-                                  ],
-                                  staticClass: "custom-select",
-                                  class: {
-                                    "is-invalid": _vm.errors.has(
-                                      "JointWalletType"
-                                    )
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.JointWalletType,
+                                    expression: "form.JointWalletType"
                                   },
-                                  attrs: { name: "JointWalletType" }
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "JointWalletType"
+                                  )
                                 },
-                                [
-                                  _c(
-                                    "option",
-                                    {
-                                      attrs: {
-                                        value: "",
-                                        selected: "",
-                                        disabled: ""
-                                      }
-                                    },
-                                    [_vm._v("Select Joint Wallet Type")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("option", [
-                                    _vm._v("Select Joint Wallet Type")
-                                  ])
-                                ]
-                              )
+                                attrs: {
+                                  type: "text",
+                                  name: "JointWalletType",
+                                  disabled: ""
+                                },
+                                domProps: { value: _vm.form.JointWalletType },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "JointWalletType",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "form-group" }, [
@@ -61950,43 +62077,48 @@ var render = function() {
                                 [_vm._v("Joint Wallet Account Type")]
                               ),
                               _vm._v(" "),
-                              _c(
-                                "select",
-                                {
-                                  directives: [
-                                    {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    }
-                                  ],
-                                  staticClass: "custom-select",
-                                  class: {
-                                    "is-invalid": _vm.errors.has(
-                                      "JointWalletType"
-                                    )
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.jointWalletAccountType,
+                                    expression: "form.jointWalletAccountType"
                                   },
-                                  attrs: { name: "JointWalletType" }
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "JointWalletType"
+                                  )
                                 },
-                                [
-                                  _c(
-                                    "option",
-                                    {
-                                      attrs: {
-                                        value: "",
-                                        selected: "",
-                                        disabled: ""
-                                      }
-                                    },
-                                    [_vm._v("Select Wallet Account Type")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("option", { attrs: { value: "" } }, [
-                                    _vm._v("Select Wallet Account Type")
-                                  ])
-                                ]
-                              )
+                                attrs: {
+                                  type: "text",
+                                  name: "JointWalletType",
+                                  disabled: ""
+                                },
+                                domProps: {
+                                  value: _vm.form.jointWalletAccountType
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "jointWalletAccountType",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "form-group" }, [
@@ -61999,30 +62131,49 @@ var render = function() {
                                 [_vm._v("Joint Wallet Account No")]
                               ),
                               _vm._v(" "),
-                              _c(
-                                "select",
-                                {
-                                  directives: [
-                                    {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    }
-                                  ],
-                                  staticClass: "custom-select",
-                                  class: {
-                                    "is-invalid": _vm.errors.has(
-                                      "JointWalletAccountNo"
-                                    )
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.JointWalletAccountNo,
+                                    expression: "form.JointWalletAccountNo"
                                   },
-                                  attrs: {
-                                    name: "JointWalletAccountNo",
-                                    disabled: ""
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
                                   }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "JointWalletAccountNo"
+                                  )
                                 },
-                                [_c("option", { attrs: { value: "" } })]
-                              )
+                                attrs: {
+                                  type: "text",
+                                  name: "JointWalletAccountNo",
+                                  disabled: _vm.editmode
+                                },
+                                domProps: {
+                                  value: _vm.form.JointWalletAccountNo
+                                },
+                                on: {
+                                  change: _vm.SerachJointWalletAccount,
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "JointWalletAccountNo",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "form-group" }, [
@@ -62035,30 +62186,48 @@ var render = function() {
                                 [_vm._v("Joint Wallet Account Name")]
                               ),
                               _vm._v(" "),
-                              _c(
-                                "select",
-                                {
-                                  directives: [
-                                    {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    }
-                                  ],
-                                  staticClass: "custom-select",
-                                  class: {
-                                    "is-invalid": _vm.errors.has(
-                                      "JointWalletAccountName"
-                                    )
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.JointWalletAccountName,
+                                    expression: "form.JointWalletAccountName"
                                   },
-                                  attrs: {
-                                    name: "JointWalletAccountName",
-                                    disabled: ""
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
                                   }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "JointWalletAccountName"
+                                  )
                                 },
-                                [_c("option", { attrs: { value: "" } })]
-                              )
+                                attrs: {
+                                  type: "text",
+                                  name: "JointWalletAccountName",
+                                  disabled: ""
+                                },
+                                domProps: {
+                                  value: _vm.form.JointWalletAccountName
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "JointWalletAccountName",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
                             ]),
                             _vm._v(" "),
                             _vm.form.WalletAccountType == 8
@@ -62074,6 +62243,12 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("input", {
                                     directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.form.CMSCreditAccountNo,
+                                        expression: "form.CMSCreditAccountNo"
+                                      },
                                       {
                                         name: "validate",
                                         rawName: "v-validate",
@@ -62091,6 +62266,21 @@ var render = function() {
                                       name: "CMSCreditAccountNo",
                                       type: "text",
                                       placeholder: "CMS Credit Account No"
+                                    },
+                                    domProps: {
+                                      value: _vm.form.CMSCreditAccountNo
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.form,
+                                          "CMSCreditAccountNo",
+                                          $event.target.value
+                                        )
+                                      }
                                     }
                                   }),
                                   _vm._v(" "),
