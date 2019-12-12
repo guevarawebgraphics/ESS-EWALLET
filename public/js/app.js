@@ -2179,6 +2179,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 $(document).ready(function () {
   $('#serviceGroupModal').on('shown.bs.modal', function (e) {
     // Show the backdrop
@@ -2217,7 +2225,7 @@ $(document).ready(function () {
           fixedColumns: true,
           "order": [2, "desc"]
         });
-      }, 500);
+      }, 1000);
     },
     get_service_group: function get_service_group() {
       var _this = this;
@@ -2237,7 +2245,15 @@ $(document).ready(function () {
     updateGroup: function updateGroup() {
       var _this2 = this;
 
+      $('#btnUpdate').attr('disabled', true);
+      $('#modalClose').attr('disabled', true);
+      $('#Spinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.put('api/servicematrix/UpdateServiceGroup/' + this.form.id).then(function (response) {
+        _this2.$Progress.increase(10);
+
+        _this2.$Progress.finish();
+
         $('#serviceGroupModal').modal('hide');
         $(document.body).removeAttr('class');
         $("#service_group_table").DataTable().destroy();
@@ -2245,14 +2261,35 @@ $(document).ready(function () {
         _this2.get_service_group();
 
         _this2.datatable();
+
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#Spinner').attr('hidden', true);
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
       })["catch"](function () {
+        _this2.$Progress.fail();
+
         console.clear();
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#Spinner').attr('hidden', true);
       });
     },
     createGroup: function createGroup() {
       var _this3 = this;
 
+      $('#btnSave').attr('disabled', true);
+      $('#modalClose').attr('disabled', true);
+      $('#saveSpinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.post('api/servicematrix/StoreServiceGroup').then(function (response) {
+        _this3.$Progress.increase(10);
+
+        _this3.$Progress.finish();
+
         $('#serviceGroupModal').modal('hide');
         $(document.body).removeAttr('class');
         $("#service_group_table").DataTable().destroy();
@@ -2260,8 +2297,21 @@ $(document).ready(function () {
         _this3.get_service_group();
 
         _this3.datatable();
+
+        $('#btnSave').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#saveSpinner').attr('hidden', true);
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
       })["catch"](function () {
+        _this3.$Progress.fail();
+
         console.clear();
+        $('#btnSave').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#saveSpinner').attr('hidden', true);
       });
     },
     openModal: function openModal() {
@@ -2432,6 +2482,7 @@ __webpack_require__.r(__webpack_exports__);
     SaveChanges: function SaveChanges() {
       var _this = this;
 
+      this.$Progress.start();
       swal.fire({
         title: 'Are you sure?',
         text: "Save Service Matrix Configuration Setup",
@@ -2443,6 +2494,10 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value) {
           axios.post('api/servicematrix/StoreServiceMatrix', _this.Services).then(function (response) {
+            _this.$Progress.increase(10);
+
+            _this.$Progress.finish();
+
             $("#service_matrix").DataTable().destroy();
 
             _this.datatable();
@@ -2454,6 +2509,8 @@ __webpack_require__.r(__webpack_exports__);
               title: 'Saved!'
             });
           })["catch"](function (err) {
+            _this.$Progress.fail();
+
             swal.fire('Something Went Wrong!', 'Something Went Wrong!', 'error');
           });
         }
@@ -58872,7 +58929,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-flat btn-primary mb-3",
+                staticClass: "btn btn-primary mb-3",
                 attrs: { type: "button" },
                 on: { click: _vm.openModal }
               },
@@ -59013,14 +59070,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-secondary btn-flat",
-                        attrs: { type: "button", "data-dismiss": "modal" }
-                      },
-                      [_vm._v("Close")]
-                    ),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c(
                       "button",
@@ -59033,10 +59083,24 @@ var render = function() {
                             expression: "editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit", id: "btnUpdate" }
                       },
-                      [_vm._v("Update")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(
+                          "\n                     Update\n                     "
+                        ),
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "Spinner"
+                          }
+                        })
+                      ]
                     ),
                     _vm._v(" "),
                     _c(
@@ -59050,10 +59114,24 @@ var render = function() {
                             expression: "!editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit", id: "btnSave" }
                       },
-                      [_vm._v("Save changes")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(
+                          " \n                     Save changes\n                     "
+                        ),
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "saveSpinner"
+                          }
+                        })
+                      ]
                     )
                   ])
                 ]
@@ -59107,6 +59185,19 @@ var staticRenderFns = [
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-secondary",
+        attrs: { type: "button", "data-dismiss": "modal", id: "modalClose" }
+      },
+      [_c("i", { staticClass: "ti-close" }), _vm._v(" Close")]
+    )
   }
 ]
 render._withStripped = true
@@ -59683,7 +59774,7 @@ var staticRenderFns = [
         _c(
           "button",
           {
-            staticClass: "btn btn-primary btn-flat float-right",
+            staticClass: "btn btn-primary float-right",
             attrs: { type: "submit" }
           },
           [_c("i", { staticClass: "ti-save" }), _vm._v(" Save Changes")]
