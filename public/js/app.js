@@ -2005,6 +2005,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2049,28 +2054,49 @@ __webpack_require__.r(__webpack_exports__);
     createGateway: function createGateway() {
       var _this2 = this;
 
+      $('#saveSpinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.post('/api/service_gateway/createservicegateway').then(function (response) {
+        _this2.$Progress.increase(10);
+
+        _this2.$Progress.finish();
+
         console.log("ho");
         $('#serviceGatewayModal').modal('hide');
+        $('#saveSpinner').attr('hidden', true);
 
         _this2.getServiceGateway();
       })["catch"](function () {
+        _this2.$Progress.fail();
+
+        $('#saveSpinner').attr('hidden', true);
         console.log("eerrrrr");
       });
     },
     ShowServiceGateway: function ShowServiceGateway(sw) {
       $('#serviceGatewayModal').modal('show');
       this.editmode = true;
+      this.form.reset();
       this.form.fill(sw);
     },
     updateGateway: function updateGateway() {
       var _this3 = this;
 
+      $('#saveSpinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.put('/api/service_gateway/updateservicegateway/' + this.form.id).then(function (response) {
+        _this3.$Progress.increase(10);
+
+        _this3.$Progress.finish();
+
         $('#serviceGatewayModal').modal('hide');
+        $('#saveSpinner').attr('hidden', true);
 
         _this3.getServiceGateway();
       })["catch"](function () {
+        _this3.$Progress.fail();
+
+        $('#saveSpinner').attr('hidden', true);
         console.log('err');
       });
     }
@@ -58762,69 +58788,93 @@ var render = function() {
                 },
                 [
                   _c("div", { staticClass: "modal-body" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.gateway_code,
-                            expression: "form.gateway_code"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "number",
-                          name: "gateway_code",
-                          placeholder: "Service Gateway Code"
-                        },
-                        domProps: { value: _vm.form.gateway_code },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.gateway_code,
+                              expression: "form.gateway_code"
                             }
-                            _vm.$set(
-                              _vm.form,
-                              "gateway_code",
-                              $event.target.value
-                            )
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("gateway_code")
+                          },
+                          attrs: {
+                            type: "number",
+                            name: "gateway_code",
+                            placeholder: "Service Gateway Code"
+                          },
+                          domProps: { value: _vm.form.gateway_code },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "gateway_code",
+                                $event.target.value
+                              )
+                            }
                           }
-                        }
-                      })
-                    ]),
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "gateway_code" }
+                        })
+                      ],
+                      1
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.gateway_name,
-                            expression: "form.gateway_name"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          name: "gateway_name",
-                          placeholder: "Service Gateway Name"
-                        },
-                        domProps: { value: _vm.form.gateway_name },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.gateway_name,
+                              expression: "form.gateway_name"
                             }
-                            _vm.$set(
-                              _vm.form,
-                              "gateway_name",
-                              $event.target.value
-                            )
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("gateway_name")
+                          },
+                          attrs: {
+                            type: "text",
+                            name: "gateway_name",
+                            placeholder: "Service Gateway Name"
+                          },
+                          domProps: { value: _vm.form.gateway_name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "gateway_name",
+                                $event.target.value
+                              )
+                            }
                           }
-                        }
-                      })
-                    ])
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "gateway_name" }
+                        })
+                      ],
+                      1
+                    )
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
@@ -58868,7 +58918,20 @@ var render = function() {
                         staticClass: "btn btn-primary btn-flat",
                         attrs: { type: "submit" }
                       },
-                      [_vm._v("Save changes")]
+                      [
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "saveSpinner"
+                          }
+                        }),
+                        _vm._v(
+                          "\n                    Save changes\n                "
+                        )
+                      ]
                     )
                   ])
                 ]
