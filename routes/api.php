@@ -87,9 +87,21 @@ Route::prefix('walletaccount')->group(function(){
     Route::get('/GetServiceMatrixConfig/{essid}', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@GetServiceMatrixConfig'
     ]);
+    // api/walletaccount/GetWalletBankAccount
+    Route::get('/GetWalletBankAccount/{essid}', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@GetWalletBankAccount'
+    ]);
+    // api/walletaccount/SearchWalletAccountNo
+    Route::get('/SearchWalletAccountNo/{wand}', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@SearchWalletAccountNo'
+    ]);
     // api/walletaccount/UpdateServiceMatrixConfig
     Route::put('/UpdateServiceMatrixConfig/{essid}', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@UpdateServiceMatrixConfig'
+    ]);
+    // api/walletaccount/SearchWalletJointAccount
+    Route::get('/SearchWalletJointAccount/{wan}', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@SearchWalletJointAccount'
     ]);
 });
 /**
@@ -127,6 +139,10 @@ Route::prefix('service')->group(function(){
     
     Route::post('/createservice',[
         'uses' => 'Api\\Services\ServiceController@InsertService' 
+    ]);  
+
+    Route::post('/createjointservice',[
+        'uses' => 'Api\\Services\ServiceController@InsertJointService' 
     ]); 
     
     Route::get('/getservicetype/{st_code}',[
@@ -150,6 +166,9 @@ Route::prefix('service')->group(function(){
     ]);
     Route::get('/getvsdr/{service_id}',[
         'uses' => 'Api\\Services\ServiceController@GetVSDR'
+    ]);
+    Route::get('/getjointservicelist/{id}',[
+        'uses' => 'Api\\Services\ServiceController@GetJointServicesList'
     ]);
     
 });

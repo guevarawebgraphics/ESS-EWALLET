@@ -35,6 +35,13 @@ class ServiceController extends Controller
         return response()->json($UpdateService);    
     }
     /**
+     * For Inserting Joint Services 
+     */
+    public function InsertJointService(Request $request){
+        $InsertJointService = $this->services->InsertJointServices($request);
+        return response()->json($InsertJointService);
+    }
+    /**
      * For getting Service Name using service code 
      */
     public function fillServiceType(Request $request,$service_type_code){
@@ -70,6 +77,13 @@ class ServiceController extends Controller
     public function GetVSDR($service_id){
         $get_vsdr = $this->services->GetVSDR($service_id);
         return response()->json($get_vsdr);
+    }
+    /**
+     * Get Joint Services
+     */
+    public function GetJointServicesList($id){
+        $get_list_services = $this->services->JointServiceslist($id);
+        return response()->json($get_list_services);
     }
 
 }

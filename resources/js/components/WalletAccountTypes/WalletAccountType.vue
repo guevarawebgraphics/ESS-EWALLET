@@ -13,7 +13,7 @@
                             <div class="header-title">Wallet Account Types</div>
                             <div class="data-tables datatable-dark">
                                 <!-- Table -->
-                                <table class="table table-hover text-center" id="wallet_account_types">
+                                <table class="table table-hover table-striped text-center" id="wallet_account_types">
                                     <thead>
                                         <tr class="th-table">
                                             <th>Type Code</th>
@@ -46,9 +46,9 @@
                     </div>
                     <!-- ./ Row Table -->
                     <!-- Row Button -->
-                    <div class="form-group row">
-                        <button type="button" class="btn btn-flat btn-primary mb-3" @click="openModal"><i class="ti-plus text-white"></i> Create New</button>
-                    </div>
+                    <!-- <div class="form-group row">
+                        <button type="button" class="btn btn-primary mb-3" @click="openModal"><i class="ti-plus text-white"></i> Create New</button>
+                    </div> -->
                     <!-- ./Row Button -->
                 </div>
                 <!-- ./ Card bobdy -->
@@ -72,8 +72,8 @@
                     <div class="modal-body">
                         <div v-if="editmode" class="form-group">
                             <label class="custom-label" for="type_code">Type code</label>
-                            <input type="text" v-model="form.type_code"  class="form-control" :class="{ 'is-invalid': form.errors.has('wallet_account_type') }" name="type_code" placeholder="Wallet Account Type" disabled="true">
-                            <has-error :form="form" field="wallet_account_type"></has-error>
+                            <input type="text" v-model="form.type_code"  class="form-control" :class="{ 'is-invalid': form.errors.has('type_code') }" name="type_code" placeholder="Wallet Account Type Code" disabled="true">
+                            <has-error :form="form" field="type_code"></has-error>
                         </div>
                         <div class="form-group">
                             <label class="custom-label" for="wallet_account_type">Wallet Account Type</label>
@@ -82,25 +82,30 @@
                         </div>
                         <div v-if="editmode" class="form-group">
                             <label class="custom-label" for="status">Status</label>
-                            <select v-model="form.status" class="form-control">
-                                <option selected value="">Select</option>
+                            <select v-model="form.status" class="custom-select">
+                                <option selected value="" disabled>Select Status</option>
                                 <option value="1">Active</option>
                                 <option value="0">Disabled</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="wallet_type" class="custom-label">Wallet Type</label>
-                            <select v-model="form.wallet_type" class="form-control">
-                                <option selected value="">Select</option>
+                            <select v-model="form.wallet_type" class="custom-select">
+                                <option selected value="" disabled>Select Wallet Type</option>
+                                <option value="Admin" v-if="form.wallet_type == 'Admin'">Admin</option>
                                 <option value="Credit">Credit</option>
                                 <option value="Prepaid">Prepaid</option>
                             </select>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
-                        <button v-show="editmode" type="submit" class="btn btn-primary btn-flat">Update</button>
-                        <button v-show="!editmode" type="submit" class="btn btn-primary btn-flat">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="modalClose"><i class="ti-close"></i> Close</button>
+                        <button v-show="editmode" type="submit" class="btn btn-primary" id="btnUpdate">
+                            <i class="ti-save"></i>
+                             Update
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="true" id="updateSpinner"></span>
+                        </button>
+                        <button v-show="!editmode" type="submit" class="btn btn-primary"><i class="ti-save"></i> Save changes</button>
                     </div>
                 </form>
             <!-- ./Form -->
@@ -117,6 +122,7 @@ export default {
             editmode: false,
             walletAccountTypes: {},
             form: new Form({
+                csrf_token: $('meta[name="csrf-token"]').attr('content'),
                 id: '',
                 type_code: '',
                 wallet_account_type: '',
@@ -136,9 +142,9 @@ export default {
                     //lengthChange: false,
                     responsive: true,
                     fixedColumns: true,
-                    "order": [1, "desc"]
+                    "order": [0, "desc"]
                 });
-            },900);
+            },1000);
         },
         get_walle_account_type(){
             axios.get('api/walletaccount/GetAllWalletAccountType').then(({ data}) => (this.walletAccountTypes = data));
@@ -157,6 +163,10 @@ export default {
             $('#walletAccountType').modal('show')
         },
         updateWalletType(){
+            $('#btnUpdate').attr('disabled', true)
+            $('#modalClose').attr('disabled', true)
+            $('#updateSpinner').removeAttr('hidden')
+            this.$Progress.start()
             this.form.put('api/walletaccount/UpdateWalletAccountType')
             .then(res => {
                 $('#walletAccountType').modal('hide')
@@ -168,12 +178,22 @@ export default {
                     type: 'success',
                     title: 'Saved!'
                 })
+                this.$Progress.increase(10)
+                this.$Progress.finish()
+                $('#btnUpdate').removeAttr('disabled')
+                $('#modalClose').removeAttr('disabled')
+                $('#updateSpinner').attr('hidden', true)
             })
             .catch(() => {
+                $('#btnUpdate').removeAttr('disabled')
+                $('#modalClose').removeAttr('disabled')
+                $('#updateSpinner').attr('hidden', true)
                 console.clear()
+                this.$Progress.fail()
             })
         },
         createWalletAccountType(){
+            this.$Progress.start()
             this.form.post('api/walletaccount/StoreWalletAccountType')
             .then(res => {
                 console.log(res)
@@ -186,9 +206,12 @@ export default {
                     type: 'success',
                     title: 'Saved!'
                 })
+                this.$Progress.increase(10)
+                this.$Progress.finish()
             })
             .catch(() => {
                 console.clear()
+                this.$Progress.fail()
             })
         },
     },

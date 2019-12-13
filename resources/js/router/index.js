@@ -96,27 +96,35 @@ const routes = [
      * @ Services  
      */
     {
-      path:'/serviceslist',
+      path:'/serviceslist/:method_name', 
+      name : 'services-list',
       component: require('../components/WalletServices/ServicesListTable.vue').default, 
       beforeEnter: requireLogin
     },
     {
-      path:'/createservice',
+      path:'/createservice/:method_name',
       component: require('../components/WalletServices/CreateWalletServices.vue').default, 
       beforeEnter: requireLogin
     }, 
     
     {
       path:'/createjointservice',
+      name: 'Create Joint Services',
       component: require('../components/WalletServices/JointServices.vue').default, 
       beforeEnter: requireLogin
     },  
     {
-      path:'/updateservice/:id', 
+      path:'/updateservice/:id/:method_name', 
       name: '/update-service',
       component: require('../components/WalletServices/CreateWalletServices.vue').default, 
       beforeEnter: requireLogin
     }, 
+    {
+      path:'/viewjointservices/:id', 
+      name: 'list-joint-services',
+      component: require('../components/WalletServices/JointServicesList.vue').default, 
+      beforeEnter: requireLogin
+    },
     /**
      *@ Wallet Account Type 
      **/
@@ -153,8 +161,9 @@ const routes = [
       if (user != null) {
           next(true);
       } else {
-        window.localStorage.removeItem('user');
-        location.reload();
+        //window.localStorage.removeItem('user');
+        //location.reload();
+        localStorage.clear();
         window.location.href="/";
       }
   }

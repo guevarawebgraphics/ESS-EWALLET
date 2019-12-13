@@ -2005,6 +2005,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2049,28 +2054,49 @@ __webpack_require__.r(__webpack_exports__);
     createGateway: function createGateway() {
       var _this2 = this;
 
+      $('#saveSpinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.post('/api/service_gateway/createservicegateway').then(function (response) {
+        _this2.$Progress.increase(10);
+
+        _this2.$Progress.finish();
+
         console.log("ho");
         $('#serviceGatewayModal').modal('hide');
+        $('#saveSpinner').attr('hidden', true);
 
         _this2.getServiceGateway();
       })["catch"](function () {
+        _this2.$Progress.fail();
+
+        $('#saveSpinner').attr('hidden', true);
         console.log("eerrrrr");
       });
     },
     ShowServiceGateway: function ShowServiceGateway(sw) {
       $('#serviceGatewayModal').modal('show');
       this.editmode = true;
+      this.form.reset();
       this.form.fill(sw);
     },
     updateGateway: function updateGateway() {
       var _this3 = this;
 
+      $('#saveSpinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.put('/api/service_gateway/updateservicegateway/' + this.form.id).then(function (response) {
+        _this3.$Progress.increase(10);
+
+        _this3.$Progress.finish();
+
         $('#serviceGatewayModal').modal('hide');
+        $('#saveSpinner').attr('hidden', true);
 
         _this3.getServiceGateway();
       })["catch"](function () {
+        _this3.$Progress.fail();
+
+        $('#saveSpinner').attr('hidden', true);
         console.log('err');
       });
     }
@@ -2092,6 +2118,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2217,7 +2251,7 @@ $(document).ready(function () {
           fixedColumns: true,
           "order": [2, "desc"]
         });
-      }, 500);
+      }, 1000);
     },
     get_service_group: function get_service_group() {
       var _this = this;
@@ -2237,7 +2271,15 @@ $(document).ready(function () {
     updateGroup: function updateGroup() {
       var _this2 = this;
 
+      $('#btnUpdate').attr('disabled', true);
+      $('#modalClose').attr('disabled', true);
+      $('#Spinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.put('api/servicematrix/UpdateServiceGroup/' + this.form.id).then(function (response) {
+        _this2.$Progress.increase(10);
+
+        _this2.$Progress.finish();
+
         $('#serviceGroupModal').modal('hide');
         $(document.body).removeAttr('class');
         $("#service_group_table").DataTable().destroy();
@@ -2245,14 +2287,35 @@ $(document).ready(function () {
         _this2.get_service_group();
 
         _this2.datatable();
+
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#Spinner').attr('hidden', true);
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
       })["catch"](function () {
+        _this2.$Progress.fail();
+
         console.clear();
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#Spinner').attr('hidden', true);
       });
     },
     createGroup: function createGroup() {
       var _this3 = this;
 
+      $('#btnSave').attr('disabled', true);
+      $('#modalClose').attr('disabled', true);
+      $('#saveSpinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.post('api/servicematrix/StoreServiceGroup').then(function (response) {
+        _this3.$Progress.increase(10);
+
+        _this3.$Progress.finish();
+
         $('#serviceGroupModal').modal('hide');
         $(document.body).removeAttr('class');
         $("#service_group_table").DataTable().destroy();
@@ -2260,8 +2323,21 @@ $(document).ready(function () {
         _this3.get_service_group();
 
         _this3.datatable();
+
+        $('#btnSave').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#saveSpinner').attr('hidden', true);
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
       })["catch"](function () {
+        _this3.$Progress.fail();
+
         console.clear();
+        $('#btnSave').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#saveSpinner').attr('hidden', true);
       });
     },
     openModal: function openModal() {
@@ -2432,6 +2508,7 @@ __webpack_require__.r(__webpack_exports__);
     SaveChanges: function SaveChanges() {
       var _this = this;
 
+      this.$Progress.start();
       swal.fire({
         title: 'Are you sure?',
         text: "Save Service Matrix Configuration Setup",
@@ -2443,6 +2520,10 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value) {
           axios.post('api/servicematrix/StoreServiceMatrix', _this.Services).then(function (response) {
+            _this.$Progress.increase(10);
+
+            _this.$Progress.finish();
+
             $("#service_matrix").DataTable().destroy();
 
             _this.datatable();
@@ -2454,6 +2535,8 @@ __webpack_require__.r(__webpack_exports__);
               title: 'Saved!'
             });
           })["catch"](function (err) {
+            _this.$Progress.fail();
+
             swal.fire('Something Went Wrong!', 'Something Went Wrong!', 'error');
           });
         }
@@ -2598,12 +2681,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       editmode: false,
       walletAccountTypes: {},
       form: new Form({
+        csrf_token: $('meta[name="csrf-token"]').attr('content'),
         id: '',
         type_code: '',
         wallet_account_type: '',
@@ -2623,9 +2712,9 @@ __webpack_require__.r(__webpack_exports__);
           //lengthChange: false,
           responsive: true,
           fixedColumns: true,
-          "order": [1, "desc"]
+          "order": [0, "desc"]
         });
-      }, 900);
+      }, 1000);
     },
     get_walle_account_type: function get_walle_account_type() {
       var _this = this;
@@ -2651,6 +2740,10 @@ __webpack_require__.r(__webpack_exports__);
     updateWalletType: function updateWalletType() {
       var _this2 = this;
 
+      $('#btnUpdate').attr('disabled', true);
+      $('#modalClose').attr('disabled', true);
+      $('#updateSpinner').removeAttr('hidden');
+      this.$Progress.start();
       this.form.put('api/walletaccount/UpdateWalletAccountType').then(function (res) {
         $('#walletAccountType').modal('hide');
         $(document.body).removeAttr('class');
@@ -2664,13 +2757,27 @@ __webpack_require__.r(__webpack_exports__);
           type: 'success',
           title: 'Saved!'
         });
+
+        _this2.$Progress.increase(10);
+
+        _this2.$Progress.finish();
+
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#updateSpinner').attr('hidden', true);
       })["catch"](function () {
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#updateSpinner').attr('hidden', true);
         console.clear();
+
+        _this2.$Progress.fail();
       });
     },
     createWalletAccountType: function createWalletAccountType() {
       var _this3 = this;
 
+      this.$Progress.start();
       this.form.post('api/walletaccount/StoreWalletAccountType').then(function (res) {
         console.log(res);
         $('#walletAccountType').modal('hide');
@@ -2685,8 +2792,14 @@ __webpack_require__.r(__webpack_exports__);
           type: 'success',
           title: 'Saved!'
         });
+
+        _this3.$Progress.increase(10);
+
+        _this3.$Progress.finish();
       })["catch"](function () {
         console.clear();
+
+        _this3.$Progress.fail();
       });
     }
   },
@@ -3328,16 +3441,110 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      csrf_token: $('meta[name="csrf-token"]').attr('content'),
       editmode: false,
       switching: false,
       wai: null,
       step: 0,
       account: [],
+      BankAccount: [{
+        bank_name: null,
+        Branch: null,
+        account_type: null,
+        account_name: null,
+        account_no: null,
+        "default": false,
+        status: false
+      }],
       Services: {},
       walletAccountTypes: [],
+      kyc_form_file_name: "Filled-Up KYC Form",
+      valid_id_file_name: "Valid ID w/ Signature",
       form: new Form({
         username: null,
         lastname: null,
@@ -3398,7 +3605,16 @@ __webpack_require__.r(__webpack_exports__);
         allow_negative_balance: 0,
         // Files
         kyc_form: null,
-        valid_id: null
+        valid_id: null,
+        // Wallet Account Details
+        WalletAccountNoDetails: null,
+        WalletAccountNameDetails: null,
+        // Wallet Joint Account
+        JointWalletType: null,
+        jointWalletAccountType: null,
+        JointWalletAccountNo: null,
+        JointWalletAccountName: null,
+        CMSCreditAccountNo: null
       })
     };
   },
@@ -3496,10 +3712,10 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.form.WalletType == null || this.form.WalletAccountType == null) {
-        toast.fire({
-          type: 'info',
-          title: 'Please fill required fields'
-        });
+        // toast.fire({
+        //     type: 'info',
+        //     title: 'Please fill required fields'
+        // })
         this.$validator.validateAll().then(function (result) {
           if (result) {
             return;
@@ -3515,7 +3731,39 @@ __webpack_require__.r(__webpack_exports__);
      * @ Validate Fourth Step 
      **/
     ValidateFourthStep: function ValidateFourthStep() {
-      if (this.form.bank_name == "" || this.form.Branch == "" || this.form.account_type == "" || this.form.account_name == "" || this.form.account_no == "") {
+      // /var i;
+      //for (i = 0; i < this.BankAccount.length; i++) {
+      if (this.BankAccount[0].bank_name != null && this.BankAccount[0].Branch != null && this.BankAccount[0].account_type != null && this.BankAccount[0].account_name != null && this.BankAccount[0].account_no != null) {
+        this.errors.clear();
+        $('#nextTab').removeAttr('disabled');
+        return true;
+      }
+
+      if (this.BankAccount[0].bank_name == null || this.BankAccount[0].Branch == null || this.BankAccount[0].account_type == null || this.BankAccount[0].account_name == null || this.BankAccount[0].account_no == null) {
+        // toast.fire({
+        //     type: 'info',
+        //     title: 'Please fill required fields'
+        // })
+        this.$validator.validateAll().then(function (result) {
+          if (result) {
+            return;
+          }
+        });
+        return false;
+      } else {
+        // this.errors.clear()
+        // $('#nextTab').removeAttr('disabled')
+        return true;
+      } //}
+
+    },
+
+    /**
+     * @ ValidateWalletAccountDetails 
+     **/
+    ValidateWalletAccountDetails: function ValidateWalletAccountDetails() {
+      // console.log('asdfs')
+      if (this.form.WalletAccountNoDetails == null) {
         toast.fire({
           type: 'info',
           title: 'Please fill required fields'
@@ -3541,6 +3789,8 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!this.form.username) {
         if (this.step == 1) {
+          this.form.clear();
+          this.form.reset();
           $('#nextTab').attr('disabled', true);
         }
       } else {
@@ -3624,75 +3874,99 @@ __webpack_require__.r(__webpack_exports__);
     UpdateWalletAccount: function UpdateWalletAccount() {
       var _this3 = this;
 
-      var formData = new FormData(); // Wallet Account
+      swal.fire({
+        title: 'Are you sure you want to save?',
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#0077B5',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Update!'
+      }).then(function (result) {
+        if (result.value) {
+          _this3.$Progress.start();
 
-      formData.append('username', this.form.username);
-      formData.append('kyc_form', this.form.kyc_form);
-      formData.append('valid_id', this.form.valid_id);
-      formData.append('WalletType', this.form.WalletType);
-      formData.append('WalletAccountType', this.form.WalletAccountType);
-      formData.append('WalletAccountNo', this.form.WalletAccountNo);
-      formData.append('WalletAccountName', this.form.WalletAccountName);
-      formData.append('Wallettitle', this.form.Wallettitle); // //Wallet Bank Account
+          var formData = new FormData(); // Wallet Account
 
-      formData.append('Branch', this.form.Branch);
-      formData.append('bank_name', this.form.bank_name);
-      formData.append('account_type', this.form.account_type);
-      formData.append('account_name', this.form.account_name);
-      formData.append('account_no', this.form.account_no); // Wallet Amount limits config
+          formData.append('_token', _this3.csrf_token);
+          formData.append('username', _this3.form.username);
+          formData.append('kyc_form', _this3.form.kyc_form);
+          formData.append('valid_id', _this3.form.valid_id);
+          formData.append('WalletType', _this3.form.WalletType);
+          formData.append('WalletAccountType', _this3.form.WalletAccountType);
+          formData.append('WalletAccountNo', _this3.form.WalletAccountNo);
+          formData.append('WalletAccountName', _this3.form.WalletAccountName);
+          formData.append('Wallettitle', _this3.form.Wallettitle); // //Wallet Bank Account
 
-      formData.append('amount_limit', this.form.amount_limit);
-      formData.append('am_per_transaction', this.form.am_per_transaction);
-      formData.append('am_per_day', this.form.am_per_day);
-      formData.append('am_per_month', this.form.am_per_month);
-      formData.append('am_per_year', this.form.am_per_year); // Wallet Amount Limits
+          formData.append('Branch', _this3.form.Branch);
+          formData.append('bank_name', _this3.form.bank_name);
+          formData.append('account_type', _this3.form.account_type);
+          formData.append('account_name', _this3.form.account_name);
+          formData.append('account_no', _this3.form.account_no); // Wallet Amount limits config
 
-      formData.append('am_minimum', this.form.am_minimum);
-      formData.append('am_maximum', this.form.am_maximum);
-      formData.append('am_transaction_minimum', this.form.am_transaction_minimun);
-      formData.append('am_transaction_maximum', this.form.am_transaction_maximum);
-      formData.append('am_day_minimum', this.form.am_day_minimum);
-      formData.append('am_day_maximum', this.form.am_day_maximum);
-      formData.append('am_month_minimum', this.form.am_month_minimum);
-      formData.append('am_month_maximum', this.form.am_month_maximum);
-      formData.append('am_year_minimum', this.form.am_year_minimum);
-      formData.append('am_year_minimum', this.form.am_year_minimum);
-      formData.append('am_year_maximum', this.form.am_year_maximum); // Wallet limit no of transaction config
+          formData.append('amount_limit', _this3.form.amount_limit);
+          formData.append('am_per_transaction', _this3.form.am_per_transaction);
+          formData.append('am_per_day', _this3.form.am_per_day);
+          formData.append('am_per_month', _this3.form.am_per_month);
+          formData.append('am_per_year', _this3.form.am_per_year); // Wallet Amount Limits
 
-      formData.append('c_lm_per_day', this.form.c_lm_per_day);
-      formData.append('c_lm_per_month', this.form.c_lm_per_month);
-      formData.append('c_lm_per_year', this.form.c_lm_per_year);
-      formData.append('c_allow_negative_balance', this.form.c_allow_negative_balance);
-      formData.append('c_com_daily_balance', this.form.c_com_daily_balance);
-      formData.append('c_com_daily_usage', this.form.c_com_daily_usage); // Wallet limit no of transaction
+          formData.append('am_minimum', _this3.form.am_minimum);
+          formData.append('am_maximum', _this3.form.am_maximum);
+          formData.append('am_transaction_minimum', _this3.form.am_transaction_minimun);
+          formData.append('am_transaction_maximum', _this3.form.am_transaction_maximum);
+          formData.append('am_day_minimum', _this3.form.am_day_minimum);
+          formData.append('am_day_maximum', _this3.form.am_day_maximum);
+          formData.append('am_month_minimum', _this3.form.am_month_minimum);
+          formData.append('am_month_maximum', _this3.form.am_month_maximum);
+          formData.append('am_year_minimum', _this3.form.am_year_minimum);
+          formData.append('am_year_minimum', _this3.form.am_year_minimum);
+          formData.append('am_year_maximum', _this3.form.am_year_maximum); // Wallet limit no of transaction config
 
-      formData.append('lm_per_day', this.form.lm_per_day);
-      formData.append('lm_per_month', this.form.lm_per_month);
-      formData.append('lm_per_year', this.form.lm_per_year);
-      formData.append('allow_negative_balance', this.form.allow_negative_balance);
-      formData.append('Services', JSON.stringify(this.Services));
-      axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-      axios.post('/api/walletaccount/UpdateWalletAccount', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+          formData.append('c_lm_per_day', _this3.form.c_lm_per_day);
+          formData.append('c_lm_per_month', _this3.form.c_lm_per_month);
+          formData.append('c_lm_per_year', _this3.form.c_lm_per_year);
+          formData.append('c_allow_negative_balance', _this3.form.c_allow_negative_balance);
+          formData.append('c_com_daily_balance', _this3.form.c_com_daily_balance);
+          formData.append('c_com_daily_usage', _this3.form.c_com_daily_usage); // Wallet limit no of transaction
+
+          formData.append('lm_per_day', _this3.form.lm_per_day);
+          formData.append('lm_per_month', _this3.form.lm_per_month);
+          formData.append('lm_per_year', _this3.form.lm_per_year);
+          formData.append('allow_negative_balance', _this3.form.allow_negative_balance);
+          formData.append('BankAccount', JSON.stringify(_this3.BankAccount));
+          formData.append('Services', JSON.stringify(_this3.Services));
+          formData.append('WalletAccountNoDetails', _this3.form.WalletAccountNoDetails);
+          formData.append('WalletAccountNameDetails', _this3.form.WalletAccountNameDetails);
+          axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+          axios.post('/api/walletaccount/UpdateWalletAccount', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'X-CSRF-TOKEN': _this3.csrf_token
+            }
+          }).then(function (res) {
+            _this3.$Progress.increase(10);
+
+            _this3.$Progress.finish();
+
+            console.log(res);
+
+            _this3.form.clear();
+
+            _this3.form.reset();
+
+            toast.fire({
+              type: 'success',
+              title: 'Wallet Account Successfully Updated!'
+            });
+
+            _this3.$router.push('/walletaccounts');
+
+            console.log(res.data.status);
+          })["catch"](function (err) {
+            _this3.$Progress.fail();
+
+            console.log(err);
+          });
         }
-      }).then(function (res) {
-        console.log(res);
-
-        _this3.form.clear();
-
-        _this3.form.reset();
-
-        toast.fire({
-          type: 'success',
-          title: 'Wallet Account Successfully Updated!'
-        });
-
-        _this3.$router.push('/walletaccounts');
-
-        console.log(res.data.status);
-      })["catch"](function (err) {
-        console.log(err);
       });
     },
 
@@ -3702,77 +3976,112 @@ __webpack_require__.r(__webpack_exports__);
     StoreWalletAccount: function StoreWalletAccount() {
       var _this4 = this;
 
-      var formData = new FormData(); // Wallet Account
+      swal.fire({
+        title: 'Are you sure you want to save?',
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#0077B5',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Save!'
+      }).then(function (result) {
+        if (result.value) {
+          _this4.$Progress.start();
 
-      formData.append('username', this.form.username);
-      formData.append('kyc_form', this.form.kyc_form);
-      formData.append('valid_id', this.form.valid_id);
-      formData.append('WalletType', this.form.WalletType);
-      formData.append('WalletAccountType', this.form.WalletAccountType);
-      formData.append('WalletAccountNo', this.form.WalletAccountNo);
-      formData.append('WalletAccountName', this.form.WalletAccountName);
-      formData.append('Wallettitle', this.form.Wallettitle); // //Wallet Bank Account
+          var formData = new FormData(); // Wallet Account
 
-      formData.append('Branch', this.form.Branch);
-      formData.append('bank_name', this.form.bank_name);
-      formData.append('account_type', this.form.account_type);
-      formData.append('account_name', this.form.account_name);
-      formData.append('account_no', this.form.account_no); // Wallet Amount limits config
+          formData.append('_token', _this4.csrf_token);
+          formData.append('username', _this4.form.username);
+          formData.append('kyc_form', _this4.form.kyc_form);
+          formData.append('valid_id', _this4.form.valid_id);
+          formData.append('WalletType', _this4.form.WalletType);
+          formData.append('WalletAccountType', _this4.form.WalletAccountType);
+          formData.append('WalletAccountNo', _this4.form.WalletAccountNo);
+          formData.append('WalletAccountName', _this4.form.WalletAccountName);
+          formData.append('Wallettitle', _this4.form.Wallettitle); // //Wallet Bank Account
 
-      formData.append('amount_limit', this.form.amount_limit);
-      formData.append('am_per_transaction', this.form.am_per_transaction);
-      formData.append('am_per_day', this.form.am_per_day);
-      formData.append('am_per_month', this.form.am_per_month);
-      formData.append('am_per_year', this.form.am_per_year); // Wallet Amount Limits
+          formData.append('Branch', _this4.form.Branch);
+          formData.append('bank_name', _this4.form.bank_name);
+          formData.append('account_type', _this4.form.account_type);
+          formData.append('account_name', _this4.form.account_name);
+          formData.append('account_no', _this4.form.account_no); // Wallet Amount limits config
 
-      formData.append('am_minimum', this.form.am_minimum);
-      formData.append('am_maximum', this.form.am_maximum);
-      formData.append('am_transaction_minimum', this.form.am_transaction_minimun);
-      formData.append('am_transaction_maximum', this.form.am_transaction_maximum);
-      formData.append('am_day_minimum', this.form.am_day_minimum);
-      formData.append('am_day_maximum', this.form.am_day_maximum);
-      formData.append('am_month_minimum', this.form.am_month_minimum);
-      formData.append('am_month_maximum', this.form.am_month_maximum);
-      formData.append('am_year_minimum', this.form.am_year_minimum);
-      formData.append('am_year_minimum', this.form.am_year_minimum);
-      formData.append('am_year_maximum', this.form.am_year_maximum); // Wallet limit no of transaction config
+          formData.append('amount_limit', _this4.form.amount_limit);
+          formData.append('am_per_transaction', _this4.form.am_per_transaction);
+          formData.append('am_per_day', _this4.form.am_per_day);
+          formData.append('am_per_month', _this4.form.am_per_month);
+          formData.append('am_per_year', _this4.form.am_per_year); // Wallet Amount Limits
 
-      formData.append('c_lm_per_day', this.form.c_lm_per_day);
-      formData.append('c_lm_per_month', this.form.c_lm_per_month);
-      formData.append('c_lm_per_year', this.form.c_lm_per_year);
-      formData.append('c_allow_negative_balance', this.form.c_allow_negative_balance);
-      formData.append('c_com_daily_balance', this.form.c_com_daily_balance);
-      formData.append('c_com_daily_usage', this.form.c_com_daily_usage); // Wallet limit no of transaction
+          formData.append('am_minimum', _this4.form.am_minimum);
+          formData.append('am_maximum', _this4.form.am_maximum);
+          formData.append('am_transaction_minimum', _this4.form.am_transaction_minimun);
+          formData.append('am_transaction_maximum', _this4.form.am_transaction_maximum);
+          formData.append('am_day_minimum', _this4.form.am_day_minimum);
+          formData.append('am_day_maximum', _this4.form.am_day_maximum);
+          formData.append('am_month_minimum', _this4.form.am_month_minimum);
+          formData.append('am_month_maximum', _this4.form.am_month_maximum);
+          formData.append('am_year_minimum', _this4.form.am_year_minimum);
+          formData.append('am_year_minimum', _this4.form.am_year_minimum);
+          formData.append('am_year_maximum', _this4.form.am_year_maximum); // Wallet limit no of transaction config
 
-      formData.append('lm_per_day', this.form.lm_per_day);
-      formData.append('lm_per_month', this.form.lm_per_month);
-      formData.append('lm_per_year', this.form.lm_per_year);
-      formData.append('allow_negative_balance', this.form.allow_negative_balance);
-      formData.append('Services', JSON.stringify(this.Services));
-      axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-      axios.post('api/walletaccount/StoreWalletAccount', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(function (res) {
-        console.log(res);
+          formData.append('c_lm_per_day', _this4.form.c_lm_per_day);
+          formData.append('c_lm_per_month', _this4.form.c_lm_per_month);
+          formData.append('c_lm_per_year', _this4.form.c_lm_per_year);
+          formData.append('c_allow_negative_balance', _this4.form.c_allow_negative_balance);
+          formData.append('c_com_daily_balance', _this4.form.c_com_daily_balance);
+          formData.append('c_com_daily_usage', _this4.form.c_com_daily_usage); // Wallet limit no of transaction
 
-        if (res) {
-          _this4.form.clear();
+          formData.append('lm_per_day', _this4.form.lm_per_day);
+          formData.append('lm_per_month', _this4.form.lm_per_month);
+          formData.append('lm_per_year', _this4.form.lm_per_year);
+          formData.append('allow_negative_balance', _this4.form.allow_negative_balance);
+          formData.append('BankAccount', JSON.stringify(_this4.BankAccount));
+          formData.append('Services', JSON.stringify(_this4.Services));
+          formData.append('WalletAccountNoDetails', _this4.form.WalletAccountNoDetails);
+          formData.append('WalletAccountNameDetails', _this4.form.WalletAccountNameDetails); // Joint Wallet Account
 
-          _this4.form.reset();
+          formData.append('joint_wallet_account_no', _this4.form.JointWalletAccountNo);
+          formData.append('CMSCreditAccountNo', _this4.form.CMSCreditAccountNo);
+          axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+          axios.post('api/walletaccount/StoreWalletAccount', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'X-CSRF-TOKEN': _this4.csrf_token
+            }
+          }).then(function (res) {
+            _this4.$Progress.increase(10);
 
-          toast.fire({
-            type: 'success',
-            title: 'Wallet Account Successfully created!'
+            _this4.$Progress.finish();
+
+            console.log(res);
+
+            if (res) {
+              _this4.form.clear();
+
+              _this4.form.reset();
+
+              toast.fire({
+                type: 'success',
+                title: 'Wallet Account Successfully created!'
+              });
+
+              _this4.$router.push('/walletaccounts');
+            }
+
+            console.log(res);
+          })["catch"](function (err) {
+            _this4.$Progress.fail(); //console.log(err)
+
+
+            console.clear();
+
+            if (err.response.status == 422) {
+              toast.fire({
+                type: 'info',
+                title: 'Wallet Account Already Exists!'
+              });
+            }
           });
-
-          _this4.$router.push('/walletaccounts');
         }
-
-        console.log(res.data.status);
-      })["catch"](function (err) {
-        console.log(err);
       });
     },
 
@@ -3796,7 +4105,7 @@ __webpack_require__.r(__webpack_exports__);
 
       //axios.get('api/walletaccount/GetWalletAccountDetails/'+ this.form.username).then(({ data}) => (console.log(data)));
       axios.get('/api/walletaccount/GetWalletAccountDetails/' + this.$route.params.id).then(function (res) {
-        console.log(res);
+        //console.log(res)
         _this6.form.WalletAccountType = res.data[0]['wallet_account_type'];
         _this6.form.WalletType = res.data[0]['wallet_type'];
         _this6.form.Branch = res.data[0]['branch'];
@@ -3829,8 +4138,38 @@ __webpack_require__.r(__webpack_exports__);
         _this6.form.allow_negative_balance = res.data[0]['allow_negative_balance'];
         _this6.form.bank_name = res.data[0]['bank_name'];
         _this6.form.account_type = res.data[0]['account_type'];
-        _this6.form.kyc_form = 'wallet_account_files/kyc_form/' + res.data[0]['kyc_form'];
-        _this6.form.valid_id = 'wallet_account/valid_id/' + res.data[0]['valid_id'];
+        _this6.form.kyc_form = res.data[0]['kyc_form'];
+        _this6.form.valid_id = res.data[0]['valid_id'];
+        _this6.form.WalletAccountNoDetails = res.data[0]['WalletAccountNoDetails'];
+        _this6.form.WalletAccountNameDetails = res.data[0]['WalletAccountNameDetails'];
+        _this6.form.JointWalletAccountNo = res.data[0]['joint_wallet_account_no'];
+
+        _this6.SerachJointWalletAccount(res.data[0]['joint_wallet_account_no']);
+
+        _this6.form.WalletAccountNo = res.data[0]['wan'];
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+    GetWalletBankAccounts: function GetWalletBankAccounts() {
+      var _this7 = this;
+
+      this.BankAccount.splice(0, 1);
+      axios.get('/api/walletaccount/GetWalletBankAccount/' + this.$route.params.id).then(function (res) {
+        var i;
+
+        for (i = 0; i < res.data.length; i++) {
+          _this7.BankAccount.push({
+            id: res.data[i].id,
+            bank_name: res.data[i].bank_name,
+            Branch: res.data[i].branch,
+            account_type: res.data[i].account_type,
+            account_name: res.data[i].account_name,
+            account_no: res.data[i].account_no,
+            "default": res.data[i]["default"],
+            status: res.data[i].status
+          });
+        }
       })["catch"](function (err) {
         console.log(err);
       });
@@ -3847,9 +4186,13 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Get Kyc Form File 
      **/
-    uploadKycForm: function uploadKycForm() {
+    uploadKycForm: function uploadKycForm(e) {
+      e.preventDefault();
       this.form.kyc_form = this.$refs.file.files[0];
-      this.errors.clear();
+      this.errors.clear(); //$('#kyc_form_filename').html(this.$refs.file.files[0].name);
+
+      this.kyc_form_file_name = e.target.files[0].name;
+      console.log(e.target.files[0].name);
       return true;
     },
 
@@ -3857,8 +4200,11 @@ __webpack_require__.r(__webpack_exports__);
      * Upload Valid Id 
      **/
     uploadValidId: function uploadValidId(e) {
+      e.preventDefault();
       this.form.valid_id = this.$refs.valid_id.files[0];
-      this.errors.clear();
+      this.errors.clear(); //$('#valid_id_filename').html(e.target.files.name);
+
+      this.valid_id_file_name = e.target.files[0].name;
       return true;
     },
 
@@ -3866,12 +4212,12 @@ __webpack_require__.r(__webpack_exports__);
      * @ Get Services 
      **/
     GetServices: function GetServices() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.editmode == false) {
         axios.get('api/servicematrix/GetServices').then(function (_ref2) {
           var data = _ref2.data;
-          return _this7.Services = data;
+          return _this8.Services = data;
         });
       }
     },
@@ -3880,14 +4226,104 @@ __webpack_require__.r(__webpack_exports__);
      * @ Get Service Matrix Config For Update 
      **/
     Getsmc: function Getsmc() {
-      var _this8 = this;
+      var _this9 = this;
 
       if (this.editmode == true) {
         axios.get('/api/walletaccount/GetServiceMatrixConfig/' + this.$route.params.id).then(function (_ref3) {
           var data = _ref3.data;
-          return _this8.Services = data;
+          return _this9.Services = data;
         });
       }
+    },
+
+    /**
+     * @ Check Wallet Account Type 
+     **/
+    CheckWalletAccountType: function CheckWalletAccountType() {
+      // Check if Prepaid User
+      if (this.form.WalletAccountType == 5) {
+        return false;
+      } // Check if Credit User
+
+
+      if (this.form.WalletAccountType == 8) {
+        return false;
+      }
+
+      return true;
+    },
+
+    /**
+     * @ Add Bank Account  
+     **/
+    addBank: function addBank() {
+      this.BankAccount.push({
+        bank_name: null,
+        Branch: null,
+        account_type: null,
+        account_name: null,
+        account_no: null,
+        "default": false,
+        status: false
+      });
+    },
+
+    /**
+     * @ Remove Bank Account 
+     **/
+    removeElement: function removeElement(index) {
+      this.BankAccount.splice(index, 1);
+    },
+    searchAccountNo: function searchAccountNo() {
+      var _this10 = this;
+
+      axios.get('/api/walletaccount/SearchWalletAccountNo/' + this.form.WalletAccountNoDetails).then(function (res) {
+        console.log(res);
+
+        if (res) {
+          if (res.data == 404) {
+            _this10.form.WalletAccountNameDetails = null;
+            toast.fire({
+              type: 'info',
+              title: 'Wallet Account No Not Found'
+            });
+
+            _this10.$validator.validateAll().then(function (result) {
+              if (result) {
+                return;
+              }
+            });
+
+            return false;
+          } else {
+            _this10.form.WalletAccountNameDetails = res.data;
+
+            _this10.errors.clear();
+
+            $('#nextTab').removeAttr('disabled');
+            return true;
+          }
+        }
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+
+    /**
+     * @ Search Joint Wallet Account 
+     **/
+    SerachJointWalletAccount: function SerachJointWalletAccount() {
+      var _this11 = this;
+
+      var $jwan = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      axios.get('/api/walletaccount/SearchWalletJointAccount/' + this.form.JointWalletAccountNo).then(function (res) {
+        console.log(res);
+        _this11.form.JointWalletType = res.data[0].wallet_type;
+        _this11.form.jointWalletAccountType = res.data[0].wallet_account_type;
+        _this11.form.JointWalletAccountName = res.data[0].wallet_account_name;
+      })["catch"](function (err) {
+        console.log(err);
+      });
     }
   },
   created: function created() {
@@ -3901,6 +4337,7 @@ __webpack_require__.r(__webpack_exports__);
 
     if (this.editmode == true) {
       this.GetWalletAccountDetails();
+      this.GetWalletBankAccounts();
       this.Getsmc();
     }
   }
@@ -5365,10 +5802,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5377,6 +5810,7 @@ __webpack_require__.r(__webpack_exports__);
       ServiceGroups: {},
       sd_values: [],
       get_service_id: this.$route.params.id,
+      method_name: this.$route.params.method_name,
       // WalletTypes : {},
       service_template: 'empty',
       form: new Form({
@@ -5441,11 +5875,43 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     onComplete: function onComplete() {
+      if (this.method_name == 'view' || this.method_name == 'create') {
+        this.submitServices();
+      } else {
+        /**
+         * Creating Object for storing inside the local storage
+         */
+        var list_services = [];
+        list_services = JSON.parse(localStorage.getItem('list_services'));
+
+        if (list_services.length != 2) {
+          list_services.push({
+            'service_id': this.get_service_id,
+            'wallet_type': this.form.wallet_type,
+            'service_name': this.form.service_name,
+            'service_code': this.form.service_code,
+            'service_description': this.form.service_description
+          });
+          localStorage.setItem('list_services', JSON.stringify(list_services));
+          this.$router.push('/createjointservice');
+        } else {
+          /**
+           * This will trigger once the user reached the tentative maximum number of jointing services which is 3 (Suggested by the Project Owner.)
+           */
+          toast.fire({
+            type: 'warning',
+            title: "Adding failed! You've reached the maximum limit! (3)"
+          });
+          this.$router.push('/createjointservice');
+        }
+      }
+    },
+    submitServices: function submitServices() {
       var _this = this;
 
       /**
-       * 
-       */
+      * 
+      */
       var Formtwo = new FormData();
       Formtwo.append('service_condition', this.form.service_condition);
 
@@ -5499,7 +5965,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.edit_mode === false) {
         axios.post("/api/service/createservice", Formtwo).then(function (response) {
-          _this.$router.push('serviceslist');
+          _this.$router.push('/serviceslist/view');
 
           console.log(response.data);
         })["catch"](function () {
@@ -5507,7 +5973,7 @@ __webpack_require__.r(__webpack_exports__);
         });
       } else {
         axios.post("/api/service/updateservice", Formtwo).then(function (response) {
-          _this.$router.push('/serviceslist');
+          _this.$router.push('/serviceslist/view');
 
           console.log('hah update');
         })["catch"](function () {
@@ -5530,6 +5996,10 @@ __webpack_require__.r(__webpack_exports__);
         });
       }, 1000);
     },
+
+    /**
+     * For showing Service Type Details by its service type code
+     */
     showServiceTypeDetails: function showServiceTypeDetails() {
       var _this2 = this;
 
@@ -5545,6 +6015,10 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function () {});
     },
+
+    /**
+     * For showing the owner name of the wallet principal account no
+     */
     showPRWallletAccountName: function showPRWallletAccountName() {
       var _this3 = this;
 
@@ -5570,6 +6044,10 @@ __webpack_require__.r(__webpack_exports__);
         console.log('err');
       });
     },
+
+    /**
+     * Gets the service gateway list from other module
+     */
     getServiceGateway: function getServiceGateway() {
       var _this5 = this;
 
@@ -5577,6 +6055,10 @@ __webpack_require__.r(__webpack_exports__);
         _this5.ServiceGateway = response.data;
       });
     },
+
+    /**
+     * Gets the service group list from other module
+     */
     getServiceGroup: function getServiceGroup() {
       var _this6 = this;
 
@@ -5585,11 +6067,19 @@ __webpack_require__.r(__webpack_exports__);
         return _this6.ServiceGroups = data;
       });
     },
+
+    /**
+     * Setting up the service template
+     */
     onFileChangeServiceTemplate: function onFileChangeServiceTemplate(e) {
       console.log(e.target.files[0]);
       this.form.service_template = e.target.files[0];
       this.service_template = e.target.files[0]['name'];
     },
+
+    /**
+     * For changing the approval status
+     */
     switchApproval: function switchApproval(changeValue) {
       if (changeValue == 0) {
         this.form.approval = 1;
@@ -5623,6 +6113,11 @@ __webpack_require__.r(__webpack_exports__);
         console.log('create');
       }
     },
+
+    /**
+     * This will trigger if the method used was 'update' method 
+     * It only shows the values retrieved using the service ID
+     */
     retrieveServicesDetails: function retrieveServicesDetails() {
       var _this7 = this;
 
@@ -5717,6 +6212,10 @@ __webpack_require__.r(__webpack_exports__);
         console.log('error');
       });
     },
+
+    /**
+     * Setting up the values, source wallet, destination wallet, rates table to the DATA return Array variable.
+     */
     getVSDR: function getVSDR($service_id) {
       var _this9 = this;
 
@@ -5775,19 +6274,264 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      form: new form({
-        original_wallet_type: '',
-        original_service_code: '',
-        original_service_name: '',
-        original_service_description: ''
+      method_name: 'joint',
+      form: new Form({
+        original_wallet_type: window.localStorage.getItem('wallet_type'),
+        original_service_code: window.localStorage.getItem('service_code'),
+        original_service_name: window.localStorage.getItem('service_name'),
+        original_service_description: window.localStorage.getItem('service_description'),
+        joint_services: null
       })
     };
   },
-  methods: {},
-  created: function created() {}
+  methods: {
+    addService: function addService(method) {
+      if (localStorage.getItem('list_services') == null || localStorage.getItem('list_services') == undefined) {
+        /**
+         * For creating localstorage object in array for joint services
+         */
+        var joint_services = [];
+        localStorage.setItem('list_services', JSON.stringify(joint_services));
+      }
+      /**
+       * Sets local storage variables for fields below
+       */
+
+
+      window.localStorage.setItem('wallet_type', this.form.original_wallet_type);
+      window.localStorage.setItem('service_code', this.form.original_service_code);
+      window.localStorage.setItem('service_name', this.form.original_service_name || '');
+      window.localStorage.setItem('service_description', this.form.original_service_description || '');
+      window.localStorage.setItem('method_name', 'joint');
+    },
+    showDatatable: function showDatatable() {
+      setTimeout(function () {
+        var table = $('#jointservicestable').DataTable({
+          // "searching": false,
+          //"sDom": '<"customcontent">rt<"row"<"col-lg-4" i><"col-lg-4" p>><"clear">',
+          "paging": true,
+          "pageLength": 10,
+          scrollY: true,
+          "autoWidth": true,
+          //lengthChange: false,
+          responsive: true,
+          fixedColumns: true
+        });
+      }, 1000);
+    },
+    saveJointServices: function saveJointServices() {
+      var _this = this;
+
+      if (localStorage.getItem('list_services') === null || localStorage.getItem('list_services') === undefined || localStorage.getItem('list_services') === '[]') {
+        toast.fire({
+          type: 'warning',
+          title: 'Please choose service to join'
+        });
+        return false;
+      }
+
+      {
+        swal.fire({
+          title: 'Are you sure?',
+          text: "Save Joint Services",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Save'
+        }).then(function (result) {
+          if (result.value) {
+            /**
+             * Insert Joint Services
+             */
+            _this.form.post('/api/service/createjointservice').then(function (response) {
+              console.log(response.data);
+            })["catch"](function () {
+              console.log("eerrrrr");
+            });
+            /**
+             * Clears the local storage variable for joining services
+             */
+
+
+            localStorage.removeItem('wallet_type');
+            localStorage.removeItem('service_code');
+            localStorage.removeItem('service_name');
+            localStorage.removeItem('service_description');
+            localStorage.removeItem('list_services');
+            /**
+             * Clears the UI
+             */
+
+            _this.form.original_wallet_type = '';
+            _this.form.original_service_code = '';
+            _this.form.original_service_name = '';
+            _this.form.original_service_description = '';
+
+            _this.showJointServiceTable();
+
+            toast.fire({
+              type: 'success',
+              title: 'Successfully Jointed Services'
+            });
+          }
+        });
+      }
+    },
+    showJointServiceTable: function showJointServiceTable() {
+      /**
+       * Setting up the stored localstorage data into an actual JS array
+       */
+      this.form.joint_services = JSON.parse(localStorage.getItem('list_services'));
+    }
+  },
+  created: function created() {
+    this.showJointServiceTable();
+    this.showDatatable();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/JointServicesList.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServices/JointServicesList.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      ListJointServices: [],
+      id: this.$route.params.id
+    };
+  },
+  methods: {
+    getListJointServices: function getListJointServices() {
+      var _this = this;
+
+      axios.get('/api/service/getjointservicelist/' + this.id).then(function (response) {
+        _this.ListJointServices = response.data;
+      })["catch"](function () {
+        console.log('error');
+      });
+    }
+  },
+  created: function created() {
+    this.getListJointServices();
+  }
 });
 
 /***/ }),
@@ -5870,13 +6614,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * This module is related with other modules to be completed.
    */
   data: function data() {
     return {
-      Services: {}
+      Services: {},
+      method_name: this.$route.params.method_name,
+      joint_services: JSON.parse(localStorage.getItem('list_services'))
     };
   },
   methods: {
@@ -5903,6 +6655,17 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function () {
         console.log("err");
       });
+    },
+    checksExistId: function checksExistId(id) {
+      var joint_services = this.joint_services;
+
+      var service = function service(obj) {
+        return obj.service_id === id;
+      };
+
+      if (joint_services !== null) {
+        return joint_services.some(service);
+      }
     }
   },
   created: function created() {
@@ -5973,8 +6736,9 @@ __webpack_require__.r(__webpack_exports__);
 
         if (data.status != '401') {
           console.log(data);
-          window.localStorage.setItem('user', JSON.stringify(_this.form.username));
-          window.location.href = "/dashboard";
+          window.localStorage.setItem('user', JSON.stringify(_this.form.username)); //    window.location.href = "/dashboard"
+
+          _this.$router.go('/dashboard');
         } else {
           console.clear();
           $('#username').addClass('is-invalid');
@@ -6041,10 +6805,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     logout: function logout() {
+      var _this = this;
+
       axios.post('/logout').then(function (res) {
-        window.localStorage.removeItem('user');
-        location.reload();
-        window.location.href = "/";
+        //window.localStorage.removeItem('user');
+        // location.reload();
+        // window.location.href="/";
+        localStorage.clear();
+
+        _this.$router.replace('/');
       })["catch"](function (err) {
         console.log(err);
       });
@@ -10549,7 +11318,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\n#ba-close-button[data-v-64a2c4d3]{\r\n    background-color: Transparent;\r\n    background-repeat:no-repeat;\r\n    border: none;\r\n    cursor:pointer;\r\n    overflow: hidden;\r\n    outline:none;\r\n    margin-bottom: \"2px\";\n}\r\n", ""]);
 
 // exports
 
@@ -58018,69 +58787,93 @@ var render = function() {
                 },
                 [
                   _c("div", { staticClass: "modal-body" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.gateway_code,
-                            expression: "form.gateway_code"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          name: "gateway_code",
-                          placeholder: "Service Gateway Code"
-                        },
-                        domProps: { value: _vm.form.gateway_code },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.gateway_code,
+                              expression: "form.gateway_code"
                             }
-                            _vm.$set(
-                              _vm.form,
-                              "gateway_code",
-                              $event.target.value
-                            )
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("gateway_code")
+                          },
+                          attrs: {
+                            type: "number",
+                            name: "gateway_code",
+                            placeholder: "Service Gateway Code"
+                          },
+                          domProps: { value: _vm.form.gateway_code },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "gateway_code",
+                                $event.target.value
+                              )
+                            }
                           }
-                        }
-                      })
-                    ]),
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "gateway_code" }
+                        })
+                      ],
+                      1
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.gateway_name,
-                            expression: "form.gateway_name"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          name: "gateway_name",
-                          placeholder: "Service Gateway Name"
-                        },
-                        domProps: { value: _vm.form.gateway_name },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.gateway_name,
+                              expression: "form.gateway_name"
                             }
-                            _vm.$set(
-                              _vm.form,
-                              "gateway_name",
-                              $event.target.value
-                            )
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("gateway_name")
+                          },
+                          attrs: {
+                            type: "text",
+                            name: "gateway_name",
+                            placeholder: "Service Gateway Name"
+                          },
+                          domProps: { value: _vm.form.gateway_name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "gateway_name",
+                                $event.target.value
+                              )
+                            }
                           }
-                        }
-                      })
-                    ])
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "gateway_name" }
+                        })
+                      ],
+                      1
+                    )
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
@@ -58124,7 +58917,20 @@ var render = function() {
                         staticClass: "btn btn-primary btn-flat",
                         attrs: { type: "submit" }
                       },
-                      [_vm._v("Save changes")]
+                      [
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "saveSpinner"
+                          }
+                        }),
+                        _vm._v(
+                          "\n                    Save changes\n                "
+                        )
+                      ]
                     )
                   ])
                 ]
@@ -58272,7 +59078,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-flat btn-primary mb-3",
+                staticClass: "btn btn-primary mb-3",
                 attrs: { type: "button" },
                 on: { click: _vm.openModal }
               },
@@ -58413,14 +59219,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-secondary btn-flat",
-                        attrs: { type: "button", "data-dismiss": "modal" }
-                      },
-                      [_vm._v("Close")]
-                    ),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c(
                       "button",
@@ -58433,10 +59232,24 @@ var render = function() {
                             expression: "editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit", id: "btnUpdate" }
                       },
-                      [_vm._v("Update")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(
+                          "\n                     Update\n                     "
+                        ),
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "Spinner"
+                          }
+                        })
+                      ]
                     ),
                     _vm._v(" "),
                     _c(
@@ -58450,10 +59263,24 @@ var render = function() {
                             expression: "!editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit", id: "btnSave" }
                       },
-                      [_vm._v("Save changes")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(
+                          " \n                     Save changes\n                     "
+                        ),
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "saveSpinner"
+                          }
+                        })
+                      ]
                     )
                   ])
                 ]
@@ -58507,6 +59334,19 @@ var staticRenderFns = [
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-secondary",
+        attrs: { type: "button", "data-dismiss": "modal", id: "modalClose" }
+      },
+      [_c("i", { staticClass: "ti-close" }), _vm._v(" Close")]
+    )
   }
 ]
 render._withStripped = true
@@ -59083,7 +59923,7 @@ var staticRenderFns = [
         _c(
           "button",
           {
-            staticClass: "btn btn-primary btn-flat float-right",
+            staticClass: "btn btn-primary float-right",
             attrs: { type: "submit" }
           },
           [_c("i", { staticClass: "ti-save" }), _vm._v(" Save Changes")]
@@ -59127,7 +59967,7 @@ var render = function() {
                 _c(
                   "table",
                   {
-                    staticClass: "table table-hover text-center",
+                    staticClass: "table table-hover table-striped text-center",
                     attrs: { id: "wallet_account_types" }
                   },
                   [
@@ -59188,21 +60028,6 @@ var render = function() {
                 )
               ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group row" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-flat btn-primary mb-3",
-                attrs: { type: "button" },
-                on: { click: _vm.openModal }
-              },
-              [
-                _c("i", { staticClass: "ti-plus text-white" }),
-                _vm._v(" Create New")
-              ]
-            )
           ])
         ])
       ])
@@ -59270,14 +60095,12 @@ var render = function() {
                               ],
                               staticClass: "form-control",
                               class: {
-                                "is-invalid": _vm.form.errors.has(
-                                  "wallet_account_type"
-                                )
+                                "is-invalid": _vm.form.errors.has("type_code")
                               },
                               attrs: {
                                 type: "text",
                                 name: "type_code",
-                                placeholder: "Wallet Account Type",
+                                placeholder: "Wallet Account Type Code",
                                 disabled: "true"
                               },
                               domProps: { value: _vm.form.type_code },
@@ -59296,10 +60119,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _c("has-error", {
-                              attrs: {
-                                form: _vm.form,
-                                field: "wallet_account_type"
-                              }
+                              attrs: { form: _vm.form, field: "type_code" }
                             })
                           ],
                           1
@@ -59386,7 +60206,7 @@ var render = function() {
                                   expression: "form.status"
                                 }
                               ],
-                              staticClass: "form-control",
+                              staticClass: "custom-select",
                               on: {
                                 change: function($event) {
                                   var $$selectedVal = Array.prototype.filter
@@ -59411,8 +60231,14 @@ var render = function() {
                             [
                               _c(
                                 "option",
-                                { attrs: { selected: "", value: "" } },
-                                [_vm._v("Select")]
+                                {
+                                  attrs: {
+                                    selected: "",
+                                    value: "",
+                                    disabled: ""
+                                  }
+                                },
+                                [_vm._v("Select Status")]
                               ),
                               _vm._v(" "),
                               _c("option", { attrs: { value: "1" } }, [
@@ -59448,7 +60274,7 @@ var render = function() {
                               expression: "form.wallet_type"
                             }
                           ],
-                          staticClass: "form-control",
+                          staticClass: "custom-select",
                           on: {
                             change: function($event) {
                               var $$selectedVal = Array.prototype.filter
@@ -59470,9 +60296,19 @@ var render = function() {
                           }
                         },
                         [
-                          _c("option", { attrs: { selected: "", value: "" } }, [
-                            _vm._v("Select")
-                          ]),
+                          _c(
+                            "option",
+                            {
+                              attrs: { selected: "", value: "", disabled: "" }
+                            },
+                            [_vm._v("Select Wallet Type")]
+                          ),
+                          _vm._v(" "),
+                          _vm.form.wallet_type == "Admin"
+                            ? _c("option", { attrs: { value: "Admin" } }, [
+                                _vm._v("Admin")
+                              ])
+                            : _vm._e(),
                           _vm._v(" "),
                           _c("option", { attrs: { value: "Credit" } }, [
                             _vm._v("Credit")
@@ -59487,14 +60323,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-secondary btn-flat",
-                        attrs: { type: "button", "data-dismiss": "modal" }
-                      },
-                      [_vm._v("Close")]
-                    ),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c(
                       "button",
@@ -59507,10 +60336,24 @@ var render = function() {
                             expression: "editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit", id: "btnUpdate" }
                       },
-                      [_vm._v("Update")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(
+                          "\n                         Update\n                        "
+                        ),
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "updateSpinner"
+                          }
+                        })
+                      ]
                     ),
                     _vm._v(" "),
                     _c(
@@ -59524,10 +60367,13 @@ var render = function() {
                             expression: "!editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
+                        staticClass: "btn btn-primary",
                         attrs: { type: "submit" }
                       },
-                      [_vm._v("Save changes")]
+                      [
+                        _c("i", { staticClass: "ti-save" }),
+                        _vm._v(" Save changes")
+                      ]
                     )
                   ])
                 ]
@@ -59585,6 +60431,19 @@ var staticRenderFns = [
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-secondary",
+        attrs: { type: "button", "data-dismiss": "modal", id: "modalClose" }
+      },
+      [_c("i", { staticClass: "ti-close" }), _vm._v(" Close")]
+    )
   }
 ]
 render._withStripped = true
@@ -60173,11 +61032,7 @@ var render = function() {
                                   ref: "file",
                                   staticClass: "custom-file-input",
                                   attrs: { type: "file", id: "kyc_form" },
-                                  on: {
-                                    change: function($event) {
-                                      return _vm.uploadKycForm()
-                                    }
-                                  }
+                                  on: { change: _vm.uploadKycForm }
                                 }),
                                 _vm._v(" "),
                                 this.editmode == true
@@ -60185,9 +61040,20 @@ var render = function() {
                                       "label",
                                       {
                                         staticClass: "custom-file-label",
-                                        attrs: { for: "kyc_form" }
+                                        attrs: {
+                                          for: "kyc_form",
+                                          id: "kyc_form_filename"
+                                        }
                                       },
-                                      [_vm._v("Filled-Up KYC Form")]
+                                      [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm._f("substring")(
+                                              _vm.form.kyc_form
+                                            )
+                                          )
+                                        )
+                                      ]
                                     )
                                   : _vm._e(),
                                 _vm._v(" "),
@@ -60196,9 +61062,12 @@ var render = function() {
                                       "label",
                                       {
                                         staticClass: "custom-file-label",
-                                        attrs: { for: "kyc_form" }
+                                        attrs: {
+                                          for: "kyc_form",
+                                          id: "kyc_form_filename"
+                                        }
                                       },
-                                      [_vm._v("Filled-Up KYC Form")]
+                                      [_vm._v(_vm._s(_vm.kyc_form_file_name))]
                                     )
                                   : _vm._e()
                               ])
@@ -60210,11 +61079,7 @@ var render = function() {
                                   ref: "valid_id",
                                   staticClass: "custom-file-input",
                                   attrs: { type: "file", id: "valid_id" },
-                                  on: {
-                                    change: function($event) {
-                                      return _vm.uploadValidId()
-                                    }
-                                  }
+                                  on: { change: _vm.uploadValidId }
                                 }),
                                 _vm._v(" "),
                                 this.editmode == true
@@ -60222,9 +61087,20 @@ var render = function() {
                                       "label",
                                       {
                                         staticClass: "custom-file-label",
-                                        attrs: { for: "valid_id" }
+                                        attrs: {
+                                          for: "valid_id",
+                                          id: "valid_id_filename"
+                                        }
                                       },
-                                      [_vm._v("Valid ID w/ Signature")]
+                                      [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm._f("substring")(
+                                              _vm.form.valid_id
+                                            )
+                                          )
+                                        )
+                                      ]
                                     )
                                   : _vm._e(),
                                 _vm._v(" "),
@@ -60233,9 +61109,12 @@ var render = function() {
                                       "label",
                                       {
                                         staticClass: "custom-file-label",
-                                        attrs: { for: "valid_id" }
+                                        attrs: {
+                                          for: "valid_id",
+                                          i: "valid_id_filename"
+                                        }
                                       },
-                                      [_vm._v("Valid ID w/ Signature")]
+                                      [_vm._v(_vm._s(_vm.valid_id_file_name))]
                                     )
                                   : _vm._e()
                               ])
@@ -60749,51 +61628,6 @@ var render = function() {
                     _c("div", { staticClass: "card-body" }, [
                       _c("div", { staticClass: "row" }, [
                         _c("div", { staticClass: "col-md-4 offset-md-1" }, [
-                          _c("hr"),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: "control-label custom-label",
-                                attrs: { for: "ess_id" }
-                              },
-                              [_vm._v("ESS ID/Username")]
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.username,
-                                  expression: "form.username"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "text",
-                                placeholder: "ESSID/Username",
-                                disabled: ""
-                              },
-                              domProps: { value: _vm.form.username },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "username",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("hr"),
-                          _vm._v(" "),
                           _c("h4", [_vm._v("Wallet Details")]),
                           _vm._v(" "),
                           _c(
@@ -61055,6 +61889,7 @@ var render = function() {
                                 },
                                 domProps: { value: _vm.form.WalletAccountNo },
                                 on: {
+                                  change: _vm.SerachJointWalletAccount,
                                   input: function($event) {
                                     if ($event.target.composing) {
                                       return
@@ -61229,13 +62064,479 @@ var render = function() {
                             ],
                             1
                           )
-                        ])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "col-md-4 offset-md-1",
+                            attrs: { hidden: _vm.CheckWalletAccountType() }
+                          },
+                          [
+                            _c("hr"),
+                            _vm._v(" "),
+                            _c("h4", [_vm._v("Joint Wallet Account")]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "JointWalletType" }
+                                },
+                                [_vm._v("Joint Wallet Type")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.JointWalletType,
+                                    expression: "form.JointWalletType"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "JointWalletType"
+                                  )
+                                },
+                                attrs: {
+                                  type: "text",
+                                  name: "JointWalletType",
+                                  disabled: ""
+                                },
+                                domProps: { value: _vm.form.JointWalletType },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "JointWalletType",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "JointWalletAccountType" }
+                                },
+                                [_vm._v("Joint Wallet Account Type")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.jointWalletAccountType,
+                                    expression: "form.jointWalletAccountType"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "JointWalletType"
+                                  )
+                                },
+                                attrs: {
+                                  type: "text",
+                                  name: "JointWalletType",
+                                  disabled: ""
+                                },
+                                domProps: {
+                                  value: _vm.form.jointWalletAccountType
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "jointWalletAccountType",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "JointWalletAccountNo" }
+                                },
+                                [_vm._v("Joint Wallet Account No")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.JointWalletAccountNo,
+                                    expression: "form.JointWalletAccountNo"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "JointWalletAccountNo"
+                                  )
+                                },
+                                attrs: {
+                                  type: "text",
+                                  name: "JointWalletAccountNo",
+                                  disabled: _vm.editmode
+                                },
+                                domProps: {
+                                  value: _vm.form.JointWalletAccountNo
+                                },
+                                on: {
+                                  change: _vm.SerachJointWalletAccount,
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "JointWalletAccountNo",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label custom-label",
+                                  attrs: { for: "JointWalletAccountName" }
+                                },
+                                [_vm._v("Joint Wallet Account Name")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.JointWalletAccountName,
+                                    expression: "form.JointWalletAccountName"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.errors.has(
+                                    "JointWalletAccountName"
+                                  )
+                                },
+                                attrs: {
+                                  type: "text",
+                                  name: "JointWalletAccountName",
+                                  disabled: ""
+                                },
+                                domProps: {
+                                  value: _vm.form.JointWalletAccountName
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.form,
+                                      "JointWalletAccountName",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _vm.form.WalletAccountType == 8
+                              ? _c("div", { staticClass: "form-group" }, [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "CMSCreditAccountNo" }
+                                    },
+                                    [_vm._v("CMS Credit Account No")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.form.CMSCreditAccountNo,
+                                        expression: "form.CMSCreditAccountNo"
+                                      },
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has(
+                                        "CMSCreditAccountNo"
+                                      )
+                                    },
+                                    attrs: {
+                                      name: "CMSCreditAccountNo",
+                                      type: "text",
+                                      placeholder: "CMS Credit Account No"
+                                    },
+                                    domProps: {
+                                      value: _vm.form.CMSCreditAccountNo
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.form,
+                                          "CMSCreditAccountNo",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("CMSCreditAccountNo")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.errors.first(
+                                              "CMSCreditAccountNo"
+                                            )
+                                          )
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ])
+                              : _vm._e()
+                          ]
+                        )
                       ])
                     ])
                   ])
                 ])
               ]
             ),
+            _vm._v(" "),
+            _c("tab-content", { attrs: { title: "E-Wallet Acount Setup" } }, [
+              _c("div", { staticClass: "box" }, [
+                _c("div", { staticClass: "card shadow-custom" }, [
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-4 offset-md-1" }, [
+                        _c("h4", [_vm._v("Wallet Details")]),
+                        _vm._v(" "),
+                        _c("hr"),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "form-group" },
+                          [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "WalletAccountNameDetails" }
+                              },
+                              [_vm._v("Account Name")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                },
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.WalletAccountNameDetails,
+                                  expression: "form.WalletAccountNameDetails"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.has(
+                                  "WalletAccountNameDetails"
+                                )
+                              },
+                              attrs: {
+                                name: "WalletAccountNameDetails",
+                                type: "text",
+                                disabled: ""
+                              },
+                              domProps: {
+                                value: _vm.form.WalletAccountNameDetails
+                              },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "WalletAccountNameDetails",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: {
+                                form: _vm.form,
+                                field: "WalletAccountNameDetails"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.has("WalletAccountNameDetails")
+                              ? _c("p", { staticClass: "text-danger" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.errors.first(
+                                        "WalletAccountNameDetails"
+                                      )
+                                    )
+                                  )
+                                ])
+                              : _vm._e()
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "form-group" },
+                          [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "WalletAccountNoDetails" }
+                              },
+                              [_vm._v("Account No")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                },
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.WalletAccountNoDetails,
+                                  expression: "form.WalletAccountNoDetails"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.has(
+                                  "WalletAccountNoDetails"
+                                )
+                              },
+                              attrs: {
+                                name: "WalletAccountNoDetails",
+                                type: "text"
+                              },
+                              domProps: {
+                                value: _vm.form.WalletAccountNoDetails
+                              },
+                              on: {
+                                change: _vm.searchAccountNo,
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "WalletAccountNoDetails",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: {
+                                form: _vm.form,
+                                field: "WalletAccountNoDetails"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.has("WalletAccountNoDetails")
+                              ? _c("p", { staticClass: "text-danger" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.errors.first("WalletAccountNoDetails")
+                                    )
+                                  )
+                                ])
+                              : _vm._e()
+                          ],
+                          1
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "tab-content",
@@ -61253,373 +62554,589 @@ var render = function() {
                       _vm._v(" "),
                       _c("hr"),
                       _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-4 offset-md-1" }, [
-                          _c(
+                      _c(
+                        "div",
+                        { staticClass: "row", attrs: { id: "bankRow" } },
+                        _vm._l(_vm.BankAccount, function(key, index) {
+                          return _c(
                             "div",
-                            { staticClass: "form-group" },
+                            {
+                              key: index.id,
+                              staticClass: "col-md-4 offset-md-1"
+                            },
                             [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "bank_name" }
-                                },
-                                [_vm._v("Name of Bank")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.bank_name,
-                                    expression: "form.bank_name"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has("bank_name")
-                                },
-                                attrs: {
-                                  name: "bank_name",
-                                  type: "text",
-                                  placeholder: "Name Of Bank"
-                                },
-                                domProps: { value: _vm.form.bank_name },
-                                on: {
-                                  change: _vm.ValidateFourthStep,
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "bank_name",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "bank_name" }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("bank_name")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("bank_name"))
-                                    )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "Branch" }
-                                },
-                                [_vm._v("Branch")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.Branch,
-                                    expression: "form.Branch"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has("Branch")
-                                },
-                                attrs: {
-                                  name: "Branch",
-                                  type: "text",
-                                  placeholder: "Branch"
-                                },
-                                domProps: { value: _vm.form.Branch },
-                                on: {
-                                  change: _vm.ValidateFourthStep,
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "Branch",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "Branch" }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("Branch")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(_vm._s(_vm.errors.first("Branch")))
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "account_type" }
-                                },
-                                [_vm._v("Wallet Type")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "select",
-                                {
-                                  directives: [
+                              index != 0
+                                ? _c(
+                                    "button",
                                     {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    },
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.form.account_type,
-                                      expression: "form.account_type"
-                                    }
-                                  ],
-                                  staticClass: "custom-select",
-                                  class: {
-                                    "is-invalid": _vm.errors.has("account_type")
-                                  },
-                                  attrs: { name: "account_type" },
-                                  on: {
-                                    change: [
-                                      function($event) {
-                                        var $$selectedVal = Array.prototype.filter
-                                          .call($event.target.options, function(
-                                            o
-                                          ) {
-                                            return o.selected
-                                          })
-                                          .map(function(o) {
-                                            var val =
-                                              "_value" in o ? o._value : o.value
-                                            return val
-                                          })
-                                        _vm.$set(
-                                          _vm.form,
-                                          "account_type",
-                                          $event.target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        )
-                                      },
-                                      _vm.ValidateFourthStep
-                                    ]
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "option",
-                                    {
-                                      attrs: {
-                                        value: "",
-                                        selected: "",
-                                        disabled: ""
+                                      staticClass: "float-right",
+                                      staticStyle: { cursor: "pointer" },
+                                      attrs: { id: "ba-close-button" },
+                                      on: {
+                                        click: function($event) {
+                                          $event.preventDefault()
+                                          return _vm.removeElement(index)
+                                        }
                                       }
                                     },
-                                    [_vm._v("Select")]
+                                    [_c("span", { staticClass: "ti-close" })]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c("hr"),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "bank_name" }
+                                    },
+                                    [_vm._v("Name of Bank")]
                                   ),
                                   _vm._v(" "),
-                                  _c("option", [_vm._v("Credit")]),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      },
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: key.bank_name,
+                                        expression: "key.bank_name"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has("bank_name")
+                                    },
+                                    attrs: {
+                                      name: "bank_name",
+                                      type: "text",
+                                      placeholder: "Name Of Bank"
+                                    },
+                                    domProps: { value: key.bank_name },
+                                    on: {
+                                      change: _vm.ValidateFourthStep,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          key,
+                                          "bank_name",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
                                   _vm._v(" "),
-                                  _c("option", [_vm._v("Prepaid")])
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "account_type" }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("account_type")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("account_type"))
-                                    )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "WalletAccountName" }
-                                },
-                                [_vm._v("Wallet Account Name")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.account_name,
-                                    expression: "form.account_name"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has("account_name")
-                                },
-                                attrs: {
-                                  name: "account_name",
-                                  type: "text",
-                                  placeholder: "Account Name"
-                                },
-                                domProps: { value: _vm.form.account_name },
-                                on: {
-                                  change: _vm.ValidateFourthStep,
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
+                                  _c("has-error", {
+                                    attrs: {
+                                      form: _vm.form,
+                                      field: "bank_name"
                                     }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "account_name",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "account_name" }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("account_name")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("account_name"))
-                                    )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "account_no" }
-                                },
-                                [_vm._v("Wallet Account No")]
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("bank_name")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(_vm.errors.first("bank_name"))
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
                               ),
                               _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.account_no,
-                                    expression: "form.account_no"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has("account_no")
-                                },
-                                attrs: {
-                                  name: "account_no",
-                                  type: "text",
-                                  placeholder: "Account No"
-                                },
-                                domProps: { value: _vm.form.account_no },
-                                on: {
-                                  change: _vm.ValidateFourthStep,
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "Branch" }
+                                    },
+                                    [_vm._v("Branch")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      },
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: key.Branch,
+                                        expression: "key.Branch"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has("Branch")
+                                    },
+                                    attrs: {
+                                      name: "Branch",
+                                      type: "text",
+                                      placeholder: "Branch"
+                                    },
+                                    domProps: { value: key.Branch },
+                                    on: {
+                                      change: _vm.ValidateFourthStep,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          key,
+                                          "Branch",
+                                          $event.target.value
+                                        )
+                                      }
                                     }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "account_no",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
+                                  }),
+                                  _vm._v(" "),
+                                  _c("has-error", {
+                                    attrs: { form: _vm.form, field: "Branch" }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("Branch")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(_vm.errors.first("Branch"))
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
                               _vm._v(" "),
-                              _c("has-error", {
-                                attrs: { form: _vm.form, field: "account_no" }
-                              }),
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "account_type" }
+                                    },
+                                    [_vm._v("Account Type")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "validate",
+                                          rawName: "v-validate",
+                                          value: "required",
+                                          expression: "'required'"
+                                        },
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: key.account_type,
+                                          expression: "key.account_type"
+                                        }
+                                      ],
+                                      staticClass: "custom-select",
+                                      class: {
+                                        "is-invalid": _vm.errors.has(
+                                          "account_type"
+                                        )
+                                      },
+                                      attrs: { name: "account_type" },
+                                      on: {
+                                        change: [
+                                          function($event) {
+                                            var $$selectedVal = Array.prototype.filter
+                                              .call(
+                                                $event.target.options,
+                                                function(o) {
+                                                  return o.selected
+                                                }
+                                              )
+                                              .map(function(o) {
+                                                var val =
+                                                  "_value" in o
+                                                    ? o._value
+                                                    : o.value
+                                                return val
+                                              })
+                                            _vm.$set(
+                                              key,
+                                              "account_type",
+                                              $event.target.multiple
+                                                ? $$selectedVal
+                                                : $$selectedVal[0]
+                                            )
+                                          },
+                                          _vm.ValidateFourthStep
+                                        ]
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "option",
+                                        {
+                                          attrs: {
+                                            value: "",
+                                            selected: "",
+                                            disabled: ""
+                                          }
+                                        },
+                                        [_vm._v("Select")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("option", [_vm._v("Credit")]),
+                                      _vm._v(" "),
+                                      _c("option", [_vm._v("Prepaid")])
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("has-error", {
+                                    attrs: {
+                                      form: _vm.form,
+                                      field: "account_type"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("account_type")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.errors.first("account_type")
+                                          )
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
                               _vm._v(" "),
-                              _vm.errors.has("account_no")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("account_no"))
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "WalletAccountName" }
+                                    },
+                                    [_vm._v("Account Name")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      },
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: key.account_name,
+                                        expression: "key.account_name"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has(
+                                        "account_name"
+                                      )
+                                    },
+                                    attrs: {
+                                      name: "account_name",
+                                      type: "text",
+                                      placeholder: "Account Name"
+                                    },
+                                    domProps: { value: key.account_name },
+                                    on: {
+                                      change: _vm.ValidateFourthStep,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          key,
+                                          "account_name",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("has-error", {
+                                    attrs: {
+                                      form: _vm.form,
+                                      field: "account_name"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("account_name")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.errors.first("account_name")
+                                          )
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "control-label custom-label",
+                                      attrs: { for: "account_no" }
+                                    },
+                                    [_vm._v("Account No")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      },
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: key.account_no,
+                                        expression: "key.account_no"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors.has("account_no")
+                                    },
+                                    attrs: {
+                                      name: "account_no",
+                                      type: "text",
+                                      placeholder: "Account No"
+                                    },
+                                    domProps: { value: key.account_no },
+                                    on: {
+                                      change: _vm.ValidateFourthStep,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          key,
+                                          "account_no",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("has-error", {
+                                    attrs: {
+                                      form: _vm.form,
+                                      field: "account_no"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.errors.has("account_no")
+                                    ? _c("p", { staticClass: "text-danger" }, [
+                                        _vm._v(
+                                          _vm._s(_vm.errors.first("account_no"))
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "form-group" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "form-check custom-control custom-checkbox"
+                                  },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: key.default,
+                                          expression: "key.default"
+                                        }
+                                      ],
+                                      staticClass: "form-check-input",
+                                      attrs: {
+                                        type: "checkbox",
+                                        id: "bank_default",
+                                        name: "default"
+                                      },
+                                      domProps: {
+                                        checked: Array.isArray(key.default)
+                                          ? _vm._i(key.default, null) > -1
+                                          : key.default
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = key.default,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = null,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                _vm.$set(
+                                                  key,
+                                                  "default",
+                                                  $$a.concat([$$v])
+                                                )
+                                            } else {
+                                              $$i > -1 &&
+                                                _vm.$set(
+                                                  key,
+                                                  "default",
+                                                  $$a
+                                                    .slice(0, $$i)
+                                                    .concat($$a.slice($$i + 1))
+                                                )
+                                            }
+                                          } else {
+                                            _vm.$set(key, "default", $$c)
+                                          }
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "label",
+                                      {
+                                        staticClass: "form-check-label",
+                                        attrs: { for: "bank_default" }
+                                      },
+                                      [_vm._v("Default")]
                                     )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "form-check custom-control custom-checkbox"
+                                  },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: key.status,
+                                          expression: "key.status"
+                                        }
+                                      ],
+                                      staticClass: "form-check-input",
+                                      attrs: {
+                                        type: "checkbox",
+                                        id: "bank_status",
+                                        name: "status"
+                                      },
+                                      domProps: {
+                                        checked: Array.isArray(key.status)
+                                          ? _vm._i(key.status, null) > -1
+                                          : key.status
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = key.status,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = null,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                _vm.$set(
+                                                  key,
+                                                  "status",
+                                                  $$a.concat([$$v])
+                                                )
+                                            } else {
+                                              $$i > -1 &&
+                                                _vm.$set(
+                                                  key,
+                                                  "status",
+                                                  $$a
+                                                    .slice(0, $$i)
+                                                    .concat($$a.slice($$i + 1))
+                                                )
+                                            }
+                                          } else {
+                                            _vm.$set(key, "status", $$c)
+                                          }
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "label",
+                                      {
+                                        staticClass: "form-check-label",
+                                        attrs: { for: "bank_status" }
+                                      },
+                                      [_vm._v("Active")]
+                                    )
+                                  ]
+                                )
+                              ])
+                            ]
                           )
-                        ])
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary btn-flat",
+                            attrs: { hidden: _vm.BankAccount.length > 2 },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.addBank($event)
+                              }
+                            }
+                          },
+                          [_vm._v(" Add New Bank Account")]
+                        )
                       ])
                     ])
                   ])
@@ -61736,7 +63253,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_minimum",
-                                            id: "",
                                             value: "0"
                                           },
                                           domProps: {
@@ -61772,7 +63288,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_maximum",
-                                            id: "",
                                             value: "200000"
                                           },
                                           domProps: {
@@ -61895,7 +63410,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_transaction_minimun",
-                                            id: "",
                                             value: "0"
                                           },
                                           domProps: {
@@ -61934,7 +63448,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_transaction_maximum",
-                                            id: "",
                                             value: "200000"
                                           },
                                           domProps: {
@@ -62054,7 +63567,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_day_minimum",
-                                            id: "",
                                             value: "0"
                                           },
                                           domProps: {
@@ -62090,7 +63602,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_day_maximum",
-                                            id: "",
                                             value: "200000"
                                           },
                                           domProps: {
@@ -62212,7 +63723,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_month_minimum",
-                                            id: "",
                                             value: "0"
                                           },
                                           domProps: {
@@ -62249,7 +63759,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_month_maximum",
-                                            id: "",
                                             value: "200000"
                                           },
                                           domProps: {
@@ -62352,7 +63861,7 @@ var render = function() {
                                       },
                                       [
                                         _vm._v(
-                                          "\n                                                        Limit of total transaction amount per year month Maximum Debit Amount: "
+                                          "\n                                                        Limit of total transaction amount per year Maximum Debit Amount: "
                                         ),
                                         _c("input", {
                                           directives: [
@@ -62368,7 +63877,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_year_minimum",
-                                            id: "",
                                             value: "0"
                                           },
                                           domProps: {
@@ -62404,7 +63912,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_year_maximum",
-                                            id: "",
                                             value: "200000"
                                           },
                                           domProps: {
@@ -62473,8 +63980,7 @@ var render = function() {
                                       staticClass: "form-check-input",
                                       attrs: {
                                         type: "checkbox",
-                                        name: "lm_per_day",
-                                        id: "amount_limit"
+                                        name: "lm_per_day"
                                       },
                                       domProps: {
                                         checked: Array.isArray(
@@ -62547,7 +64053,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "c_lm_per_day",
-                                            id: "c_lm_per_day",
                                             value: "0"
                                           },
                                           domProps: {
@@ -62594,8 +64099,7 @@ var render = function() {
                                       staticClass: "form-check-input",
                                       attrs: {
                                         type: "checkbox",
-                                        name: "lm_per_month",
-                                        id: "amount_limit"
+                                        name: "lm_per_month"
                                       },
                                       domProps: {
                                         checked: Array.isArray(
@@ -62668,7 +64172,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "c_lm_per_month",
-                                            id: "c_lm_per_day",
                                             value: "0"
                                           },
                                           domProps: {
@@ -62715,8 +64218,7 @@ var render = function() {
                                       staticClass: "form-check-input",
                                       attrs: {
                                         type: "checkbox",
-                                        name: "lm_per_year",
-                                        id: "lm_per_year"
+                                        name: "lm_per_year"
                                       },
                                       domProps: {
                                         checked: Array.isArray(
@@ -62842,8 +64344,7 @@ var render = function() {
                                       staticClass: "form-check-input",
                                       attrs: {
                                         type: "checkbox",
-                                        name: "allow_negative_balance",
-                                        id: "allow_negative_balance"
+                                        name: "allow_negative_balance"
                                       },
                                       domProps: {
                                         checked: Array.isArray(
@@ -62966,8 +64467,7 @@ var render = function() {
                                       staticClass: "form-check-input",
                                       attrs: {
                                         type: "checkbox",
-                                        name: "com_daily_balance",
-                                        id: "com_daily_balance"
+                                        name: "com_daily_balance"
                                       },
                                       domProps: {
                                         checked: Array.isArray(
@@ -63236,8 +64736,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "admin_all[]",
-                                            id: "admin_all"
+                                            name: "admin_all[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(sm.admin_all)
@@ -63295,8 +64794,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "admin_some[]",
-                                            id: "admin_some"
+                                            name: "admin_some[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(
@@ -63356,8 +64854,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "merchant_all[]",
-                                            id: "merchant_all"
+                                            name: "merchant_all[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(
@@ -63422,8 +64919,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "merchant_some[]",
-                                            id: "merchant_some"
+                                            name: "merchant_some[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(
@@ -63488,8 +64984,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "branch_all[]",
-                                            id: "branch_all"
+                                            name: "branch_all[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(
@@ -63549,8 +65044,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "branch_some[]",
-                                            id: "branch_some"
+                                            name: "branch_some[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(
@@ -63611,8 +65105,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "agent_all[]",
-                                            id: "agent_all"
+                                            name: "agent_all[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(sm.agent_all)
@@ -63670,8 +65163,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "agent_some[]",
-                                            id: "agent_some"
+                                            name: "agent_some[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(
@@ -65938,35 +67430,34 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { attrs: { id: "container" } },
-    [
-      _c(
-        "form-wizard",
-        {
-          attrs: {
-            title: "Create Service",
-            subtitle: "Services",
-            color: "#3498db"
+  return _c("div", { attrs: { id: "container" } }, [
+    _c(
+      "form",
+      [
+        _c(
+          "form-wizard",
+          {
+            attrs: {
+              title: "Create Service",
+              subtitle: "Services",
+              color: "#3498db"
+            },
+            on: { "on-complete": _vm.onComplete }
           },
-          on: { "on-complete": _vm.onComplete }
-        },
-        [
-          _c("tab-content", { attrs: { title: "Service details" } }, [
-            _c("div", { staticClass: "col-12 mt-5" }, [
-              _c("div", { staticClass: "card shadow-custom" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c("h4", { staticClass: "header-title mt-3 text-center" }, [
-                    _vm._v(
-                      _vm._s(this.form.service_name) + " ( Service Set Up I )"
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body" }, [
-                  _c("div", { staticClass: "data-tables datatable-dark" }, [
-                    _c("form", [
+          [
+            _c("tab-content", { attrs: { title: "Service details" } }, [
+              _c("div", { staticClass: "col-12 mt-5" }, [
+                _c("div", { staticClass: "card shadow-custom" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("h4", { staticClass: "header-title mt-3 text-center" }, [
+                      _vm._v(
+                        _vm._s(this.form.service_name) + " ( Service Set Up I )"
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "data-tables datatable-dark" }, [
                       _c("div", { staticClass: "form-group row" }, [
                         _c("div", { staticClass: "col-sm-6" }, [
                           _c("div", { staticClass: "form-group" }, [
@@ -65992,7 +67483,10 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "custom-select",
-                                attrs: { name: "wallet_type" },
+                                attrs: {
+                                  name: "wallet_type",
+                                  disabled: this.method_name == "joint"
+                                },
                                 on: {
                                   change: function($event) {
                                     var $$selectedVal = Array.prototype.filter
@@ -66080,7 +67574,8 @@ var render = function() {
                                 id: "exampleInputEmail1",
                                 "aria-describedby": "emailHelp",
                                 placeholder: "Enter Service Type Code",
-                                name: "servicetype_code"
+                                name: "servicetype_code",
+                                disabled: this.method_name == "joint"
                               },
                               domProps: { value: _vm.form.servicetype_code },
                               on: {
@@ -66174,7 +67669,8 @@ var render = function() {
                                 id: "exampleInputEmail1",
                                 "aria-describedby": "emailHelp",
                                 placeholder: "Enter Service Code",
-                                name: "service_code"
+                                name: "service_code",
+                                disabled: this.method_name == "joint"
                               },
                               domProps: { value: _vm.form.service_code },
                               on: {
@@ -66236,7 +67732,8 @@ var render = function() {
                                 id: "exampleInputEmail1",
                                 "aria-describedby": "emailHelp",
                                 placeholder: "Enter Service Name",
-                                name: "service_name"
+                                name: "service_name",
+                                disabled: this.method_name == "joint"
                               },
                               domProps: { value: _vm.form.service_name },
                               on: {
@@ -66287,7 +67784,8 @@ var render = function() {
                                 id: "exampleInputEmail1",
                                 "aria-describedby": "emailHelp",
                                 placeholder: "Enter Service Description",
-                                name: "service_description"
+                                name: "service_description",
+                                disabled: this.method_name == "joint"
                               },
                               domProps: { value: _vm.form.service_description },
                               on: {
@@ -66329,7 +67827,10 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "custom-select",
-                                attrs: { name: "service_gateway" },
+                                attrs: {
+                                  name: "service_gateway",
+                                  disabled: this.method_name == "joint"
+                                },
                                 on: {
                                   change: function($event) {
                                     var $$selectedVal = Array.prototype.filter
@@ -66394,7 +67895,10 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "custom-select",
-                                attrs: { name: "service_gateway" },
+                                attrs: {
+                                  name: "service_gateway",
+                                  disabled: this.method_name == "joint"
+                                },
                                 on: {
                                   change: function($event) {
                                     var $$selectedVal = Array.prototype.filter
@@ -66475,7 +67979,8 @@ var render = function() {
                                 "aria-describedby": "emailHelp",
                                 placeholder:
                                   "Enter Principal Redeem Wallet Account No:",
-                                name: "pr_wallet_acc_no"
+                                name: "pr_wallet_acc_no",
+                                disabled: this.method_name == "joint"
                               },
                               domProps: { value: _vm.form.pr_wallet_acc_no },
                               on: {
@@ -66581,7 +68086,8 @@ var render = function() {
                                 "aria-describedby": "emailHelp",
                                 placeholder:
                                   "Enter Income Reddem Wallet Account No",
-                                name: "ir_wallet_acc_no"
+                                name: "ir_wallet_acc_no",
+                                disabled: this.method_name == "joint"
                               },
                               domProps: { value: _vm.form.ir_wallet_acc_no },
                               on: {
@@ -66671,7 +68177,8 @@ var render = function() {
                                   staticClass: "custom-file-input",
                                   attrs: {
                                     type: "file",
-                                    id: "inputGroupFile04"
+                                    id: "inputGroupFile04",
+                                    disabled: this.method_name == "joint"
                                   },
                                   on: {
                                     change: _vm.onFileChangeServiceTemplate
@@ -66704,29 +68211,23 @@ var render = function() {
                   ])
                 ])
               ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tab-content", { attrs: { title: "Set up" } }, [
-            _c("div", { staticClass: "col-12 mt-5" }, [
-              _c("div", { staticClass: "card shadow-custom" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c("h4", { staticClass: "header-title mt-3 text-center" }, [
-                    _vm._v(
-                      _vm._s(this.form.service_name) + " ( Service Set Up II )"
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body" }, [
-                  _c("div", { staticClass: "data-tables datatable-dark" }, [
-                    _c(
-                      "table",
-                      {
-                        staticClass: "table table-hover",
-                        attrs: { id: "sdwalletsetup" }
-                      },
-                      [
+            ]),
+            _vm._v(" "),
+            _c("tab-content", { attrs: { title: "Set up" } }, [
+              _c("div", { staticClass: "col-12 mt-5" }, [
+                _c("div", { staticClass: "card shadow-custom" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("h4", { staticClass: "header-title mt-3 text-center" }, [
+                      _vm._v(
+                        _vm._s(this.form.service_name) +
+                          " ( Service Set Up II )"
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "data-tables datatable-dark" }, [
+                      _c("table", { staticClass: "table table-hover" }, [
                         _c("thead", [
                           _c("tr", { staticClass: "th-table" }, [
                             _c("th", [_vm._v("Value")]),
@@ -66741,115 +68242,103 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "tbody",
-                          [
-                            _vm._l(_vm.sd_values, function(sd) {
-                              return _c("tr", { key: sd.id }, [
-                                _c("td", [
-                                  _vm._v(" " + _vm._s(sd.service_value))
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(" " + _vm._s(sd.service_source_wallet))
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    " " + _vm._s(sd.service_destination_wallet)
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(" " + _vm._s(sd.service_rate_table))
-                                ])
+                          _vm._l(_vm.sd_values, function(sd) {
+                            return _c("tr", { key: sd.id }, [
+                              _c("td", [
+                                _vm._v(" " + _vm._s(sd.service_value))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(" " + _vm._s(sd.service_source_wallet))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  " " + _vm._s(sd.service_destination_wallet)
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(" " + _vm._s(sd.service_rate_table))
                               ])
-                            }),
-                            _vm._v(" "),
-                            _vm.sd_values.length === 0
-                              ? _c("tr", [
-                                  _c("td", { attrs: { colspan: "4" } }, [
-                                    _vm._v(" No Available Items")
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td"),
-                                  _vm._v(" "),
-                                  _c("td"),
-                                  _vm._v(" "),
-                                  _c("td")
-                                ])
-                              : _vm._e()
-                          ],
-                          2
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary btn-custom",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.openModal()
-                          }
-                        }
-                      },
-                      [_vm._v("Create ")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-sm-6" }, [
-                        _c(
-                          "div",
-                          { staticClass: "custom-control custom-switch" },
-                          [
-                            _c("input", {
-                              staticClass: "custom-control-input",
-                              attrs: { type: "checkbox", id: "customSwitch1" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.switchApproval(_vm.form.approval)
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            this.form.approval == 0
-                              ? _c(
-                                  "label",
-                                  {
-                                    staticClass: "custom-control-label",
-                                    attrs: { for: "customSwitch1" }
-                                  },
-                                  [_vm._v(" Require Approval : NO  ")]
-                                )
-                              : _c(
-                                  "label",
-                                  {
-                                    staticClass: "custom-control-label",
-                                    attrs: { for: "customSwitch1" }
-                                  },
-                                  [_vm._v(" Require Approval : YES  ")]
-                                )
-                          ]
+                            ])
+                          }),
+                          0
                         )
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-sm-6" }, [
-                        _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary btn-custom",
+                          attrs: {
+                            type: "button",
+                            disabled: this.method_name == "joint"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.openModal()
+                            }
+                          }
+                        },
+                        [_vm._v("Create ")]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-6" }, [
                           _c(
-                            "label",
-                            {
-                              staticClass: "my-1",
-                              attrs: { for: "inlineFormCustomSelectPref" }
-                            },
-                            [_vm._v("Assign Approver:")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "select",
-                            {
+                            "div",
+                            { staticClass: "custom-control custom-switch" },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: {
+                                  type: "checkbox",
+                                  id: "customSwitch1",
+                                  disabled: this.method_name == "joint"
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.switchApproval(_vm.form.approval)
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              this.form.approval == 0
+                                ? _c(
+                                    "label",
+                                    {
+                                      staticClass: "custom-control-label",
+                                      attrs: { for: "customSwitch1" }
+                                    },
+                                    [_vm._v(" Require Approval : NO  ")]
+                                  )
+                                : _c(
+                                    "label",
+                                    {
+                                      staticClass: "custom-control-label",
+                                      attrs: { for: "customSwitch1" }
+                                    },
+                                    [_vm._v(" Require Approval : YES  ")]
+                                  )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-sm-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "my-1",
+                                attrs: { for: "inlineFormCustomSelectPref" }
+                              },
+                              [_vm._v("Assign Approver:")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
                               directives: [
                                 {
                                   name: "model",
@@ -66858,365 +68347,562 @@ var render = function() {
                                   expression: "this.form.merchant_admin_id"
                                 }
                               ],
-                              staticClass: "custom-select my-1",
+                              staticClass: "form-control",
                               attrs: {
-                                id: "assignapprover",
-                                disabled: this.form.approval == 0
+                                type: "text",
+                                disabled: this.form.approval == 0,
+                                name: "rates_table",
+                                placeholder: "*Underconstruction"
                               },
+                              domProps: { value: this.form.merchant_admin_id },
                               on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
                                   _vm.$set(
                                     this.form,
                                     "merchant_admin_id",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
+                                    $event.target.value
                                   )
                                 }
                               }
-                            },
-                            [
-                              _c("option", { attrs: { value: "0" } }, [
-                                _vm._v("Choose Merchant Admin")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "1" } }, [
-                                _vm._v("Merchant One")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "2" } }, [
-                                _vm._v("Merchant Two")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "3" } }, [
-                                _vm._v("Merchant Three")
-                              ])
-                            ]
-                          )
+                            })
+                          ])
                         ])
                       ])
                     ])
                   ])
                 ])
               ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tab-content", { attrs: { title: "Last step" } }, [
-            _c("div", { staticClass: "col-12 mt-5" }, [
-              _c("div", { staticClass: "card shadow-custom" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c("h4", { staticClass: "header-title mt-3 text-center" }, [
-                    _vm._v(
-                      _vm._s(this.form.service_name) + " ( Service Set Up III )"
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body" }, [
-                  _c("h4", { staticClass: "header-title" }, [
-                    _vm._v("AMOUNT LIMITS")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
+            ]),
+            _vm._v(" "),
+            _c("tab-content", { attrs: { title: "Last step" } }, [
+              _c("div", { staticClass: "col-12 mt-5" }, [
+                _c("div", { staticClass: "card shadow-custom" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("h4", { staticClass: "header-title mt-3 text-center" }, [
                       _vm._v(
-                        "Amount limit (minimum and maximum) per transaction"
+                        _vm._s(this.form.service_name) +
+                          " ( Service Set Up III )"
                       )
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-3 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Minimum Amount : ")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-9" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.limit_minimum,
-                                expression: "form.limit_minimum"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Minimum Amount"
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("h4", { staticClass: "header-title" }, [
+                      _vm._v("AMOUNT LIMITS")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v(
+                          "Amount limit (minimum and maximum) per transaction"
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-3 col-form-label",
+                              attrs: { for: "inputEmail3" }
                             },
-                            domProps: { value: _vm.form.limit_minimum },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                            [_vm._v("Minimum Amount : ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-9" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.limit_minimum,
+                                  expression: "form.limit_minimum"
                                 }
-                                _vm.$set(
-                                  _vm.form,
-                                  "limit_minimum",
-                                  $event.target.value
-                                )
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder: "Enter Minimum Amount",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.limit_minimum },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "limit_minimum",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            }
-                          })
+                            })
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-3 col-form-label",
+                              attrs: { for: "inputEmail3" }
+                            },
+                            [_vm._v("Maximum Amount : ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-9" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.limit_maximum,
+                                  expression: "form.limit_maximum"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder: "Enter Maximum Amount",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.limit_maximum },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "limit_maximum",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
                         ])
                       ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-3 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum Amount : ")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-9" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.limit_maximum,
-                                expression: "form.limit_maximum"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum Amount"
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v("Limit of total transaction amount per day")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-3 col-form-label",
+                              attrs: { for: "inputEmail3" }
                             },
-                            domProps: { value: _vm.form.limit_maximum },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                            [_vm._v("Maximum Amount : ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-9" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.amount_per_day,
+                                  expression: "form.amount_per_day"
                                 }
-                                _vm.$set(
-                                  _vm.form,
-                                  "limit_maximum",
-                                  $event.target.value
-                                )
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder: "Enter Maximum Amount",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.amount_per_day },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "amount_per_day",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            }
-                          })
+                            })
+                          ])
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v("Limit of total transaction amount per month")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-3 col-form-label",
+                              attrs: { for: "inputEmail3" }
+                            },
+                            [_vm._v("Maximum Amount : ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-9" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.amount_per_month,
+                                  expression: "form.amount_per_month"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder: "Enter Maximum Amount",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.amount_per_month },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "amount_per_month",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v("Limit of total transaction amount per year")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-3 col-form-label",
+                              attrs: { for: "inputEmail3" }
+                            },
+                            [_vm._v("Maximum Amount : ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-9" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.amount_per_year,
+                                  expression: "form.amount_per_year"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder: "Enter Maximum Amount",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.amount_per_year },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "amount_per_year",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
                         ])
                       ])
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
-                      _vm._v("Limit of total transaction amount per day")
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tab-content", { attrs: { title: "Last step" } }, [
+              _c("div", { staticClass: "col-12 mt-5" }, [
+                _c("div", { staticClass: "card shadow-custom" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("h4", { staticClass: "header-title mt-3 text-center" }, [
+                      _vm._v(
+                        _vm._s(this.form.service_name) +
+                          " ( Service Set Up IV )"
+                      )
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-3 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum Amount : ")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-9" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.amount_per_day,
-                                expression: "form.amount_per_day"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum Amount"
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("h4", { staticClass: "header-title" }, [
+                      _vm._v("LIMIT NO. OF TRANSACTION")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v("Limit no. of transactions per day")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-4 col-form-label",
+                              attrs: { for: "inputEmail3" }
                             },
-                            domProps: { value: _vm.form.amount_per_day },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                            [_vm._v("Maximum No. of Transactions: ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-8" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.limit_per_day,
+                                  expression: "form.limit_per_day"
                                 }
-                                _vm.$set(
-                                  _vm.form,
-                                  "amount_per_day",
-                                  $event.target.value
-                                )
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder:
+                                  "Enter Maximum No. of Transactions",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.limit_per_day },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "limit_per_day",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            }
-                          })
+                            })
+                          ])
                         ])
                       ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
+                    ]),
                     _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
-                      _vm._v("Limit of total transaction amount per month")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-3 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum Amount : ")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-9" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.amount_per_month,
-                                expression: "form.amount_per_month"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum Amount"
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v("Limit no. of transactions per month")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-4 col-form-label",
+                              attrs: { for: "inputEmail3" }
                             },
-                            domProps: { value: _vm.form.amount_per_month },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                            [_vm._v("Maximum No. of Transactions: ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-8" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.limit_per_month,
+                                  expression: "form.limit_per_month"
                                 }
-                                _vm.$set(
-                                  _vm.form,
-                                  "amount_per_month",
-                                  $event.target.value
-                                )
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder:
+                                  "Enter Maximum No. of Transactions",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.limit_per_month },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "limit_per_month",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            }
-                          })
+                            })
+                          ])
                         ])
                       ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
+                    ]),
                     _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
-                      _vm._v("Limit of total transaction amount per year")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-3 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum Amount : ")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-9" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.amount_per_year,
-                                expression: "form.amount_per_year"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum Amount"
+                    _c("div", { staticClass: "form-check" }, [
+                      _c("input", {
+                        staticClass: "form-check-input",
+                        attrs: {
+                          type: "checkbox",
+                          value: "",
+                          id: "defaultCheck1"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted mb-3" }, [
+                        _vm._v("Limit no. of transactions per year")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-4 col-form-label",
+                              attrs: { for: "inputEmail3" }
                             },
-                            domProps: { value: _vm.form.amount_per_year },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                            [_vm._v("Maximum No. of Transactions: ")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-8" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.limit_per_year,
+                                  expression: "form.limit_per_year"
                                 }
-                                _vm.$set(
-                                  _vm.form,
-                                  "amount_per_year",
-                                  $event.target.value
-                                )
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                id: "inputEmail3",
+                                placeholder:
+                                  "Enter Maximum No. of Transactions",
+                                disabled: this.method_name == "joint"
+                              },
+                              domProps: { value: _vm.form.limit_per_year },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "limit_per_year",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            }
-                          })
+                            })
+                          ])
                         ])
                       ])
                     ])
@@ -67224,447 +68910,239 @@ var render = function() {
                 ])
               ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("tab-content", { attrs: { title: "Last step" } }, [
-            _c("div", { staticClass: "col-12 mt-5" }, [
-              _c("div", { staticClass: "card shadow-custom" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c("h4", { staticClass: "header-title mt-3 text-center" }, [
-                    _vm._v(
-                      _vm._s(this.form.service_name) + " ( Service Set Up IV )"
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body" }, [
-                  _c("h4", { staticClass: "header-title" }, [
-                    _vm._v("LIMIT NO. OF TRANSACTION")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
-                      _vm._v("Limit no. of transactions per day")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-4 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum No. of Transactions: ")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-8" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.limit_per_day,
-                                expression: "form.limit_per_day"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum No. of Transactions"
-                            },
-                            domProps: { value: _vm.form.limit_per_day },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.form,
-                                  "limit_per_day",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
-                      _vm._v("Limit no. of transactions per month")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-4 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum No. of Transactions: ")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-8" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.limit_per_month,
-                                expression: "form.limit_per_month"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum No. of Transactions"
-                            },
-                            domProps: { value: _vm.form.limit_per_month },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.form,
-                                  "limit_per_month",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-check" }, [
-                    _c("input", {
-                      staticClass: "form-check-input",
-                      attrs: {
-                        type: "checkbox",
-                        value: "",
-                        id: "defaultCheck1"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-muted mb-3" }, [
-                      _vm._v("Limit no. of transactions per year")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-row" }, [
-                    _c("div", { staticClass: "form-group col-md-6" }, [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-sm-4 col-form-label",
-                            attrs: { for: "inputEmail3" }
-                          },
-                          [_vm._v("Maximum No. of Transactions: ")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-8" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.limit_per_year,
-                                expression: "form.limit_per_year"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              id: "inputEmail3",
-                              placeholder: "Enter Maximum No. of Transactions"
-                            },
-                            domProps: { value: _vm.form.limit_per_year },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.form,
-                                  "limit_per_year",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ])
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "modal fade",
-          attrs: {
-            id: "serviceValueSDRates",
-            tabindex: "-1",
-            role: "dialog",
-            "aria-labelledby": "serviceGatewayModal",
-            "aria-hidden": "true"
-          }
-        },
-        [
-          _c(
-            "div",
-            {
-              staticClass: "modal-dialog modal-dialog-centered",
-              attrs: { role: "document" }
-            },
-            [
-              _c("div", { staticClass: "modal-content" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
-                  "form",
-                  {
-                    on: {
-                      submit: function($event) {
-                        $event.preventDefault()
-                        return _vm.createSD()
-                      }
+          ],
+          1
+        )
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "serviceValueSDRates",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "serviceGatewayModal",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.createSD()
                     }
-                  },
-                  [
-                    _c("div", { staticClass: "modal-body" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", { staticClass: "col-form-label" }, [
-                          _vm._v("Value")
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "select",
-                          {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.value,
-                                expression: "form.value"
-                              }
-                            ],
-                            staticClass: "custom-select",
-                            on: {
-                              change: function($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function(o) {
-                                    return o.selected
-                                  })
-                                  .map(function(o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.$set(
-                                  _vm.form,
-                                  "value",
-                                  $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                )
-                              }
-                            }
-                          },
-                          [
-                            _c(
-                              "option",
-                              { attrs: { selected: "selected", disabled: "" } },
-                              [_vm._v("Select Value")]
-                            ),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "principal" } }, [
-                              _vm._v("Principal")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "servicefee" } }, [
-                              _vm._v("Service Fee")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "interest" } }, [
-                              _vm._v("Interest")
-                            ])
-                          ]
-                        )
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { staticClass: "col-form-label" }, [
+                        _vm._v("Value")
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("input", {
+                      _c(
+                        "select",
+                        {
                           directives: [
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.source_wallet,
-                              expression: "form.source_wallet"
+                              value: _vm.form.value,
+                              expression: "form.value"
                             }
                           ],
-                          staticClass: "form-control",
-                          attrs: {
-                            type: "text",
-                            name: "source_wallet",
-                            placeholder: "Source Wallet",
-                            disabled: ""
-                          },
-                          domProps: { value: _vm.form.source_wallet },
+                          staticClass: "custom-select",
                           on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
                               _vm.$set(
                                 _vm.form,
-                                "source_wallet",
-                                $event.target.value
+                                "value",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
                               )
                             }
                           }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", { staticClass: "col-form-label" }, [
-                          _vm._v("Destination Wallet")
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "select",
-                          {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.destination_wallet,
-                                expression: "form.destination_wallet"
-                              }
-                            ],
-                            staticClass: "custom-select",
-                            on: {
-                              change: function($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function(o) {
-                                    return o.selected
-                                  })
-                                  .map(function(o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.$set(
-                                  _vm.form,
-                                  "destination_wallet",
-                                  $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                )
-                              }
-                            }
-                          },
-                          [
-                            _c(
-                              "option",
-                              { attrs: { selected: "selected", disabled: "" } },
-                              [_vm._v("Select Value")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "option",
-                              { attrs: { value: "Princial Redeem" } },
-                              [_vm._v("Principal Redeem")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "option",
-                              { attrs: { value: "Income Redeem" } },
-                              [_vm._v("Income Redeem")]
-                            )
-                          ]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.rates_table,
-                              expression: "form.rates_table"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            type: "text",
-                            name: "rates_table",
-                            placeholder: "Rates Table"
-                          },
-                          domProps: { value: _vm.form.rates_table },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.form,
-                                "rates_table",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
+                        },
+                        [
+                          _c(
+                            "option",
+                            { attrs: { selected: "selected", disabled: "" } },
+                            [_vm._v("Select Value")]
+                          ),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "principal" } }, [
+                            _vm._v("Principal")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "servicefee" } }, [
+                            _vm._v("Service Fee")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "interest" } }, [
+                            _vm._v("Interest")
+                          ])
+                        ]
+                      )
                     ]),
                     _vm._v(" "),
-                    _vm._m(1)
-                  ]
-                )
-              ])
-            ]
-          )
-        ]
-      )
-    ],
-    1
-  )
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.source_wallet,
+                            expression: "form.source_wallet"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          name: "source_wallet",
+                          placeholder: "Source Wallet",
+                          disabled: ""
+                        },
+                        domProps: { value: _vm.form.source_wallet },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "source_wallet",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { staticClass: "col-form-label" }, [
+                        _vm._v("Destination Wallet")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.destination_wallet,
+                              expression: "form.destination_wallet"
+                            }
+                          ],
+                          staticClass: "custom-select",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "destination_wallet",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "option",
+                            { attrs: { selected: "selected", disabled: "" } },
+                            [_vm._v("Select Value")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "option",
+                            { attrs: { value: "Principal Redeem" } },
+                            [_vm._v("Principal Redeem")]
+                          ),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Income Redeem" } }, [
+                            _vm._v("Income Redeem")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.rates_table,
+                            expression: "form.rates_table"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          name: "rates_table",
+                          placeholder: "Rates Table"
+                        },
+                        domProps: { value: _vm.form.rates_table },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "rates_table",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(1)
+                ]
+              )
+            ])
+          ]
+        )
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -67734,27 +69212,471 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "col-12 mt-5" }, [
+    _c("div", { staticClass: "card shadow-custom" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "data-tables datatable-dark" }, [
+          _c("form", [
+            _c("div", { staticClass: "row" }, [
+              _c(
+                "div",
+                { staticClass: "col-sm-6" },
+                [
+                  _c("h4", { staticClass: "header-title mt-3" }, [
+                    _vm._v("JOINT SERVICE ")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                      _vm._v("Available ONLY in Wallet Type:")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.original_wallet_type,
+                            expression: "form.original_wallet_type"
+                          }
+                        ],
+                        staticClass: "custom-select",
+                        attrs: { id: "wallet_type", name: "wallet_type" },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.form,
+                              "original_wallet_type",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "option",
+                          { attrs: { selected: "selected", disabled: "" } },
+                          [_vm._v("Select")]
+                        ),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "prepaid" } }, [
+                          _vm._v(" Prepaid ")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "credit" } }, [
+                          _vm._v(" Credit ")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "prepaid/credit" } }, [
+                          _vm._v(" Prepaid/Credit ")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "admin" } }, [
+                          _vm._v(" Admin ")
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("small", {
+                      staticClass: "form-text text-muted",
+                      attrs: { id: "emailHelp" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                      _vm._v("Service Code:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.original_service_code,
+                          expression: "form.original_service_code"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "number",
+                        id: "service_code",
+                        "aria-describedby": "emailHelp",
+                        placeholder: "Enter Service Code",
+                        name: "service_code"
+                      },
+                      domProps: { value: _vm.form.original_service_code },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.form,
+                            "original_service_code",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                      _vm._v("Service Name:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.original_service_name,
+                          expression: "form.original_service_name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        id: "service_name",
+                        "aria-describedby": "emailHelp",
+                        placeholder: "Enter Service Name",
+                        name: "service_name"
+                      },
+                      domProps: { value: _vm.form.original_service_name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.form,
+                            "original_service_name",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                      _vm._v("Service Description:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.original_service_description,
+                          expression: "form.original_service_description"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        id: "service_description",
+                        "aria-describedby": "emailHelp",
+                        placeholder: "Enter Service Description",
+                        name: "service_description"
+                      },
+                      domProps: {
+                        value: _vm.form.original_service_description
+                      },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.form,
+                            "original_service_description",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass:
+                        "btn btn-flat btn-primary btn-lg mb-5 mt-3 float-left btn-custom",
+                      attrs: {
+                        to: {
+                          name: "services-list",
+                          params: { method_name: "joint" }
+                        }
+                      },
+                      nativeOn: {
+                        click: function($event) {
+                          return _vm.addService(_vm.method_name)
+                        }
+                      }
+                    },
+                    [_vm._v("Add Service")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.saveJointServices()
+                        }
+                      }
+                    },
+                    [_vm._v(" Save Joint Service")]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-6" }, [
+                _c("div", { staticClass: "data-tables datatable-dark" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass: "table table-hover",
+                      attrs: { id: "jointservicestable" }
+                    },
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.form.joint_services, function(js) {
+                          return _c("tr", { key: js.id }, [
+                            _c("td", [_vm._v(" " + _vm._s(js.wallet_type))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(" " + _vm._s(js.service_code))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(" " + _vm._s(js.service_name))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(" " + _vm._s(js.service_description))
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ]
+                  )
+                ])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 mt-5" }, [
-      _c("div", { staticClass: "card shadow-custom" }, [
-        _c("div", { staticClass: "col-md-12" }, [
-          _c("h4", { staticClass: "header-title mt-3 text-center" }, [
-            _vm._v("  Joint Services ")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "data-tables datatable-dark" }, [
-            _c("form", [_c("div", { staticClass: "form-group row" })])
-          ])
-        ])
+    return _c("div", { staticClass: "col-md-12" }, [
+      _c("h4", { staticClass: "header-title mt-3 text-center" }, [
+        _vm._v("  Joint Services ")
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", { staticClass: "th-table" }, [
+        _c("th", [_vm._v("Wallet Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Service Code")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Service Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Service Description")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/JointServicesList.vue?vue&type=template&id=07b0070e&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/WalletServices/JointServicesList.vue?vue&type=template&id=07b0070e& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "col-12 mt-5" }, [
+    _c("div", { staticClass: "card shadow-custom" }, [
+      _c("div", { staticClass: "col-md-12" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-6 " },
+          [
+            _c("h4", { staticClass: "header-title" }, [
+              _vm._v(" JOINT SERVICE")
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.ListJointServices, function(LJ) {
+              return _c("div", { key: LJ.id, staticClass: "list-group" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "list-group-item list-group-item-action flex-column align-items-start",
+                    attrs: { href: "#" }
+                  },
+                  [
+                    _vm._m(0, true),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row mt-1" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label mb-1",
+                          attrs: { for: "inputEmail3" }
+                        },
+                        [_vm._v("Wallet Type")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c("input", {
+                          staticClass: "form-control mb-1",
+                          attrs: {
+                            type: "text",
+                            id: "inputEmail3",
+                            placeholder: "Wallet Type",
+                            readonly: ""
+                          },
+                          domProps: { value: LJ.s_wallet_type }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row mt-1" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label mb-1",
+                          attrs: { for: "inputEmail3" }
+                        },
+                        [_vm._v("Service Code")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c("input", {
+                          staticClass: "form-control mb-1",
+                          attrs: {
+                            type: "text",
+                            id: "inputEmail3",
+                            placeholder: "Service Code",
+                            readonly: ""
+                          },
+                          domProps: { value: LJ.service_code }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row mt-1" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label mb-1",
+                          attrs: { for: "inputEmail3" }
+                        },
+                        [_vm._v("Service Name")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c("input", {
+                          staticClass: "form-control mb-1",
+                          attrs: {
+                            type: "text",
+                            id: "inputEmail3",
+                            placeholder: "Service Name",
+                            readonly: ""
+                          },
+                          domProps: { value: LJ.service_name }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row mt-1" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label mb-1",
+                          attrs: { for: "inputEmail3" }
+                        },
+                        [_vm._v("Service Description")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c("input", {
+                          staticClass: "form-control mb-1",
+                          attrs: {
+                            type: "text",
+                            id: "inputEmail3",
+                            placeholder: "Service Description",
+                            readonly: ""
+                          },
+                          domProps: { value: LJ.service_description }
+                        })
+                      ])
+                    ])
+                  ]
+                )
+              ])
+            })
+          ],
+          2
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex w-100 justify-content-between" }, [
+      _c("h5", { staticClass: "mb-1" }, [_vm._v("Joint Service Details")])
     ])
   }
 ]
@@ -67793,10 +69715,27 @@ var render = function() {
             _c(
               "router-link",
               {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: this.method_name == "view",
+                    expression: "this.method_name == 'view'"
+                  }
+                ],
                 staticClass: "btn btn-primary btn-custom",
-                attrs: { to: "/createservice" }
+                attrs: { to: "/createservice/create" }
               },
               [_vm._v("Create Solo Services")]
+            ),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                staticClass: "btn btn-primary btn-custom",
+                attrs: { to: "/createjointservice" }
+              },
+              [_vm._v("Create Joint Services")]
             )
           ],
           1
@@ -67837,31 +69776,15 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _c("td", [
-                        _c("p", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(s.st_code) +
-                              "  \n                        "
-                          )
-                        ])
-                      ]),
+                      _vm._m(1, true),
+                      _vm._v(" "),
+                      _vm._m(2, true),
                       _vm._v(" "),
                       _c("td", [
                         _c("p", [
                           _vm._v(
                             "\n                        " +
-                              _vm._s(s.st_name) +
-                              "  \n                        "
-                          )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("p", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(s.wallet_account_type) +
+                              _vm._s(s.s_wallet_type) +
                               "\n                        "
                           )
                         ])
@@ -67880,18 +69803,96 @@ var render = function() {
                       _c(
                         "td",
                         [
+                          _vm.method_name === "view" &&
+                          s.wallet_condition == "solo"
+                            ? _c(
+                                "router-link",
+                                {
+                                  staticClass: "btn btn-primary btn-custom",
+                                  attrs: {
+                                    to: {
+                                      name: "/update-service",
+                                      params: { id: s.id, method_name: "view" }
+                                    }
+                                  }
+                                },
+                                [_vm._v("Update")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.method_name === "view" &&
+                          s.wallet_condition == "joint"
+                            ? _c(
+                                "router-link",
+                                {
+                                  staticClass: "btn btn-primary btn-custom",
+                                  attrs: {
+                                    to: {
+                                      name: "list-joint-services",
+                                      params: { id: s.id }
+                                    }
+                                  }
+                                },
+                                [_vm._v("View")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.method_name === "joint" &&
+                          s.wallet_condition === "solo"
+                            ? _c(
+                                "router-link",
+                                {
+                                  staticClass: "btn btn-primary btn-custom",
+                                  attrs: {
+                                    to: {
+                                      name: "/update-service",
+                                      params: { id: s.id, method_name: "joint" }
+                                    },
+                                    hidden: _vm.checksExistId(s.id)
+                                  }
+                                },
+                                [_vm._v(" Add")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
-                            "router-link",
+                            "a",
                             {
-                              staticClass: "btn btn-primary btn-custom",
-                              attrs: {
-                                to: {
-                                  name: "/update-service",
-                                  params: { id: s.id }
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value:
+                                    _vm.checksExistId(s.id) &&
+                                    _vm.method_name === "joint",
+                                  expression:
+                                    "checksExistId(s.id) && method_name === 'joint'"
                                 }
-                              }
+                              ],
+                              staticClass: "badge badge-secondary",
+                              attrs: { href: "#" }
                             },
-                            [_vm._v("Update")]
+                            [_vm._v("TAKEN")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value:
+                                    _vm.method_name === "joint" &&
+                                    s.wallet_condition === "joint",
+                                  expression:
+                                    "method_name === 'joint' && s.wallet_condition === 'joint'"
+                                }
+                              ],
+                              staticClass: "badge badge-secondary",
+                              attrs: { href: "#" }
+                            },
+                            [_vm._v("UNAVAILABLE")]
                           )
                         ],
                         1
@@ -67928,6 +69929,26 @@ var staticRenderFns = [
         _c("th", [_vm._v("Service Condition")]),
         _vm._v(" "),
         _c("th", [_vm._v("Action")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("p", [
+        _vm._v("\n                        -----\n                        ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("p", [
+        _vm._v("\n                        -----\n                        ")
       ])
     ])
   }
@@ -68278,6 +70299,18 @@ function normalizeComponent (
     options: options
   }
 }
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-progressbar/dist/vue-progressbar.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/vue-progressbar/dist/vue-progressbar.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(t,o){ true?module.exports=o():undefined}(this,function(){"use strict";!function(){if("undefined"!=typeof document){var t=document.head||document.getElementsByTagName("head")[0],o=document.createElement("style"),i=" .__cov-progress { opacity: 1; z-index: 999999; } ";o.type="text/css",o.styleSheet?o.styleSheet.cssText=i:o.appendChild(document.createTextNode(i)),t.appendChild(o)}}();var t="undefined"!=typeof window,r={render:function(){var t=this,o=t.$createElement;return(t._self._c||o)("div",{staticClass:"__cov-progress",style:t.style})},staticRenderFns:[],name:"VueProgress",serverCacheKey:function(){return"Progress"},computed:{style:function(){var t=this.progress,o=t.options,i=!!o.show,e=o.location,s={"background-color":o.canSuccess?o.color:o.failedColor,opacity:o.show?1:0,position:o.position};return"top"===e||"bottom"===e?("top"===e?s.top="0px":s.bottom="0px",o.inverse?s.right="0px":s.left="0px",s.width=t.percent+"%",s.height=o.thickness,s.transition=(i?"width "+o.transition.speed+", ":"")+"opacity "+o.transition.opacity):"left"!==e&&"right"!==e||("left"===e?s.left="0px":s.right="0px",o.inverse?s.top="0px":s.bottom="0px",s.height=t.percent+"%",s.width=o.thickness,s.transition=(i?"height "+o.transition.speed+", ":"")+"opacity "+o.transition.opacity),s},progress:function(){return t?window.VueProgressBarEventBus.RADON_LOADING_BAR:{percent:0,options:{canSuccess:!0,show:!1,color:"rgb(19, 91, 55)",failedColor:"red",thickness:"2px",transition:{speed:"0.2s",opacity:"0.6s",termination:300},location:"top",autoRevert:!0,inverse:!1}}}}};return{install:function(o){var t=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{},i=(o.version.split(".")[0],"undefined"!=typeof window),e={$vm:null,state:{tFailColor:"",tColor:"",timer:null,cut:0},init:function(t){this.$vm=t},start:function(t){var o=this;this.$vm&&(t||(t=3e3),this.$vm.RADON_LOADING_BAR.percent=0,this.$vm.RADON_LOADING_BAR.options.show=!0,this.$vm.RADON_LOADING_BAR.options.canSuccess=!0,this.state.cut=1e4/Math.floor(t),clearInterval(this.state.timer),this.state.timer=setInterval(function(){o.increase(o.state.cut*Math.random()),95<o.$vm.RADON_LOADING_BAR.percent&&o.$vm.RADON_LOADING_BAR.options.autoFinish&&o.finish()},100))},set:function(t){this.$vm.RADON_LOADING_BAR.options.show=!0,this.$vm.RADON_LOADING_BAR.options.canSuccess=!0,this.$vm.RADON_LOADING_BAR.percent=Math.floor(t)},get:function(){return Math.floor(this.$vm.RADON_LOADING_BAR.percent)},increase:function(t){this.$vm.RADON_LOADING_BAR.percent=Math.min(99,this.$vm.RADON_LOADING_BAR.percent+Math.floor(t))},decrease:function(t){this.$vm.RADON_LOADING_BAR.percent=this.$vm.RADON_LOADING_BAR.percent-Math.floor(t)},hide:function(){var t=this;clearInterval(this.state.timer),this.state.timer=null,setTimeout(function(){t.$vm.RADON_LOADING_BAR.options.show=!1,o.nextTick(function(){setTimeout(function(){t.$vm.RADON_LOADING_BAR.percent=0},100),t.$vm.RADON_LOADING_BAR.options.autoRevert&&setTimeout(function(){t.revert()},300)})},this.$vm.RADON_LOADING_BAR.options.transition.termination)},pause:function(){clearInterval(this.state.timer)},finish:function(){this.$vm&&(this.$vm.RADON_LOADING_BAR.percent=100,this.hide())},fail:function(){this.$vm.RADON_LOADING_BAR.options.canSuccess=!1,this.$vm.RADON_LOADING_BAR.percent=100,this.hide()},setFailColor:function(t){this.$vm.RADON_LOADING_BAR.options.failedColor=t},setColor:function(t){this.$vm.RADON_LOADING_BAR.options.color=t},setLocation:function(t){this.$vm.RADON_LOADING_BAR.options.location=t},setTransition:function(t){this.$vm.RADON_LOADING_BAR.options.transition=t},tempFailColor:function(t){this.state.tFailColor=this.$vm.RADON_LOADING_BAR.options.failedColor,this.$vm.RADON_LOADING_BAR.options.failedColor=t},tempColor:function(t){this.state.tColor=this.$vm.RADON_LOADING_BAR.options.color,this.$vm.RADON_LOADING_BAR.options.color=t},tempLocation:function(t){this.state.tLocation=this.$vm.RADON_LOADING_BAR.options.location,this.$vm.RADON_LOADING_BAR.options.location=t},tempTransition:function(t){this.state.tTransition=this.$vm.RADON_LOADING_BAR.options.transition,this.$vm.RADON_LOADING_BAR.options.transition=t},revertColor:function(){this.$vm.RADON_LOADING_BAR.options.color=this.state.tColor,this.state.tColor=""},revertFailColor:function(){this.$vm.RADON_LOADING_BAR.options.failedColor=this.state.tFailColor,this.state.tFailColor=""},revertLocation:function(){this.$vm.RADON_LOADING_BAR.options.location=this.state.tLocation,this.state.tLocation=""},revertTransition:function(){this.$vm.RADON_LOADING_BAR.options.transition=this.state.tTransition,this.state.tTransition={}},revert:function(){this.$vm.RADON_LOADING_BAR.options.autoRevert&&(this.state.tColor&&this.revertColor(),this.state.tFailColor&&this.revertFailColor(),this.state.tLocation&&this.revertLocation(),!this.state.tTransition||void 0===this.state.tTransition.speed&&void 0===this.state.tTransition.opacity||this.revertTransition())},parseMeta:function(t){for(var o in t.func){var i=t.func[o];switch(i.call){case"color":switch(i.modifier){case"set":this.setColor(i.argument);break;case"temp":this.tempColor(i.argument)}break;case"fail":switch(i.modifier){case"set":this.setFailColor(i.argument);break;case"temp":this.tempFailColor(i.argument)}break;case"location":switch(i.modifier){case"set":this.setLocation(i.argument);break;case"temp":this.tempLocation(i.argument)}break;case"transition":switch(i.modifier){case"set":this.setTransition(i.argument);break;case"temp":this.tempTransition(i.argument)}}}}},s=function(t,o){for(var i,e,s=1;s<arguments.length;++s)for(i in e=arguments[s])Object.prototype.hasOwnProperty.call(e,i)&&(t[i]=e[i]);return t}({canSuccess:!0,show:!1,color:"#73ccec",position:"fixed",failedColor:"red",thickness:"2px",transition:{speed:"0.2s",opacity:"0.6s",termination:300},autoRevert:!0,location:"top",inverse:!1,autoFinish:!0},t),n=new o({data:{RADON_LOADING_BAR:{percent:0,options:s}}});i&&(window.VueProgressBarEventBus=n,e.init(n)),o.component("vue-progress-bar",r),o.prototype.$Progress=e}}});
 
 
 /***/ }),
@@ -83222,9 +85255,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_form_wizard__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_form_wizard__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var vue_form_wizard_dist_vue_form_wizard_min_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-form-wizard/dist/vue-form-wizard.min.css */ "./node_modules/vue-form-wizard/dist/vue-form-wizard.min.css");
 /* harmony import */ var vue_form_wizard_dist_vue_form_wizard_min_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_form_wizard_dist_vue_form_wizard_min_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-progressbar */ "./node_modules/vue-progressbar/dist/vue-progressbar.js");
+/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_progressbar__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -83244,8 +85279,14 @@ Vue.component(vform__WEBPACK_IMPORTED_MODULE_1__["HasError"].name, vform__WEBPAC
 Vue.component(vform__WEBPACK_IMPORTED_MODULE_1__["AlertError"].name, vform__WEBPACK_IMPORTED_MODULE_1__["AlertError"]);
 Vue.component('pagination', __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
 
-window.swal = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a;
-var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
+Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_4___default.a, {
+  color: 'rgb(0, 119, 181)',
+  failedColor: 'red',
+  height: '3px'
+});
+
+window.swal = sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a;
+var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.mixin({
   toast: true,
   position: 'top-end',
   showConfirmButton: false,
@@ -83253,7 +85294,13 @@ var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
 });
 window.toast = toast;
 
-Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_5__["default"]);
+Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_6__["default"]); // Vue Filters
+
+Vue.filter('substring', function (value) {
+  if (!value) return '';
+  value = value.toString();
+  return value.substring(11, 60);
+});
 /**
  * @ Vue Js Production 
  * Uncomment below when compiling to production
@@ -84406,6 +86453,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/WalletServices/JointServicesList.vue":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/WalletServices/JointServicesList.vue ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _JointServicesList_vue_vue_type_template_id_07b0070e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JointServicesList.vue?vue&type=template&id=07b0070e& */ "./resources/js/components/WalletServices/JointServicesList.vue?vue&type=template&id=07b0070e&");
+/* harmony import */ var _JointServicesList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JointServicesList.vue?vue&type=script&lang=js& */ "./resources/js/components/WalletServices/JointServicesList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _JointServicesList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _JointServicesList_vue_vue_type_template_id_07b0070e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _JointServicesList_vue_vue_type_template_id_07b0070e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/WalletServices/JointServicesList.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/WalletServices/JointServicesList.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/WalletServices/JointServicesList.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServicesList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./JointServicesList.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/JointServicesList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServicesList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/WalletServices/JointServicesList.vue?vue&type=template&id=07b0070e&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/WalletServices/JointServicesList.vue?vue&type=template&id=07b0070e& ***!
+  \*****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServicesList_vue_vue_type_template_id_07b0070e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./JointServicesList.vue?vue&type=template&id=07b0070e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WalletServices/JointServicesList.vue?vue&type=template&id=07b0070e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServicesList_vue_vue_type_template_id_07b0070e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JointServicesList_vue_vue_type_template_id_07b0070e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/WalletServices/ServicesListTable.vue":
 /*!**********************************************************************!*\
   !*** ./resources/js/components/WalletServices/ServicesListTable.vue ***!
@@ -84727,21 +86843,28 @@ var routes = [{
  * @ Services  
  */
 {
-  path: '/serviceslist',
+  path: '/serviceslist/:method_name',
+  name: 'services-list',
   component: __webpack_require__(/*! ../components/WalletServices/ServicesListTable.vue */ "./resources/js/components/WalletServices/ServicesListTable.vue")["default"],
   beforeEnter: requireLogin
 }, {
-  path: '/createservice',
+  path: '/createservice/:method_name',
   component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"],
   beforeEnter: requireLogin
 }, {
   path: '/createjointservice',
+  name: 'Create Joint Services',
   component: __webpack_require__(/*! ../components/WalletServices/JointServices.vue */ "./resources/js/components/WalletServices/JointServices.vue")["default"],
   beforeEnter: requireLogin
 }, {
-  path: '/updateservice/:id',
+  path: '/updateservice/:id/:method_name',
   name: '/update-service',
   component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"],
+  beforeEnter: requireLogin
+}, {
+  path: '/viewjointservices/:id',
+  name: 'list-joint-services',
+  component: __webpack_require__(/*! ../components/WalletServices/JointServicesList.vue */ "./resources/js/components/WalletServices/JointServicesList.vue")["default"],
   beforeEnter: requireLogin
 },
 /**
@@ -84778,8 +86901,9 @@ function requireLogin(to, from, next) {
   if (user != null) {
     next(true);
   } else {
-    window.localStorage.removeItem('user');
-    location.reload();
+    //window.localStorage.removeItem('user');
+    //location.reload();
+    localStorage.clear();
     window.location.href = "/";
   }
 }

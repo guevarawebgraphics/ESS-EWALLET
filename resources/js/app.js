@@ -22,6 +22,13 @@ Vue.component(AlertError.name, AlertError)
 
 Vue.component('pagination', require('laravel-vue-pagination'));
 
+import VueProgressBar from 'vue-progressbar'
+Vue.use(VueProgressBar, {
+  color: 'rgb(0, 119, 181)',
+  failedColor: 'red',
+  height: '3px'
+})
+
 import swal from 'sweetalert2'
 window.swal = swal;
 
@@ -37,6 +44,13 @@ window.toast = toast;
 
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
+
+// Vue Filters
+Vue.filter('substring', function(value){
+  if (!value) return ''
+  value = value.toString()
+  return value.substring(11, 60)
+})
 
 /**
  * @ Vue Js Production 

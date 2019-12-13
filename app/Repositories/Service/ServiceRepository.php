@@ -15,7 +15,8 @@ use App\Models\Services\ServiceTransactionLimit;
 use App\Models\ServiceMatrix\ServiceMatrix;
 use App\Models\Services\Services;
 use App\Models\Services\ServicesBaseTable; 
-use App\Models\Services\ValuesSourceDestinationRates;
+use App\Models\Services\ValuesSourceDestinationRates; 
+use App\Models\Services\JointService;
 
 
 /**
@@ -181,7 +182,15 @@ class ServiceRepository
                         'service_destination_wallet' => $data['service_destination_wallet'], 
                         'service_rate_table' => $data['service_rate_table']
                     ]);
-                }
+                } 
+                /**
+                 * Inserting into service_and_servicetype table
+                 */
+               /* $service_and_st = ServiceAndServiceType::create([
+                    'service_id' => $insert_services->id,
+                    'service_type_id' => $service_data->service_type_id 
+                ]);
+               */
     }
     public function UpdateServiceMethod($service_data){ 
                 /**
@@ -192,7 +201,7 @@ class ServiceRepository
                                                 ->where('service_id','=',$service_data->service_id)
                                                 ->first();
                 $get_service_template =  $existing_service_template->service_template;
-                /*
+                
                 if($service_data->service_template !== 'empty'){ 
                     if($service_data->service_template !== $get_service_template){
                         $filename_with_extension_app = $service_data->service_template->getClientOriginalName();
@@ -201,11 +210,31 @@ class ServiceRepository
                         $upload  = $service_data->service_template->storeAs('public/uploads/templates/services_template', $service_template);
                     }
                     else {
-                        $service_template === $get_service_template ;
+                        $service_template = $get_service_template;
                     }
                 }
-                */
-         
+                /**
+                 * Deleting existing vsdt
+                 */
+                $delete_vsdt = DB::table('sd_wallet_service_set_up')->where('service_id','=',$service_data->service_id)->delete();
+                
+                /**
+                 * Renewing the VSDT that comes from object in Array 
+                 */ 
+                  /**
+                 * Insert rows in the table (values,source wallet, initiator wallet, rates table) 
+                 */
+                $sd_values = json_decode($service_data->sd_values, true);
+                foreach($sd_values as $data){
+                    $store = ValuesSourceDestinationRates::create([
+                        'service_id' => $service_data->service_id,
+                        'service_value' => $data['service_value'],
+                        'service_source_wallet' => 'initiatorwallet', 
+                        'service_destination_wallet' => $data['service_destination_wallet'], 
+                        'service_rate_table' => $data['service_rate_table']
+                    ]);
+                }
+    
                 /**
                  * Updating Service 
                  */
@@ -228,7 +257,7 @@ class ServiceRepository
                     'service_gateway_id' => $service_data->service_gateway,
                     'service_group_id' => $service_data->service_group_id,
                     'assign_approver_id' => '1',
-                    'service_template' => 'test', 
+                    'service_template' => $service_template, 
                     'require_approver' => true, 
                 ]);  
                 /**
@@ -253,6 +282,22 @@ class ServiceRepository
                     'limit_per_year' => $service_data->limit_per_year
                 ]); 
                 
+    }
+    public function InsertJointServices($service_data){
+                $insert_services = Services::create([
+                    'service_code' => $service_data->original_service_code ,
+                    'service_name' => $service_data->original_service_name,
+                    'service_description' => $service_data->original_service_description,
+                    's_wallet_type' =>  $service_data->original_wallet_type,
+                    'wallet_condition' => 'joint', 
+                ]);  
+               
+                foreach($service_data->joint_services as $data){
+                    $store = JointService::create([
+                        'main_service_id' => $insert_services->id,
+                        'joint_service_id' => $data['service_id'],
+                    ]);
+                } 
     }
 
      /*
@@ -298,9 +343,7 @@ class ServiceRepository
                                 return $getservicetable;*/
 
                   $getservices_table = DB::connection('mysql')
-                                    ->table('services_basetable')
-                                    ->join('services','services.id','services_basetable.service_id')
-                                   // ->join('servicetypedetails','servicetypedetails.id','services.service_type_id')
+                                    ->table('services')
                                     ->get(); 
                                     return $getservices_table;
     }
@@ -331,6 +374,14 @@ class ServiceRepository
                                     ->select('id','service_value','service_source_wallet','service_destination_wallet','service_rate_table')
                                     ->get();
                     return $vsdr;
+    }
+    public function JointServiceslist($id){
+                    $list_joint_services = DB::connection('mysql')
+                                    ->table('joint_services') 
+                                    ->join('services','services.id','=','joint_services.main_service_id')
+                                    ->where('joint_services.main_service_id','=', $id)
+                                    ->get();
+                    return $list_joint_services;
     }
 
 }

@@ -90,10 +90,12 @@ git checkout develop
 cp .env.example .env
 php artisan key:generate
 composer install
+composer dump-autoload
 npm install
 php artisan key:generate
 php artisan passport:install
 php artisan migrate
+php artisan db:seed
 php artisan serve
 
 if you are using php artisan serve change .env find and change APP_URL=http://127.0.0.1:8000 (Port depending on your port)
@@ -122,7 +124,7 @@ For any further concerns regarding the project please contact the project owner.
 ## To the Future Developer of this project good luck lol
 Please don't contact the previous developers thanks.
 
-# ############################
+# ######################################################################################################
 # Accounts For ESS Project
 
 # #### Gmail #######

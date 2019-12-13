@@ -202,11 +202,11 @@ class ServiceTypeRepository
       */
      public function show_belong_services($st_id){
                 $show_services = DB::connection('mysql')
-                                    ->table('service_and_servicetype')
-                                    ->join('wservice','wservice.id','=','service_and_servicetype.service_id') 
-                                    ->join('service_gateway','wservice.service_gateway_id','=','service_gateway.id')
-                                    ->where('service_and_servicetype.service_type_id','=',$st_id)
-                                    ->select('wservice.service_code','wservice.service_name','service_gateway.gateway_name')
+                                    ->table('services_basetable')
+                                    ->join('services','services.id','=','services_basetable.service_id') 
+                                    ->join('service_gateway','services_basetable.service_gateway_id','=','service_gateway.id')
+                                    ->where('services_basetable.service_type_id','=',$st_id)
+                                    ->select('services.service_code','services.service_name','service_gateway.gateway_name')
                                     ->get();
                 return $show_services;
      }
