@@ -419,11 +419,12 @@ class WalletAccountRepository
         
         // Update to Wallet Account
         $wallet_account = wallet_account::where('ess_id', '=', $wallet_account_data->username)
+        ->where('id', '=', $wallet_id->id)
         ->update([
-           // 'wallet_type' => $wallet_account_data->WalletType,
-            //'wallet_account_type' => $wallet_account_data->WalletAccountType,
+            'wallet_type' => $wallet_account_data->WalletType,
+            'wallet_account_type' => $wallet_account_data->WalletAccountType,
             //'wallet_account_no' => $wallet_account_data->WalletAccountNo,
-            //'wallet_account_name' => $wallet_account_data->WalletAccountName,
+            'wallet_account_name' => $wallet_account_data->WalletAccountName,
             'wallet_title' => $wallet_account_data->Wallettitle,
             'kyc_form' => $kyc_form_file,
             'valid_id'=> $valid_id_file,

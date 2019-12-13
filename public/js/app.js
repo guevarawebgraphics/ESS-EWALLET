@@ -3731,32 +3731,31 @@ __webpack_require__.r(__webpack_exports__);
      * @ Validate Fourth Step 
      **/
     ValidateFourthStep: function ValidateFourthStep() {
-      var i;
-
-      for (i = 0; i < this.BankAccount.length; i++) {
-        if (this.BankAccount[i].bank_name != null && this.BankAccount[i].Branch != null && this.BankAccount[i].account_type != null && this.BankAccount[i].account_name != null && this.BankAccount[i].account_no != null) {
-          this.errors.clear();
-          $('#nextTab').removeAttr('disabled');
-          return true;
-        }
-
-        if (this.BankAccount[i].bank_name == null || this.BankAccount[i].Branch == null || this.BankAccount[i].account_type == null || this.BankAccount[i].account_name == null || this.BankAccount[i].account_no == null) {
-          // toast.fire({
-          //     type: 'info',
-          //     title: 'Please fill required fields'
-          // })
-          this.$validator.validateAll().then(function (result) {
-            if (result) {
-              return;
-            }
-          });
-          return false;
-        } else {
-          this.errors.clear();
-          $('#nextTab').removeAttr('disabled');
-          return true;
-        }
+      // /var i;
+      //for (i = 0; i < this.BankAccount.length; i++) {
+      if (this.BankAccount[0].bank_name != null && this.BankAccount[0].Branch != null && this.BankAccount[0].account_type != null && this.BankAccount[0].account_name != null && this.BankAccount[0].account_no != null) {
+        this.errors.clear();
+        $('#nextTab').removeAttr('disabled');
+        return true;
       }
+
+      if (this.BankAccount[0].bank_name == null || this.BankAccount[0].Branch == null || this.BankAccount[0].account_type == null || this.BankAccount[0].account_name == null || this.BankAccount[0].account_no == null) {
+        // toast.fire({
+        //     type: 'info',
+        //     title: 'Please fill required fields'
+        // })
+        this.$validator.validateAll().then(function (result) {
+          if (result) {
+            return;
+          }
+        });
+        return false;
+      } else {
+        // this.errors.clear()
+        // $('#nextTab').removeAttr('disabled')
+        return true;
+      } //}
+
     },
 
     /**
@@ -62369,186 +62368,175 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _c(
-              "tab-content",
-              {
-                attrs: {
-                  title: "E-Wallet Acount Setup",
-                  "before-change": _vm.ValidateWalletAccountDetails
-                }
-              },
-              [
-                _c("div", { staticClass: "box" }, [
-                  _c("div", { staticClass: "card shadow-custom" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-4 offset-md-1" }, [
-                          _c("h4", [_vm._v("Wallet Details")]),
-                          _vm._v(" "),
-                          _c("hr"),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
+            _c("tab-content", { attrs: { title: "E-Wallet Acount Setup" } }, [
+              _c("div", { staticClass: "box" }, [
+                _c("div", { staticClass: "card shadow-custom" }, [
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-4 offset-md-1" }, [
+                        _c("h4", [_vm._v("Wallet Details")]),
+                        _vm._v(" "),
+                        _c("hr"),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "form-group" },
+                          [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "WalletAccountNameDetails" }
+                              },
+                              [_vm._v("Account Name")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
                                 {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "WalletAccountNameDetails" }
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
                                 },
-                                [_vm._v("Account Name")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.WalletAccountNameDetails,
-                                    expression: "form.WalletAccountNameDetails"
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.WalletAccountNameDetails,
+                                  expression: "form.WalletAccountNameDetails"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.has(
+                                  "WalletAccountNameDetails"
+                                )
+                              },
+                              attrs: {
+                                name: "WalletAccountNameDetails",
+                                type: "text",
+                                disabled: ""
+                              },
+                              domProps: {
+                                value: _vm.form.WalletAccountNameDetails
+                              },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
                                   }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has(
-                                    "WalletAccountNameDetails"
+                                  _vm.$set(
+                                    _vm.form,
+                                    "WalletAccountNameDetails",
+                                    $event.target.value
                                   )
-                                },
-                                attrs: {
-                                  name: "WalletAccountNameDetails",
-                                  type: "text",
-                                  disabled: ""
-                                },
-                                domProps: {
-                                  value: _vm.form.WalletAccountNameDetails
-                                },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "WalletAccountNameDetails",
-                                      $event.target.value
-                                    )
-                                  }
                                 }
-                              }),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: {
-                                  form: _vm.form,
-                                  field: "WalletAccountNameDetails"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("WalletAccountNameDetails")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "WalletAccountNameDetails"
-                                        )
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: {
+                                form: _vm.form,
+                                field: "WalletAccountNameDetails"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.has("WalletAccountNameDetails")
+                              ? _c("p", { staticClass: "text-danger" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.errors.first(
+                                        "WalletAccountNameDetails"
                                       )
                                     )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "control-label custom-label",
-                                  attrs: { for: "WalletAccountNoDetails" }
-                                },
-                                [_vm._v("Account No")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  },
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.WalletAccountNoDetails,
-                                    expression: "form.WalletAccountNoDetails"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.has(
-                                    "WalletAccountNoDetails"
                                   )
+                                ])
+                              : _vm._e()
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "form-group" },
+                          [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label custom-label",
+                                attrs: { for: "WalletAccountNoDetails" }
+                              },
+                              [_vm._v("Account No")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
                                 },
-                                attrs: {
-                                  name: "WalletAccountNoDetails",
-                                  type: "text"
-                                },
-                                domProps: {
-                                  value: _vm.form.WalletAccountNoDetails
-                                },
-                                on: {
-                                  change: _vm.searchAccountNo,
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "WalletAccountNoDetails",
-                                      $event.target.value
-                                    )
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.WalletAccountNoDetails,
+                                  expression: "form.WalletAccountNoDetails"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.has(
+                                  "WalletAccountNoDetails"
+                                )
+                              },
+                              attrs: {
+                                name: "WalletAccountNoDetails",
+                                type: "text"
+                              },
+                              domProps: {
+                                value: _vm.form.WalletAccountNoDetails
+                              },
+                              on: {
+                                change: _vm.searchAccountNo,
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
                                   }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "WalletAccountNoDetails",
+                                    $event.target.value
+                                  )
                                 }
-                              }),
-                              _vm._v(" "),
-                              _c("has-error", {
-                                attrs: {
-                                  form: _vm.form,
-                                  field: "WalletAccountNoDetails"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.has("WalletAccountNoDetails")
-                                ? _c("p", { staticClass: "text-danger" }, [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "WalletAccountNoDetails"
-                                        )
-                                      )
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: {
+                                form: _vm.form,
+                                field: "WalletAccountNoDetails"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.has("WalletAccountNoDetails")
+                              ? _c("p", { staticClass: "text-danger" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.errors.first("WalletAccountNoDetails")
                                     )
-                                  ])
-                                : _vm._e()
-                            ],
-                            1
-                          )
-                        ])
+                                  )
+                                ])
+                              : _vm._e()
+                          ],
+                          1
+                        )
                       ])
                     ])
                   ])
                 ])
-              ]
-            ),
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "tab-content",
@@ -63265,7 +63253,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_minimum",
-                                            id: "",
                                             value: "0"
                                           },
                                           domProps: {
@@ -63301,7 +63288,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_maximum",
-                                            id: "",
                                             value: "200000"
                                           },
                                           domProps: {
@@ -63424,7 +63410,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_transaction_minimun",
-                                            id: "",
                                             value: "0"
                                           },
                                           domProps: {
@@ -63463,7 +63448,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_transaction_maximum",
-                                            id: "",
                                             value: "200000"
                                           },
                                           domProps: {
@@ -63583,7 +63567,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_day_minimum",
-                                            id: "",
                                             value: "0"
                                           },
                                           domProps: {
@@ -63619,7 +63602,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_day_maximum",
-                                            id: "",
                                             value: "200000"
                                           },
                                           domProps: {
@@ -63741,7 +63723,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_month_minimum",
-                                            id: "",
                                             value: "0"
                                           },
                                           domProps: {
@@ -63778,7 +63759,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_month_maximum",
-                                            id: "",
                                             value: "200000"
                                           },
                                           domProps: {
@@ -63897,7 +63877,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_year_minimum",
-                                            id: "",
                                             value: "0"
                                           },
                                           domProps: {
@@ -63933,7 +63912,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "am_year_maximum",
-                                            id: "",
                                             value: "200000"
                                           },
                                           domProps: {
@@ -64002,8 +63980,7 @@ var render = function() {
                                       staticClass: "form-check-input",
                                       attrs: {
                                         type: "checkbox",
-                                        name: "lm_per_day",
-                                        id: "amount_limit"
+                                        name: "lm_per_day"
                                       },
                                       domProps: {
                                         checked: Array.isArray(
@@ -64076,7 +64053,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "c_lm_per_day",
-                                            id: "c_lm_per_day",
                                             value: "0"
                                           },
                                           domProps: {
@@ -64123,8 +64099,7 @@ var render = function() {
                                       staticClass: "form-check-input",
                                       attrs: {
                                         type: "checkbox",
-                                        name: "lm_per_month",
-                                        id: "amount_limit"
+                                        name: "lm_per_month"
                                       },
                                       domProps: {
                                         checked: Array.isArray(
@@ -64197,7 +64172,6 @@ var render = function() {
                                             type: "number",
                                             min: "0",
                                             name: "c_lm_per_month",
-                                            id: "c_lm_per_day",
                                             value: "0"
                                           },
                                           domProps: {
@@ -64244,8 +64218,7 @@ var render = function() {
                                       staticClass: "form-check-input",
                                       attrs: {
                                         type: "checkbox",
-                                        name: "lm_per_year",
-                                        id: "lm_per_year"
+                                        name: "lm_per_year"
                                       },
                                       domProps: {
                                         checked: Array.isArray(
@@ -64371,8 +64344,7 @@ var render = function() {
                                       staticClass: "form-check-input",
                                       attrs: {
                                         type: "checkbox",
-                                        name: "allow_negative_balance",
-                                        id: "allow_negative_balance"
+                                        name: "allow_negative_balance"
                                       },
                                       domProps: {
                                         checked: Array.isArray(
@@ -64495,8 +64467,7 @@ var render = function() {
                                       staticClass: "form-check-input",
                                       attrs: {
                                         type: "checkbox",
-                                        name: "com_daily_balance",
-                                        id: "com_daily_balance"
+                                        name: "com_daily_balance"
                                       },
                                       domProps: {
                                         checked: Array.isArray(
@@ -64765,8 +64736,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "admin_all[]",
-                                            id: "admin_all"
+                                            name: "admin_all[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(sm.admin_all)
@@ -64824,8 +64794,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "admin_some[]",
-                                            id: "admin_some"
+                                            name: "admin_some[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(
@@ -64885,8 +64854,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "merchant_all[]",
-                                            id: "merchant_all"
+                                            name: "merchant_all[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(
@@ -64951,8 +64919,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "merchant_some[]",
-                                            id: "merchant_some"
+                                            name: "merchant_some[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(
@@ -65017,8 +64984,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "branch_all[]",
-                                            id: "branch_all"
+                                            name: "branch_all[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(
@@ -65078,8 +65044,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "branch_some[]",
-                                            id: "branch_some"
+                                            name: "branch_some[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(
@@ -65140,8 +65105,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "agent_all[]",
-                                            id: "agent_all"
+                                            name: "agent_all[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(sm.agent_all)
@@ -65199,8 +65163,7 @@ var render = function() {
                                           staticClass: "form-check-input",
                                           attrs: {
                                             type: "checkbox",
-                                            name: "agent_some[]",
-                                            id: "agent_some"
+                                            name: "agent_some[]"
                                           },
                                           domProps: {
                                             checked: Array.isArray(
@@ -85343,10 +85306,10 @@ Vue.filter('substring', function (value) {
  * Uncomment below when compiling to production
  * Comment below if compiling to development
  **/
-// Vue.config.devtools = false
-// Vue.config.debug = false
-// Vue.config.silent = true
 
+Vue.config.devtools = false;
+Vue.config.debug = false;
+Vue.config.silent = true;
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
