@@ -119,6 +119,12 @@ const routes = [
       component: require('../components/WalletServices/CreateWalletServices.vue').default, 
       beforeEnter: requireLogin
     }, 
+    {
+      path:'/viewjointservices/:id', 
+      name: 'list-joint-services',
+      component: require('../components/WalletServices/JointServicesList.vue').default, 
+      beforeEnter: requireLogin
+    },
     /**
      *@ Wallet Account Type 
      **/

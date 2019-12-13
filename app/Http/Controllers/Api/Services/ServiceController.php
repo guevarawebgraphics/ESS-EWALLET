@@ -78,5 +78,12 @@ class ServiceController extends Controller
         $get_vsdr = $this->services->GetVSDR($service_id);
         return response()->json($get_vsdr);
     }
+    /**
+     * Get Joint Services
+     */
+    public function GetJointServicesList($id){
+        $get_list_services = $this->services->JointServiceslist($id);
+        return response()->json($get_list_services);
+    }
 
 }

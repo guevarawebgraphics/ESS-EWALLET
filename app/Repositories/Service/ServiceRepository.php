@@ -375,5 +375,13 @@ class ServiceRepository
                                     ->get();
                     return $vsdr;
     }
+    public function JointServiceslist($id){
+                    $list_joint_services = DB::connection('mysql')
+                                    ->table('joint_services') 
+                                    ->join('services','services.id','=','joint_services.main_service_id')
+                                    ->where('joint_services.main_service_id','=', $id)
+                                    ->get();
+                    return $list_joint_services;
+    }
 
 }
