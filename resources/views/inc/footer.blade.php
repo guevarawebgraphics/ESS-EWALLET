@@ -1,10 +1,3 @@
- <!-- footer area start-->
- <footer>
-        <div class="footer-area">
-            <p>© Copyright 2019. All right reserved CSI</p>
-        </div>
-    </footer>
-    <!-- footer area end-->
-
+<Footerarea></Footerarea>
 </div>
 <!-- page container area end -->
