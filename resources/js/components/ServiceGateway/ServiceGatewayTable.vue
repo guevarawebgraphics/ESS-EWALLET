@@ -65,8 +65,8 @@
                     <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
                     <button v-show="editmode" type="submit" class="btn btn-primary btn-flat">Update</button>
                     <button v-show="!editmode" type="submit" class="btn btn-primary btn-flat">
+                        Save changes 
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="true" id="saveSpinner"></span>
-                        Save changes
                     </button>
                 </div>
             </form>
