@@ -5803,6 +5803,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -68622,9 +68624,18 @@ var render = function() {
                               _c("div", { staticClass: "input-group" }, [
                                 _c("div", { staticClass: "custom-file" }, [
                                   _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      }
+                                    ],
                                     staticClass: "custom-file-input",
                                     attrs: {
                                       type: "file",
+                                      name: "Service Template",
                                       id: "inputGroupFile04",
                                       disabled: this.method_name == "joint"
                                     },
@@ -68651,7 +68662,23 @@ var render = function() {
                                         [_vm._v(_vm._s(this.service_template))]
                                       )
                                 ])
-                              ])
+                              ]),
+                              _vm._v(" "),
+                              _vm.errors.has("Service Template")
+                                ? _c(
+                                    "p",
+                                    { staticClass: "alert text=danger" },
+                                    [
+                                      _vm._v(
+                                        " " +
+                                          _vm._s(
+                                            _vm.errors.first("Service Template")
+                                          ) +
+                                          " "
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
                             ])
                           ])
                         ])
