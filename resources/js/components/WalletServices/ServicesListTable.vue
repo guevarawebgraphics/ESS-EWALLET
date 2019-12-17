@@ -4,7 +4,7 @@
         <div class="card shadow-custom">
             <div class="col-md-12">
                 <h4 class="header-title mt-3">E-Wallet Services </h4>   
-                <router-link to="/createservice/create" class="btn btn-primary btn-custom" v-show="this.method_name == 'view'">Create Solo Services</router-link>  
+                <router-link to="/createservice/create" class="btn btn-primary btn-custom">Create Solo Services</router-link>  
                 <router-link to="/createjointservice" class="btn btn-primary btn-custom">Create Joint Services</router-link> 
             </div>  
             <div class="card-body">

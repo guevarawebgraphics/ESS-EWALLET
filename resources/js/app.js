@@ -57,6 +57,7 @@ Vue.filter('substring', function(value){
  * Uncomment below when compiling to production
  * Comment below if compiling to development
  **/
+
 // Vue.config.devtools = false
 // Vue.config.debug = false
 // Vue.config.silent = true
