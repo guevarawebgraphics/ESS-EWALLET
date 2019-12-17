@@ -211,7 +211,7 @@
                                         <!-- Wallet Title -->
                                         <div class="form-group">
                                             <label class="control-label custom-label" for="Wallettitle">Wallet Title</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('Wallettitle') } "  name="Wallettitle" v-validate="'required'" type="text" v-model="form.Wallettitle" placeholder="Wallet Title">
+                                        <input class="form-control" :class="{ 'is-invalid': errors.has('Wallettitle') } " v-on:change="ValidateSecondStep"  name="Wallettitle" v-validate="'required'" type="text" v-model="form.Wallettitle" placeholder="Wallet Title">
                                             <has-error :form="form" field="Wallettitle"></has-error>
                                             <p class="text-danger" v-if="errors.has('Wallettitle')">{{errors.first('Wallettitle')}}</p>
                                         </div>
@@ -888,12 +888,12 @@ export default {
          * @ Validate Second Step 
          **/
         ValidateSecondStep(){
-            if(this.form.WalletAccountType != null && this.form.WalletType != null){
+            if(this.form.WalletAccountType != null && this.form.WalletType != null && this.form.Wallettitle != null){
                 this.errors.clear()
                 $('#nextTab').removeAttr('disabled')
                 return true;
             }
-            if(this.form.WalletType == null || this.form.WalletAccountType == null){
+            if(this.form.WalletType == null || this.form.WalletAccountType == null || this.form.Wallettitle == null){
                 // toast.fire({
                 //     type: 'info',
                 //     title: 'Please fill required fields'
@@ -1295,6 +1295,7 @@ export default {
                 this.form.JointWalletAccountNo = res.data[0]['joint_wallet_account_no'];
                 this.SerachJointWalletAccount(res.data[0]['joint_wallet_account_no'])
                 this.form.WalletAccountNo = res.data[0]['wan'];
+                this.form.Wallettitle = res.data[0]['wallet_title']
                 
             })
             .catch(err => {

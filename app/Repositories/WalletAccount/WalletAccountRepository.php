@@ -103,6 +103,7 @@ class WalletAccountRepository
                                 'wallet_account.valid_id',
                                 'wallet_account_details.wallet_account_no as WalletAccountNoDetails',
                                 'wallet_account_details.wallet_account_name as WalletAccountNameDetails',
+                                'wallet_account.wallet_title'
                                 )
                             ->where('wallet_account.ess_id', '=', $essid)
                             ->get();
@@ -157,7 +158,8 @@ class WalletAccountRepository
                                 'wallet_account.valid_id',
                                 'wallet_account_details.wallet_account_no as WalletAccountNoDetails',
                                 'wallet_account_details.wallet_account_name as WalletAccountNameDetails',
-                                'wallet_joint_account.joint_wallet_account_no'
+                                'wallet_joint_account.joint_wallet_account_no',
+                                'wallet_account.wallet_title'
                                 )
                             ->where('wallet_account.ess_id', '=', $essid)
                             ->get();

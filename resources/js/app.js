@@ -57,11 +57,11 @@ Vue.filter('substring', function(value){
  * Uncomment below when compiling to production
  * Comment below if compiling to development
  **/
-/*
-Vue.config.devtools = false
-Vue.config.debug = false
-Vue.config.silent = true
-*/
+
+// Vue.config.devtools = false
+// Vue.config.debug = false
+// Vue.config.silent = true
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -76,6 +76,9 @@ Vue.config.silent = true
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 // General Components
 Vue.component('Navbar', require('./components/inc/Navbar.vue').default);
+Vue.component('Sidebar', require('./components/inc/Sidebar.vue').default);
+Vue.component('Headerarea', require('./components/inc/Headerarea.vue').default);
+Vue.component('Footerarea', require('./components/inc/Footerarea.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
