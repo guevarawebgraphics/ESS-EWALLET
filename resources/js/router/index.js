@@ -2,6 +2,7 @@ window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
+// Logged In User
 let user = window.localStorage.getItem('user');
 
 const routes = [
@@ -30,19 +31,19 @@ const routes = [
       path: '/walletaccounts', 
       component: require('../components/WalletAccounts/WalletAccounts.vue').default, 
       name: 'Wallet Accounts',
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     },
     { 
       path: '/createwalletaccount', 
       component: require('../components/WalletAccounts/CreateWalletAccount.vue').default, 
       name: 'Create Wallet Account',
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     },
     { 
       path: '/updatewalletaccount/:id', 
       component: require('../components/WalletAccounts/CreateWalletAccount.vue').default, 
       name: 'Update Wallet Account',
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     },
     /**
      * @ Service Types
@@ -50,25 +51,25 @@ const routes = [
     { 
       path: '/servicetypes', 
       component: require('../components/WalletServiceTypes/ServiceTypeTable.vue').default, 
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     }, 
     { 
       path: '/editservicetype/:id', 
       name: '/test', 
       component: require('../components/WalletServiceTypes/EditServiceType.vue').default, 
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     },
     { 
       path: '/servicetypesetup/:id', 
       name: '/st-setup', 
       component: require('../components/WalletServiceTypes/ServiceTypeSetUp.vue').default, 
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     },
     { 
       path: '/createservicetype',
        name: '/st-create-new', 
        component: require('../components/WalletServiceTypes/CreateServiceType.vue').default, 
-       beforeEnter: requireLogin
+       beforeEnter: (requireLogin, checkAdmin)
     },
     /**
      * @ Error Pages
@@ -84,13 +85,13 @@ const routes = [
       path: '/serviceGroup', 
       component: require('../components/ServiceMatrix/ServiceGroup.vue').default, 
       name: 'Service Group',
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     },
     { 
       path: '/serviceMatrix', 
       name: 'Service Matrix',
       component: require('../components/ServiceMatrix/ServiceMatrix.vue').default, 
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     },
     /**
      * @ Services  
@@ -99,31 +100,31 @@ const routes = [
       path:'/serviceslist/:method_name', 
       name : 'services-list',
       component: require('../components/WalletServices/ServicesListTable.vue').default, 
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     },
     {
       path:'/createservice/:method_name',
       component: require('../components/WalletServices/CreateWalletServices.vue').default, 
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     }, 
     
     {
       path:'/createjointservice',
       name: 'Create Joint Services',
       component: require('../components/WalletServices/JointServices.vue').default, 
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     },  
     {
       path:'/updateservice/:id/:method_name', 
       name: '/update-service',
       component: require('../components/WalletServices/CreateWalletServices.vue').default, 
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     }, 
     {
       path:'/viewjointservices/:id', 
       name: 'list-joint-services',
       component: require('../components/WalletServices/JointServicesList.vue').default, 
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     },
     /**
      *@ Wallet Account Type 
@@ -132,7 +133,7 @@ const routes = [
       path:'/walletaccounttype',
       component: require('../components/WalletAccountTypes/WalletAccountType.vue').default, 
       name: 'Wallet Account Type',
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     },
     /**
      * Service Gateway
@@ -140,7 +141,7 @@ const routes = [
     {
       path:'/servicegatewaylist',
       component: require('../components/ServiceGateway/ServiceGatewayTable.vue').default, 
-      beforeEnter: requireLogin
+      beforeEnter: (requireLogin, checkAdmin)
     },
     /**
      *@ Return Error 404 Page 
@@ -166,6 +167,19 @@ const routes = [
         localStorage.clear();
         window.location.href="/";
       }
+  }
+
+  /**
+   * @ Route Guard for Admin 
+   **/
+  function checkAdmin(to, from, next) {
+    let user_type = window.user.user_type_id;
+    if (user != null){
+      if(user_type !== 1){
+        window.location.href="/";
+      }
+    }
+    next(true);
   }
 
 export default new VueRouter({
