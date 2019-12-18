@@ -141,8 +141,9 @@ methods : {
             $('#serviceGatewayModal').modal('show');
             this.editmode = true;
             this.form.reset();
+            this.form.clear();
             this.form.fill(sw)
-           
+            console.log('hi');
     
         },
         updateGateway(){ 

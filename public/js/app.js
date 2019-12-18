@@ -2242,7 +2242,9 @@ __webpack_require__.r(__webpack_exports__);
       $('#serviceGatewayModal').modal('show');
       this.editmode = true;
       this.form.reset();
+      this.form.clear();
       this.form.fill(sw);
+      console.log('hi');
     },
     updateGateway: function updateGateway() {
       var _this3 = this;
@@ -5600,6 +5602,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -68959,9 +68963,18 @@ var render = function() {
                               _c("div", { staticClass: "input-group" }, [
                                 _c("div", { staticClass: "custom-file" }, [
                                   _c("input", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      }
+                                    ],
                                     staticClass: "custom-file-input",
                                     attrs: {
                                       type: "file",
+                                      name: "Service Template",
                                       id: "inputGroupFile04",
                                       disabled: this.method_name == "joint"
                                     },
@@ -68988,7 +69001,23 @@ var render = function() {
                                         [_vm._v(_vm._s(this.service_template))]
                                       )
                                 ])
-                              ])
+                              ]),
+                              _vm._v(" "),
+                              _vm.errors.has("Service Template")
+                                ? _c(
+                                    "p",
+                                    { staticClass: "alert text=danger" },
+                                    [
+                                      _vm._v(
+                                        " " +
+                                          _vm._s(
+                                            _vm.errors.first("Service Template")
+                                          ) +
+                                          " "
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
                             ])
                           ])
                         ])
