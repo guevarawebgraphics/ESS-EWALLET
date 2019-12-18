@@ -382,7 +382,6 @@ data() {
     method_name : this.$route.params.method_name,
    // WalletTypes : {},
     service_template : 'empty', 
-
     form : new Form({  
       /**
        *  Service ID for updating
