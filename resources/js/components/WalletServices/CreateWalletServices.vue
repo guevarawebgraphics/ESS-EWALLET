@@ -104,11 +104,13 @@
                         <label for="exampleInputEmail1">Service Template</label>
                         <div class="input-group">
                         <div class="custom-file">
-                        <input type="file" class="custom-file-input" v-on:change="onFileChangeServiceTemplate" id="inputGroupFile04" :disabled="this.method_name == 'joint'">
+                        <input type="file" class="custom-file-input" v-on:change="onFileChangeServiceTemplate" name="Service Template" id="inputGroupFile04" v-validate="'required'" :disabled="this.method_name == 'joint'">
                         <label class="custom-file-label" for="inputGroupFile04" v-if="this.service_template === 'empty'">Choose file</label>
-                        <label class="custom-file-label" for="inputGroupFile04" v-else>{{this.service_template}}</label>
+                        <label class="custom-file-label" for="inputGroupFile04" v-else>{{this.service_template}}</label> 
+                     
                         </div>
-                        </div>
+                        </div> 
+                        <p class="alert text=danger" v-if="errors.has('Service Template')"> {{errors.first('Service Template')}} </p>
                       </div>
             
                     </div>
@@ -380,7 +382,6 @@ data() {
     method_name : this.$route.params.method_name,
    // WalletTypes : {},
     service_template : 'empty', 
-
     form : new Form({  
       /**
        *  Service ID for updating
