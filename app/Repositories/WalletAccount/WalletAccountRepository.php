@@ -682,6 +682,27 @@ class WalletAccountRepository
         return $account_details->wallet_account_name;                     
     }
 
+    /**
+     * @ List of Wallet Accounts
+     * @return WalletAccounts 
+     **/
+    public function ListOfWalletAccounts(){
+        $list_of_wallet_account = $this->connection
+                                    ->table('wallet_account')
+                                    ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
+                                    ->select(
+                                        'wallet_account.wallet_account_no',
+                                        'wallet_account.wallet_account_name',
+                                        'wallet_account.wallet_type',
+                                        'wallet_account_types.wallet_account_type',
+                                        'wallet_account.wallet_title',
+                                        'wallet_account_types.wallet_account_type as wat'
+                                    )
+                                    //->where('wallet_account.created_by', '=', auth('api')->user()->id)
+                                    ->get();
+        return $list_of_wallet_account;
+    }
+
     /***********************************************************************
      * Helpers Functions
      * Below Add Helpers Function

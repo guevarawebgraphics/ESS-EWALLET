@@ -121,6 +121,14 @@ class WalletAccountController extends Controller
         return response()->json($wallet_account);
     }
 
+    /**
+     * @ ListOfWalletAccounts 
+     **/
+    public function ListOfWalletAccounts(){
+        $ListOfWalletAccounts = $this->WalletAccount->ListOfWalletAccounts();
+        return response($ListOfWalletAccounts);
+    }
+
 
     public function ValidateFirstStep(ValidateFirstStep $request){
         return response()->json('hello');
