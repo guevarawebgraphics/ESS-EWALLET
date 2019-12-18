@@ -103,6 +103,10 @@ Route::prefix('walletaccount')->group(function(){
     Route::get('/SearchWalletJointAccount/{wan}', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@SearchWalletJointAccount'
     ]);
+    // api/walletaccount/ListOfWalletAccounts
+    Route::get('/ListOfWalletAccounts', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@ListOfWalletAccounts'
+    ]);
 });
 /**
  *  @ Get Account

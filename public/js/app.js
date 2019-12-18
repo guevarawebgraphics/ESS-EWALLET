@@ -1922,6 +1922,171 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      listofwalletaccount: []
+    };
+  },
+  methods: {
+    datatable: function datatable() {
+      setTimeout(function () {
+        $('#table_id').DataTable({
+          "paging": true,
+          "pageLength": 10,
+          scrollY: true,
+          "autoWidth": true,
+          //lengthChange: false,
+          responsive: true,
+          fixedColumns: true,
+          "order": [3, "desc"]
+        });
+      }, 500);
+    },
+    GetallWalletAccount: function GetallWalletAccount() {
+      var _this = this;
+
+      axios.get('api/walletaccount/ListOfWalletAccounts').then(function (res) {
+        _this.listofwalletaccount = res.data;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    openAccount: function openAccount(lwa) {
+      this.$router.push("/walletaccountprofile/".concat(lwa['wallet_account_no']));
+    }
+  },
+  created: function created() {
+    this.GetallWalletAccount();
+    this.datatable();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+  methods: {
+    back: function back() {
+      this.$router.push('/listwalletaccounts');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=script&lang=js& ***!
@@ -6948,6 +7113,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -58870,6 +59036,177 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue?vue&type=template&id=5ee99894&":
+/*!****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue?vue&type=template&id=5ee99894& ***!
+  \****************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "list-of-wallet-accounts" } }, [
+    _c("div", { staticClass: "box ptb--100" }, [
+      _c("div", { staticClass: "card shadow-custom" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "form-group row" }, [
+            _c("div", { staticClass: "col-md-12" }, [
+              _c("h4", { staticClass: "header-title mt-3" }, [
+                _vm._v("List of Wallet Accounts")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "data-tables datatable-dark" }, [
+                _c(
+                  "table",
+                  {
+                    staticClass: "table striped text-center",
+                    attrs: { id: "table_id" }
+                  },
+                  [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.listofwalletaccount, function(lwa) {
+                        return _c("tr", { key: lwa.id }, [
+                          _c("td", [_vm._v(_vm._s(lwa.wallet_type))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(lwa.wat))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(lwa.wallet_account_no))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(lwa.wallet_account_name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(lwa.wallet_title))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "btn btn-primary btn-xs text-white",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.openAccount(lwa)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "ti-eye" }),
+                                _vm._v(
+                                  "\n                                                 Open\n                                            "
+                                )
+                              ]
+                            )
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  ]
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", { staticClass: "th-table" }, [
+        _c("th", [_vm._v("Wallet Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Wallet Account Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Wallet Account No.")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Wallet Account Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Wallet Tittle")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue?vue&type=template&id=473190ac&":
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue?vue&type=template&id=473190ac& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "wallet-accouunt-profile" } }, [
+    _c("div", { staticClass: "box ptb--100" }, [
+      _c("div", { staticClass: "card shadow-custom" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "form-group row" }, [
+            _c("div", { staticClass: "col-md-12" }, [
+              _c("i", {
+                staticClass: "ti-arrow-left",
+                on: { click: _vm.back }
+              }),
+              _vm._v(" "),
+              _c("h4", { staticClass: "header-title mt3" }),
+              _vm._v(" "),
+              _vm._m(0)
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("div", { staticClass: "col md-6" }, [
+        _c("a", { staticClass: "btn btn-primary btn-md text-white" }, [
+          _vm._v("Available Services")
+        ]),
+        _vm._v(" "),
+        _c("a", { staticClass: "btn btn-primary btn-md text-white" }, [
+          _vm._v("List of Merchants")
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=template&id=449c170a&":
 /*!*************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ServiceGateway/ServiceGatewayTable.vue?vue&type=template&id=449c170a& ***!
@@ -70918,13 +71255,31 @@ var render = function() {
             ? _c("ul", { staticClass: "metismenu", attrs: { id: "menu" } }, [
                 _vm._m(4),
                 _vm._v(" "),
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        attrs: {
+                          to: "/listwalletaccounts",
+                          "aria-expanded": "true"
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "ti-wallet text-blue" }),
+                        _c("span", [_vm._v("List of Wallet Accounts")])
+                      ]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
                 _vm._m(5),
                 _vm._v(" "),
                 _vm._m(6),
                 _vm._v(" "),
-                _vm._m(7),
-                _vm._v(" "),
-                _vm._m(8)
+                _vm._m(7)
               ])
             : _vm._e()
         ])
@@ -70988,17 +71343,6 @@ var staticRenderFns = [
       _c("a", { attrs: { href: "#dashboard", "aria-expanded": "true" } }, [
         _c("i", { staticClass: "ti-wallet text-blue" }),
         _c("span", [_vm._v("Notification Template")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [
-      _c("a", { attrs: { href: "#dashboard", "aria-expanded": "true" } }, [
-        _c("i", { staticClass: "ti-wallet text-blue" }),
-        _c("span", [_vm._v("List of Wallet Accounts")])
       ])
     ])
   },
@@ -86151,11 +86495,10 @@ Vue.filter('substring', function (value) {
  * @ Vue Js Production 
  * Uncomment below when compiling to production
  * Comment below if compiling to development
+ * @ Check your .env if prod or local
  **/
-// Vue.config.devtools = false
-// Vue.config.debug = false
-// Vue.config.silent = true
 
+if (false) {}
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -86165,6 +86508,7 @@ Vue.filter('substring', function (value) {
  */
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+
 
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]); // General Components
 
@@ -86433,6 +86777,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_0ed2d4b2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_0ed2d4b2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ListWalletAccounts_vue_vue_type_template_id_5ee99894___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ListWalletAccounts.vue?vue&type=template&id=5ee99894& */ "./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue?vue&type=template&id=5ee99894&");
+/* harmony import */ var _ListWalletAccounts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ListWalletAccounts.vue?vue&type=script&lang=js& */ "./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ListWalletAccounts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ListWalletAccounts_vue_vue_type_template_id_5ee99894___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ListWalletAccounts_vue_vue_type_template_id_5ee99894___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ListWalletAccounts/ListWalletAccounts.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListWalletAccounts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListWalletAccounts.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListWalletAccounts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue?vue&type=template&id=5ee99894&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue?vue&type=template&id=5ee99894& ***!
+  \**********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListWalletAccounts_vue_vue_type_template_id_5ee99894___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListWalletAccounts.vue?vue&type=template&id=5ee99894& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue?vue&type=template&id=5ee99894&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListWalletAccounts_vue_vue_type_template_id_5ee99894___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListWalletAccounts_vue_vue_type_template_id_5ee99894___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _WalletAccountProfile_vue_vue_type_template_id_473190ac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./WalletAccountProfile.vue?vue&type=template&id=473190ac& */ "./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue?vue&type=template&id=473190ac&");
+/* harmony import */ var _WalletAccountProfile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WalletAccountProfile.vue?vue&type=script&lang=js& */ "./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _WalletAccountProfile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _WalletAccountProfile_vue_vue_type_template_id_473190ac___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _WalletAccountProfile_vue_vue_type_template_id_473190ac___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ListWalletAccounts/WalletAccountProfile.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WalletAccountProfile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./WalletAccountProfile.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WalletAccountProfile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue?vue&type=template&id=473190ac&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue?vue&type=template&id=473190ac& ***!
+  \************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_WalletAccountProfile_vue_vue_type_template_id_473190ac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./WalletAccountProfile.vue?vue&type=template&id=473190ac& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue?vue&type=template&id=473190ac&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_WalletAccountProfile_vue_vue_type_template_id_473190ac___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_WalletAccountProfile_vue_vue_type_template_id_473190ac___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -87940,6 +88422,18 @@ var routes = [{
   path: '/servicegatewaylist',
   component: __webpack_require__(/*! ../components/ServiceGateway/ServiceGatewayTable.vue */ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue")["default"],
   beforeEnter: (requireLogin, checkAdmin)
+},
+/******************************Employer************************/
+{
+  path: '/listwalletaccounts',
+  component: __webpack_require__(/*! ../components/ListWalletAccounts/ListWalletAccounts.vue */ "./resources/js/components/ListWalletAccounts/ListWalletAccounts.vue")["default"],
+  name: 'List of Wallet Accounts',
+  beforeEnter: requireLogin
+}, {
+  path: '/walletaccountprofile/:wi',
+  component: __webpack_require__(/*! ../components/ListWalletAccounts/WalletAccountProfile.vue */ "./resources/js/components/ListWalletAccounts/WalletAccountProfile.vue")["default"],
+  name: 'Wallet Account Profile',
+  beforeEnter: requireLogin
 },
 /**
  *@ Return Error 404 Page 

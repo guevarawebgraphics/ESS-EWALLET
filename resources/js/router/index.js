@@ -143,6 +143,19 @@ const routes = [
       component: require('../components/ServiceGateway/ServiceGatewayTable.vue').default, 
       beforeEnter: (requireLogin, checkAdmin)
     },
+    /******************************Employer************************/
+    {
+      path: '/listwalletaccounts', 
+      component: require('../components/ListWalletAccounts/ListWalletAccounts.vue').default, 
+      name: 'List of Wallet Accounts',
+      beforeEnter: requireLogin
+    },
+    {
+      path: '/walletaccountprofile/:wi', 
+      component: require('../components/ListWalletAccounts/WalletAccountProfile.vue').default, 
+      name: 'Wallet Account Profile',
+      beforeEnter: requireLogin
+    },
     /**
      *@ Return Error 404 Page 
      * @param /* 
