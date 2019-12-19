@@ -6169,7 +6169,10 @@ __webpack_require__.r(__webpack_exports__);
 
           _this.$router.push('/serviceslist/view');
 
-          console.log(response.data);
+          toast.fire({
+            type: 'success',
+            title: "Service Created Successfully"
+          });
         })["catch"](function () {
           console.log('error');
 
@@ -6183,7 +6186,10 @@ __webpack_require__.r(__webpack_exports__);
 
           _this.$router.push('/serviceslist/view');
 
-          console.log('hah update');
+          toast.fire({
+            type: 'success',
+            title: 'Service Updated Successfully'
+          });
         })["catch"](function () {
           console.log('error');
 
@@ -6321,6 +6327,10 @@ __webpack_require__.r(__webpack_exports__);
     openModal: function openModal() {
       $('#serviceValueSDRates').modal('show');
     },
+
+    /**
+     * For creating an object in array 
+     */
     createSD: function createSD() {
       this.form.value == '';
       this.form.destination_wallet == '';
@@ -6400,7 +6410,6 @@ __webpack_require__.r(__webpack_exports__);
 
         _this7.service_template = response.data[0]['service_template'];
         _this7.form.service_template = response.data[0]['service_template'];
-        $('#service_template').val(response.data[0]['service_template']);
         /**
          * Values Source Destination Rates Table
          */
