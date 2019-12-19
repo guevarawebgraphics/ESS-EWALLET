@@ -18,13 +18,14 @@
     @endauth
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    {{-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> --}}
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/ewallet.css') }}" rel="stylesheet">
     {{-- Str dashboard --}}
-    <link rel="stylesheet" href="{{ asset('str_dash/css/bootstrap.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('str_dash/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('str_dash/css/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{ asset('str_dash/css/themify-icons.css')}}">
     <link rel="stylesheet" href="{{ asset('str_dash/css/metisMenu.css')}}">
@@ -41,7 +42,7 @@
     <link rel="stylesheet" href="{{ asset('str_dash/css/typography.css') }}">
     <link rel="stylesheet" href="{{ asset('str_dash/css/default-css.css') }}">
     <link rel="stylesheet" href="{{ asset('str_dash/css/styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('str_dash/css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('str_dash/css/responsive.css') }}"> --}}
     <!-- modernizr css -->
     <script src="{{ asset('str_dash/js/vendor/modernizr-2.8.3.min.js') }}"></script>
 </head>
@@ -62,6 +63,8 @@
      </div>
     </div>
     <!-- Scripts -->
+    <script src="{{ asset('js/ewallet.js') }}" type="application/javascript"></script>
+    {{-- <!-- Scripts -->
     <script src="{{ asset('str_dash/js/vendor/jquery-2.2.4.min.js')}}" type="application/javascript"></script>
     <script src="{{ asset('str_dash/js/popper.min.js') }}" type="application/javascript"></script>
     <script src="{{ asset('str_dash/js/bootstrap.min.js') }}" type="application/javascript"></script>
@@ -77,7 +80,7 @@
     <script src="{{ asset('data_table/js/responsive.bootstrap.min.js') }}" type="application/javascript"></script>
     <!-- others plugins -->
     <script src="{{ asset('str_dash/js/plugins.js') }}" type="application/javascript"></script>
-    <script src="{{ asset('str_dash/js/scripts.js')}}" type="application/javascript"></script>
+    <script src="{{ asset('str_dash/js/scripts.js')}}" type="application/javascript"></script> --}}
     @if(auth::check())
     @include('inc/footer')
     @endif

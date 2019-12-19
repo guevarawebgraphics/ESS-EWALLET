@@ -76,7 +76,7 @@ export default {
                     "autoWidth": true,
                     //lengthChange: false,
                     responsive: true,
-                    fixedColumns: true,
+                    fixedColumns: false,
                     "order": [3, "desc"]
                 })
             }, 500);
