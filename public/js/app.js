@@ -6559,15 +6559,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       method_name: 'joint',
       form: new Form({
-        original_wallet_type: window.localStorage.getItem('wallet_type'),
-        original_service_code: window.localStorage.getItem('service_code'),
-        original_service_name: window.localStorage.getItem('service_name'),
-        original_service_description: window.localStorage.getItem('service_description'),
+        wallet_type: window.localStorage.getItem('wallet_type'),
+        service_code: window.localStorage.getItem('service_code'),
+        service_name: window.localStorage.getItem('service_name'),
+        service_description: window.localStorage.getItem('service_description'),
         joint_services: null
       })
     };
@@ -6586,10 +6589,10 @@ __webpack_require__.r(__webpack_exports__);
        */
 
 
-      window.localStorage.setItem('wallet_type', this.form.original_wallet_type);
-      window.localStorage.setItem('service_code', this.form.original_service_code);
-      window.localStorage.setItem('service_name', this.form.original_service_name || '');
-      window.localStorage.setItem('service_description', this.form.original_service_description || '');
+      window.localStorage.setItem('wallet_type', this.form.wallet_type || '');
+      window.localStorage.setItem('service_code', this.form.service_code || '');
+      window.localStorage.setItem('service_name', this.form.service_name || '');
+      window.localStorage.setItem('service_description', this.form.service_description || '');
       window.localStorage.setItem('method_name', 'joint');
     },
     showDatatable: function showDatatable() {
@@ -6634,33 +6637,32 @@ __webpack_require__.r(__webpack_exports__);
              */
             _this.form.post('/api/service/createjointservice').then(function (response) {
               console.log(response.data);
+              /**
+              * Clears the local storage variable for joining services
+              */
+
+              localStorage.removeItem('wallet_type');
+              localStorage.removeItem('service_code');
+              localStorage.removeItem('service_name');
+              localStorage.removeItem('service_description');
+              localStorage.removeItem('list_services');
+              /**
+               * Clears the UI
+               */
+
+              _this.form.wallet_type = '';
+              _this.form.service_code = '';
+              _this.form.service_name = '';
+              _this.form.service_description = '';
+
+              _this.showJointServiceTable();
+
+              toast.fire({
+                type: 'success',
+                title: 'Successfully Jointed Services'
+              });
             })["catch"](function () {
               console.log("eerrrrr");
-            });
-            /**
-             * Clears the local storage variable for joining services
-             */
-
-
-            localStorage.removeItem('wallet_type');
-            localStorage.removeItem('service_code');
-            localStorage.removeItem('service_name');
-            localStorage.removeItem('service_description');
-            localStorage.removeItem('list_services');
-            /**
-             * Clears the UI
-             */
-
-            _this.form.original_wallet_type = '';
-            _this.form.original_service_code = '';
-            _this.form.original_service_name = '';
-            _this.form.original_service_description = '';
-
-            _this.showJointServiceTable();
-
-            toast.fire({
-              type: 'success',
-              title: 'Successfully Jointed Services'
             });
           }
         });
@@ -70047,273 +70049,327 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
         _c("div", { staticClass: "data-tables datatable-dark" }, [
-          _c("form", [
-            _c("div", { staticClass: "row" }, [
-              _c(
-                "div",
-                { staticClass: "col-sm-6" },
-                [
-                  _c("h4", { staticClass: "header-title mt-3" }, [
-                    _vm._v("JOINT SERVICE ")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                      _vm._v("Available ONLY in Wallet Type:")
+          _c(
+            "form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.saveJointServices()
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-sm-6" },
+                  [
+                    _c("h4", { staticClass: "header-title mt-3" }, [
+                      _vm._v("JOINT SERVICE ")
                     ]),
                     _vm._v(" "),
                     _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.original_wallet_type,
-                            expression: "form.original_wallet_type"
-                          }
-                        ],
-                        staticClass: "custom-select",
-                        attrs: { id: "wallet_type", name: "wallet_type" },
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.form,
-                              "original_wallet_type",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          }
-                        }
-                      },
+                      "div",
+                      { staticClass: "form-group row" },
                       [
+                        _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                          _vm._v("Available ONLY in Wallet Type:")
+                        ]),
+                        _vm._v(" "),
                         _c(
-                          "option",
-                          { attrs: { selected: "selected", disabled: "" } },
-                          [_vm._v("Select")]
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.wallet_type,
+                                expression: "form.wallet_type"
+                              }
+                            ],
+                            staticClass: "custom-select",
+                            class: {
+                              "is-invalid": _vm.form.errors.has("wallet_type")
+                            },
+                            attrs: { id: "wallet_type", name: "wallet_type" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.form,
+                                  "wallet_type",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "option",
+                              { attrs: { selected: "selected", disabled: "" } },
+                              [_vm._v("Select")]
+                            ),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "prepaid" } }, [
+                              _vm._v(" Prepaid ")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "credit" } }, [
+                              _vm._v(" Credit ")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "option",
+                              { attrs: { value: "prepaid/credit" } },
+                              [_vm._v(" Prepaid/Credit ")]
+                            ),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "admin" } }, [
+                              _vm._v(" Admin ")
+                            ])
+                          ]
                         ),
                         _vm._v(" "),
-                        _c("option", { attrs: { value: "prepaid" } }, [
-                          _vm._v(" Prepaid ")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "credit" } }, [
-                          _vm._v(" Credit ")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "prepaid/credit" } }, [
-                          _vm._v(" Prepaid/Credit ")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "admin" } }, [
-                          _vm._v(" Admin ")
-                        ])
-                      ]
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "wallet_type" }
+                        })
+                      ],
+                      1
                     ),
                     _vm._v(" "),
-                    _c("small", {
-                      staticClass: "form-text text-muted",
-                      attrs: { id: "emailHelp" }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                      _vm._v("Service Code:")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.original_service_code,
-                          expression: "form.original_service_code"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "number",
-                        id: "service_code",
-                        "aria-describedby": "emailHelp",
-                        placeholder: "Enter Service Code",
-                        name: "service_code"
-                      },
-                      domProps: { value: _vm.form.original_service_code },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                    _c(
+                      "div",
+                      { staticClass: "form-group row" },
+                      [
+                        _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                          _vm._v("Service Code:")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.service_code,
+                              expression: "form.service_code"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("service_code")
+                          },
+                          attrs: {
+                            type: "number",
+                            id: "service_code",
+                            "aria-describedby": "emailHelp",
+                            placeholder: "Enter Service Code",
+                            name: "service_code"
+                          },
+                          domProps: { value: _vm.form.service_code },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "service_code",
+                                $event.target.value
+                              )
+                            }
                           }
-                          _vm.$set(
-                            _vm.form,
-                            "original_service_code",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                      _vm._v("Service Name:")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.original_service_name,
-                          expression: "form.original_service_name"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        id: "service_name",
-                        "aria-describedby": "emailHelp",
-                        placeholder: "Enter Service Name",
-                        name: "service_name"
-                      },
-                      domProps: { value: _vm.form.original_service_name },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.form,
-                            "original_service_name",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                      _vm._v("Service Description:")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.original_service_description,
-                          expression: "form.original_service_description"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        id: "service_description",
-                        "aria-describedby": "emailHelp",
-                        placeholder: "Enter Service Description",
-                        name: "service_description"
-                      },
-                      domProps: {
-                        value: _vm.form.original_service_description
-                      },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.form,
-                            "original_service_description",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "router-link",
-                    {
-                      staticClass:
-                        "btn btn-flat btn-primary btn-lg mb-5 mt-3 float-left btn-custom",
-                      attrs: {
-                        to: {
-                          name: "services-list",
-                          params: { method_name: "joint" }
-                        }
-                      },
-                      nativeOn: {
-                        click: function($event) {
-                          return _vm.addService(_vm.method_name)
-                        }
-                      }
-                    },
-                    [_vm._v("Add Service")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          return _vm.saveJointServices()
-                        }
-                      }
-                    },
-                    [_vm._v(" Save Joint Service")]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-sm-6" }, [
-                _c("div", { staticClass: "data-tables datatable-dark" }, [
-                  _c(
-                    "table",
-                    {
-                      staticClass: "table table-hover",
-                      attrs: { id: "jointservicestable" }
-                    },
-                    [
-                      _vm._m(1),
-                      _vm._v(" "),
-                      _c(
-                        "tbody",
-                        _vm._l(_vm.form.joint_services, function(js) {
-                          return _c("tr", { key: js.id }, [
-                            _c("td", [_vm._v(" " + _vm._s(js.wallet_type))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(" " + _vm._s(js.service_code))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(" " + _vm._s(js.service_name))]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _vm._v(" " + _vm._s(js.service_description))
-                            ])
-                          ])
                         }),
-                        0
-                      )
-                    ]
-                  )
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "service_code" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group row" },
+                      [
+                        _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                          _vm._v("Service Name:")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.service_name,
+                              expression: "form.service_name"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("service_name")
+                          },
+                          attrs: {
+                            type: "text",
+                            id: "service_name",
+                            "aria-describedby": "emailHelp",
+                            placeholder: "Enter Service Name",
+                            name: "service_name"
+                          },
+                          domProps: { value: _vm.form.service_name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "service_name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "service_name" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group row" },
+                      [
+                        _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                          _vm._v("Service Description:")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.service_description,
+                              expression: "form.service_description"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has(
+                              "service_description"
+                            )
+                          },
+                          attrs: {
+                            type: "text",
+                            id: "service_description",
+                            "aria-describedby": "emailHelp",
+                            placeholder: "Enter Service Description",
+                            name: "service_description"
+                          },
+                          domProps: { value: _vm.form.service_description },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "service_description",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: {
+                            form: _vm.form,
+                            field: "service_description"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass:
+                          "btn btn-flat btn-primary btn-lg mb-5 mt-3 float-left btn-custom",
+                        attrs: {
+                          to: {
+                            name: "services-list",
+                            params: { method_name: "joint" }
+                          }
+                        },
+                        nativeOn: {
+                          click: function($event) {
+                            return _vm.addService(_vm.method_name)
+                          }
+                        }
+                      },
+                      [_vm._v("Add Service")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "btn btn-flat btn-primary btn-lg mb-5 mt-3 float-right btn-custom",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v(" Save Joint Service")]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-sm-6" }, [
+                  _c("div", { staticClass: "data-tables datatable-dark" }, [
+                    _c(
+                      "table",
+                      {
+                        staticClass: "table table-hover",
+                        attrs: { id: "jointservicestable" }
+                      },
+                      [
+                        _vm._m(1),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.form.joint_services, function(js) {
+                            return _c("tr", { key: js.id }, [
+                              _c("td", [_vm._v(" " + _vm._s(js.wallet_type))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(" " + _vm._s(js.service_code))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(" " + _vm._s(js.service_name))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(" " + _vm._s(js.service_description))
+                              ])
+                            ])
+                          }),
+                          0
+                        )
+                      ]
+                    )
+                  ])
                 ])
               ])
-            ])
-          ])
+            ]
+          )
         ])
       ])
     ])
