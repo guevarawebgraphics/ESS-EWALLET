@@ -102,6 +102,7 @@ if you are using php artisan serve change .env find and change APP_URL=http://12
 run php artisan config:clear
 then php artisan serve
 
+# .env Configuration
 
 Database Configuration
 ------------------------------------------------
@@ -119,10 +120,12 @@ DB_DATABASE_SECOND=v0.13.2_clean
 DB_USERNAME_SECOND=root
 DB_PASSWORD_SECOND=essdev2019
 
+# For vue js Local and Production Mode
+MIX_APP_ENV=local
+
 For any further concerns regarding the project please contact the project owner.
 
-## To the Future Developer of this project good luck lol
-Please don't contact the previous developers thanks.
+## To the Future Developer of this project good luck.
 
 # ######################################################################################################
 # Accounts For ESS Project
