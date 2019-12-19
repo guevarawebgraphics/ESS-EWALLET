@@ -9,12 +9,12 @@
                             <div class="form-group row">
                                 <!-- Col -->
                                 <div class="col-md-12">
-                                    <i class="ti-arrow-left" @click="back"></i>
+                                    <i class="ti-arrow-left" @click="back"> &nbsp; </i><label>{{ wan }}</label>
                                     <h4 class="header-title mt3"> </h4>
                                     <div class="form-group row">
                                         <div class="col md-6">
                                             <a class="btn btn-primary btn-md text-white">Available Services</a>
-                                            <a class="btn btn-primary btn-md text-white">List of Merchants</a>
+                                            <router-link to="/listmerchants" class="btn btn-primary btn-md text-white">List of Merchants</router-link>
                                         </div>
                                     </div>
                                 </div>
@@ -32,7 +32,9 @@
 <script>
 export default {
     data(){
-        return{}
+        return{
+            wan: this.$route.params.wi
+        }
     },
     methods: {
         back(){
