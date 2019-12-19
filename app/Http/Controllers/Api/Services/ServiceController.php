@@ -9,6 +9,7 @@ use App\Repositories\Service\ServiceRepository;
  * Form Request Validation
  */ 
 use App\Http\Requests\Services\ServiceValidate;
+use App\Http\Requests\Services\JointValidate;
 /**
  * Service Module For Create 
  * Validation & other method SOON***
@@ -37,7 +38,7 @@ class ServiceController extends Controller
     /**
      * For Inserting Joint Services 
      */
-    public function InsertJointService(Request $request){
+    public function InsertJointService(JointValidate $request){
         $InsertJointService = $this->services->InsertJointServices($request);
         return response()->json($InsertJointService);
     }

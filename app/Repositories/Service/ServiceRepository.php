@@ -285,10 +285,10 @@ class ServiceRepository
     }
     public function InsertJointServices($service_data){
                 $insert_services = Services::create([
-                    'service_code' => $service_data->original_service_code ,
-                    'service_name' => $service_data->original_service_name,
-                    'service_description' => $service_data->original_service_description,
-                    's_wallet_type' =>  $service_data->original_wallet_type,
+                    'service_code' => $service_data->service_code ,
+                    'service_name' => $service_data->service_name,
+                    'service_description' => $service_data->service_description,
+                    's_wallet_type' =>  $service_data->wallet_type,
                     'wallet_condition' => 'joint', 
                 ]);  
                
