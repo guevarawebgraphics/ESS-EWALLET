@@ -31,27 +31,27 @@
                       </div>   
                       <div class="form-group">
                         <label for="exampleInputEmail1">Service Type Code:</label>
-                        <input type="number" class="form-control" :class="{ 'is-invalid': errors.has('servicetype_code')}" id="exampleInputEmail1" v-on:change="showServiceTypeDetails" v-model="form.servicetype_code" aria-describedby="emailHelp" placeholder="Enter Service Type Code" name="servicetype_code"  v-validate="'required'" :disabled="this.method_name == 'joint'">
+                        <input type="number" class="form-control" :class="{ 'is-invalid': errors.has('servicetype_code')}" v-on:change="showServiceTypeDetails" v-model="form.servicetype_code" aria-describedby="emailHelp" placeholder="Enter Service Type Code" name="servicetype_code"  v-validate="'required'" :disabled="this.method_name == 'joint'">
                         <p class="alert text=danger" v-if="errors.has('servicetype_code')"> {{errors.first('servicetype_code')}} </p> 
                       </div>  
                       <div class="form-group">
                         <label for="exampleInputEmail1">Service Type Name:</label>
-                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('servicetype_name')}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Service Type Name" v-model="form.servicetype_name" name="servicetype_name"  v-validate="'required'" readonly>
+                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('servicetype_name')}" aria-describedby="emailHelp" placeholder="Enter Service Type Name" v-model="form.servicetype_name" name="servicetype_name"  v-validate="'required'" readonly>
                         <p class="alert text=danger" v-if="errors.has('servicetype_name')"> {{errors.first('servicetype_name')}} </p>
                       </div> 
                       <div class="form-group">
                         <label for="exampleInputEmail1">Service Code:</label>
-                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('service_code')}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Service Code" v-model="form.service_code" name="service_code"  v-validate="'required'" :disabled="this.method_name == 'joint'">
+                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('service_code')}" aria-describedby="emailHelp" placeholder="Enter Service Code" v-model="form.service_code" name="service_code"  v-validate="'required'" :disabled="this.method_name == 'joint'">
                         <p class="alert text=danger" v-if="errors.has('service_code')"> {{errors.first('service_code')}} </p>
                       </div> 
                       <div class="form-group">
                         <label for="exampleInputEmail1">Service Name:</label>
-                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('service_name')}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Service Name" v-model="form.service_name" name="service_name"  v-validate="'required'" :disabled="this.method_name == 'joint'">
+                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('service_name')}" aria-describedby="emailHelp" placeholder="Enter Service Name" v-model="form.service_name" name="service_name"  v-validate="'required'" :disabled="this.method_name == 'joint'">
                         <p class="alert text=danger" v-if="errors.has('service_name')"> {{errors.first('service_name')}} </p>
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Service Description:</label>
-                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('service_description')}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Service Description" v-model="form.service_description" name="service_description"  v-validate="'required'" :disabled="this.method_name == 'joint'">
+                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('service_description')}" aria-describedby="emailHelp" placeholder="Enter Service Description" v-model="form.service_description" name="service_description"  v-validate="'required'" :disabled="this.method_name == 'joint'">
                         <p class="alert text=danger" v-if="errors.has('service_description')"> {{errors.first('service_description')}} </p>
                       </div>
                       <div class="form-group">
@@ -75,22 +75,22 @@
                       <h4 class="header-title mt-3">Wallet Detailss </h4>   
                       <div class="form-group">
                         <label for="exampleInputEmail1">Principal Redeem Wallet Account No:</label>
-                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('pr_wallet_acc_no')}" id="exampleInputEmail1" v-on:change="showPRWallletAccountName" aria-describedby="emailHelp" placeholder="Enter Principal Redeem Wallet Account No:"  v-model="form.pr_wallet_acc_no" name="pr_wallet_acc_no"  v-validate="'required'" :disabled="this.method_name == 'joint'">
+                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('pr_wallet_acc_no')}" v-on:change="showPRWallletAccountName" aria-describedby="emailHelp" placeholder="Enter Principal Redeem Wallet Account No:"  v-model="form.pr_wallet_acc_no" name="pr_wallet_acc_no"  v-validate="'required'" :disabled="this.method_name == 'joint'">
                         <p class="alert text=danger" v-if="errors.has('pr_wallet_acc_no')"> {{errors.first('pr_wallet_acc_no')}} </p>
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Principal Redeem Wallet Account Name:</label>
-                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('pr_wallet_acc_name')}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Principal Redeem Wallet Account Name" v-model="form.pr_wallet_acc_name" name="pr_wallet_acc_name"  v-validate="'required'" readonly>
+                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('pr_wallet_acc_name')}" aria-describedby="emailHelp" placeholder="Enter Principal Redeem Wallet Account Name" v-model="form.pr_wallet_acc_name" name="pr_wallet_acc_name"  v-validate="'required'" readonly>
                         <p class="alert text=danger" v-if="errors.has('pr_wallet_acc_name')"> {{errors.first('pr_wallet_acc_name')}} </p>
                       </div> 
                       <div class="form-group">
                         <label for="exampleInputEmail1">Income Reddem Wallet Account No:</label>
-                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('ir_wallet_acc_no')}" id="exampleInputEmail1" v-on:change="showIRWalletName" aria-describedby="emailHelp" placeholder="Enter Income Reddem Wallet Account No"  v-model="form.ir_wallet_acc_no" name="ir_wallet_acc_no"  v-validate="'required'" :disabled="this.method_name == 'joint'">
+                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('ir_wallet_acc_no')}"  v-on:change="showIRWalletName" aria-describedby="emailHelp" placeholder="Enter Income Reddem Wallet Account No"  v-model="form.ir_wallet_acc_no" name="ir_wallet_acc_no"  v-validate="'required'" :disabled="this.method_name == 'joint'">
                       <p class="alert text=danger" v-if="errors.has('ir_wallet_acc_no')"> {{errors.first('ir_wallet_acc_no')}} </p>
                       </div> 
                       <div class="form-group">
                         <label for="exampleInputEmail1">Income Reddem Wallet Account Name:</label>
-                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('ir_wallet_acc_name')}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Income Reddem Wallet Account Name" v-model="form.ir_wallet_acc_name" name="ir_wallet_acc_name" v-validate="'required'" readonly>
+                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('ir_wallet_acc_name')}" aria-describedby="emailHelp" placeholder="Enter Income Reddem Wallet Account Name" v-model="form.ir_wallet_acc_name" name="ir_wallet_acc_name" v-validate="'required'" readonly>
                         <p class="alert text=danger" v-if="errors.has('ir_wallet_acc_name')"> {{errors.first('ir_wallet_acc_name')}} </p>
                       </div> 
                           <!-- 
@@ -103,14 +103,15 @@
                       <div class="form-group">
                         <label for="exampleInputEmail1">Service Template</label>
                         <div class="input-group">
-                        <div class="custom-file">
-                        <input type="file" class="custom-file-input" v-on:change="onFileChangeServiceTemplate" name="Service Template" id="inputGroupFile04" v-validate="'required'" :disabled="this.method_name == 'joint'">
-                        <label class="custom-file-label" for="inputGroupFile04" v-if="this.service_template === 'empty'">Choose file</label>
-                        <label class="custom-file-label" for="inputGroupFile04" v-else>{{this.service_template}}</label> 
+                        <div class="custom-file"> 
+                        <input type="file" class="custom-file-label" v-on:change="onFileChangeServiceTemplate" name="service_template" id="service_template" v-validate="'required'" :disabled="this.method_name == 'joint'" v-if="this.method_name == 'create'">
+                                     <input type="file" class="custom-file-label" v-on:change="onFileChangeServiceTemplate" name="service_template" id="service_template" :disabled="this.method_name == 'joint'" v-else>
+                        <label class="custom-file-label" for="service_template" v-if="this.service_template === 'empty'">Choose file</label>
+                        <label class="custom-file-label" for="service_template" v-else>{{this.service_template}}</label> 
                      
                         </div>
                         </div> 
-                        <p class="alert text=danger" v-if="errors.has('Service Template')"> {{errors.first('Service Template')}} </p>
+                        <p class="alert text=danger" v-if="errors.has('service_template') && method_name === 'create'"> {{errors.first('service_template')}} </p>
                       </div>
             
                     </div>
@@ -189,7 +190,7 @@
                 <div class="card-body"> 
                       <h4 class="header-title">AMOUNT LIMITS</h4> 
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        <input class="form-check-input" type="checkbox" value="" >
                         <p class="text-muted mb-3">Amount limit (minimum and maximum) per transaction</p>        
                       </div> 
                       <div class="form-row"> 
@@ -197,7 +198,7 @@
                             <div class="form-group row">
                               <label for="inputEmail3" class="col-sm-3 col-form-label">Minimum Amount : </label>
                               <div class="col-sm-9">
-                                <input type="number" v-model="form.limit_minimum" class="form-control" id="inputEmail3" placeholder="Enter Minimum Amount" :disabled="this.method_name == 'joint'">
+                                <input type="number" v-model="form.limit_minimum" class="form-control" placeholder="Enter Minimum Amount" :disabled="this.method_name == 'joint'">
                               </div>
                             </div>
                         </div>
@@ -205,14 +206,14 @@
                             <div class="form-group row">
                               <label for="inputEmail3" class="col-sm-3 col-form-label">Maximum Amount : </label>
                               <div class="col-sm-9">
-                                <input type="number" v-model="form.limit_maximum" class="form-control" id="inputEmail3" placeholder="Enter Maximum Amount" :disabled="this.method_name == 'joint'"> 
+                                <input type="number" v-model="form.limit_maximum" class="form-control" placeholder="Enter Maximum Amount" :disabled="this.method_name == 'joint'"> 
                               </div>
                             </div>
                         </div>
                       </div> 
                       <!-- -->
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        <input class="form-check-input" type="checkbox" value="">
                         <p class="text-muted mb-3">Limit of total transaction amount per day</p>        
                       </div> 
                       <div class="form-row"> 
@@ -220,14 +221,14 @@
                             <div class="form-group row">
                               <label for="inputEmail3" class="col-sm-3 col-form-label">Maximum Amount : </label>
                               <div class="col-sm-9">
-                                <input type="number" v-model="form.amount_per_day" class="form-control" id="inputEmail3" placeholder="Enter Maximum Amount" :disabled="this.method_name == 'joint'">
+                                <input type="number" v-model="form.amount_per_day" class="form-control" placeholder="Enter Maximum Amount" :disabled="this.method_name == 'joint'">
                               </div>
                             </div>
                         </div>
                       </div> 
                       <!-- -->
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        <input class="form-check-input" type="checkbox" value="">
                         <p class="text-muted mb-3">Limit of total transaction amount per month</p>        
                       </div> 
                       <div class="form-row"> 
@@ -235,14 +236,14 @@
                             <div class="form-group row">
                               <label for="inputEmail3" class="col-sm-3 col-form-label">Maximum Amount : </label>
                               <div class="col-sm-9">
-                                <input type="number" v-model="form.amount_per_month" class="form-control" id="inputEmail3" placeholder="Enter Maximum Amount" :disabled="this.method_name == 'joint'">
+                                <input type="number" v-model="form.amount_per_month" class="form-control" placeholder="Enter Maximum Amount" :disabled="this.method_name == 'joint'">
                               </div>
                             </div>
                         </div>
                       </div> 
                       <!-- -->
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        <input class="form-check-input" type="checkbox" value="">
                         <p class="text-muted mb-3">Limit of total transaction amount per year</p>        
                       </div> 
                       <div class="form-row"> 
@@ -250,7 +251,7 @@
                             <div class="form-group row">
                               <label for="inputEmail3" class="col-sm-3 col-form-label">Maximum Amount : </label>
                               <div class="col-sm-9">
-                                <input type="number"  v-model="form.amount_per_year"  class="form-control" id="inputEmail3" placeholder="Enter Maximum Amount" :disabled="this.method_name == 'joint'">
+                                <input type="number"  v-model="form.amount_per_year"  class="form-control" placeholder="Enter Maximum Amount" :disabled="this.method_name == 'joint'">
                               </div>
                             </div>
                         </div>
@@ -269,7 +270,7 @@
                 <div class="card-body">         
                       <h4 class="header-title">LIMIT NO. OF TRANSACTION</h4> 
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        <input class="form-check-input" type="checkbox" value="">
                         <p class="text-muted mb-3">Limit no. of transactions per day</p>        
                       </div> 
                       <div class="form-row"> 
@@ -277,14 +278,14 @@
                             <div class="form-group row">
                               <label for="inputEmail3" class="col-sm-4 col-form-label">Maximum No. of Transactions: </label>
                               <div class="col-sm-8">
-                                <input type="number" v-model="form.limit_per_day" class="form-control" id="inputEmail3" placeholder="Enter Maximum No. of Transactions" :disabled="this.method_name == 'joint'">
+                                <input type="number" v-model="form.limit_per_day" class="form-control" placeholder="Enter Maximum No. of Transactions" :disabled="this.method_name == 'joint'">
                               </div>
                             </div>
                         </div>
                       </div> 
                       <!---- -----> 
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        <input class="form-check-input" type="checkbox" value="">
                         <p class="text-muted mb-3">Limit no. of transactions per month</p>        
                       </div> 
                       <div class="form-row"> 
@@ -292,14 +293,14 @@
                             <div class="form-group row">
                               <label for="inputEmail3" class="col-sm-4 col-form-label">Maximum No. of Transactions: </label>
                               <div class="col-sm-8">
-                                <input type="number" v-model="form.limit_per_month" class="form-control" id="inputEmail3" placeholder="Enter Maximum No. of Transactions" :disabled="this.method_name == 'joint'">
+                                <input type="number" v-model="form.limit_per_month" class="form-control" placeholder="Enter Maximum No. of Transactions" :disabled="this.method_name == 'joint'">
                               </div>
                             </div>
                         </div>
                       </div>  
                       <!---- -----> 
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        <input class="form-check-input" type="checkbox" value="">
                         <p class="text-muted mb-3">Limit no. of transactions per year</p>        
                       </div> 
                       <div class="form-row"> 
@@ -307,7 +308,7 @@
                             <div class="form-group row">
                               <label for="inputEmail3" class="col-sm-4 col-form-label">Maximum No. of Transactions: </label>
                               <div class="col-sm-8">
-                                <input type="number" v-model="form.limit_per_year" class="form-control" id="inputEmail3" placeholder="Enter Maximum No. of Transactions" :disabled="this.method_name == 'joint'">
+                                <input type="number" v-model="form.limit_per_year" class="form-control" placeholder="Enter Maximum No. of Transactions" :disabled="this.method_name == 'joint'">
                               </div>
                             </div>
                         </div>
@@ -741,7 +742,8 @@ methods:{
              * Service Template
              */
             this.service_template = response.data[0]['service_template']; 
-            this.form.service_template = response.data[0]['service_template']; 
+            this.form.service_template = response.data[0]['service_template'];  
+            $('#service_template').val(response.data[0]['service_template']);
             /**
              * Values Source Destination Rates Table
              */
