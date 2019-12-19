@@ -141,7 +141,6 @@ export default {
             }, 1000);
         },
         SaveChanges(){
-            this.$Progress.start()
             swal.fire({
                 title: 'Are you sure?',
                 text: "Save Service Matrix Configuration Setup",
@@ -151,6 +150,7 @@ export default {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Save'
             }).then((result) => {
+                this.$Progress.start()
                 if (result.value) {
                     axios.post('api/servicematrix/StoreServiceMatrix', this.Services)
                     .then((response) => {
