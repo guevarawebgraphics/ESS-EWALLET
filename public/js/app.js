@@ -5972,6 +5972,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -6373,6 +6374,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this7.service_template = response.data[0]['service_template'];
         _this7.form.service_template = response.data[0]['service_template'];
+        $('#service_template').val(response.data[0]['service_template']);
         /**
          * Values Source Destination Rates Table
          */
@@ -68161,7 +68163,6 @@ var render = function() {
                                 },
                                 attrs: {
                                   type: "number",
-                                  id: "exampleInputEmail1",
                                   "aria-describedby": "emailHelp",
                                   placeholder: "Enter Service Type Code",
                                   name: "servicetype_code",
@@ -68230,7 +68231,6 @@ var render = function() {
                                 },
                                 attrs: {
                                   type: "text",
-                                  id: "exampleInputEmail1",
                                   "aria-describedby": "emailHelp",
                                   placeholder: "Enter Service Type Name",
                                   name: "servicetype_name",
@@ -68296,7 +68296,6 @@ var render = function() {
                                 },
                                 attrs: {
                                   type: "text",
-                                  id: "exampleInputEmail1",
                                   "aria-describedby": "emailHelp",
                                   placeholder: "Enter Service Code",
                                   name: "service_code",
@@ -68362,7 +68361,6 @@ var render = function() {
                                 },
                                 attrs: {
                                   type: "text",
-                                  id: "exampleInputEmail1",
                                   "aria-describedby": "emailHelp",
                                   placeholder: "Enter Service Name",
                                   name: "service_name",
@@ -68430,7 +68428,6 @@ var render = function() {
                                 },
                                 attrs: {
                                   type: "text",
-                                  id: "exampleInputEmail1",
                                   "aria-describedby": "emailHelp",
                                   placeholder: "Enter Service Description",
                                   name: "service_description",
@@ -68695,7 +68692,6 @@ var render = function() {
                                 },
                                 attrs: {
                                   type: "text",
-                                  id: "exampleInputEmail1",
                                   "aria-describedby": "emailHelp",
                                   placeholder:
                                     "Enter Principal Redeem Wallet Account No:",
@@ -68769,7 +68765,6 @@ var render = function() {
                                 },
                                 attrs: {
                                   type: "text",
-                                  id: "exampleInputEmail1",
                                   "aria-describedby": "emailHelp",
                                   placeholder:
                                     "Enter Principal Redeem Wallet Account Name",
@@ -68842,7 +68837,6 @@ var render = function() {
                                 },
                                 attrs: {
                                   type: "text",
-                                  id: "exampleInputEmail1",
                                   "aria-describedby": "emailHelp",
                                   placeholder:
                                     "Enter Income Reddem Wallet Account No",
@@ -68912,7 +68906,6 @@ var render = function() {
                                 },
                                 attrs: {
                                   type: "text",
-                                  id: "exampleInputEmail1",
                                   "aria-describedby": "emailHelp",
                                   placeholder:
                                     "Enter Income Reddem Wallet Account Name",
@@ -68964,33 +68957,48 @@ var render = function() {
                               _vm._v(" "),
                               _c("div", { staticClass: "input-group" }, [
                                 _c("div", { staticClass: "custom-file" }, [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "validate",
-                                        rawName: "v-validate",
-                                        value: "required",
-                                        expression: "'required'"
-                                      }
-                                    ],
-                                    staticClass: "custom-file-input",
-                                    attrs: {
-                                      type: "file",
-                                      name: "Service Template",
-                                      id: "inputGroupFile04",
-                                      disabled: this.method_name == "joint"
-                                    },
-                                    on: {
-                                      change: _vm.onFileChangeServiceTemplate
-                                    }
-                                  }),
+                                  this.method_name == "create"
+                                    ? _c("input", {
+                                        directives: [
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
+                                          }
+                                        ],
+                                        staticClass: "custom-file-label",
+                                        attrs: {
+                                          type: "file",
+                                          name: "service_template",
+                                          id: "service_template",
+                                          disabled: this.method_name == "joint"
+                                        },
+                                        on: {
+                                          change:
+                                            _vm.onFileChangeServiceTemplate
+                                        }
+                                      })
+                                    : _c("input", {
+                                        staticClass: "custom-file-label",
+                                        attrs: {
+                                          type: "file",
+                                          name: "service_template",
+                                          id: "service_template",
+                                          disabled: this.method_name == "joint"
+                                        },
+                                        on: {
+                                          change:
+                                            _vm.onFileChangeServiceTemplate
+                                        }
+                                      }),
                                   _vm._v(" "),
                                   this.service_template === "empty"
                                     ? _c(
                                         "label",
                                         {
                                           staticClass: "custom-file-label",
-                                          attrs: { for: "inputGroupFile04" }
+                                          attrs: { for: "service_template" }
                                         },
                                         [_vm._v("Choose file")]
                                       )
@@ -68998,14 +69006,15 @@ var render = function() {
                                         "label",
                                         {
                                           staticClass: "custom-file-label",
-                                          attrs: { for: "inputGroupFile04" }
+                                          attrs: { for: "service_template" }
                                         },
                                         [_vm._v(_vm._s(this.service_template))]
                                       )
                                 ])
                               ]),
                               _vm._v(" "),
-                              _vm.errors.has("Service Template")
+                              _vm.errors.has("service_template") &&
+                              _vm.method_name === "create"
                                 ? _c(
                                     "p",
                                     { staticClass: "alert text=danger" },
@@ -69013,7 +69022,7 @@ var render = function() {
                                       _vm._v(
                                         " " +
                                           _vm._s(
-                                            _vm.errors.first("Service Template")
+                                            _vm.errors.first("service_template")
                                           ) +
                                           " "
                                       )
@@ -69228,11 +69237,7 @@ var render = function() {
                     _c("div", { staticClass: "form-check" }, [
                       _c("input", {
                         staticClass: "form-check-input",
-                        attrs: {
-                          type: "checkbox",
-                          value: "",
-                          id: "defaultCheck1"
-                        }
+                        attrs: { type: "checkbox", value: "" }
                       }),
                       _vm._v(" "),
                       _c("p", { staticClass: "text-muted mb-3" }, [
@@ -69267,7 +69272,6 @@ var render = function() {
                               staticClass: "form-control",
                               attrs: {
                                 type: "number",
-                                id: "inputEmail3",
                                 placeholder: "Enter Minimum Amount",
                                 disabled: this.method_name == "joint"
                               },
@@ -69313,7 +69317,6 @@ var render = function() {
                               staticClass: "form-control",
                               attrs: {
                                 type: "number",
-                                id: "inputEmail3",
                                 placeholder: "Enter Maximum Amount",
                                 disabled: this.method_name == "joint"
                               },
@@ -69339,11 +69342,7 @@ var render = function() {
                     _c("div", { staticClass: "form-check" }, [
                       _c("input", {
                         staticClass: "form-check-input",
-                        attrs: {
-                          type: "checkbox",
-                          value: "",
-                          id: "defaultCheck1"
-                        }
+                        attrs: { type: "checkbox", value: "" }
                       }),
                       _vm._v(" "),
                       _c("p", { staticClass: "text-muted mb-3" }, [
@@ -69376,7 +69375,6 @@ var render = function() {
                               staticClass: "form-control",
                               attrs: {
                                 type: "number",
-                                id: "inputEmail3",
                                 placeholder: "Enter Maximum Amount",
                                 disabled: this.method_name == "joint"
                               },
@@ -69402,11 +69400,7 @@ var render = function() {
                     _c("div", { staticClass: "form-check" }, [
                       _c("input", {
                         staticClass: "form-check-input",
-                        attrs: {
-                          type: "checkbox",
-                          value: "",
-                          id: "defaultCheck1"
-                        }
+                        attrs: { type: "checkbox", value: "" }
                       }),
                       _vm._v(" "),
                       _c("p", { staticClass: "text-muted mb-3" }, [
@@ -69439,7 +69433,6 @@ var render = function() {
                               staticClass: "form-control",
                               attrs: {
                                 type: "number",
-                                id: "inputEmail3",
                                 placeholder: "Enter Maximum Amount",
                                 disabled: this.method_name == "joint"
                               },
@@ -69465,11 +69458,7 @@ var render = function() {
                     _c("div", { staticClass: "form-check" }, [
                       _c("input", {
                         staticClass: "form-check-input",
-                        attrs: {
-                          type: "checkbox",
-                          value: "",
-                          id: "defaultCheck1"
-                        }
+                        attrs: { type: "checkbox", value: "" }
                       }),
                       _vm._v(" "),
                       _c("p", { staticClass: "text-muted mb-3" }, [
@@ -69502,7 +69491,6 @@ var render = function() {
                               staticClass: "form-control",
                               attrs: {
                                 type: "number",
-                                id: "inputEmail3",
                                 placeholder: "Enter Maximum Amount",
                                 disabled: this.method_name == "joint"
                               },
@@ -69549,11 +69537,7 @@ var render = function() {
                     _c("div", { staticClass: "form-check" }, [
                       _c("input", {
                         staticClass: "form-check-input",
-                        attrs: {
-                          type: "checkbox",
-                          value: "",
-                          id: "defaultCheck1"
-                        }
+                        attrs: { type: "checkbox", value: "" }
                       }),
                       _vm._v(" "),
                       _c("p", { staticClass: "text-muted mb-3" }, [
@@ -69586,7 +69570,6 @@ var render = function() {
                               staticClass: "form-control",
                               attrs: {
                                 type: "number",
-                                id: "inputEmail3",
                                 placeholder:
                                   "Enter Maximum No. of Transactions",
                                 disabled: this.method_name == "joint"
@@ -69613,11 +69596,7 @@ var render = function() {
                     _c("div", { staticClass: "form-check" }, [
                       _c("input", {
                         staticClass: "form-check-input",
-                        attrs: {
-                          type: "checkbox",
-                          value: "",
-                          id: "defaultCheck1"
-                        }
+                        attrs: { type: "checkbox", value: "" }
                       }),
                       _vm._v(" "),
                       _c("p", { staticClass: "text-muted mb-3" }, [
@@ -69650,7 +69629,6 @@ var render = function() {
                               staticClass: "form-control",
                               attrs: {
                                 type: "number",
-                                id: "inputEmail3",
                                 placeholder:
                                   "Enter Maximum No. of Transactions",
                                 disabled: this.method_name == "joint"
@@ -69677,11 +69655,7 @@ var render = function() {
                     _c("div", { staticClass: "form-check" }, [
                       _c("input", {
                         staticClass: "form-check-input",
-                        attrs: {
-                          type: "checkbox",
-                          value: "",
-                          id: "defaultCheck1"
-                        }
+                        attrs: { type: "checkbox", value: "" }
                       }),
                       _vm._v(" "),
                       _c("p", { staticClass: "text-muted mb-3" }, [
@@ -69714,7 +69688,6 @@ var render = function() {
                               staticClass: "form-control",
                               attrs: {
                                 type: "number",
-                                id: "inputEmail3",
                                 placeholder:
                                   "Enter Maximum No. of Transactions",
                                 disabled: this.method_name == "joint"
