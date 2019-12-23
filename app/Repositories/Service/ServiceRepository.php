@@ -382,6 +382,20 @@ class ServiceRepository
                                     ->where('joint_services.main_service_id','=', $id)
                                     ->get();
                     return $list_joint_services;
+    } 
+    public function GetServiceTypeCode($id,$wallet_condition){
+                    if($wallet_condition == 'solo'){
+                        $service_type_code = DB::connection('mysql')    
+                        ->table('services_basetable')
+                        ->Join('servicetypedetails','servicetypedetails.id','=','services_basetable.service_type_id') 
+                        ->where('services_basetable.service_id','=',$id)
+                        ->select('st_code')
+                        ->first();
+                    }
+               
+                    return $service_type_code;
+
+
     }
 
 }

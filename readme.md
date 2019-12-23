@@ -101,6 +101,7 @@ php artisan serve
 if you are using php artisan serve change .env find and change APP_URL=http://127.0.0.1:8000 (Port depending on your port)
 run php artisan config:clear
 then php artisan serve
+npm run dev
 
 # .env Configuration
 
