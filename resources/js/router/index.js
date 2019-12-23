@@ -162,6 +162,13 @@ const routes = [
       name: 'List of Merchants',
       beforeEnter: requireLogin
     },
+    {
+      path: '/walletaccountprofile/:wi/ListServices', 
+      component: require('../components/ListServices/ListServices.vue').default, 
+      name: 'List of Services',
+      beforeEnter: requireLogin
+    },
+    /** List Services */
     /**
      *@ Return Error 404 Page 
      * @param /* 

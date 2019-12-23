@@ -13,7 +13,7 @@
                                     <h4 class="header-title mt3"> </h4>
                                     <div class="form-group row">
                                         <div class="col md-6">
-                                            <a class="btn btn-primary btn-md text-white">Available Services</a>
+                                            <a class="btn btn-primary btn-md text-white" v-on:click="this.goToAvailableServices">Available Services</a>
                                             <router-link to="/listmerchants" class="btn btn-primary btn-md text-white">List of Merchants</router-link>
                                         </div>
                                     </div>
@@ -39,6 +39,9 @@ export default {
     methods: {
         back(){
             this.$router.push('/listwalletaccounts')
+        },
+        goToAvailableServices(){
+            this.$router.push(`/walletaccountprofile/${this.wan}/ListServices`)
         }
     }
 }

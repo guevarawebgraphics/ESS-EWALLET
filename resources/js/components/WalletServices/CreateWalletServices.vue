@@ -105,7 +105,7 @@
                         <div class="input-group">
                         <div class="custom-file"> 
                         <input type="file" class="custom-file-label" v-on:change="onFileChangeServiceTemplate" name="service_template" id="service_template" v-validate="'required'" :disabled="this.method_name == 'joint'" v-if="this.method_name == 'create'">
-                                     <input type="file" class="custom-file-label" v-on:change="onFileChangeServiceTemplate" name="service_template" id="service_template" :disabled="this.method_name == 'joint'" v-else>
+                        <input type="file" class="custom-file-label" v-on:change="onFileChangeServiceTemplate" name="service_template" id="service_template" :disabled="this.method_name == 'joint'" v-else>
                         <label class="custom-file-label" for="service_template" v-if="this.service_template === 'empty'">Choose file</label>
                         <label class="custom-file-label" for="service_template" v-else>{{this.service_template}}</label> 
                      

@@ -86,5 +86,12 @@ class ServiceController extends Controller
         $get_list_services = $this->services->JointServiceslist($id);
         return response()->json($get_list_services);
     }
+    /**
+     * Identifies which Service Type Code of this ID
+     */
+    public function GetServiceTypeCode($id,$wallet_condition){
+        $get_service_type_code = $this->services->GetServiceTypeCode($id,$wallet_condition);
+        return response()->json($get_service_type_code);
+    }
 
 }
