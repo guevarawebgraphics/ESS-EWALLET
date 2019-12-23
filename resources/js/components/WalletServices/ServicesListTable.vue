@@ -36,7 +36,7 @@
                         </td>
                         <td>
                             <p>
-                            -----
+                            {{ /*showServiceType(s.id,s.wallet_condition)*/}}
                             </p>
                         </td>
                         <td> 
@@ -82,7 +82,9 @@ export default {
      return {
            Services : {},
            method_name: this.$route.params.method_name,
-           joint_services : JSON.parse(localStorage.getItem('list_services'))
+           joint_services : JSON.parse(localStorage.getItem('list_services')),
+           st_code_get : '',
+           
      }
    
  },
@@ -119,6 +121,25 @@ export default {
                     return joint_services.some(service); 
                 }
         },
+        /* 
+        Sir Manuel :
+        showServiceType(id,wallet_condition){  
+            
+                        if(wallet_condition == 'solo'){ 
+                            axios.get('/api/service/getservicetypecode/'+id+'/solo')
+                            .then(response => {
+                                if(this.Services.id == id){
+                                    this.Services = response.data['st_code'];
+                                }
+
+                            }) 
+                          
+                        }
+                        else {
+                            return 'joint'
+                        }
+         
+        }*/ 
  },
  created() {
     this.showServices()

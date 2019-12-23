@@ -1922,6 +1922,83 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListServices/ListServices.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ListServices/ListServices.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      ListServices: [],
+      wi: this.$route.params.wi
+    };
+  },
+  methods: {
+    getListServices: function getListServices() {
+      var _this = this;
+
+      axios.get('/api/service/getserviceslist').then(function (response) {
+        _this.ListServices = response.data;
+      })["catch"](function () {
+        console.log("err");
+      });
+    }
+  },
+  created: function created() {
+    this.getListServices();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListWalletAccounts/ListMerchants.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ListWalletAccounts/ListMerchants.vue?vue&type=script&lang=js& ***!
@@ -2175,6 +2252,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     back: function back() {
       this.$router.push('/listwalletaccounts');
+    },
+    goToAvailableServices: function goToAvailableServices() {
+      this.$router.push("/walletaccountprofile/".concat(this.wan, "/ListServices"));
     }
   }
 });
@@ -6238,7 +6318,10 @@ __webpack_require__.r(__webpack_exports__);
 
           _this.$router.push('/serviceslist/view');
 
-          console.log(response.data);
+          toast.fire({
+            type: 'success',
+            title: "Service Created Successfully"
+          });
         })["catch"](function () {
           console.log('error');
 
@@ -6252,7 +6335,10 @@ __webpack_require__.r(__webpack_exports__);
 
           _this.$router.push('/serviceslist/view');
 
-          console.log('hah update');
+          toast.fire({
+            type: 'success',
+            title: 'Service Updated Successfully'
+          });
         })["catch"](function () {
           console.log('error');
 
@@ -6390,6 +6476,10 @@ __webpack_require__.r(__webpack_exports__);
     openModal: function openModal() {
       $('#serviceValueSDRates').modal('show');
     },
+
+    /**
+     * For creating an object in array 
+     */
     createSD: function createSD() {
       this.form.value == '';
       this.form.destination_wallet == '';
@@ -6469,7 +6559,6 @@ __webpack_require__.r(__webpack_exports__);
 
         _this7.service_template = response.data[0]['service_template'];
         _this7.form.service_template = response.data[0]['service_template'];
-        $('#service_template').val(response.data[0]['service_template']);
         /**
          * Values Source Destination Rates Table
          */
@@ -6959,7 +7048,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       Services: {},
       method_name: this.$route.params.method_name,
-      joint_services: JSON.parse(localStorage.getItem('list_services'))
+      joint_services: JSON.parse(localStorage.getItem('list_services')),
+      st_code_get: ''
     };
   },
   methods: {
@@ -6998,6 +7088,25 @@ __webpack_require__.r(__webpack_exports__);
         return joint_services.some(service);
       }
     }
+    /* 
+    Sir Manuel :
+    showServiceType(id,wallet_condition){  
+        
+                    if(wallet_condition == 'solo'){ 
+                        axios.get('/api/service/getservicetypecode/'+id+'/solo')
+                        .then(response => {
+                            if(this.Services.id == id){
+                                this.Services = response.data['st_code'];
+                            }
+                          }) 
+                      
+                    }
+                    else {
+                        return 'joint'
+                    }
+     
+    }*/
+
   },
   created: function created() {
     this.showServices();
@@ -59139,6 +59248,114 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListServices/ListServices.vue?vue&type=template&id=23aea3f4&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ListServices/ListServices.vue?vue&type=template&id=23aea3f4& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "col-12 mt-5" }, [
+      _c("div", { staticClass: "card shadow-custom" }, [
+        _c("div", { staticClass: "col-md-12" }, [
+          _c("h4", { staticClass: "header-title mt-3" }, [
+            _vm._v("List of Services - Acct No. " + _vm._s(this.wi))
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "data-tables datatable-dark" }, [
+            _c(
+              "table",
+              {
+                staticClass: "table table-hover",
+                attrs: { id: "table-services" }
+              },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.ListServices, function(s) {
+                    return _c("tr", { key: s.id }, [
+                      _c("td", [_vm._v("---")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("---")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("---")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("---")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("---")]),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "btn btn-primary btn-custom",
+                              attrs: {
+                                to: {
+                                  name: "/update-service",
+                                  params: { id: s.id, method_name: "joint" }
+                                }
+                              }
+                            },
+                            [_vm._v(" Transact")]
+                          )
+                        ],
+                        1
+                      )
+                    ])
+                  }),
+                  0
+                )
+              ]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", { staticClass: "th-table" }, [
+        _c("th", [_vm._v("Service Type ")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Service Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Service Description")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Redeem Wallet No.")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Redeem Wallet Acct. Name")]),
+        _vm._v(" "),
+        _c("th")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListWalletAccounts/ListMerchants.vue?vue&type=template&id=69262fb4&":
 /*!***********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ListWalletAccounts/ListMerchants.vue?vue&type=template&id=69262fb4& ***!
@@ -59391,7 +59608,10 @@ var render = function() {
                   [
                     _c(
                       "a",
-                      { staticClass: "btn btn-primary btn-md text-white" },
+                      {
+                        staticClass: "btn btn-primary btn-md text-white",
+                        on: { click: this.goToAvailableServices }
+                      },
                       [_vm._v("Available Services")]
                     ),
                     _vm._v(" "),
@@ -70832,9 +71052,17 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _vm._m(1, true),
+                      _c("td", [
+                        _c("p", [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(/*showServiceType(s.id,s.wallet_condition)*/) +
+                              "\n                        "
+                          )
+                        ])
+                      ]),
                       _vm._v(" "),
-                      _vm._m(2, true),
+                      _vm._m(1, true),
                       _vm._v(" "),
                       _c("td", [
                         _c("p", [
@@ -70985,16 +71213,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Service Condition")]),
         _vm._v(" "),
         _c("th", [_vm._v("Action")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("p", [
-        _vm._v("\n                        -----\n                        ")
       ])
     ])
   },
@@ -87046,6 +87264,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/ListServices/ListServices.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/ListServices/ListServices.vue ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ListServices_vue_vue_type_template_id_23aea3f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ListServices.vue?vue&type=template&id=23aea3f4& */ "./resources/js/components/ListServices/ListServices.vue?vue&type=template&id=23aea3f4&");
+/* harmony import */ var _ListServices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ListServices.vue?vue&type=script&lang=js& */ "./resources/js/components/ListServices/ListServices.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ListServices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ListServices_vue_vue_type_template_id_23aea3f4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ListServices_vue_vue_type_template_id_23aea3f4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ListServices/ListServices.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/ListServices/ListServices.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/ListServices/ListServices.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListServices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListServices.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListServices/ListServices.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListServices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ListServices/ListServices.vue?vue&type=template&id=23aea3f4&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/ListServices/ListServices.vue?vue&type=template&id=23aea3f4& ***!
+  \**********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListServices_vue_vue_type_template_id_23aea3f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListServices.vue?vue&type=template&id=23aea3f4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListServices/ListServices.vue?vue&type=template&id=23aea3f4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListServices_vue_vue_type_template_id_23aea3f4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListServices_vue_vue_type_template_id_23aea3f4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/ListWalletAccounts/ListMerchants.vue":
 /*!**********************************************************************!*\
   !*** ./resources/js/components/ListWalletAccounts/ListMerchants.vue ***!
@@ -88772,7 +89059,14 @@ var routes = [{
   component: __webpack_require__(/*! ../components/ListWalletAccounts/ListMerchants.vue */ "./resources/js/components/ListWalletAccounts/ListMerchants.vue")["default"],
   name: 'List of Merchants',
   beforeEnter: requireLogin
+}, {
+  path: '/walletaccountprofile/:wi/ListServices',
+  component: __webpack_require__(/*! ../components/ListServices/ListServices.vue */ "./resources/js/components/ListServices/ListServices.vue")["default"],
+  name: 'List of Services',
+  beforeEnter: requireLogin
 },
+/** List Services */
+
 /**
  *@ Return Error 404 Page 
  * @param /* 
