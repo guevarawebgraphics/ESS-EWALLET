@@ -126,7 +126,15 @@ class WalletAccountController extends Controller
      **/
     public function ListOfWalletAccounts(){
         $ListOfWalletAccounts = $this->WalletAccount->ListOfWalletAccounts();
-        return response($ListOfWalletAccounts);
+        return response()->json($ListOfWalletAccounts);
+    }
+
+    /**
+     * @ List of Merchant Accounts 
+     **/
+    public function ListofMerchantsAccounts(){
+        $ListofMerchantsAccounts = $this->WalletAccount->ListofMerchantsAccounts();
+        return response()->json($ListofMerchantsAccounts);
     }
 
 

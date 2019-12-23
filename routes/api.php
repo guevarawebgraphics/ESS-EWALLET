@@ -107,6 +107,10 @@ Route::prefix('walletaccount')->group(function(){
     Route::get('/ListOfWalletAccounts', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@ListOfWalletAccounts'
     ]);
+    // api/walletacccount/ListofMerchantsAccounts
+    Route::get('/ListofMerchantsAccounts', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@ListofMerchantsAccounts'
+    ]);
 });
 /**
  *  @ Get Account
