@@ -1937,9 +1937,78 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
+  },
+  methods: {
+    datatable: function datatable() {
+      setTimeout(function () {
+        $('#table_id').DataTable({
+          "paging": true,
+          "pageLength": 10,
+          scrollY: true,
+          "autoWidth": true,
+          //lengthChange: false,
+          responsive: true,
+          fixedColumns: false,
+          "order": [4, "desc"]
+        });
+      }, 500);
+    }
+  },
+  created: function created() {
+    this.datatable();
   }
 });
 
@@ -59093,7 +59162,78 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { attrs: { id: "list-merchants" } }, [
-      _c("h4", [_vm._v("List of Merchants")])
+      _c("div", { staticClass: "box ptb--100" }, [
+        _c("div", { staticClass: "card shadow-custom" }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "form-group row" }, [
+              _c("div", { staticClass: "col-md-12" }, [
+                _c("h4", { staticClass: "header-title mt-3" }, [
+                  _vm._v(
+                    "\n                            List of Merchants Accounts\n                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "data-tables datatable-dark" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass: "table striped text-center",
+                      attrs: { id: "table_id" }
+                    },
+                    [
+                      _c("thead", [
+                        _c("tr", { staticClass: "th-table" }, [
+                          _c("th", [_vm._v("Wallet Type")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Account Type")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Account No.")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Account Name")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Action")])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tbody", [
+                        _c("tr", [
+                          _c("td", [_vm._v("Test")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Test")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Test")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Test")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "btn btn-secondary btn-sm",
+                                attrs: { href: "#Details" }
+                              },
+                              [_vm._v("Details")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "a",
+                              {
+                                staticClass: "btn btn-secondary btn-sm",
+                                attrs: { href: "#ServiceMatrix" }
+                              },
+                              [_vm._v("Service Matrix")]
+                            )
+                          ])
+                        ])
+                      ])
+                    ]
+                  )
+                ])
+              ])
+            ])
+          ])
+        ])
+      ])
     ])
   }
 ]

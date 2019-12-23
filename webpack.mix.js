@@ -16,6 +16,7 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/ewallet.scss', 'public/css');
 
 mix.scripts([
+    'public/str_dash/js/vendor/modernizr-2.8.3.min.js',
     'public/str_dash/js/vendor/jquery-2.2.4.min.js',
     'public/str_dash/js/popper.min.js',
     'public/str_dash/js/bootstrap.min.js',
