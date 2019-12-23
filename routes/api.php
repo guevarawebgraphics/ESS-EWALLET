@@ -178,7 +178,10 @@ Route::prefix('service')->group(function(){
     Route::get('/getjointservicelist/{id}',[
         'uses' => 'Api\\Services\ServiceController@GetJointServicesList'
     ]);
-    
+    Route::get('/getservicetypecode/{id}/{wallet_condition}',[
+        'uses' => 'Api\\Services\ServiceController@GetServiceTypeCode'
+    ]);
+     
 });
     /**
     * Services Type Module

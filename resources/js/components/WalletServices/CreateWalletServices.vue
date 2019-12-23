@@ -105,7 +105,7 @@
                         <div class="input-group">
                         <div class="custom-file"> 
                         <input type="file" class="custom-file-label" v-on:change="onFileChangeServiceTemplate" name="service_template" id="service_template" v-validate="'required'" :disabled="this.method_name == 'joint'" v-if="this.method_name == 'create'">
-                                     <input type="file" class="custom-file-label" v-on:change="onFileChangeServiceTemplate" name="service_template" id="service_template" :disabled="this.method_name == 'joint'" v-else>
+                        <input type="file" class="custom-file-label" v-on:change="onFileChangeServiceTemplate" name="service_template" id="service_template" :disabled="this.method_name == 'joint'" v-else>
                         <label class="custom-file-label" for="service_template" v-if="this.service_template === 'empty'">Choose file</label>
                         <label class="custom-file-label" for="service_template" v-else>{{this.service_template}}</label> 
                      
@@ -536,7 +536,10 @@ methods:{
                     this.$Progress.increase(10)
                     this.$Progress.finish()
                     this.$router.push('/serviceslist/view') 
-                    console.log(response.data);
+                          toast.fire({
+                              type: 'success',
+                              title: `Service Created Successfully`
+                          })
                 })
                 .catch(()=>{
                   console.log('error'); 
@@ -549,7 +552,10 @@ methods:{
                     this.$Progress.increase(10)
                     this.$Progress.finish()
                     this.$router.push('/serviceslist/view') 
-                    console.log('hah update');
+                        toast.fire({
+                              type: 'success',
+                              title: 'Service Updated Successfully'
+                          })
                 })
                 .catch(()=>{
                   console.log('error'); 
@@ -674,6 +680,9 @@ methods:{
     openModal(){
             $('#serviceValueSDRates').modal('show');
         },  
+    /**
+     * For creating an object in array 
+     */
     createSD(){ 
           this.form.value == '';
           this.form.destination_wallet == ''; 
@@ -743,7 +752,6 @@ methods:{
              */
             this.service_template = response.data[0]['service_template']; 
             this.form.service_template = response.data[0]['service_template'];  
-            $('#service_template').val(response.data[0]['service_template']);
             /**
              * Values Source Destination Rates Table
              */
