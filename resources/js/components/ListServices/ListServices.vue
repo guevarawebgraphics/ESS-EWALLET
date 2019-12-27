@@ -31,7 +31,7 @@
                                         <td>{{ s.rwan }}</td>
                                         <td>{{ s.rname }}</td>
                                         <td>
-                                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'joint' }}" class="btn btn-primary btn-custom"> Transact</router-link> 
+                                            <router-link to="/prefundECPay" class="btn btn-primary btn-custom"> Transact</router-link> 
                                         </td>   
                                     </tr>  
                                 </tbody>
