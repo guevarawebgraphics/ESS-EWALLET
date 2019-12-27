@@ -1974,6 +1974,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1982,17 +1989,32 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    datatable: function datatable() {
+      setTimeout(function () {
+        $('#table-services').DataTable({
+          "paging": true,
+          "pageLength": 10,
+          scrollY: true,
+          "autoWidth": true,
+          //lengthChange: false,
+          responsive: true,
+          fixedColumns: false,
+          "order": [3, "desc"]
+        });
+      }, 1000);
+    },
     getListServices: function getListServices() {
       var _this = this;
 
-      axios.get('/api/service/getserviceslist').then(function (response) {
+      axios.get('/api/service/listservices').then(function (response) {
         _this.ListServices = response.data;
-      })["catch"](function () {
-        console.log("err");
+      })["catch"](function (err) {
+        console.log(err);
       });
     }
   },
   created: function created() {
+    this.datatable();
     this.getListServices();
   }
 });
@@ -59297,64 +59319,67 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "col-12 mt-5" }, [
-      _c("div", { staticClass: "card shadow-custom" }, [
-        _c("div", { staticClass: "col-md-12" }, [
-          _c("h4", { staticClass: "header-title mt-3" }, [
-            _vm._v("List of Services - Acct No. " + _vm._s(this.wi))
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "data-tables datatable-dark" }, [
-            _c(
-              "table",
-              {
-                staticClass: "table table-hover",
-                attrs: { id: "table-services" }
-              },
-              [
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.ListServices, function(s) {
-                    return _c("tr", { key: s.id }, [
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "btn btn-primary btn-custom",
-                              attrs: {
-                                to: {
-                                  name: "/update-service",
-                                  params: { id: s.id, method_name: "joint" }
+    _c("div", { attrs: { id: "list-of-service" } }, [
+      _c("div", { staticClass: "box ptb--100" }, [
+        _c("div", { staticClass: "card shadow-custom" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("h4", { staticClass: "header-title mt-3" }, [
+              _vm._v("List of Services - Acct No. " + _vm._s(this.wi))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "data-tables datatable-dark" }, [
+              _c(
+                "table",
+                {
+                  staticClass:
+                    "table table-hover table-stripe table-responsive",
+                  attrs: { id: "table-services" }
+                },
+                [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.ListServices, function(s) {
+                      return _c("tr", { key: s.id }, [
+                        _c("td", [_vm._v(_vm._s(s.s_wallet_type))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(s.service_name))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(s.service_description))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(s.rwan))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(s.rname))]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "btn btn-primary btn-custom",
+                                attrs: {
+                                  to: {
+                                    name: "/update-service",
+                                    params: { id: s.id, method_name: "joint" }
+                                  }
                                 }
-                              }
-                            },
-                            [_vm._v(" Transact")]
-                          )
-                        ],
-                        1
-                      )
-                    ])
-                  }),
-                  0
-                )
-              ]
-            )
+                              },
+                              [_vm._v(" Transact")]
+                            )
+                          ],
+                          1
+                        )
+                      ])
+                    }),
+                    0
+                  )
+                ]
+              )
+            ])
           ])
         ])
       ])
@@ -89078,7 +89103,7 @@ var routes = [{
   path: '/updateservice/:id/:method_name',
   name: '/update-service',
   component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"],
-  beforeEnter: (requireLogin, checkAdmin)
+  beforeEnter: requireLogin
 }, {
   path: '/viewjointservices/:id',
   name: 'list-joint-services',

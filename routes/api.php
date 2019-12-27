@@ -186,6 +186,11 @@ Route::prefix('service')->group(function(){
     Route::get('/getservicetypecode/{id}/{wallet_condition}',[
         'uses' => 'Api\\Services\ServiceController@GetServiceTypeCode'
     ]);
+
+    // api/service/listservices
+    Route::get('/listservices', [
+        'uses' => 'Api\\Services\ServiceController@ListServices'
+    ]);
      
 });
     /**
