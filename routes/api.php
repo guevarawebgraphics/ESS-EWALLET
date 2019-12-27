@@ -46,6 +46,11 @@ Route::prefix('servicematrix')->group(function(){
     Route::get('/GetServices', [
         'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@GetServices'
     ]);
+
+    // api/servicematrix/GetServiceMatrixConfig
+    Route::get('/ServiceMatrixConfig', [
+        'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@GetServiceMatrixConfig'
+    ]);
 });
 /**
  *  @ Wallet Account

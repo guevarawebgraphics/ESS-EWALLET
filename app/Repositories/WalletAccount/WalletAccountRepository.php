@@ -712,12 +712,15 @@ class WalletAccountRepository
                                     ->table('wallet_account')
                                     ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
                                     ->select(
+                                        'wallet_account.id',
                                         'wallet_account.wallet_account_no',
                                         'wallet_account.wallet_account_name',
                                         'wallet_account.wallet_type',
                                         'wallet_account_types.wallet_account_type as wat'
                                     )
-                                    ->where('wallet_account.created_by', '=', auth('api')->user()->id)
+                                    ->where('wallet_account.created_by', '=', 1)
+                                    // Uncomment Below after Confirmation to sir meo regarding list of merchants
+                                    //->where('wallet_account.wallet_account_type', '=', 3)
                                     ->get();
         return $list_of_merchant_account;
     }

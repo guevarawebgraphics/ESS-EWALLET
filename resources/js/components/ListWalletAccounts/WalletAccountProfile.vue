@@ -14,7 +14,7 @@
                                     <div class="form-group row">
                                         <div class="col md-6">
                                             <a class="btn btn-primary btn-md text-white" v-on:click="this.goToAvailableServices">Available Services</a>
-                                            <router-link to="/listmerchants" class="btn btn-primary btn-md text-white">List of Merchants</router-link>
+                                            <router-link :to="{ name: 'List of Merchants', params: { uid: wan }}" class="btn btn-primary btn-md text-white">List of Merchants</router-link>
                                         </div>
                                     </div>
                                 </div>

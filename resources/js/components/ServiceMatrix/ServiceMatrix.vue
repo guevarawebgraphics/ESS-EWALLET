@@ -74,14 +74,14 @@
                                                         <label class="custom-control-label" v-if="sm.agent == false" v-bind:for="'agent' + sm.id">SOME</label>
                                                     </div>
                                                 </td> -->
-                                                <td><input :key="sm.id" type="checkbox" name="admin_all[]" class="form-check-input" v-model="sm.admin_all" id="admin_all"></td>
-                                                <td><input :key="sm.id" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" id="admin_some"></td>
-                                                <td><input :key="sm.id" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" id="merchant_all"></td>
-                                                <td><input :key="sm.id" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some" id="merchant_some"></td>
-                                                <td><input :key="sm.id" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" id="branch_all"></td>
-                                                <td><input :key="sm.id" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" id="branch_some"></td>
-                                                <td><input :key="sm.id" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" id="agent_all"></td>
-                                                <td><input :key="sm.id" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" id="agent_some"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="admin_all[]" class="form-check-input" v-model="sm.admin_all" id="admin_all"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" id="admin_some"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" id="merchant_all"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some" id="merchant_some"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" id="branch_all"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" id="branch_some"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" id="agent_all"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" id="agent_some"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -93,7 +93,7 @@
                         <!-- Row Button -->
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary float-right"><i class="ti-save"></i> Save Changes</button>
+                                <button v-if="mode == 0" type="submit" class="btn btn-primary float-right"><i class="ti-save"></i> Save Changes</button>
                             </div>
                         </div>
                         <!-- ./ Row button -->
@@ -111,6 +111,8 @@
 export default {
     data(){
         return {
+            mode: 0,
+            currentUser: window.user.user_type_id,
             Services: {},
             form: new Form({
                 admin: {},
@@ -179,11 +181,27 @@ export default {
         },
         GetServices(){
             axios.get('api/servicematrix/GetServices').then(({ data }) => (this.Services = data));
+        },
+        GetServiceMatrixConfig(){
+            axios.get('api/servicematrix/ServiceMatrixConfig')
+                .then(({ data }) => (this.Services = data))
+                .catch(err => {
+                    console.log(err)
+                })
         }
     },
     created(){
         this.datatable();
-        this.GetServices();
+        if(this.currentUser === 3){
+            this.mode = 1;
+            this.GetServiceMatrixConfig()
+        }
+        else {
+            this.mode = 0;
+            this.GetServices();
+        }
+        
+        
         console.log(this.$route.name)
     }
 }
