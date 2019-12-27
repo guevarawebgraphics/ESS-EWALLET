@@ -24,6 +24,13 @@ use App\Models\Services\JointService;
  */
 class ServiceRepository
 {
+
+    protected $connection;
+
+    public function __construct(){
+        // E-Wallet Connection
+        $this->connection = DB::connection('mysql');
+    }
     /**
      * @return string
      *  Return the model
@@ -197,7 +204,7 @@ class ServiceRepository
                  * Service Template File Update
                  */
                 $service_template = null; 
-                $existing_service_template = DB::table('services_basetable')
+                $existing_service_template = $this->connection->table('services_basetable')
                                                 ->where('service_id','=',$service_data->service_id)
                                                 ->first();
                 $get_service_template =  $existing_service_template->service_template;
@@ -216,7 +223,7 @@ class ServiceRepository
                 /**
                  * Deleting existing vsdt
                  */
-                $delete_vsdt = DB::table('sd_wallet_service_set_up')->where('service_id','=',$service_data->service_id)->delete();
+                $delete_vsdt = $this->connection->table('sd_wallet_service_set_up')->where('service_id','=',$service_data->service_id)->delete();
                 
                 /**
                  * Renewing the VSDT that comes from object in Array 
@@ -342,11 +349,37 @@ class ServiceRepository
                                 ->get();
                                 return $getservicetable;*/
 
-                  $getservices_table = DB::connection('mysql')
-                                    ->table('services')
-                                    ->get(); 
-                                    return $getservices_table;
+    $getservices_table = $this->connection
+                      ->table('services')
+                      ->get(); 
+    return $getservices_table;
     }
+
+    /**
+     * @ Get a List of Services
+     * @return  listServices
+     **/
+    public function ListOfServices(){
+        $listServices = $this->connection
+                        ->table('services')
+                        ->join('services_basetable', 'services.id', '=', 'services_basetable.service_id')
+                        ->join('wallet_account', 'services_basetable.pr_details_id', '=', 'wallet_account.id')
+                        ->select(
+                            'services.id',
+                            'services.service_code',
+                            'services.service_name',
+                            'services.service_description',
+                            'services.s_wallet_type',
+                            'services.wallet_condition',
+                            'wallet_account.wallet_account_no as rwan',
+                            'wallet_account.wallet_account_name as rname'
+
+                        )
+                        ->get();
+        return $listServices;
+    }
+
+
     public function GetServiceDetails($service_id){
                   $service_details = DB::connection('mysql') 
                                     ->table('services')
