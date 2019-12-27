@@ -16,10 +16,19 @@ use App\Http\Requests\Services\JointValidate;
  */
 class ServiceController extends Controller
 {
+    /**
+     * @ Repository Implementation 
+     **/
     protected $services; 
+
+    /**
+     * Create a new Controller instance
+     * @param ServiceRepository $ServiceRepository
+     * @ Contructor 
+     **/
     public function __construct(ServiceRepository $ServiceRepository){
         $this->services =  $ServiceRepository; 
-      //  $this->middleware('auth:api');
+        $this->middleware('auth:api');
     }
     /**
      * For inserting Service , Wallet Details and Service & Service Type ID
@@ -92,6 +101,15 @@ class ServiceController extends Controller
     public function GetServiceTypeCode($id,$wallet_condition){
         $get_service_type_code = $this->services->GetServiceTypeCode($id,$wallet_condition);
         return response()->json($get_service_type_code);
+    }
+
+    /**
+     * @ List Services 
+     * @return JSON($list_services)
+     **/
+    public function ListServices(){
+        $list_services = $this->services->ListOfServices();
+        return response()->json($list_services);
     }
 
 }

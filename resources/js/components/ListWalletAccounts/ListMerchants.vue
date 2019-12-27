@@ -10,7 +10,7 @@
                         <!-- Col -->
                         <div class="col-md-12">
                             <h4 class="header-title mt-3">
-                                List of Merchants Accounts
+                                List of Merchants Accounts - {{ wan }}
                             </h4>
                             <div class="data-tables datatable-dark">
                                 <!-- Table -->
@@ -28,14 +28,14 @@
                                     <!-- ./ Thead -->
                                     <!-- TBody -->
                                     <tbody>
-                                        <tr>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
+                                        <tr v-for="merchants in lm" :key="merchants.id">
+                                            <td>{{ merchants.wallet_type }}</td>
+                                            <td>{{ merchants.wat }}</td>
+                                            <td>{{ merchants.wallet_account_no }}</td>
+                                            <td>{{ merchants.wallet_account_name}}</td>
                                             <td>
                                                 <a class="btn btn-secondary btn-sm" href="#Details">Details</a>
-                                                <a class="btn btn-secondary btn-sm" href="#ServiceMatrix">Service Matrix</a>
+                                                <router-link class="btn btn-secondary btn-sm" to="/ServiceMatrix">Service Matrix</router-link>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -57,7 +57,10 @@
 <script>
 export default {
      data(){
-         return{}
+         return{
+             lm: [],
+             wan: this.$route.params.uid
+         }
      },
      methods: {
         datatable(){
@@ -74,9 +77,19 @@ export default {
                 })
             }, 500);
         },
+        listMerchants(){
+            axios.get('/api/walletaccount/ListofMerchantsAccounts')
+                .then(res => {
+                    this.lm = res.data;
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
      },
      created(){
          this.datatable()
+         this.listMerchants()
      }
 }
 </script>

@@ -1974,6 +1974,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1982,17 +1989,32 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    datatable: function datatable() {
+      setTimeout(function () {
+        $('#table-services').DataTable({
+          "paging": true,
+          "pageLength": 10,
+          scrollY: true,
+          "autoWidth": true,
+          //lengthChange: false,
+          responsive: true,
+          fixedColumns: false,
+          "order": [3, "desc"]
+        });
+      }, 1000);
+    },
     getListServices: function getListServices() {
       var _this = this;
 
-      axios.get('/api/service/getserviceslist').then(function (response) {
+      axios.get('/api/service/listservices').then(function (response) {
         _this.ListServices = response.data;
-      })["catch"](function () {
-        console.log("err");
+      })["catch"](function (err) {
+        console.log(err);
       });
     }
   },
   created: function created() {
+    this.datatable();
     this.getListServices();
   }
 });
@@ -2066,7 +2088,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      lm: [],
+      wan: this.$route.params.uid
+    };
   },
   methods: {
     datatable: function datatable() {
@@ -2082,10 +2107,20 @@ __webpack_require__.r(__webpack_exports__);
           "order": [4, "desc"]
         });
       }, 500);
+    },
+    listMerchants: function listMerchants() {
+      var _this = this;
+
+      axios.get('/api/walletaccount/ListofMerchantsAccounts').then(function (res) {
+        _this.lm = res.data;
+      })["catch"](function (err) {
+        console.log(err);
+      });
     }
   },
   created: function created() {
     this.datatable();
+    this.listMerchants();
   }
 });
 
@@ -2817,6 +2852,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      mode: 0,
+      currentUser: window.user.user_type_id,
       Services: {},
       form: new Form({
         admin: {},
@@ -2891,11 +2928,29 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref.data;
         return _this2.Services = data;
       });
+    },
+    GetServiceMatrixConfig: function GetServiceMatrixConfig() {
+      var _this3 = this;
+
+      axios.get('api/servicematrix/ServiceMatrixConfig').then(function (_ref2) {
+        var data = _ref2.data;
+        return _this3.Services = data;
+      })["catch"](function (err) {
+        console.log(err);
+      });
     }
   },
   created: function created() {
     this.datatable();
-    this.GetServices();
+
+    if (this.currentUser === 3) {
+      this.mode = 1;
+      this.GetServiceMatrixConfig();
+    } else {
+      this.mode = 0;
+      this.GetServices();
+    }
+
     console.log(this.$route.name);
   }
 });
@@ -59264,64 +59319,67 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "col-12 mt-5" }, [
-      _c("div", { staticClass: "card shadow-custom" }, [
-        _c("div", { staticClass: "col-md-12" }, [
-          _c("h4", { staticClass: "header-title mt-3" }, [
-            _vm._v("List of Services - Acct No. " + _vm._s(this.wi))
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "data-tables datatable-dark" }, [
-            _c(
-              "table",
-              {
-                staticClass: "table table-hover",
-                attrs: { id: "table-services" }
-              },
-              [
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.ListServices, function(s) {
-                    return _c("tr", { key: s.id }, [
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "btn btn-primary btn-custom",
-                              attrs: {
-                                to: {
-                                  name: "/update-service",
-                                  params: { id: s.id, method_name: "joint" }
+    _c("div", { attrs: { id: "list-of-service" } }, [
+      _c("div", { staticClass: "box ptb--100" }, [
+        _c("div", { staticClass: "card shadow-custom" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("h4", { staticClass: "header-title mt-3" }, [
+              _vm._v("List of Services - Acct No. " + _vm._s(this.wi))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "data-tables datatable-dark" }, [
+              _c(
+                "table",
+                {
+                  staticClass:
+                    "table table-hover table-stripe table-responsive",
+                  attrs: { id: "table-services" }
+                },
+                [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.ListServices, function(s) {
+                      return _c("tr", { key: s.id }, [
+                        _c("td", [_vm._v(_vm._s(s.s_wallet_type))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(s.service_name))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(s.service_description))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(s.rwan))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(s.rname))]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "btn btn-primary btn-custom",
+                                attrs: {
+                                  to: {
+                                    name: "/update-service",
+                                    params: { id: s.id, method_name: "joint" }
+                                  }
                                 }
-                              }
-                            },
-                            [_vm._v(" Transact")]
-                          )
-                        ],
-                        1
-                      )
-                    ])
-                  }),
-                  0
-                )
-              ]
-            )
+                              },
+                              [_vm._v(" Transact")]
+                            )
+                          ],
+                          1
+                        )
+                      ])
+                    }),
+                    0
+                  )
+                ]
+              )
+            ])
           ])
         ])
       ])
@@ -59371,85 +59429,99 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { attrs: { id: "list-merchants" } }, [
+    _c("div", { staticClass: "box ptb--100" }, [
+      _c("div", { staticClass: "card shadow-custom" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "form-group row" }, [
+            _c("div", { staticClass: "col-md-12" }, [
+              _c("h4", { staticClass: "header-title mt-3" }, [
+                _vm._v(
+                  "\n                            List of Merchants Accounts - " +
+                    _vm._s(_vm.wan) +
+                    "\n                        "
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "data-tables datatable-dark" }, [
+                _c(
+                  "table",
+                  {
+                    staticClass: "table striped text-center",
+                    attrs: { id: "table_id" }
+                  },
+                  [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.lm, function(merchants) {
+                        return _c("tr", { key: merchants.id }, [
+                          _c("td", [_vm._v(_vm._s(merchants.wallet_type))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(merchants.wat))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(merchants.wallet_account_no))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(merchants.wallet_account_name))
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "btn btn-secondary btn-sm",
+                                  attrs: { href: "#Details" }
+                                },
+                                [_vm._v("Details")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "btn btn-secondary btn-sm",
+                                  attrs: { to: "/ServiceMatrix" }
+                                },
+                                [_vm._v("Service Matrix")]
+                              )
+                            ],
+                            1
+                          )
+                        ])
+                      }),
+                      0
+                    )
+                  ]
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "list-merchants" } }, [
-      _c("div", { staticClass: "box ptb--100" }, [
-        _c("div", { staticClass: "card shadow-custom" }, [
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "form-group row" }, [
-              _c("div", { staticClass: "col-md-12" }, [
-                _c("h4", { staticClass: "header-title mt-3" }, [
-                  _vm._v(
-                    "\n                            List of Merchants Accounts\n                        "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "data-tables datatable-dark" }, [
-                  _c(
-                    "table",
-                    {
-                      staticClass: "table striped text-center",
-                      attrs: { id: "table_id" }
-                    },
-                    [
-                      _c("thead", [
-                        _c("tr", { staticClass: "th-table" }, [
-                          _c("th", [_vm._v("Wallet Type")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Account Type")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Account No.")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Account Name")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Action")])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("tbody", [
-                        _c("tr", [
-                          _c("td", [_vm._v("Test")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Test")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Test")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Test")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "btn btn-secondary btn-sm",
-                                attrs: { href: "#Details" }
-                              },
-                              [_vm._v("Details")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                staticClass: "btn btn-secondary btn-sm",
-                                attrs: { href: "#ServiceMatrix" }
-                              },
-                              [_vm._v("Service Matrix")]
-                            )
-                          ])
-                        ])
-                      ])
-                    ]
-                  )
-                ])
-              ])
-            ])
-          ])
-        ])
+    return _c("thead", [
+      _c("tr", { staticClass: "th-table" }, [
+        _c("th", [_vm._v("Wallet Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Account Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Account No.")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Account Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
       ])
     ])
   }
@@ -59619,7 +59691,12 @@ var render = function() {
                       "router-link",
                       {
                         staticClass: "btn btn-primary btn-md text-white",
-                        attrs: { to: "/listmerchants" }
+                        attrs: {
+                          to: {
+                            name: "List of Merchants",
+                            params: { uid: _vm.wan }
+                          }
+                        }
                       },
                       [_vm._v("List of Merchants")]
                     )
@@ -60400,6 +60477,7 @@ var render = function() {
                                   key: sm.id,
                                   staticClass: "form-check-input",
                                   attrs: {
+                                    disabled: _vm.mode == 1,
                                     type: "checkbox",
                                     name: "admin_all[]",
                                     id: "admin_all"
@@ -60455,6 +60533,7 @@ var render = function() {
                                   key: sm.id,
                                   staticClass: "form-check-input",
                                   attrs: {
+                                    disabled: _vm.mode == 1,
                                     type: "checkbox",
                                     name: "admin_some[]",
                                     id: "admin_some"
@@ -60510,6 +60589,7 @@ var render = function() {
                                   key: sm.id,
                                   staticClass: "form-check-input",
                                   attrs: {
+                                    disabled: _vm.mode == 1,
                                     type: "checkbox",
                                     name: "merchant_all[]",
                                     id: "merchant_all"
@@ -60565,6 +60645,7 @@ var render = function() {
                                   key: sm.id,
                                   staticClass: "form-check-input",
                                   attrs: {
+                                    disabled: _vm.mode == 1,
                                     type: "checkbox",
                                     name: "merchant_some[]",
                                     id: "merchant_some"
@@ -60620,6 +60701,7 @@ var render = function() {
                                   key: sm.id,
                                   staticClass: "form-check-input",
                                   attrs: {
+                                    disabled: _vm.mode == 1,
                                     type: "checkbox",
                                     name: "branch_all[]",
                                     id: "branch_all"
@@ -60675,6 +60757,7 @@ var render = function() {
                                   key: sm.id,
                                   staticClass: "form-check-input",
                                   attrs: {
+                                    disabled: _vm.mode == 1,
                                     type: "checkbox",
                                     name: "branch_some[]",
                                     id: "branch_some"
@@ -60730,6 +60813,7 @@ var render = function() {
                                   key: sm.id,
                                   staticClass: "form-check-input",
                                   attrs: {
+                                    disabled: _vm.mode == 1,
                                     type: "checkbox",
                                     name: "agent_all[]",
                                     id: "agent_all"
@@ -60785,6 +60869,7 @@ var render = function() {
                                   key: sm.id,
                                   staticClass: "form-check-input",
                                   attrs: {
+                                    disabled: _vm.mode == 1,
                                     type: "checkbox",
                                     name: "agent_some[]",
                                     id: "agent_some"
@@ -60836,7 +60921,23 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(1)
+              _c("div", { staticClass: "form-group row" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _vm.mode == 0
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary float-right",
+                          attrs: { type: "submit" }
+                        },
+                        [
+                          _c("i", { staticClass: "ti-save" }),
+                          _vm._v(" Save Changes")
+                        ]
+                      )
+                    : _vm._e()
+                ])
+              ])
             ])
           ])
         ]
@@ -60886,23 +60987,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("All")]),
         _vm._v(" "),
         _c("th", [_vm._v("Some")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary float-right",
-            attrs: { type: "submit" }
-          },
-          [_c("i", { staticClass: "ti-save" }), _vm._v(" Save Changes")]
-        )
       ])
     ])
   }
@@ -88996,7 +89080,7 @@ var routes = [{
   path: '/serviceMatrix',
   name: 'Service Matrix',
   component: __webpack_require__(/*! ../components/ServiceMatrix/ServiceMatrix.vue */ "./resources/js/components/ServiceMatrix/ServiceMatrix.vue")["default"],
-  beforeEnter: (requireLogin, checkAdmin)
+  beforeEnter: requireLogin
 },
 /**
  * @ Services  
@@ -89019,7 +89103,7 @@ var routes = [{
   path: '/updateservice/:id/:method_name',
   name: '/update-service',
   component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"],
-  beforeEnter: (requireLogin, checkAdmin)
+  beforeEnter: requireLogin
 }, {
   path: '/viewjointservices/:id',
   name: 'list-joint-services',
@@ -89055,7 +89139,7 @@ var routes = [{
   name: 'Wallet Account Profile',
   beforeEnter: requireLogin
 }, {
-  path: '/listmerchants',
+  path: '/listmerchants/:uid',
   component: __webpack_require__(/*! ../components/ListWalletAccounts/ListMerchants.vue */ "./resources/js/components/ListWalletAccounts/ListMerchants.vue")["default"],
   name: 'List of Merchants',
   beforeEnter: requireLogin

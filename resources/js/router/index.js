@@ -91,7 +91,7 @@ const routes = [
       path: '/serviceMatrix', 
       name: 'Service Matrix',
       component: require('../components/ServiceMatrix/ServiceMatrix.vue').default, 
-      beforeEnter: (requireLogin, checkAdmin)
+      beforeEnter: (requireLogin),
     },
     /**
      * @ Services  
@@ -118,7 +118,7 @@ const routes = [
       path:'/updateservice/:id/:method_name', 
       name: '/update-service',
       component: require('../components/WalletServices/CreateWalletServices.vue').default, 
-      beforeEnter: (requireLogin, checkAdmin)
+      beforeEnter: (requireLogin)
     }, 
     {
       path:'/viewjointservices/:id', 
@@ -157,7 +157,7 @@ const routes = [
       beforeEnter: requireLogin
     },
     {
-      path: '/listmerchants', 
+      path: '/listmerchants/:uid', 
       component: require('../components/ListWalletAccounts/ListMerchants.vue').default, 
       name: 'List of Merchants',
       beforeEnter: requireLogin
