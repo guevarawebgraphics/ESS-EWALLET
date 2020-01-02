@@ -24,14 +24,26 @@ class StorePrefund extends FormRequest
     public function rules()
     {
         return [
-            'prefund_amount' => 'required',
-            'name_of_bank' => 'required|max:255',
+            'prefundAmount' => 'required',
+            'nameofbank' => 'required|max:255',
             'branch' => 'required|max:255',
-            'account_type' => 'required|max:255',
-            'account_name' => 'required|max:255',
-            'account_no' => 'required|max:255',
-            'deposit_slip' => 'required|max:255',
-            'remarks' => 'required|max:255',
+            'accountType' => 'required|max:255',
+            'accountName' => 'required|max:255',
+            'accountNo' => 'required|max:255',
+            'depositSlip' => 'required|file',
+            //'remarks' => 'required|max:255',
+        ];
+    }
+
+    /**
+     * Custom message for validation rules
+     * 
+     * @return array
+     **/
+    public function messages()
+    {
+        return [
+            'depositSlip.required' => 'Deposit Slip is Required'
         ];
     }
 }

@@ -245,7 +245,8 @@ Route::prefix('service_gateway')->group(function(){
  // Prefund
 // api/transaction/storeprefund
  Route::prefix('transaction')->group(function(){
+    // api/transaction/storeprefund
     Route::post('/storeprefund', [
-        'uses' => 'Api\\transaction\TransactionController@StorePrefund'
+        'uses' => 'Api\\Transaction\PrefundController@StorePrefund'
     ]);
  });

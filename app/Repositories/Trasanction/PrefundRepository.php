@@ -32,24 +32,29 @@ class PrefundRepository
         /**
          * @ Handle File Upload 
          **/
-         //gets the original file name
-         $depositSlip_ext = $prefund_data->depositSlip->getClientOriginalName();
-         //gets the original file name except the extension
-         $depositSlip_filename = pathinfo($depositSlip_ext, PATHINFO_FILENAME);
-         $depositSlip_file = time().'_'.$depositSlip_filename.'.'.$prefund_data->depositSlip->getClientOriginalExtension();
-         // Store File
-         $depositSlip = $prefund_data->depositSlip->storeAs('public/wallet_account_files/kyc_form', $kyc_form_file);
+         if(!$prefund_data->depositSlip) {
+             //gets the original file name
+            $depositSlip_ext = $prefund_data->depositSlip->getClientOriginalName();
+            //gets the original file name except the extension
+            $depositSlip_filename = pathinfo($depositSlip_ext, PATHINFO_FILENAME);
+            $depositSlip_file = time().'_'.$depositSlip_filename.'.'.$prefund_data->depositSlip->getClientOriginalExtension();
+            // Store File
+            $depositSlip = $prefund_data->depositSlip->storeAs('public/wallet_account_files/kyc_form', $depositSlip_file);
+            
+         }
 
+        // Store Prefund Data
         $prefund = Prefund::create([
-                'prefund_amount' => $prefund->prefund_amount,
-                'name_of_bank' => $prefund->prefund_amount,
-                'branch' => $prefund->prefund_amount,
-                'account_type' => $prefund->account_type,
-                'account_name' => $prefund->account_name,
-                'account_no' => $prefund->account_no,
-                'remarks' => 'remarks',
-                'created_by' => $user->id,
-                'updated_by' => $user->id
+            'prefund_amount' => $prefund_data->prefundAmount,
+            'name_of_bank' => $prefund_data->nameofbank,
+            'branch' => $prefund_data->branch,
+            'account_type' => $prefund_data->accountType,
+            'account_name' => $prefund_data->accountName,
+            'account_no' => $prefund_data->accountNo,
+            'deposit_slip' => (!$prefund_data->depositSlip ? $depositSlip_filename : 'none' ),
+            'remarks' => 'remarks',
+            'created_by' => $user->id,
+            'updated_by' => $user->id
         ]);
         return $prefund;
     }

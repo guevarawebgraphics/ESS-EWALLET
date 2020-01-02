@@ -3054,19 +3054,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       DepositSlipName: null,
+      csrf_token: $('meta[name="csrf-token"]').attr('content'),
       form: new Form({
-        csrf_token: $('meta[name="csrf-token"]').attr('content'),
         prefundAmount: 0,
-        nameofbank: null,
-        branch: null,
-        accountType: null,
-        accountName: null,
-        accountNo: null,
-        depositSlip: null
+        nameofbank: '',
+        branch: '',
+        accountType: '',
+        accountName: '',
+        accountNo: '',
+        depositSlip: ''
       })
     };
   },
@@ -3085,40 +3101,69 @@ __webpack_require__.r(__webpack_exports__);
         if (result.value) {
           _this.$Progress.start();
 
-          var formData = new FormData();
-          formData.append('depositSlip', _this.form.depositSlip);
-          formData.append('_token', _this.form.csrf_token);
-          formData.append('prefundAmount', _this.form.prefundAmount);
-          formData.append('nameofbank', _this.form.nameofbank);
-          formData.append('branch', _this.form.branch);
-          formData.append('accountType', _this.form.accountType);
-          formData.append('accountName', _this.form.accountName);
-          formData.append('accountNo', _this.form.accountNo);
-          axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-          axios.post('/api/transaction/storeprefund ', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              'X-CSRF-TOKEN': _this.csrf_token
+          var validateform = _this.$validator.validateAll().then(function (result) {
+            if (result) {
+              $('#submitSpinner').removeAttr('hidden');
+              var formData = new FormData();
+              formData.append('depositSlip', _this.form.depositSlip);
+              formData.append('_token', _this.form.csrf_token);
+              formData.append('prefundAmount', _this.form.prefundAmount);
+              formData.append('nameofbank', _this.form.nameofbank);
+              formData.append('branch', _this.form.branch);
+              formData.append('accountType', _this.form.accountType);
+              formData.append('accountName', _this.form.accountName);
+              formData.append('accountNo', _this.form.accountNo);
+              axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+              axios.post('/api/transaction/storeprefund', formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  'X-CSRF-TOKEN': _this.csrf_token
+                }
+              }).then(function (res) {
+                _this.$Progress.increase(10);
+
+                _this.$Progress.finish();
+
+                console.log(res);
+
+                if (res) {
+                  toast.fire({
+                    type: 'success',
+                    title: 'Prefund ECpay Saved!!'
+                  });
+
+                  _this.form.clear();
+
+                  _this.form.reset();
+
+                  _this.$validator.reset();
+
+                  _this.DepositSlipName = null;
+                }
+
+                console.log(res);
+                $('#submitSpinner').attr('hidden', true);
+              })["catch"](function (err) {
+                _this.$Progress.fail();
+
+                if (err.response.status === 422) {
+                  toast.fire({
+                    type: 'info',
+                    title: 'Deposit Slip is Required'
+                  });
+                }
+
+                console.clear();
+                $('#submitSpinner').attr('hidden', true);
+              });
+              return;
             }
-          }).then(function (res) {
-            _this.$Progress.increase(10);
 
-            _this.$Progress.finish();
+            $('#submitSpinner').attr('hidden', true);
 
-            console.log(res);
+            _this.$Progress.fail();
 
-            if (res) {
-              _this.form.clear();
-
-              _this.form.reset();
-            }
-
-            console.log(res);
-          })["catch"](function (err) {
-            _this.$Progress.fail(); //console.log(err)
-
-
-            console.clear();
+            return false;
           });
         }
       });
@@ -61207,231 +61252,357 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-md-4 offset-md-1" }, [
-                  _c("div", { staticClass: "form-group row" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "control-label custom-label",
-                        attrs: { for: "prefundAmount" }
-                      },
-                      [_vm._v("Prefund Amount: ")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
+                  _c(
+                    "div",
+                    { staticClass: "form-group row" },
+                    [
+                      _c(
+                        "label",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.prefundAmount,
-                          expression: "form.prefundAmount"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "number",
-                        name: "prefundAmount",
-                        id: "prefundAmount"
-                      },
-                      domProps: { value: _vm.form.prefundAmount },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                          staticClass: "control-label custom-label",
+                          attrs: { for: "prefundAmount" }
+                        },
+                        [_vm._v("Prefund Amount: ")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.prefundAmount,
+                            expression: "form.prefundAmount"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
                           }
-                          _vm.$set(
-                            _vm.form,
-                            "prefundAmount",
-                            $event.target.value
-                          )
+                        ],
+                        staticClass: "form-control",
+                        class: {
+                          "is-invalid": _vm.errors.has("prefundAmount")
+                        },
+                        attrs: {
+                          type: "number",
+                          name: "prefundAmount",
+                          id: "prefundAmount"
+                        },
+                        domProps: { value: _vm.form.prefundAmount },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "prefundAmount",
+                              $event.target.value
+                            )
+                          }
                         }
-                      }
-                    })
-                  ]),
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "prefundAmount" }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.has("prefundAmount")
+                        ? _c("p", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(_vm.errors.first("prefundAmount")))
+                          ])
+                        : _vm._e()
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c("hr"),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group row mt-3" }, [
-                    _c(
-                      "h5",
-                      {
-                        staticClass:
-                          "control-label custom-label font-weight-bold",
-                        attrs: { for: "nameofBank" }
-                      },
-                      [_vm._v("Deposited to:")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        staticClass: "control-label custom-label mt-3",
-                        attrs: { for: "nameofBank" }
-                      },
-                      [_vm._v("Name of Bank:")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
+                  _c(
+                    "div",
+                    { staticClass: "form-group row mt-3" },
+                    [
+                      _c(
+                        "h5",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.nameofbank,
-                          expression: "form.nameofbank"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        id: "nameofBank",
-                        name: "nameofBank"
-                      },
-                      domProps: { value: _vm.form.nameofbank },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.form, "nameofbank", $event.target.value)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        staticClass: "control-label custom-label mt-3",
-                        attrs: { for: "branch" }
-                      },
-                      [_vm._v("Branch:")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
+                          staticClass:
+                            "control-label custom-label font-weight-bold",
+                          attrs: { for: "nameofBank" }
+                        },
+                        [_vm._v("Deposited to:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "label",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.branch,
-                          expression: "form.branch"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text", id: "branch", name: "branch" },
-                      domProps: { value: _vm.form.branch },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                          staticClass: "control-label custom-label mt-3",
+                          attrs: { for: "nameofBank" }
+                        },
+                        [_vm._v("Name of Bank:")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.nameofbank,
+                            expression: "form.nameofbank"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
                           }
-                          _vm.$set(_vm.form, "branch", $event.target.value)
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.errors.has("nameofBank") },
+                        attrs: {
+                          type: "text",
+                          id: "nameofBank",
+                          name: "nameofBank"
+                        },
+                        domProps: { value: _vm.form.nameofbank },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "nameofbank",
+                              $event.target.value
+                            )
+                          }
                         }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        staticClass: "control-label custom-label mt-3",
-                        attrs: { for: "accountType" }
-                      },
-                      [_vm._v("Account Type:")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "nameofBank" }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.has("nameofBank")
+                        ? _c("p", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(_vm.errors.first("nameofBank")))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "label",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.accountType,
-                          expression: "form.accountType"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        id: "accountType",
-                        name: "accountType"
-                      },
-                      domProps: { value: _vm.form.accountType },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                          staticClass: "control-label custom-label mt-3",
+                          attrs: { for: "branch" }
+                        },
+                        [_vm._v("Branch:")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.branch,
+                            expression: "form.branch"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
                           }
-                          _vm.$set(_vm.form, "accountType", $event.target.value)
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.errors.has("branch") },
+                        attrs: { type: "text", id: "branch", name: "branch" },
+                        domProps: { value: _vm.form.branch },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "branch", $event.target.value)
+                          }
                         }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        staticClass: "control-label custom-label mt-3",
-                        attrs: { for: "accountName" }
-                      },
-                      [_vm._v("Account Name:")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "branch" }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.has("branch")
+                        ? _c("p", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(_vm.errors.first("branch")))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "label",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.accountName,
-                          expression: "form.accountName"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        id: "accountName",
-                        name: "accountName"
-                      },
-                      domProps: { value: _vm.form.accountName },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                          staticClass: "control-label custom-label mt-3",
+                          attrs: { for: "accountType" }
+                        },
+                        [_vm._v("Account Type:")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.accountType,
+                            expression: "form.accountType"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
                           }
-                          _vm.$set(_vm.form, "accountName", $event.target.value)
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.errors.has("accountType") },
+                        attrs: {
+                          type: "text",
+                          id: "accountType",
+                          name: "accountType"
+                        },
+                        domProps: { value: _vm.form.accountType },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "accountType",
+                              $event.target.value
+                            )
+                          }
                         }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        staticClass: "control-label custom-label mt-3",
-                        attrs: { for: "AccountNo" }
-                      },
-                      [_vm._v("Account No")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "accountType" }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.has("accountType")
+                        ? _c("p", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(_vm.errors.first("accountType")))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "label",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.accountNo,
-                          expression: "form.accountNo"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        id: "accountNo",
-                        name: "accountNo"
-                      },
-                      domProps: { value: _vm.form.accountNo },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                          staticClass: "control-label custom-label mt-3",
+                          attrs: { for: "accountName" }
+                        },
+                        [_vm._v("Account Name:")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.accountName,
+                            expression: "form.accountName"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
                           }
-                          _vm.$set(_vm.form, "accountNo", $event.target.value)
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.errors.has("accountName") },
+                        attrs: {
+                          type: "text",
+                          id: "accountName",
+                          name: "accountName"
+                        },
+                        domProps: { value: _vm.form.accountName },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "accountName",
+                              $event.target.value
+                            )
+                          }
                         }
-                      }
-                    })
-                  ]),
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "accountName" }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.has("accountName")
+                        ? _c("p", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(_vm.errors.first("accountName")))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "control-label custom-label mt-3",
+                          attrs: { for: "AccountNo" }
+                        },
+                        [_vm._v("Account No")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.accountNo,
+                            expression: "form.accountNo"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.errors.has("accountNo") },
+                        attrs: {
+                          type: "text",
+                          id: "accountNo",
+                          name: "accountNo"
+                        },
+                        domProps: { value: _vm.form.accountNo },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "accountNo", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "accountNo" }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.has("accountNo")
+                        ? _c("p", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(_vm.errors.first("accountNo")))
+                          ])
+                        : _vm._e()
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
                     _c("div", { staticClass: "custom-file" }, [
@@ -61519,7 +61690,21 @@ var staticRenderFns = [
             staticClass: "btn btn-primary float-right",
             attrs: { type: "submit" }
           },
-          [_c("i", { staticClass: "ti-save" }), _vm._v(" Submit")]
+          [
+            _c("i", { staticClass: "ti-save" }),
+            _vm._v(
+              "\n                                         Submit\n                                         "
+            ),
+            _c("span", {
+              staticClass: "spinner-border spinner-border-sm",
+              attrs: {
+                role: "status",
+                "aria-hidden": "true",
+                hidden: "true",
+                id: "submitSpinner"
+              }
+            })
+          ]
         )
       ])
     ])

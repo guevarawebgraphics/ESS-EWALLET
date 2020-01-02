@@ -6,17 +6,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 /**
- * @ Form Request
+ * @ Form Request 
  **/
 use App\Http\Requests\Transaction\StorePrefund;
 
 /**
  * @ SOLID SRP
- * @Repository
+ * @ Repository 
  **/
 use App\Repositories\Trasanction\PrefundRepository;
 
-class TransactionController extends Controller
+class PrefundController extends Controller
 {
     /**
      * @ Repository Implementation 
@@ -24,13 +24,13 @@ class TransactionController extends Controller
     protected $prefund;
 
     /**
-     * Create new controller instance
-     * @param  PrefundRepository
-     * @ constructor
+     * Create new controller intance
+     * @param PrefundRepository
+     * @ constructor 
      **/
     public function __construct(PrefundRepository $PrefundRepository){
         $this->prefund = $PrefundRepository;
-        // /$this->middleware('auth:api');
+        $this->middleware('auth:api');
     }
 
     /**
