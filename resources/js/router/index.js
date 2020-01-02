@@ -168,6 +168,12 @@ const routes = [
       name: 'List of Services',
       beforeEnter: requireLogin
     },
+    {
+      path: '/prefundECPay',
+      component: require('../components/Transactions/PrefundECPay').default,
+      name: 'Prefund EC Pay',
+      beforeEnter: requireLogin,
+    },
     /** List Services */
     /**
      *@ Return Error 404 Page 
