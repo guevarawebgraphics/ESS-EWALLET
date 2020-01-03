@@ -13,8 +13,13 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
     @auth
     <script>
-        window.user = @json(auth()->user())
+        window.user = @json((auth()->user() ? auth()->user() :  Session::get('user') ))
     </script>
+    @if( Session::get('user'))
+    <script>
+        window.localStorage.setItem('user', @json(Session::get('username')));
+    </script>
+    @endif
     @endauth
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/ewallet.css') }}" rel="stylesheet">
