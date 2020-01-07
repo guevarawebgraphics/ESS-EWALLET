@@ -13,7 +13,7 @@
             <div class="card-body">
      
                 <div class="data-tables datatable-dark">
-                <table class="table table-hover" id="table-service-type">
+                <table class="table table-hover table-striped table-responsive text-center" id="table-service-type">
                 <thead>
                     <tr class="th-table">
                         <th>Service Type Code</th>
