@@ -4,13 +4,13 @@
         <div class="card shadow-custom">
             <div class="col-md-12">
                 <h4 class="header-title mt-3">E-Wallet Services </h4>   
-                <router-link to="/createservice/create" class="btn btn-primary btn-custom" v-show="this.method_name == 'view'">Create Solo Services</router-link>  
+                <router-link to="/createservice/create" class="btn btn-primary btn-custom">Create Solo Services</router-link>  
                 <router-link to="/createjointservice" class="btn btn-primary btn-custom">Create Joint Services</router-link> 
             </div>  
             <div class="card-body">
      
                 <div class="data-tables datatable-dark">
-                <table class="table table-hover" id="table-services">
+                <table class="table table-hover table-striped table-responsive text-center" id="table-services">
                 <thead>
                     <tr class="th-table">
                         <th>Service Code</th>
@@ -35,8 +35,12 @@
                             </p>
                         </td>
                         <td>
-                            <p>
-                            -----
+                            <p v-if="s.st_code">
+                            <!-- {{ showServiceType(s.id,s.wallet_condition) }} -->
+                            {{ s.st_code }}
+                            </p>
+                            <p v-if="s.st_code == null">
+                                Joint
                             </p>
                         </td>
                         <td> 
@@ -56,7 +60,7 @@
                         </td>
                         <td> 
                             <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'view' }}" class="btn btn-primary btn-custom" v-if="method_name === 'view' && s.wallet_condition =='solo'">Update</router-link>  
-                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'view' }}" class="btn btn-primary btn-custom" v-if="method_name === 'view' && s.wallet_condition =='joint'">Manage</router-link> 
+                            <router-link :to="{ name: 'list-joint-services', params: { id: s.id }}" class="btn btn-primary btn-custom" v-if="method_name === 'view' && s.wallet_condition =='joint'">View</router-link> 
                             <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'joint' }}" class="btn btn-primary btn-custom" v-if="method_name === 'joint' && s.wallet_condition === 'solo'" :hidden="checksExistId(s.id)"> Add</router-link> 
                             <a href="#" class="badge badge-secondary" v-show="checksExistId(s.id) && method_name === 'joint'">TAKEN</a> 
                             <a href="#" class="badge badge-secondary" v-show="method_name === 'joint' && s.wallet_condition === 'joint'">UNAVAILABLE</a>
@@ -82,7 +86,9 @@ export default {
      return {
            Services : {},
            method_name: this.$route.params.method_name,
-           joint_services : JSON.parse(localStorage.getItem('list_services'))
+           joint_services : JSON.parse(localStorage.getItem('list_services')),
+           st_code_get : '',
+           
      }
    
  },
@@ -100,7 +106,7 @@ export default {
                     responsive: true,
                     fixedColumns: true,
                 });
-            }, 400);
+            }, 1000);
         },
         showServices() {
             axios.get('/api/service/getserviceslist')
@@ -119,6 +125,25 @@ export default {
                     return joint_services.some(service); 
                 }
         },
+        /*
+        // Sir Manuel :
+        showServiceType(id,wallet_condition){ 
+            if(wallet_condition == 'solo'){ 
+                axios.get('/api/service/getservicetypecode/'+id+'/solo')
+                .then(res => {
+                    this.st_code_get.push({"id": id, "st_code": res.data.st_code})
+                    // this.$set(this.Services, id, {"st_code" : res.data.st_code})
+                })
+                            }) 
+                })
+
+            }
+            else {
+                return 'joint'
+            }
+         
+        }
+        */
  },
  created() {
     this.showServices()
