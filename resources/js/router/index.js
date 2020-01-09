@@ -118,7 +118,7 @@ const routes = [
       path:'/updateservice/:id/:method_name', 
       name: '/update-service',
       component: require('../components/WalletServices/CreateWalletServices.vue').default, 
-      beforeEnter: (requireLogin, checkAdmin)
+      beforeEnter: (requireLogin)
     }, 
     {
       path:'/viewjointservices/:id', 
@@ -167,6 +167,12 @@ const routes = [
       component: require('../components/ListServices/ListServices.vue').default, 
       name: 'List of Services',
       beforeEnter: requireLogin
+    },
+    {
+      path: '/prefundECPay',
+      component: require('../components/Transactions/PrefundECPay').default,
+      name: 'Prefund EC Pay',
+      beforeEnter: requireLogin,
     },
     /** List Services */
     /**

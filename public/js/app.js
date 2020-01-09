@@ -1974,6 +1974,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1982,17 +1989,32 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    datatable: function datatable() {
+      setTimeout(function () {
+        $('#table-services').DataTable({
+          "paging": true,
+          "pageLength": 10,
+          scrollY: true,
+          "autoWidth": true,
+          //lengthChange: false,
+          responsive: true,
+          fixedColumns: false,
+          "order": [3, "desc"]
+        });
+      }, 1000);
+    },
     getListServices: function getListServices() {
       var _this = this;
 
-      axios.get('/api/service/getserviceslist').then(function (response) {
+      axios.get('/api/service/listservices').then(function (response) {
         _this.ListServices = response.data;
-      })["catch"](function () {
-        console.log("err");
+      })["catch"](function (err) {
+        console.log(err);
       });
     }
   },
   created: function created() {
+    this.datatable();
     this.getListServices();
   }
 });
@@ -2930,6 +2952,230 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     console.log(this.$route.name);
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Transactions/PrefundECPay.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Transactions/PrefundECPay.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      DepositSlipName: null,
+      csrf_token: $('meta[name="csrf-token"]').attr('content'),
+      form: new Form({
+        prefundAmount: 0,
+        nameofbank: '',
+        branch: '',
+        accountType: '',
+        accountName: '',
+        accountNo: '',
+        depositSlip: ''
+      })
+    };
+  },
+  methods: {
+    submitPrefund: function submitPrefund() {
+      var _this = this;
+
+      swal.fire({
+        title: 'Are you sure?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Save'
+      }).then(function (result) {
+        if (result.value) {
+          _this.$Progress.start();
+
+          var validateform = _this.$validator.validateAll().then(function (result) {
+            if (result) {
+              $('#submitSpinner').removeAttr('hidden');
+              var formData = new FormData();
+              formData.append('depositSlip', _this.form.depositSlip);
+              formData.append('_token', _this.form.csrf_token);
+              formData.append('prefundAmount', _this.form.prefundAmount);
+              formData.append('nameofbank', _this.form.nameofbank);
+              formData.append('branch', _this.form.branch);
+              formData.append('accountType', _this.form.accountType);
+              formData.append('accountName', _this.form.accountName);
+              formData.append('accountNo', _this.form.accountNo);
+              axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+              axios.post('/api/transaction/storeprefund', formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  'X-CSRF-TOKEN': _this.csrf_token
+                }
+              }).then(function (res) {
+                _this.$Progress.increase(10);
+
+                _this.$Progress.finish();
+
+                console.log(res);
+
+                if (res) {
+                  toast.fire({
+                    type: 'success',
+                    title: 'Prefund ECpay Saved!!'
+                  });
+
+                  _this.form.clear();
+
+                  _this.form.reset();
+
+                  _this.$validator.reset();
+
+                  _this.DepositSlipName = null;
+                }
+
+                console.log(res);
+                $('#submitSpinner').attr('hidden', true);
+              })["catch"](function (err) {
+                _this.$Progress.fail();
+
+                if (err.response.status === 422) {
+                  toast.fire({
+                    type: 'info',
+                    title: 'Deposit Slip is Required'
+                  });
+                }
+
+                console.clear();
+                $('#submitSpinner').attr('hidden', true);
+              });
+              return;
+            }
+
+            $('#submitSpinner').attr('hidden', true);
+
+            _this.$Progress.fail();
+
+            return false;
+          });
+        }
+      });
+    },
+    uploadDepositSlip: function uploadDepositSlip(e) {
+      e.preventDefault();
+      this.form.depositSlip = this.$refs.file.files[0];
+      this.DepositSlipName = e.target.files[0].name; //return true;
+    }
+  },
+  created: function created() {
+    console.log('Mounted');
   }
 });
 
@@ -7073,6 +7319,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * This module is related with other modules to be completed.
@@ -7099,7 +7349,7 @@ __webpack_require__.r(__webpack_exports__);
           responsive: true,
           fixedColumns: true
         });
-      }, 400);
+      }, 1000);
     },
     showServices: function showServices() {
       var _this = this;
@@ -7121,24 +7371,24 @@ __webpack_require__.r(__webpack_exports__);
         return joint_services.some(service);
       }
     }
-    /* 
-    Sir Manuel :
-    showServiceType(id,wallet_condition){  
-        
-                    if(wallet_condition == 'solo'){ 
-                        axios.get('/api/service/getservicetypecode/'+id+'/solo')
-                        .then(response => {
-                            if(this.Services.id == id){
-                                this.Services = response.data['st_code'];
-                            }
-                          }) 
-                      
-                    }
-                    else {
-                        return 'joint'
-                    }
+    /*
+    // Sir Manuel :
+    showServiceType(id,wallet_condition){ 
+        if(wallet_condition == 'solo'){ 
+            axios.get('/api/service/getservicetypecode/'+id+'/solo')
+            .then(res => {
+                this.st_code_get.push({"id": id, "st_code": res.data.st_code})
+                // this.$set(this.Services, id, {"st_code" : res.data.st_code})
+            })
+                        }) 
+            })
+          }
+        else {
+            return 'joint'
+        }
      
-    }*/
+    }
+    */
 
   },
   created: function created() {
@@ -59297,64 +59547,62 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "col-12 mt-5" }, [
-      _c("div", { staticClass: "card shadow-custom" }, [
-        _c("div", { staticClass: "col-md-12" }, [
-          _c("h4", { staticClass: "header-title mt-3" }, [
-            _vm._v("List of Services - Acct No. " + _vm._s(this.wi))
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "data-tables datatable-dark" }, [
-            _c(
-              "table",
-              {
-                staticClass: "table table-hover",
-                attrs: { id: "table-services" }
-              },
-              [
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.ListServices, function(s) {
-                    return _c("tr", { key: s.id }, [
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("---")]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "btn btn-primary btn-custom",
-                              attrs: {
-                                to: {
-                                  name: "/update-service",
-                                  params: { id: s.id, method_name: "joint" }
-                                }
-                              }
-                            },
-                            [_vm._v(" Transact")]
-                          )
-                        ],
-                        1
-                      )
-                    ])
-                  }),
-                  0
-                )
-              ]
-            )
+    _c("div", { attrs: { id: "list-of-service" } }, [
+      _c("div", { staticClass: "box ptb--100" }, [
+        _c("div", { staticClass: "card shadow-custom" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("h4", { staticClass: "header-title mt-3" }, [
+              _vm._v("List of Services - Acct No. " + _vm._s(this.wi))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "data-tables datatable-dark" }, [
+              _c(
+                "table",
+                {
+                  staticClass:
+                    "table table-hover table-stripe table-responsive",
+                  attrs: { id: "table-services" }
+                },
+                [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.ListServices, function(s) {
+                      return _c("tr", { key: s.id }, [
+                        _c("td", [_vm._v(_vm._s(s.s_wallet_type))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(s.service_name))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(s.service_description))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(s.rwan))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(s.rname))]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "btn btn-primary btn-custom",
+                                attrs: { to: "/prefundECPay" }
+                              },
+                              [_vm._v(" Transact")]
+                            )
+                          ],
+                          1
+                        )
+                      ])
+                    }),
+                    0
+                  )
+                ]
+              )
+            ])
           ])
         ])
       ])
@@ -60163,50 +60411,6 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.group_code,
-                              expression: "form.group_code"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: {
-                            "is-invalid": _vm.form.errors.has("group_code")
-                          },
-                          attrs: {
-                            type: "text",
-                            name: "group_code",
-                            placeholder: "Group Code"
-                          },
-                          domProps: { value: _vm.form.group_code },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.form,
-                                "group_code",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("has-error", {
-                          attrs: { form: _vm.form, field: "group_code" }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "form-group" },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
                               value: _vm.form.group_description,
                               expression: "form.group_description"
                             }
@@ -60962,6 +61166,506 @@ var staticRenderFns = [
         _c("th", [_vm._v("All")]),
         _vm._v(" "),
         _c("th", [_vm._v("Some")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Transactions/PrefundECPay.vue?vue&type=template&id=eed5cdfe&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Transactions/PrefundECPay.vue?vue&type=template&id=eed5cdfe& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "prefundEcPay" } }, [
+    _c("div", { staticClass: "box ptb--100" }, [
+      _c("div", { staticClass: "card shadow-custom" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.submitPrefund()
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "card-body" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-4 offset-md-1" }, [
+                  _c(
+                    "div",
+                    { staticClass: "form-group row" },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "control-label custom-label",
+                          attrs: { for: "prefundAmount" }
+                        },
+                        [_vm._v("Prefund Amount: ")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.prefundAmount,
+                            expression: "form.prefundAmount"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: {
+                          "is-invalid": _vm.errors.has("prefundAmount")
+                        },
+                        attrs: {
+                          type: "number",
+                          name: "prefundAmount",
+                          id: "prefundAmount"
+                        },
+                        domProps: { value: _vm.form.prefundAmount },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "prefundAmount",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "prefundAmount" }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.has("prefundAmount")
+                        ? _c("p", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(_vm.errors.first("prefundAmount")))
+                          ])
+                        : _vm._e()
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("hr"),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-group row mt-3" },
+                    [
+                      _c(
+                        "h5",
+                        {
+                          staticClass:
+                            "control-label custom-label font-weight-bold",
+                          attrs: { for: "nameofBank" }
+                        },
+                        [_vm._v("Deposited to:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "control-label custom-label mt-3",
+                          attrs: { for: "nameofBank" }
+                        },
+                        [_vm._v("Name of Bank:")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.nameofbank,
+                            expression: "form.nameofbank"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.errors.has("nameofBank") },
+                        attrs: {
+                          type: "text",
+                          id: "nameofBank",
+                          name: "nameofBank"
+                        },
+                        domProps: { value: _vm.form.nameofbank },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "nameofbank",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "nameofBank" }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.has("nameofBank")
+                        ? _c("p", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(_vm.errors.first("nameofBank")))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "control-label custom-label mt-3",
+                          attrs: { for: "branch" }
+                        },
+                        [_vm._v("Branch:")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.branch,
+                            expression: "form.branch"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.errors.has("branch") },
+                        attrs: { type: "text", id: "branch", name: "branch" },
+                        domProps: { value: _vm.form.branch },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "branch", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "branch" }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.has("branch")
+                        ? _c("p", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(_vm.errors.first("branch")))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "control-label custom-label mt-3",
+                          attrs: { for: "accountType" }
+                        },
+                        [_vm._v("Account Type:")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.accountType,
+                            expression: "form.accountType"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.errors.has("accountType") },
+                        attrs: {
+                          type: "text",
+                          id: "accountType",
+                          name: "accountType"
+                        },
+                        domProps: { value: _vm.form.accountType },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "accountType",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "accountType" }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.has("accountType")
+                        ? _c("p", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(_vm.errors.first("accountType")))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "control-label custom-label mt-3",
+                          attrs: { for: "accountName" }
+                        },
+                        [_vm._v("Account Name:")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.accountName,
+                            expression: "form.accountName"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.errors.has("accountName") },
+                        attrs: {
+                          type: "text",
+                          id: "accountName",
+                          name: "accountName"
+                        },
+                        domProps: { value: _vm.form.accountName },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "accountName",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "accountName" }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.has("accountName")
+                        ? _c("p", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(_vm.errors.first("accountName")))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "control-label custom-label mt-3",
+                          attrs: { for: "AccountNo" }
+                        },
+                        [_vm._v("Account No")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.accountNo,
+                            expression: "form.accountNo"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.errors.has("accountNo") },
+                        attrs: {
+                          type: "text",
+                          id: "accountNo",
+                          name: "accountNo"
+                        },
+                        domProps: { value: _vm.form.accountNo },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "accountNo", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "accountNo" }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.has("accountNo")
+                        ? _c("p", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(_vm.errors.first("accountNo")))
+                          ])
+                        : _vm._e()
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("div", { staticClass: "custom-file" }, [
+                      _c("input", {
+                        ref: "file",
+                        staticClass: "custom-file-input",
+                        attrs: { type: "file", id: "depositSlip" },
+                        on: { change: _vm.uploadDepositSlip }
+                      }),
+                      _vm._v(" "),
+                      _vm.DepositSlipName == null
+                        ? _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "depositSlip", id: "depositSlip" }
+                            },
+                            [_vm._v("Deposit Slip")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.DepositSlipName != null
+                        ? _c(
+                            "label",
+                            {
+                              staticClass: "custom-file-label",
+                              attrs: { for: "depositSlip", id: "depositSlip" }
+                            },
+                            [_vm._v(_vm._s(_vm.DepositSlipName))]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(2)
+          ]
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-12" }, [
+      _c("h4", { staticClass: "header-title mt-3 text-center" }, [
+        _vm._v("Prefund ECPay")
+      ]),
+      _vm._v(" "),
+      _c("hr")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12 offset-md-4" }, [
+        _c("button", { staticClass: "btn btn-secondary" }, [
+          _vm._v("View Transaction History")
+        ]),
+        _vm._v(" "),
+        _c("button", { staticClass: "btn btn-secondary" }, [_vm._v("Balance")]),
+        _vm._v(" "),
+        _c("button", { staticClass: "btn btn-secondary" }, [
+          _vm._v("Ave. Daily Usage")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary float-right",
+            attrs: { type: "submit" }
+          },
+          [
+            _c("i", { staticClass: "ti-save" }),
+            _vm._v(
+              "\n                                         Submit\n                                         "
+            ),
+            _c("span", {
+              staticClass: "spinner-border spinner-border-sm",
+              attrs: {
+                role: "status",
+                "aria-hidden": "true",
+                hidden: "true",
+                id: "submitSpinner"
+              }
+            })
+          ]
+        )
       ])
     ])
   }
@@ -68383,7 +69087,8 @@ var render = function() {
             _c(
               "table",
               {
-                staticClass: "table table-hover",
+                staticClass:
+                  "table table-hover table-striped table-responsive text-center",
                 attrs: { id: "table-service-type" }
               },
               [
@@ -71081,7 +71786,8 @@ var render = function() {
             _c(
               "table",
               {
-                staticClass: "table table-hover",
+                staticClass:
+                  "table table-hover table-striped table-responsive text-center",
                 attrs: { id: "table-services" }
               },
               [
@@ -71112,13 +71818,23 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("td", [
-                        _c("p", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(/*showServiceType(s.id,s.wallet_condition)*/) +
-                              "\n                        "
-                          )
-                        ])
+                        s.st_code
+                          ? _c("p", [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(s.st_code) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        s.st_code == null
+                          ? _c("p", [
+                              _vm._v(
+                                "\n                            Joint\n                        "
+                              )
+                            ])
+                          : _vm._e()
                       ]),
                       _vm._v(" "),
                       _vm._m(1, true),
@@ -87806,6 +88522,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Transactions/PrefundECPay.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/Transactions/PrefundECPay.vue ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PrefundECPay_vue_vue_type_template_id_eed5cdfe___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PrefundECPay.vue?vue&type=template&id=eed5cdfe& */ "./resources/js/components/Transactions/PrefundECPay.vue?vue&type=template&id=eed5cdfe&");
+/* harmony import */ var _PrefundECPay_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PrefundECPay.vue?vue&type=script&lang=js& */ "./resources/js/components/Transactions/PrefundECPay.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PrefundECPay_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PrefundECPay_vue_vue_type_template_id_eed5cdfe___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PrefundECPay_vue_vue_type_template_id_eed5cdfe___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Transactions/PrefundECPay.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Transactions/PrefundECPay.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/Transactions/PrefundECPay.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrefundECPay_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./PrefundECPay.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Transactions/PrefundECPay.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrefundECPay_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Transactions/PrefundECPay.vue?vue&type=template&id=eed5cdfe&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/Transactions/PrefundECPay.vue?vue&type=template&id=eed5cdfe& ***!
+  \**********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrefundECPay_vue_vue_type_template_id_eed5cdfe___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./PrefundECPay.vue?vue&type=template&id=eed5cdfe& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Transactions/PrefundECPay.vue?vue&type=template&id=eed5cdfe&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrefundECPay_vue_vue_type_template_id_eed5cdfe___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrefundECPay_vue_vue_type_template_id_eed5cdfe___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/WalletAccountTypes/WalletAccountType.vue":
 /*!**************************************************************************!*\
   !*** ./resources/js/components/WalletAccountTypes/WalletAccountType.vue ***!
@@ -89078,7 +89863,7 @@ var routes = [{
   path: '/updateservice/:id/:method_name',
   name: '/update-service',
   component: __webpack_require__(/*! ../components/WalletServices/CreateWalletServices.vue */ "./resources/js/components/WalletServices/CreateWalletServices.vue")["default"],
-  beforeEnter: (requireLogin, checkAdmin)
+  beforeEnter: requireLogin
 }, {
   path: '/viewjointservices/:id',
   name: 'list-joint-services',
@@ -89122,6 +89907,11 @@ var routes = [{
   path: '/walletaccountprofile/:wi/ListServices',
   component: __webpack_require__(/*! ../components/ListServices/ListServices.vue */ "./resources/js/components/ListServices/ListServices.vue")["default"],
   name: 'List of Services',
+  beforeEnter: requireLogin
+}, {
+  path: '/prefundECPay',
+  component: __webpack_require__(/*! ../components/Transactions/PrefundECPay */ "./resources/js/components/Transactions/PrefundECPay.vue")["default"],
+  name: 'Prefund EC Pay',
   beforeEnter: requireLogin
 },
 /** List Services */

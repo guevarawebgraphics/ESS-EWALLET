@@ -186,6 +186,11 @@ Route::prefix('service')->group(function(){
     Route::get('/getservicetypecode/{id}/{wallet_condition}',[
         'uses' => 'Api\\Services\ServiceController@GetServiceTypeCode'
     ]);
+
+    // api/service/listservices
+    Route::get('/listservices', [
+        'uses' => 'Api\\Services\ServiceController@ListServices'
+    ]);
      
 });
     /**
@@ -232,3 +237,16 @@ Route::prefix('service_gateway')->group(function(){
         'uses' => 'Api\\ServiceGateway\ServiceGatewayController@UpdateServiceGateway'
     ]);
 });
+
+/**
+ * @ Transaction 
+ **/
+
+ // Prefund
+// api/transaction/storeprefund
+ Route::prefix('transaction')->group(function(){
+    // api/transaction/storeprefund
+    Route::post('/storeprefund', [
+        'uses' => 'Api\\Transaction\PrefundController@StorePrefund'
+    ]);
+ });
