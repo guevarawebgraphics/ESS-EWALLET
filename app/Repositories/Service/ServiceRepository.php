@@ -124,6 +124,30 @@ class ServiceRepository
                 else {
                     $service_template ==="empty";
                 }
+                /*---------------------------------------------------------------------------------------------*/
+                /**
+                 * Connection for Service Matrix 
+                 **/
+                $wservice = WService::create([
+                    'service_code'=> $service_data->service_code,
+                    'service_name'=> $service_data->service_name,
+                    'service_description' => $service_data->service_description,
+                    'service_gateway_id'=> $service_data->service_gateway, 
+                    'service_group_id'=> $service_data->service_group_id,
+                    'service_template' => "sameple.template", // sample string for template
+                    'require_approval' => $service_data->approval,
+                    'assign_approver_id' => $service_data->merchand_admin_id,
+                    'wallet_type_id' => $service_data->wallet_type_id,
+                ]); 
+                $wservice_id = $wservice->id;
+                /**
+                 * Inserting into service_and_servicetype table
+                 */
+                $service_and_st = ServiceAndServiceType::create([
+                    'service_id' => $wservice_id,
+                    'service_type_id' => $service_data->service_type_id 
+                ]);
+                /*------------------------------------------------------------------------------------------*/
                 /**
                  * Inserting Service 
                  */
