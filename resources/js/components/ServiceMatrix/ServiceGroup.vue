@@ -63,10 +63,10 @@
             <form @submit.prevent="editmode ? updateGroup() : createGroup()">
                 <!-- <input type="hidden" name="_token" :value="csrf"> -->
                 <div class="modal-body">
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <input type="text" v-model="form.group_code" class="form-control" name="group_code" :class="{ 'is-invalid': form.errors.has('group_code') }" placeholder="Group Code">
                         <has-error :form="form" field="group_code"></has-error>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <input type="text" v-model="form.group_description" class="form-control" name="group_description" :class="{ 'is-invalid': form.errors.has('group_description') }"  placeholder="Group Description">
                         <has-error :form="form" field="group_description"></has-error>

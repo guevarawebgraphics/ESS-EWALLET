@@ -21,6 +21,29 @@ Route::get('/', function () {
     
 });
 
+/**
+ * @ Magic Link For Auto Logged in 
+ **/
+Route::get('/autologin/{token}', function(Request $request, $token){
+    // if (! $request->hasValidSignature()) {
+    //     abort(403);
+    // }
+    // Check if Already Loggded In
+    if(Auth::guest()){
+        $user = DB::connection('mysql2')->table('users')->where('remember_token', '=', $token)->first();
+        Auth::loginUsingId($user->id);
+        //return redirect('/');
+        session(['user' => auth()->user()]);
+        session(['username' => auth()->user()->username]);
+        return view('layouts.app');
+    }
+    else {
+        abort(404);
+    }
+
+
+});
+
 Auth::routes();
 
 //Route::get('/home', 'HomeController@index')->name('home');

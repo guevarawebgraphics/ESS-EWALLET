@@ -7319,6 +7319,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * This module is related with other modules to be completed.
@@ -7345,7 +7349,7 @@ __webpack_require__.r(__webpack_exports__);
           responsive: true,
           fixedColumns: true
         });
-      }, 400);
+      }, 1000);
     },
     showServices: function showServices() {
       var _this = this;
@@ -7367,24 +7371,24 @@ __webpack_require__.r(__webpack_exports__);
         return joint_services.some(service);
       }
     }
-    /* 
-    Sir Manuel :
-    showServiceType(id,wallet_condition){  
-        
-                    if(wallet_condition == 'solo'){ 
-                        axios.get('/api/service/getservicetypecode/'+id+'/solo')
-                        .then(response => {
-                            if(this.Services.id == id){
-                                this.Services = response.data['st_code'];
-                            }
-                          }) 
-                      
-                    }
-                    else {
-                        return 'joint'
-                    }
+    /*
+    // Sir Manuel :
+    showServiceType(id,wallet_condition){ 
+        if(wallet_condition == 'solo'){ 
+            axios.get('/api/service/getservicetypecode/'+id+'/solo')
+            .then(res => {
+                this.st_code_get.push({"id": id, "st_code": res.data.st_code})
+                // this.$set(this.Services, id, {"st_code" : res.data.st_code})
+            })
+                        }) 
+            })
+          }
+        else {
+            return 'joint'
+        }
      
-    }*/
+    }
+    */
 
   },
   created: function created() {
@@ -60407,50 +60411,6 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.group_code,
-                              expression: "form.group_code"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: {
-                            "is-invalid": _vm.form.errors.has("group_code")
-                          },
-                          attrs: {
-                            type: "text",
-                            name: "group_code",
-                            placeholder: "Group Code"
-                          },
-                          domProps: { value: _vm.form.group_code },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.form,
-                                "group_code",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("has-error", {
-                          attrs: { form: _vm.form, field: "group_code" }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "form-group" },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
                               value: _vm.form.group_description,
                               expression: "form.group_description"
                             }
@@ -69127,7 +69087,8 @@ var render = function() {
             _c(
               "table",
               {
-                staticClass: "table table-hover",
+                staticClass:
+                  "table table-hover table-striped table-responsive text-center",
                 attrs: { id: "table-service-type" }
               },
               [
@@ -71825,7 +71786,8 @@ var render = function() {
             _c(
               "table",
               {
-                staticClass: "table table-hover",
+                staticClass:
+                  "table table-hover table-striped table-responsive text-center",
                 attrs: { id: "table-services" }
               },
               [
@@ -71856,13 +71818,23 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("td", [
-                        _c("p", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(/*showServiceType(s.id,s.wallet_condition)*/) +
-                              "\n                        "
-                          )
-                        ])
+                        s.st_code
+                          ? _c("p", [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(s.st_code) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        s.st_code == null
+                          ? _c("p", [
+                              _vm._v(
+                                "\n                            Joint\n                        "
+                              )
+                            ])
+                          : _vm._e()
                       ]),
                       _vm._v(" "),
                       _vm._m(1, true),

@@ -10,7 +10,7 @@
             <div class="card-body">
      
                 <div class="data-tables datatable-dark">
-                <table class="table table-hover" id="table-services">
+                <table class="table table-hover table-striped table-responsive text-center" id="table-services">
                 <thead>
                     <tr class="th-table">
                         <th>Service Code</th>
@@ -35,8 +35,12 @@
                             </p>
                         </td>
                         <td>
-                            <p>
-                            {{ /*showServiceType(s.id,s.wallet_condition)*/}}
+                            <p v-if="s.st_code">
+                            <!-- {{ showServiceType(s.id,s.wallet_condition) }} -->
+                            {{ s.st_code }}
+                            </p>
+                            <p v-if="s.st_code == null">
+                                Joint
                             </p>
                         </td>
                         <td> 
@@ -102,7 +106,7 @@ export default {
                     responsive: true,
                     fixedColumns: true,
                 });
-            }, 400);
+            }, 1000);
         },
         showServices() {
             axios.get('/api/service/getserviceslist')
@@ -121,25 +125,25 @@ export default {
                     return joint_services.some(service); 
                 }
         },
-        /* 
-        Sir Manuel :
-        showServiceType(id,wallet_condition){  
-            
-                        if(wallet_condition == 'solo'){ 
-                            axios.get('/api/service/getservicetypecode/'+id+'/solo')
-                            .then(response => {
-                                if(this.Services.id == id){
-                                    this.Services = response.data['st_code'];
-                                }
-
+        /*
+        // Sir Manuel :
+        showServiceType(id,wallet_condition){ 
+            if(wallet_condition == 'solo'){ 
+                axios.get('/api/service/getservicetypecode/'+id+'/solo')
+                .then(res => {
+                    this.st_code_get.push({"id": id, "st_code": res.data.st_code})
+                    // this.$set(this.Services, id, {"st_code" : res.data.st_code})
+                })
                             }) 
-                          
-                        }
-                        else {
-                            return 'joint'
-                        }
+                })
+
+            }
+            else {
+                return 'joint'
+            }
          
-        }*/ 
+        }
+        */
  },
  created() {
     this.showServices()
