@@ -2387,6 +2387,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2431,6 +2434,7 @@ __webpack_require__.r(__webpack_exports__);
     createGateway: function createGateway() {
       var _this2 = this;
 
+      $('#saveServiceGateWay').attr('disabled', true);
       $('#saveSpinner').removeAttr('hidden');
       this.$Progress.start();
       this.form.post('/api/service_gateway/createservicegateway').then(function (response) {
@@ -2441,13 +2445,21 @@ __webpack_require__.r(__webpack_exports__);
         console.log("ho");
         $('#serviceGatewayModal').modal('hide');
         $('#saveSpinner').attr('hidden', true);
+        $('#saveServiceGateWay').removeAttr('disabled');
 
         _this2.getServiceGateway();
+
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
       })["catch"](function () {
+        console.clear();
+
         _this2.$Progress.fail();
 
         $('#saveSpinner').attr('hidden', true);
-        console.log("eerrrrr");
+        $('#saveServiceGateWay').removeAttr('disabled'); //    console.log("eerrrrr");  
       });
     },
     ShowServiceGateway: function ShowServiceGateway(sw) {
@@ -2461,7 +2473,8 @@ __webpack_require__.r(__webpack_exports__);
     updateGateway: function updateGateway() {
       var _this3 = this;
 
-      $('#saveSpinner').removeAttr('hidden');
+      $('#updateServiceGateWay').attr('disabled', true);
+      $('#updateSpinner').removeAttr('hidden');
       this.$Progress.start();
       this.form.put('/api/service_gateway/updateservicegateway/' + this.form.id).then(function (response) {
         _this3.$Progress.increase(10);
@@ -2469,13 +2482,22 @@ __webpack_require__.r(__webpack_exports__);
         _this3.$Progress.finish();
 
         $('#serviceGatewayModal').modal('hide');
-        $('#saveSpinner').attr('hidden', true);
+        $('#updateSpinner').attr('hidden', true);
+        $('#updateServiceGateWay').removeAttr('disabled');
 
         _this3.getServiceGateway();
+
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
       })["catch"](function () {
+        console.clear();
+
         _this3.$Progress.fail();
 
-        $('#saveSpinner').attr('hidden', true);
+        $('#updateSpinner').attr('hidden', true);
+        $('#updateServiceGateWay').removeAttr('disabled');
         console.log('err');
       });
     }
@@ -59947,7 +59969,7 @@ var render = function() {
       _c("div", { staticClass: "card shadow-custom" }, [
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-12" }, [
+            _c("div", { staticClass: "col-md-10 offset-md-2" }, [
               _c("h4", { staticClass: "header-title mt-3" }, [
                 _vm._v("List of Wallet Accounts")
               ]),
@@ -59956,7 +59978,8 @@ var render = function() {
                 _c(
                   "table",
                   {
-                    staticClass: "table striped text-center",
+                    staticClass:
+                      "table table-striped table-responsive text-center",
                     attrs: { id: "table_id" }
                   },
                   [
@@ -60139,7 +60162,7 @@ var render = function() {
               _c(
                 "table",
                 {
-                  staticClass: "table table-hover",
+                  staticClass: "table table-hover table-responsive text-center",
                   attrs: { id: "table-service-gateway" }
                 },
                 [
@@ -60185,7 +60208,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-flat btn-primary mb-3",
+                staticClass: "btn btn-primary mb-3",
                 attrs: { type: "button" },
                 on: { click: _vm.openModal }
               },
@@ -60327,7 +60350,7 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "btn btn-secondary btn-flat",
+                        staticClass: "btn btn-secondary",
                         attrs: { type: "button", "data-dismiss": "modal" }
                       },
                       [_vm._v("Close")]
@@ -60344,10 +60367,23 @@ var render = function() {
                             expression: "editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit", id: "updateServiceGateWay" }
                       },
-                      [_vm._v("Update")]
+                      [
+                        _vm._v(
+                          "\n                    Update\n                "
+                        ),
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "updateSpinner"
+                          }
+                        })
+                      ]
                     ),
                     _vm._v(" "),
                     _c(
@@ -60361,8 +60397,8 @@ var render = function() {
                             expression: "!editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit", id: "saveServiceGateWay" }
                       },
                       [
                         _vm._v(

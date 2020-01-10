@@ -8,14 +8,14 @@
                     <!--Form Group Row-->
                     <div class="form-group row">
                         <!-- Col -->
-                        <div class="col-md-12">
+                        <div class="col-md-10 offset-md-2">
                             <!-- <div class="col-md-4">
                                 <router-link class="btn btn-primary" to="#">List of Wallet Accounts <i class="ti-arrow-right"></i></router-link>
                             </div> -->
                             <h4 class="header-title mt-3">List of Wallet Accounts</h4>
                             <div class="data-tables datatable-dark">
                                <!-- Table -->
-                                <table class="table striped text-center" id="table_id">
+                                <table class="table table-striped table-responsive text-center" id="table_id">
                                     <!-- Thead -->
                                     <thead>
                                         <tr class="th-table">
