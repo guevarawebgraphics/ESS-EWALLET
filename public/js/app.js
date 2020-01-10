@@ -2199,6 +2199,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2216,9 +2226,9 @@ __webpack_require__.r(__webpack_exports__);
           //lengthChange: false,
           responsive: true,
           fixedColumns: false,
-          "order": [3, "desc"]
+          "order": [6, "desc"]
         });
-      }, 500);
+      }, 1000);
     },
     GetallWalletAccount: function GetallWalletAccount() {
       var _this = this;
@@ -2231,6 +2241,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     openAccount: function openAccount(lwa) {
       this.$router.push("/walletaccountprofile/".concat(lwa['wallet_account_no']));
+    },
+    back: function back() {
+      this.$router.push('/listwalletaccounts');
+    },
+    goToAvailableServices: function goToAvailableServices(wan) {
+      this.$router.push("/walletaccountprofile/".concat(wan, "/ListServices"));
     }
   },
   created: function created() {
@@ -59892,7 +59908,8 @@ var render = function() {
                               _c(
                                 "a",
                                 {
-                                  staticClass: "btn btn-secondary btn-sm",
+                                  staticClass:
+                                    "btn btn-secondary btn-xs disabled",
                                   attrs: { href: "#Details" }
                                 },
                                 [_vm._v("Details")]
@@ -59901,7 +59918,7 @@ var render = function() {
                               _c(
                                 "router-link",
                                 {
-                                  staticClass: "btn btn-secondary btn-sm",
+                                  staticClass: "btn btn-secondary btn-xs",
                                   attrs: { to: "/ServiceMatrix" }
                                 },
                                 [_vm._v("Service Matrix")]
@@ -59969,7 +59986,7 @@ var render = function() {
       _c("div", { staticClass: "card shadow-custom" }, [
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-10 offset-md-2" }, [
+            _c("div", { staticClass: "col-md-10" }, [
               _c("h4", { staticClass: "header-title mt-3" }, [
                 _vm._v("List of Wallet Accounts")
               ]),
@@ -60004,21 +60021,46 @@ var render = function() {
                               "a",
                               {
                                 staticClass:
-                                  "btn btn-primary btn-xs text-white",
+                                  "btn btn-primary btn-md text-white btn-xs disabled",
                                 on: {
                                   click: function($event) {
-                                    return _vm.openAccount(lwa)
+                                    return _vm.goToAvailableServices(
+                                      lwa.wallet_account_no
+                                    )
                                   }
                                 }
                               },
-                              [
-                                _c("i", { staticClass: "ti-eye" }),
-                                _vm._v(
-                                  "\n                                                 Open\n                                            "
-                                )
-                              ]
+                              [_vm._v("Available Services")]
                             )
-                          ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass:
+                                    "btn btn-primary btn-md text-white btn-xs",
+                                  attrs: {
+                                    to: {
+                                      name: "List of Merchants",
+                                      params: { uid: lwa.wallet_account_no }
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("span", [
+                                    _c("i", { staticClass: "ti-user" })
+                                  ]),
+                                  _vm._v(
+                                    "\n                                                List of Merchants\n                                            "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
                         ])
                       }),
                       0
@@ -60050,7 +60092,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Wallet Tittle")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Action")])
+        _c("th", [_vm._v("Services")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Merchants")])
       ])
     ])
   }
@@ -90105,7 +90149,7 @@ var routes = [{
   name: 'Wallet Account Profile',
   beforeEnter: requireLogin
 }, {
-  path: '/listmerchants/:uid',
+  path: '/listwalletaccounts/listmerchants/:uid',
   component: __webpack_require__(/*! ../components/ListWalletAccounts/ListMerchants.vue */ "./resources/js/components/ListWalletAccounts/ListMerchants.vue")["default"],
   name: 'List of Merchants',
   beforeEnter: requireLogin
