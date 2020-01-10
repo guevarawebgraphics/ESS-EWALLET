@@ -53,16 +53,21 @@
                 <!-- <input type="hidden" name="_token" :value="csrf"> -->
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="text" v-model="form.gateway_code" class="form-control" name="gateway_code" placeholder="Service Gateway Code">
+                        <input type="number" v-model="form.gateway_code" class="form-control"  :class="{ 'is-invalid': form.errors.has('gateway_code') }" name="gateway_code" placeholder="Service Gateway Code"> 
+                        <has-error :form="form" field="gateway_code"></has-error>
                     </div>
                     <div class="form-group">
-                        <input type="text" v-model="form.gateway_name" class="form-control" name="gateway_name" placeholder="Service Gateway Name">
+                        <input type="text" v-model="form.gateway_name"  :class="{ 'is-invalid': form.errors.has('gateway_name') }"  class="form-control" name="gateway_name" placeholder="Service Gateway Name">
+                         <has-error :form="form" field="gateway_name"></has-error>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
                     <button v-show="editmode" type="submit" class="btn btn-primary btn-flat">Update</button>
-                    <button v-show="!editmode" type="submit" class="btn btn-primary btn-flat">Save changes</button>
+                    <button v-show="!editmode" type="submit" class="btn btn-primary btn-flat">
+                        Save changes 
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="true" id="saveSpinner"></span>
+                    </button>
                 </div>
             </form>
             </div>
@@ -114,31 +119,48 @@ methods : {
             this.form.reset();
             $('#serviceGatewayModal').modal('show');
         },
-        createGateway(){
+        createGateway(){  
+                $('#saveSpinner').removeAttr('hidden')
+                this.$Progress.start()
                 this.form.post('/api/service_gateway/createservicegateway')
-                .then((response) => {
+                .then((response) => { 
+                    this.$Progress.increase(10)
+                    this.$Progress.finish()
                     console.log("ho"); 
                     $('#serviceGatewayModal').modal('hide') 
+                    $('#saveSpinner').attr('hidden', true)
                     this.getServiceGateway()
                 })
-                .catch(()=> {
+                .catch(()=> { 
+                   this.$Progress.fail()
+                   $('#saveSpinner').attr('hidden', true)
                    console.log("eerrrrr");  
                 })
         },
         ShowServiceGateway(sw){
             $('#serviceGatewayModal').modal('show');
             this.editmode = true;
+            this.form.reset();
+            this.form.clear();
             this.form.fill(sw)
+            console.log('hi');
     
         },
-        updateGateway(){
+        updateGateway(){ 
+           $('#saveSpinner').removeAttr('hidden')
+           this.$Progress.start()
            this.form.put('/api/service_gateway/updateservicegateway/'+this.form.id)
-           .then((response) => {
+           .then((response) => { 
+                    this.$Progress.increase(10)
+                    this.$Progress.finish()
                     $('#serviceGatewayModal').modal('hide');
+                    $('#saveSpinner').attr('hidden', true)
                     this.getServiceGateway();
            })
-           .catch(()=> {
-               console.log('err');
+           .catch(()=> { 
+                    this.$Progress.fail() 
+                     $('#saveSpinner').attr('hidden', true)
+                    console.log('err');
            })
         }
 },

@@ -28,7 +28,7 @@ class ServiceValidate extends FormRequest
             'service_name' => 'required',
             'service_description' => 'required',
             'service_gateway' => 'required',
-            'wallet_type_id' => 'required',
+            'wallet_type' => 'required',
             'pr_wallet_acc_no' => 'required',
             'ir_wallet_acc_no' => 'required',
             'ir_wallet_acc_name' => 'required',

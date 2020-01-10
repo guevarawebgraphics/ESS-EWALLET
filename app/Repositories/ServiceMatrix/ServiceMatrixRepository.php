@@ -6,6 +6,7 @@ use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 //use Your Model
 use DB;
 use App\Models\ServiceMatrix\ServiceMatrix;
+use App\Models\WalletAccount\wallet_account;
 /**
  * Class ServiceMatrixRepository.
  */
@@ -47,7 +48,7 @@ class ServiceMatrixRepository
                     'created_by' => $user->id,
                     'updated_by' => $user->id
             ));
-        }
+        } 
         return $service_matrix_data;
     }
 
@@ -78,5 +79,45 @@ class ServiceMatrixRepository
                      )
                      ->get();
         return $services;
+    }
+
+    /**
+     * @ Get Service Matrix
+     * @return ServiceMatrix 
+     **/
+    public function GetServiceMatrix(){
+        /**
+         * @ Get Wallet Account Id
+         * @return WalletAccountId 
+         **/
+        $wallet_account_id = wallet_account::where('ess_id', '=', auth('api')->user()->username)->select('id')->first();
+
+        /**
+         * @return ServiceMatrix 
+         **/
+        $ServiceMatrix = $this->connection
+                            ->table('wallet_service_matrix_config')
+                            ->join('wservice', 'wallet_service_matrix_config.service_id', '=', 'wservice.id')
+                            ->join('service_and_servicetype', 'wallet_service_matrix_config.service_id', 'service_and_servicetype.service_id')
+                            ->join('servicetypedetails', 'service_and_servicetype.service_type_id', '=', 'servicetypedetails.id')
+                            ->join('service_grouping', 'wservice.service_group_id', '=', 'service_grouping.id')
+                            ->select(
+                                'wallet_service_matrix_config.id',
+                                'wallet_service_matrix_config.service_id',
+                                'wservice.service_name',
+                                'servicetypedetails.st_name',
+                                'service_grouping.group_description',
+                                'wallet_service_matrix_config.admin_all',
+                                'wallet_service_matrix_config.admin_some',
+                                'wallet_service_matrix_config.merchant_all',
+                                'wallet_service_matrix_config.merchant_some',
+                                'wallet_service_matrix_config.branch_all',
+                                'wallet_service_matrix_config.branch_some',
+                                'wallet_service_matrix_config.agent_all',
+                                'wallet_service_matrix_config.agent_some',
+                            )
+                            ->where('wallet_service_matrix_config.wallet_account_id' , '=', $wallet_account_id->id)
+                            ->get();
+        return $ServiceMatrix;
     }
 }

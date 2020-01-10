@@ -81,6 +81,15 @@ class WalletAccountController extends Controller
     }
 
     /**
+     * @ Get Wallet Bank Account 
+     **/
+    public function GetWalletBankAccount(Request $request, $essid){
+        $WalletAccount = $this->WalletAccount->GetWalletBankAccount($essid);
+            return response()->json($WalletAccount);
+        
+    }
+
+    /**
      * @ Get Service Matrix Config 
      **/
     public function GetServiceMatrixConfig(Request $request, $essid){
@@ -94,6 +103,38 @@ class WalletAccountController extends Controller
     public function UpdateServiceMatrixConfig(Request $request, $essid){
         $WalletAccount = $this->WalletAccount->UpdateServiceMatrixConfig($request->all(), $essid);
         return response()->json($WalletAccount);
+    }
+
+    /**
+     * @ Search Wallet Account Details 
+     **/
+    public function SearchWalletAccountNo($wallet_account_no_details){
+        $WalletAccount = $this->WalletAccount->SearchWalletAccountNo($wallet_account_no_details);
+        return response()->json($WalletAccount);
+    }
+
+    /**
+     * @ Search Wallet Joint Account 
+     **/
+    public function SearchWalletJointAccount($wallet_account_no){
+        $wallet_account = $this->WalletAccount->SearchWalletJointAccount($wallet_account_no);
+        return response()->json($wallet_account);
+    }
+
+    /**
+     * @ ListOfWalletAccounts 
+     **/
+    public function ListOfWalletAccounts(){
+        $ListOfWalletAccounts = $this->WalletAccount->ListOfWalletAccounts();
+        return response()->json($ListOfWalletAccounts);
+    }
+
+    /**
+     * @ List of Merchant Accounts 
+     **/
+    public function ListofMerchantsAccounts(){
+        $ListofMerchantsAccounts = $this->WalletAccount->ListofMerchantsAccounts();
+        return response()->json($ListofMerchantsAccounts);
     }
 
 

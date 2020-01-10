@@ -90,16 +90,20 @@ git checkout develop
 cp .env.example .env
 php artisan key:generate
 composer install
+composer dump-autoload
 npm install
 php artisan key:generate
 php artisan passport:install
 php artisan migrate
+php artisan db:seed
 php artisan serve
 
 if you are using php artisan serve change .env find and change APP_URL=http://127.0.0.1:8000 (Port depending on your port)
 run php artisan config:clear
 then php artisan serve
+npm run dev
 
+# .env Configuration
 
 Database Configuration
 ------------------------------------------------
@@ -117,12 +121,21 @@ DB_DATABASE_SECOND=v0.13.2_clean
 DB_USERNAME_SECOND=root
 DB_PASSWORD_SECOND=essdev2019
 
+DB_CONNECTION_THIRD=mysql
+DB_HOST_THIRD=127.0.0.1
+DB_PORT_THIRD=3306
+DB_DATABASE_THIRD=e-wallet-transactions
+DB_USERNAME_THIRD=root
+DB_PASSWORD_THIRD=essdev2019
+
+# For vue js Local and Production Mode
+MIX_APP_ENV=local
+
 For any further concerns regarding the project please contact the project owner.
 
-## To the Future Developer of this project good luck lol
-Please don't contact the previous developers thanks.
+## To the Future Developer of this project good luck.
 
-# ############################
+# ######################################################################################################
 # Accounts For ESS Project
 
 # #### Gmail #######

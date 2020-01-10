@@ -46,6 +46,11 @@ Route::prefix('servicematrix')->group(function(){
     Route::get('/GetServices', [
         'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@GetServices'
     ]);
+
+    // api/servicematrix/GetServiceMatrixConfig
+    Route::get('/ServiceMatrixConfig', [
+        'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@GetServiceMatrixConfig'
+    ]);
 });
 /**
  *  @ Wallet Account
@@ -68,7 +73,7 @@ Route::prefix('walletaccount')->group(function(){
         'uses' => 'Api\\WalletAccount\WalletAccountController@StoreWalletAccount'
     ]);
     // api/walletaccount/UpdateWalletAccount
-    Route::put('/UpdateWalletAccount', [
+    Route::post('/UpdateWalletAccount', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@UpdateWalletAccount'
     ]);
     // api/walletaccount/GetWalletAccount
@@ -87,9 +92,29 @@ Route::prefix('walletaccount')->group(function(){
     Route::get('/GetServiceMatrixConfig/{essid}', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@GetServiceMatrixConfig'
     ]);
+    // api/walletaccount/GetWalletBankAccount
+    Route::get('/GetWalletBankAccount/{essid}', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@GetWalletBankAccount'
+    ]);
+    // api/walletaccount/SearchWalletAccountNo
+    Route::get('/SearchWalletAccountNo/{wand}', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@SearchWalletAccountNo'
+    ]);
     // api/walletaccount/UpdateServiceMatrixConfig
     Route::put('/UpdateServiceMatrixConfig/{essid}', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@UpdateServiceMatrixConfig'
+    ]);
+    // api/walletaccount/SearchWalletJointAccount
+    Route::get('/SearchWalletJointAccount/{wan}', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@SearchWalletJointAccount'
+    ]);
+    // api/walletaccount/ListOfWalletAccounts
+    Route::get('/ListOfWalletAccounts', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@ListOfWalletAccounts'
+    ]);
+    // api/walletacccount/ListofMerchantsAccounts
+    Route::get('/ListofMerchantsAccounts', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@ListofMerchantsAccounts'
     ]);
 });
 /**
@@ -113,6 +138,9 @@ Route::prefix('service')->group(function(){
     Route::post('/createservice',[
         'uses' => 'Api\\Services\ServiceController@InsertService' 
     ]);
+    Route::post('/updateservice',[
+        'uses' => 'Api\\Services\ServiceController@UpdateService' 
+    ]);
     
     Route::get('/getservicetype/{st_code}',[
         'uses' => 'Api\\Services\ServiceController@fillServiceType'
@@ -124,6 +152,10 @@ Route::prefix('service')->group(function(){
     
     Route::post('/createservice',[
         'uses' => 'Api\\Services\ServiceController@InsertService' 
+    ]);  
+
+    Route::post('/createjointservice',[
+        'uses' => 'Api\\Services\ServiceController@InsertJointService' 
     ]); 
     
     Route::get('/getservicetype/{st_code}',[
@@ -136,8 +168,30 @@ Route::prefix('service')->group(function(){
     
     Route::get('/getirwalletdetails/{ir_no}',[
         'uses' => 'Api\\Services\ServiceController@FillIrWalletMethod'
+    ]); 
+
+    Route::get('/getservicedetails/{service_id}',[
+        'uses' => 'Api\\Services\ServiceController@GetServiceDetails'
     ]);
-    
+
+    Route::get('/getwalletdetails/{id}',[
+        'uses' => 'Api\\Services\ServiceController@GetWalletDetails'
+    ]);
+    Route::get('/getvsdr/{service_id}',[
+        'uses' => 'Api\\Services\ServiceController@GetVSDR'
+    ]);
+    Route::get('/getjointservicelist/{id}',[
+        'uses' => 'Api\\Services\ServiceController@GetJointServicesList'
+    ]);
+    Route::get('/getservicetypecode/{id}/{wallet_condition}',[
+        'uses' => 'Api\\Services\ServiceController@GetServiceTypeCode'
+    ]);
+
+    // api/service/listservices
+    Route::get('/listservices', [
+        'uses' => 'Api\\Services\ServiceController@ListServices'
+    ]);
+     
 });
     /**
     * Services Type Module
@@ -183,3 +237,16 @@ Route::prefix('service_gateway')->group(function(){
         'uses' => 'Api\\ServiceGateway\ServiceGatewayController@UpdateServiceGateway'
     ]);
 });
+
+/**
+ * @ Transaction 
+ **/
+
+ // Prefund
+// api/transaction/storeprefund
+ Route::prefix('transaction')->group(function(){
+    // api/transaction/storeprefund
+    Route::post('/storeprefund', [
+        'uses' => 'Api\\Transaction\PrefundController@StorePrefund'
+    ]);
+ });
