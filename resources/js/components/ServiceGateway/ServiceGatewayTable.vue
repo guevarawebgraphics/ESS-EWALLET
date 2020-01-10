@@ -9,7 +9,7 @@
                 <div class="card-body">  
                 <div class="col-md-6">
                 <div class="data-tables datatable-dark">
-                <table class="table table-hover" id="table-service-gateway">
+                <table class="table table-hover table-responsive text-center" id="table-service-gateway">
                 <thead>
                     <tr class="th-table">
                         <th>Gateway Code</th>
@@ -34,7 +34,7 @@
                 </div>
                 </div>
                     <div class="form-group row">
-                        <button type="button" class="btn btn-flat btn-primary mb-3" @click="openModal"><i class="ti-plus text-white"></i> Create New</button>
+                        <button type="button" class="btn btn-primary mb-3" @click="openModal"><i class="ti-plus text-white"></i> Create New</button>
                     </div>
                 </div>
             </div>
@@ -62,9 +62,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
-                    <button v-show="editmode" type="submit" class="btn btn-primary btn-flat">Update</button>
-                    <button v-show="!editmode" type="submit" class="btn btn-primary btn-flat">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button v-show="editmode" type="submit" class="btn btn-primary" id="updateServiceGateWay">
+                        Update
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="true" id="updateSpinner"></span>
+                    </button>
+                    <button v-show="!editmode" type="submit" class="btn btn-primary" id="saveServiceGateWay">
                         Save changes 
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="true" id="saveSpinner"></span>
                     </button>
@@ -120,6 +123,7 @@ methods : {
             $('#serviceGatewayModal').modal('show');
         },
         createGateway(){  
+                $('#saveServiceGateWay').attr('disabled', true)
                 $('#saveSpinner').removeAttr('hidden')
                 this.$Progress.start()
                 this.form.post('/api/service_gateway/createservicegateway')
@@ -129,12 +133,19 @@ methods : {
                     console.log("ho"); 
                     $('#serviceGatewayModal').modal('hide') 
                     $('#saveSpinner').attr('hidden', true)
+                    $('#saveServiceGateWay').removeAttr('disabled')
                     this.getServiceGateway()
+                    toast.fire({
+                        type: 'success',
+                        title: 'Saved!'
+                    })
                 })
                 .catch(()=> { 
+                   console.clear()
                    this.$Progress.fail()
                    $('#saveSpinner').attr('hidden', true)
-                   console.log("eerrrrr");  
+                   $('#saveServiceGateWay').removeAttr('disabled')
+                //    console.log("eerrrrr");  
                 })
         },
         ShowServiceGateway(sw){
@@ -147,20 +158,28 @@ methods : {
     
         },
         updateGateway(){ 
-           $('#saveSpinner').removeAttr('hidden')
+           $('#updateServiceGateWay').attr('disabled', true)
+           $('#updateSpinner').removeAttr('hidden')
            this.$Progress.start()
            this.form.put('/api/service_gateway/updateservicegateway/'+this.form.id)
            .then((response) => { 
                     this.$Progress.increase(10)
                     this.$Progress.finish()
                     $('#serviceGatewayModal').modal('hide');
-                    $('#saveSpinner').attr('hidden', true)
+                    $('#updateSpinner').attr('hidden', true)
+                    $('#updateServiceGateWay').removeAttr('disabled')
                     this.getServiceGateway();
+                    toast.fire({
+                        type: 'success',
+                        title: 'Saved!'
+                    })
            })
            .catch(()=> { 
-                    this.$Progress.fail() 
-                     $('#saveSpinner').attr('hidden', true)
-                    console.log('err');
+               console.clear()
+               this.$Progress.fail() 
+                $('#updateSpinner').attr('hidden', true)
+                $('#updateServiceGateWay').removeAttr('disabled')
+               console.log('err');
            })
         }
 },
