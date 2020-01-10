@@ -34,8 +34,8 @@
                                             <td>{{ merchants.wallet_account_no }}</td>
                                             <td>{{ merchants.wallet_account_name}}</td>
                                             <td>
-                                                <a class="btn btn-secondary btn-sm" href="#Details">Details</a>
-                                                <router-link class="btn btn-secondary btn-sm" to="/ServiceMatrix">Service Matrix</router-link>
+                                                <a class="btn btn-secondary btn-xs disabled" href="#Details">Details</a>
+                                                <router-link class="btn btn-secondary btn-xs" to="/ServiceMatrix">Service Matrix</router-link>
                                             </td>
                                         </tr>
                                     </tbody>
