@@ -46,6 +46,11 @@ Route::prefix('servicematrix')->group(function(){
     Route::get('/GetServices', [
         'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@GetServices'
     ]);
+
+    // api/servicematrix/GetServiceMatrixConfig
+    Route::get('/ServiceMatrixConfig', [
+        'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@GetServiceMatrixConfig'
+    ]);
 });
 /**
  *  @ Wallet Account
@@ -102,6 +107,14 @@ Route::prefix('walletaccount')->group(function(){
     // api/walletaccount/SearchWalletJointAccount
     Route::get('/SearchWalletJointAccount/{wan}', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@SearchWalletJointAccount'
+    ]);
+    // api/walletaccount/ListOfWalletAccounts
+    Route::get('/ListOfWalletAccounts', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@ListOfWalletAccounts'
+    ]);
+    // api/walletacccount/ListofMerchantsAccounts
+    Route::get('/ListofMerchantsAccounts', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@ListofMerchantsAccounts'
     ]);
 });
 /**
@@ -170,7 +183,15 @@ Route::prefix('service')->group(function(){
     Route::get('/getjointservicelist/{id}',[
         'uses' => 'Api\\Services\ServiceController@GetJointServicesList'
     ]);
-    
+    Route::get('/getservicetypecode/{id}/{wallet_condition}',[
+        'uses' => 'Api\\Services\ServiceController@GetServiceTypeCode'
+    ]);
+
+    // api/service/listservices
+    Route::get('/listservices', [
+        'uses' => 'Api\\Services\ServiceController@ListServices'
+    ]);
+     
 });
     /**
     * Services Type Module
@@ -216,3 +237,16 @@ Route::prefix('service_gateway')->group(function(){
         'uses' => 'Api\\ServiceGateway\ServiceGatewayController@UpdateServiceGateway'
     ]);
 });
+
+/**
+ * @ Transaction 
+ **/
+
+ // Prefund
+// api/transaction/storeprefund
+ Route::prefix('transaction')->group(function(){
+    // api/transaction/storeprefund
+    Route::post('/storeprefund', [
+        'uses' => 'Api\\Transaction\PrefundController@StorePrefund'
+    ]);
+ });

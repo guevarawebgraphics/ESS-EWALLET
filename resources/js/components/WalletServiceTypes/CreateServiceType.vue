@@ -279,7 +279,6 @@ export default {
             if(!this.form.servicetype_name && !this.form.servicetype_description && !this.servicetype_code){
                 this.$validator.validateAll().then(result => {
                         if (result) {
-                        alert("Form Submitted!");
                         return;
                         } 
                 });

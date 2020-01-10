@@ -56,10 +56,13 @@ Vue.filter('substring', function(value){
  * @ Vue Js Production 
  * Uncomment below when compiling to production
  * Comment below if compiling to development
+ * @ Check your .env if prod or local
  **/
-Vue.config.devtools = false
-Vue.config.debug = false
-Vue.config.silent = true
+if(process.env.MIX_APP_ENV === 'prod'){
+  Vue.config.devtools = false
+  Vue.config.debug = false
+  Vue.config.silent = true
+}
 
 /**
  * The following block of code may be used to automatically register your
@@ -75,6 +78,9 @@ Vue.config.silent = true
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 // General Components
 Vue.component('Navbar', require('./components/inc/Navbar.vue').default);
+Vue.component('Sidebar', require('./components/inc/Sidebar.vue').default);
+Vue.component('Headerarea', require('./components/inc/Headerarea.vue').default);
+Vue.component('Footerarea', require('./components/inc/Footerarea.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

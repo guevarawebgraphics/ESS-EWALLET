@@ -9,16 +9,26 @@ use App\Repositories\Service\ServiceRepository;
  * Form Request Validation
  */ 
 use App\Http\Requests\Services\ServiceValidate;
+use App\Http\Requests\Services\JointValidate;
 /**
  * Service Module For Create 
  * Validation & other method SOON***
  */
 class ServiceController extends Controller
 {
+    /**
+     * @ Repository Implementation 
+     **/
     protected $services; 
+
+    /**
+     * Create a new Controller instance
+     * @param ServiceRepository $ServiceRepository
+     * @ Contructor 
+     **/
     public function __construct(ServiceRepository $ServiceRepository){
         $this->services =  $ServiceRepository; 
-      //  $this->middleware('auth:api');
+        $this->middleware('auth:api');
     }
     /**
      * For inserting Service , Wallet Details and Service & Service Type ID
@@ -37,7 +47,7 @@ class ServiceController extends Controller
     /**
      * For Inserting Joint Services 
      */
-    public function InsertJointService(Request $request){
+    public function InsertJointService(JointValidate $request){
         $InsertJointService = $this->services->InsertJointServices($request);
         return response()->json($InsertJointService);
     }
@@ -84,6 +94,22 @@ class ServiceController extends Controller
     public function GetJointServicesList($id){
         $get_list_services = $this->services->JointServiceslist($id);
         return response()->json($get_list_services);
+    }
+    /**
+     * Identifies which Service Type Code of this ID
+     */
+    public function GetServiceTypeCode($id,$wallet_condition){
+        $get_service_type_code = $this->services->GetServiceTypeCode($id,$wallet_condition);
+        return response()->json($get_service_type_code);
+    }
+
+    /**
+     * @ List Services 
+     * @return JSON($list_services)
+     **/
+    public function ListServices(){
+        $list_services = $this->services->ListOfServices();
+        return response()->json($list_services);
     }
 
 }

@@ -13,7 +13,7 @@ use App\Repositories\ServiceMatrix\ServiceMatrixRepository;
 class ServiceMatrixController extends Controller
 {
     /**
-     * @ Respositry Implementation
+     * @ Respository Implementation
      **/
     protected $ServiceMatrix;
 
@@ -42,6 +42,14 @@ class ServiceMatrixController extends Controller
     public function GetServices(){
         $Services = $this->ServiceMatrix->GetServices();
         return response()->json($Services);
+    }
+
+    /**
+     * @ Get Service Matrix Config 
+     **/
+    public function GetServiceMatrixConfig(){
+        $ServiceMatrix = $this->ServiceMatrix->GetServiceMatrix();
+        return response()->json($ServiceMatrix);
     }
 
 
