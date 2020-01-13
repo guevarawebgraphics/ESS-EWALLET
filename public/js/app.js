@@ -1846,9 +1846,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      status: false
+    };
   }
 });
 
@@ -2196,6 +2199,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2213,9 +2226,9 @@ __webpack_require__.r(__webpack_exports__);
           //lengthChange: false,
           responsive: true,
           fixedColumns: false,
-          "order": [3, "desc"]
+          "order": [6, "desc"]
         });
-      }, 500);
+      }, 1000);
     },
     GetallWalletAccount: function GetallWalletAccount() {
       var _this = this;
@@ -2228,6 +2241,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     openAccount: function openAccount(lwa) {
       this.$router.push("/walletaccountprofile/".concat(lwa['wallet_account_no']));
+    },
+    back: function back() {
+      this.$router.push('/listwalletaccounts');
+    },
+    goToAvailableServices: function goToAvailableServices(wan) {
+      this.$router.push("/walletaccountprofile/".concat(wan, "/ListServices"));
     }
   },
   created: function created() {
@@ -2384,6 +2403,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2428,6 +2450,7 @@ __webpack_require__.r(__webpack_exports__);
     createGateway: function createGateway() {
       var _this2 = this;
 
+      $('#saveServiceGateWay').attr('disabled', true);
       $('#saveSpinner').removeAttr('hidden');
       this.$Progress.start();
       this.form.post('/api/service_gateway/createservicegateway').then(function (response) {
@@ -2438,13 +2461,21 @@ __webpack_require__.r(__webpack_exports__);
         console.log("ho");
         $('#serviceGatewayModal').modal('hide');
         $('#saveSpinner').attr('hidden', true);
+        $('#saveServiceGateWay').removeAttr('disabled');
 
         _this2.getServiceGateway();
+
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
       })["catch"](function () {
+        console.clear();
+
         _this2.$Progress.fail();
 
         $('#saveSpinner').attr('hidden', true);
-        console.log("eerrrrr");
+        $('#saveServiceGateWay').removeAttr('disabled'); //    console.log("eerrrrr");  
       });
     },
     ShowServiceGateway: function ShowServiceGateway(sw) {
@@ -2458,7 +2489,8 @@ __webpack_require__.r(__webpack_exports__);
     updateGateway: function updateGateway() {
       var _this3 = this;
 
-      $('#saveSpinner').removeAttr('hidden');
+      $('#updateServiceGateWay').attr('disabled', true);
+      $('#updateSpinner').removeAttr('hidden');
       this.$Progress.start();
       this.form.put('/api/service_gateway/updateservicegateway/' + this.form.id).then(function (response) {
         _this3.$Progress.increase(10);
@@ -2466,13 +2498,22 @@ __webpack_require__.r(__webpack_exports__);
         _this3.$Progress.finish();
 
         $('#serviceGatewayModal').modal('hide');
-        $('#saveSpinner').attr('hidden', true);
+        $('#updateSpinner').attr('hidden', true);
+        $('#updateServiceGateWay').removeAttr('disabled');
 
         _this3.getServiceGateway();
+
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
       })["catch"](function () {
+        console.clear();
+
         _this3.$Progress.fail();
 
-        $('#saveSpinner').attr('hidden', true);
+        $('#updateSpinner').attr('hidden', true);
+        $('#updateServiceGateWay').removeAttr('disabled');
         console.log('err');
       });
     }
@@ -4490,9 +4531,9 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     /**
-     * @ UpdateWalletAccount
+     * @ Store Wallet Account 
      **/
-    UpdateWalletAccount: function UpdateWalletAccount() {
+    StoreWalletAccount: function StoreWalletAccount() {
       var _this3 = this;
 
       swal.fire({
@@ -4501,7 +4542,7 @@ __webpack_require__.r(__webpack_exports__);
         showCancelButton: true,
         confirmButtonColor: '#0077B5',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Update!'
+        confirmButtonText: 'Save!'
       }).then(function (result) {
         if (result.value) {
           _this3.$Progress.start();
@@ -4556,9 +4597,12 @@ __webpack_require__.r(__webpack_exports__);
           formData.append('BankAccount', JSON.stringify(_this3.BankAccount));
           formData.append('Services', JSON.stringify(_this3.Services));
           formData.append('WalletAccountNoDetails', _this3.form.WalletAccountNoDetails);
-          formData.append('WalletAccountNameDetails', _this3.form.WalletAccountNameDetails);
+          formData.append('WalletAccountNameDetails', _this3.form.WalletAccountNameDetails); // Joint Wallet Account
+
+          formData.append('joint_wallet_account_no', _this3.form.JointWalletAccountNo);
+          formData.append('CMSCreditAccountNo', _this3.form.CMSCreditAccountNo);
           axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-          axios.post('/api/walletaccount/UpdateWalletAccount', formData, {
+          axios.post(_this3.editmode ? '/api/walletaccount/UpdateWalletAccount' : 'api/walletaccount/StoreWalletAccount', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               'X-CSRF-TOKEN': _this3.csrf_token
@@ -4570,127 +4614,22 @@ __webpack_require__.r(__webpack_exports__);
 
             console.log(res);
 
-            _this3.form.clear();
-
-            _this3.form.reset();
-
-            toast.fire({
-              type: 'success',
-              title: 'Wallet Account Successfully Updated!'
-            });
-
-            _this3.$router.push('/walletaccounts');
-
-            console.log(res.data.status);
-          })["catch"](function (err) {
-            _this3.$Progress.fail();
-
-            console.log(err);
-          });
-        }
-      });
-    },
-
-    /**
-     * @ Store Wallet Account 
-     **/
-    StoreWalletAccount: function StoreWalletAccount() {
-      var _this4 = this;
-
-      swal.fire({
-        title: 'Are you sure you want to save?',
-        type: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#0077B5',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Save!'
-      }).then(function (result) {
-        if (result.value) {
-          _this4.$Progress.start();
-
-          var formData = new FormData(); // Wallet Account
-
-          formData.append('_token', _this4.csrf_token);
-          formData.append('username', _this4.form.username);
-          formData.append('kyc_form', _this4.form.kyc_form);
-          formData.append('valid_id', _this4.form.valid_id);
-          formData.append('WalletType', _this4.form.WalletType);
-          formData.append('WalletAccountType', _this4.form.WalletAccountType);
-          formData.append('WalletAccountNo', _this4.form.WalletAccountNo);
-          formData.append('WalletAccountName', _this4.form.WalletAccountName);
-          formData.append('Wallettitle', _this4.form.Wallettitle); // //Wallet Bank Account
-
-          formData.append('Branch', _this4.form.Branch);
-          formData.append('bank_name', _this4.form.bank_name);
-          formData.append('account_type', _this4.form.account_type);
-          formData.append('account_name', _this4.form.account_name);
-          formData.append('account_no', _this4.form.account_no); // Wallet Amount limits config
-
-          formData.append('amount_limit', _this4.form.amount_limit);
-          formData.append('am_per_transaction', _this4.form.am_per_transaction);
-          formData.append('am_per_day', _this4.form.am_per_day);
-          formData.append('am_per_month', _this4.form.am_per_month);
-          formData.append('am_per_year', _this4.form.am_per_year); // Wallet Amount Limits
-
-          formData.append('am_minimum', _this4.form.am_minimum);
-          formData.append('am_maximum', _this4.form.am_maximum);
-          formData.append('am_transaction_minimum', _this4.form.am_transaction_minimun);
-          formData.append('am_transaction_maximum', _this4.form.am_transaction_maximum);
-          formData.append('am_day_minimum', _this4.form.am_day_minimum);
-          formData.append('am_day_maximum', _this4.form.am_day_maximum);
-          formData.append('am_month_minimum', _this4.form.am_month_minimum);
-          formData.append('am_month_maximum', _this4.form.am_month_maximum);
-          formData.append('am_year_minimum', _this4.form.am_year_minimum);
-          formData.append('am_year_minimum', _this4.form.am_year_minimum);
-          formData.append('am_year_maximum', _this4.form.am_year_maximum); // Wallet limit no of transaction config
-
-          formData.append('c_lm_per_day', _this4.form.c_lm_per_day);
-          formData.append('c_lm_per_month', _this4.form.c_lm_per_month);
-          formData.append('c_lm_per_year', _this4.form.c_lm_per_year);
-          formData.append('c_allow_negative_balance', _this4.form.c_allow_negative_balance);
-          formData.append('c_com_daily_balance', _this4.form.c_com_daily_balance);
-          formData.append('c_com_daily_usage', _this4.form.c_com_daily_usage); // Wallet limit no of transaction
-
-          formData.append('lm_per_day', _this4.form.lm_per_day);
-          formData.append('lm_per_month', _this4.form.lm_per_month);
-          formData.append('lm_per_year', _this4.form.lm_per_year);
-          formData.append('allow_negative_balance', _this4.form.allow_negative_balance);
-          formData.append('BankAccount', JSON.stringify(_this4.BankAccount));
-          formData.append('Services', JSON.stringify(_this4.Services));
-          formData.append('WalletAccountNoDetails', _this4.form.WalletAccountNoDetails);
-          formData.append('WalletAccountNameDetails', _this4.form.WalletAccountNameDetails); // Joint Wallet Account
-
-          formData.append('joint_wallet_account_no', _this4.form.JointWalletAccountNo);
-          formData.append('CMSCreditAccountNo', _this4.form.CMSCreditAccountNo);
-          axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-          axios.post('api/walletaccount/StoreWalletAccount', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              'X-CSRF-TOKEN': _this4.csrf_token
-            }
-          }).then(function (res) {
-            _this4.$Progress.increase(10);
-
-            _this4.$Progress.finish();
-
-            console.log(res);
-
             if (res) {
-              _this4.form.clear();
+              _this3.form.clear();
 
-              _this4.form.reset();
+              _this3.form.reset();
 
               toast.fire({
                 type: 'success',
                 title: 'Wallet Account Successfully created!'
               });
 
-              _this4.$router.push('/walletaccounts');
+              _this3.$router.push('/walletaccounts');
             }
 
             console.log(res);
           })["catch"](function (err) {
-            _this4.$Progress.fail(); //console.log(err)
+            _this3.$Progress.fail(); //console.log(err)
 
 
             console.clear();
@@ -4710,11 +4649,11 @@ __webpack_require__.r(__webpack_exports__);
      * @ Get Wallet Account Type 
      **/
     GetWalletAccountType: function GetWalletAccountType() {
-      var _this5 = this;
+      var _this4 = this;
 
       axios.get('/api/walletaccount/GetAllWalletAccountType').then(function (_ref) {
         var data = _ref.data;
-        return _this5.walletAccountTypes = data;
+        return _this4.walletAccountTypes = data;
       });
     },
 
@@ -4722,66 +4661,66 @@ __webpack_require__.r(__webpack_exports__);
      * @ Get Wallet Account Details 
      **/
     GetWalletAccountDetails: function GetWalletAccountDetails() {
-      var _this6 = this;
+      var _this5 = this;
 
       //axios.get('api/walletaccount/GetWalletAccountDetails/'+ this.form.username).then(({ data}) => (console.log(data)));
       axios.get('/api/walletaccount/GetWalletAccountDetails/' + this.$route.params.id).then(function (res) {
         //console.log(res)
-        _this6.form.WalletAccountType = res.data[0]['wallet_account_type'];
-        _this6.form.WalletType = res.data[0]['wallet_type'];
-        _this6.form.Branch = res.data[0]['branch'];
-        _this6.form.account_name = res.data[0]['account_name'];
-        _this6.form.account_no = res.data[0]['account_no'];
-        _this6.form.amount_limit = res.data[0]['amount_limit'];
-        _this6.form.am_per_transaction = res.data[0]['am_per_transaction'];
-        _this6.form.am_per_day = res.data[0]['am_per_day'];
-        _this6.form.am_per_month = res.data[0]['am_per_month'];
-        _this6.form.am_per_year = res.data[0]['am_per_year'];
-        _this6.form.am_minimum = res.data[0]['am_minimum'];
-        _this6.form.am_maximum = res.data[0]['am_maximum'];
-        _this6.form.am_transaction_minimun = res.data[0]['am_transaction_minimum'];
-        _this6.form.am_transaction_maximum = res.data[0]['am_transaction_maximum'];
-        _this6.form.am_day_minimum = res.data[0]['am_day_minimum'];
-        _this6.form.am_day_maximum = res.data[0]['am_day_maximum'];
-        _this6.form.am_month_minimum = res.data[0]['am_month_minimum'];
-        _this6.form.am_month_maximum = res.data[0]['am_month_maximum'];
-        _this6.form.am_year_minimum = res.data[0]['am_year_minimum'];
-        _this6.form.am_year_maximum = res.data[0]['am_year_maximum'];
-        _this6.form.c_lm_per_day = res.data[0]['c_lm_per_day'];
-        _this6.form.c_lm_per_month = res.data[0]['c_lm_per_month'];
-        _this6.form.c_lm_per_year = res.data[0]['c_lm_per_year'];
-        _this6.form.c_allow_negative_balance = res.data[0]['c_allow_negative_balance'];
-        _this6.form.c_com_daily_balance = res.data[0]['c_com_daily_balance'];
-        _this6.form.c_com_daily_usage = res.data[0]['c_com_daily_usage'];
-        _this6.form.lm_per_day = res.data[0]['lm_per_day'];
-        _this6.form.lm_per_month = res.data[0]['lm_per_month'];
-        _this6.form.lm_per_year = res.data[0]['lm_per_year'];
-        _this6.form.allow_negative_balance = res.data[0]['allow_negative_balance'];
-        _this6.form.bank_name = res.data[0]['bank_name'];
-        _this6.form.account_type = res.data[0]['account_type'];
-        _this6.form.kyc_form = res.data[0]['kyc_form'];
-        _this6.form.valid_id = res.data[0]['valid_id'];
-        _this6.form.WalletAccountNoDetails = res.data[0]['WalletAccountNoDetails'];
-        _this6.form.WalletAccountNameDetails = res.data[0]['WalletAccountNameDetails'];
-        _this6.form.JointWalletAccountNo = res.data[0]['joint_wallet_account_no'];
+        _this5.form.WalletAccountType = res.data[0]['wallet_account_type'];
+        _this5.form.WalletType = res.data[0]['wallet_type'];
+        _this5.form.Branch = res.data[0]['branch'];
+        _this5.form.account_name = res.data[0]['account_name'];
+        _this5.form.account_no = res.data[0]['account_no'];
+        _this5.form.amount_limit = res.data[0]['amount_limit'];
+        _this5.form.am_per_transaction = res.data[0]['am_per_transaction'];
+        _this5.form.am_per_day = res.data[0]['am_per_day'];
+        _this5.form.am_per_month = res.data[0]['am_per_month'];
+        _this5.form.am_per_year = res.data[0]['am_per_year'];
+        _this5.form.am_minimum = res.data[0]['am_minimum'];
+        _this5.form.am_maximum = res.data[0]['am_maximum'];
+        _this5.form.am_transaction_minimun = res.data[0]['am_transaction_minimum'];
+        _this5.form.am_transaction_maximum = res.data[0]['am_transaction_maximum'];
+        _this5.form.am_day_minimum = res.data[0]['am_day_minimum'];
+        _this5.form.am_day_maximum = res.data[0]['am_day_maximum'];
+        _this5.form.am_month_minimum = res.data[0]['am_month_minimum'];
+        _this5.form.am_month_maximum = res.data[0]['am_month_maximum'];
+        _this5.form.am_year_minimum = res.data[0]['am_year_minimum'];
+        _this5.form.am_year_maximum = res.data[0]['am_year_maximum'];
+        _this5.form.c_lm_per_day = res.data[0]['c_lm_per_day'];
+        _this5.form.c_lm_per_month = res.data[0]['c_lm_per_month'];
+        _this5.form.c_lm_per_year = res.data[0]['c_lm_per_year'];
+        _this5.form.c_allow_negative_balance = res.data[0]['c_allow_negative_balance'];
+        _this5.form.c_com_daily_balance = res.data[0]['c_com_daily_balance'];
+        _this5.form.c_com_daily_usage = res.data[0]['c_com_daily_usage'];
+        _this5.form.lm_per_day = res.data[0]['lm_per_day'];
+        _this5.form.lm_per_month = res.data[0]['lm_per_month'];
+        _this5.form.lm_per_year = res.data[0]['lm_per_year'];
+        _this5.form.allow_negative_balance = res.data[0]['allow_negative_balance'];
+        _this5.form.bank_name = res.data[0]['bank_name'];
+        _this5.form.account_type = res.data[0]['account_type'];
+        _this5.form.kyc_form = res.data[0]['kyc_form'];
+        _this5.form.valid_id = res.data[0]['valid_id'];
+        _this5.form.WalletAccountNoDetails = res.data[0]['WalletAccountNoDetails'];
+        _this5.form.WalletAccountNameDetails = res.data[0]['WalletAccountNameDetails'];
+        _this5.form.JointWalletAccountNo = res.data[0]['joint_wallet_account_no'];
 
-        _this6.SerachJointWalletAccount(res.data[0]['joint_wallet_account_no']);
+        _this5.SerachJointWalletAccount(res.data[0]['joint_wallet_account_no']);
 
-        _this6.form.WalletAccountNo = res.data[0]['wan'];
-        _this6.form.Wallettitle = res.data[0]['wallet_title'];
+        _this5.form.WalletAccountNo = res.data[0]['wan'];
+        _this5.form.Wallettitle = res.data[0]['wallet_title'];
       })["catch"](function (err) {
         console.log(err);
       });
     },
     GetWalletBankAccounts: function GetWalletBankAccounts() {
-      var _this7 = this;
+      var _this6 = this;
 
       this.BankAccount.splice(0, 1);
       axios.get('/api/walletaccount/GetWalletBankAccount/' + this.$route.params.id).then(function (res) {
         var i;
 
         for (i = 0; i < res.data.length; i++) {
-          _this7.BankAccount.push({
+          _this6.BankAccount.push({
             id: res.data[i].id,
             bank_name: res.data[i].bank_name,
             Branch: res.data[i].branch,
@@ -4834,12 +4773,12 @@ __webpack_require__.r(__webpack_exports__);
      * @ Get Services 
      **/
     GetServices: function GetServices() {
-      var _this8 = this;
+      var _this7 = this;
 
       if (this.editmode == false) {
         axios.get('api/servicematrix/GetServices').then(function (_ref2) {
           var data = _ref2.data;
-          return _this8.Services = data;
+          return _this7.Services = data;
         });
       }
     },
@@ -4848,12 +4787,12 @@ __webpack_require__.r(__webpack_exports__);
      * @ Get Service Matrix Config For Update 
      **/
     Getsmc: function Getsmc() {
-      var _this9 = this;
+      var _this8 = this;
 
       if (this.editmode == true) {
         axios.get('/api/walletaccount/GetServiceMatrixConfig/' + this.$route.params.id).then(function (_ref3) {
           var data = _ref3.data;
-          return _this9.Services = data;
+          return _this8.Services = data;
         });
       }
     },
@@ -4897,20 +4836,20 @@ __webpack_require__.r(__webpack_exports__);
       this.BankAccount.splice(index, 1);
     },
     searchAccountNo: function searchAccountNo() {
-      var _this10 = this;
+      var _this9 = this;
 
       axios.get('/api/walletaccount/SearchWalletAccountNo/' + this.form.WalletAccountNoDetails).then(function (res) {
         console.log(res);
 
         if (res) {
           if (res.data == 404) {
-            _this10.form.WalletAccountNameDetails = null;
+            _this9.form.WalletAccountNameDetails = null;
             toast.fire({
               type: 'info',
               title: 'Wallet Account No Not Found'
             });
 
-            _this10.$validator.validateAll().then(function (result) {
+            _this9.$validator.validateAll().then(function (result) {
               if (result) {
                 return;
               }
@@ -4918,9 +4857,9 @@ __webpack_require__.r(__webpack_exports__);
 
             return false;
           } else {
-            _this10.form.WalletAccountNameDetails = res.data;
+            _this9.form.WalletAccountNameDetails = res.data;
 
-            _this10.errors.clear();
+            _this9.errors.clear();
 
             $('#nextTab').removeAttr('disabled');
             return true;
@@ -4935,14 +4874,14 @@ __webpack_require__.r(__webpack_exports__);
      * @ Search Joint Wallet Account 
      **/
     SerachJointWalletAccount: function SerachJointWalletAccount() {
-      var _this11 = this;
+      var _this10 = this;
 
       var $jwan = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       axios.get('/api/walletaccount/SearchWalletJointAccount/' + this.form.JointWalletAccountNo).then(function (res) {
         console.log(res);
-        _this11.form.JointWalletType = res.data[0].wallet_type;
-        _this11.form.jointWalletAccountType = res.data[0].wallet_account_type;
-        _this11.form.JointWalletAccountName = res.data[0].wallet_account_name;
+        _this10.form.JointWalletType = res.data[0].wallet_type;
+        _this10.form.jointWalletAccountType = res.data[0].wallet_account_type;
+        _this10.form.JointWalletAccountName = res.data[0].wallet_account_name;
       })["catch"](function (err) {
         console.log(err);
       });
@@ -12183,7 +12122,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\n#ba-close-button[data-v-64a2c4d3]{\r\n    background-color: Transparent;\r\n    background-repeat:no-repeat;\r\n    border: none;\r\n    cursor:pointer;\r\n    overflow: hidden;\r\n    outline:none;\r\n    margin-bottom: \"2px\";\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\n#ba-close-button[data-v-64a2c4d3]{\r\n    background-color: Transparent;\r\n    background-repeat:no-repeat;\r\n    border: none;\r\n    cursor:pointer;\r\n    overflow: hidden;\r\n    outline:none;\r\n    margin-bottom: \"2px\";\n}\r\n", ""]);
 
 // exports
 
@@ -59440,20 +59379,291 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "404" } }, [
-      _c("div", { staticClass: "container" }, [
-        _c("h1", { staticClass: "text-center mt-3" }, [_vm._v("404 Not Found")])
-      ])
+  return _c("div", { attrs: { id: "404" } }, [
+    _c("div", { staticClass: "container" }, [
+      _c(
+        "svg",
+        {
+          attrs: {
+            id: "a706cf1c-1654-439b-8fcf-310eb7aa0e00",
+            "data-name": "Layer 1",
+            xmlns: "http://www.w3.org/2000/svg",
+            width: "1000.59226",
+            height: "555.91584",
+            viewBox: "0 0 1120.59226 777.91584"
+          }
+        },
+        [
+          _c("title", [_vm._v("404 Not Found")]),
+          _c("circle", {
+            attrs: { cx: "212.59226", cy: "103", r: "64", fill: "#ff6584" }
+          }),
+          _c("path", {
+            attrs: {
+              d:
+                "M563.68016,404.16381c0,151.01141-89.77389,203.73895-200.51559,203.73895S162.649,555.17522,162.649,404.16381,363.16457,61.04208,363.16457,61.04208,563.68016,253.1524,563.68016,404.16381Z",
+              transform: "translate(-39.70387 -61.04208)",
+              fill: "#f2f2f2"
+            }
+          }),
+          _c("polygon", {
+            attrs: {
+              points:
+                "316.156 523.761 318.21 397.378 403.674 241.024 318.532 377.552 319.455 320.725 378.357 207.605 319.699 305.687 319.699 305.687 321.359 203.481 384.433 113.423 321.621 187.409 322.658 0 316.138 248.096 316.674 237.861 252.547 139.704 315.646 257.508 309.671 371.654 309.493 368.625 235.565 265.329 309.269 379.328 308.522 393.603 308.388 393.818 308.449 394.99 293.29 684.589 313.544 684.589 315.974 535.005 389.496 421.285 316.156 523.761",
+              fill: "#3f3d56"
+            }
+          }),
+          _c("path", {
+            attrs: {
+              d:
+                "M1160.29613,466.01367c0,123.61-73.4842,166.77-164.13156,166.77s-164.13156-43.16-164.13156-166.77S996.16457,185.15218,996.16457,185.15218,1160.29613,342.40364,1160.29613,466.01367Z",
+              transform: "translate(-39.70387 -61.04208)",
+              fill: "#f2f2f2"
+            }
+          }),
+          _c("polygon", {
+            attrs: {
+              points:
+                "950.482 552.833 952.162 449.383 1022.119 321.4 952.426 433.154 953.182 386.639 1001.396 294.044 953.382 374.329 953.382 374.329 954.741 290.669 1006.369 216.952 954.954 277.514 955.804 124.11 950.467 327.188 950.906 318.811 898.414 238.464 950.064 334.893 945.173 428.327 945.027 425.847 884.514 341.294 944.844 434.608 944.232 446.293 944.123 446.469 944.173 447.428 931.764 684.478 948.343 684.478 950.332 562.037 1010.514 468.952 950.482 552.833",
+              fill: "#3f3d56"
+            }
+          }),
+          _c("ellipse", {
+            attrs: {
+              cx: "554.59226",
+              cy: "680.47903",
+              rx: "554.59226",
+              ry: "28.03433",
+              fill: "#3f3d56"
+            }
+          }),
+          _c("ellipse", {
+            attrs: {
+              cx: "892.44491",
+              cy: "726.79663",
+              rx: "94.98858",
+              ry: "4.80162",
+              fill: "#3f3d56"
+            }
+          }),
+          _c("ellipse", {
+            attrs: {
+              cx: "548.71959",
+              cy: "773.11422",
+              rx: "94.98858",
+              ry: "4.80162",
+              fill: "#3f3d56"
+            }
+          }),
+          _c("ellipse", {
+            attrs: {
+              cx: "287.94432",
+              cy: "734.27887",
+              rx: "217.01436",
+              ry: "10.96996",
+              fill: "#3f3d56"
+            }
+          }),
+          _c("circle", {
+            attrs: { cx: "97.08375", cy: "566.26982", r: "79", fill: "#2f2e41" }
+          }),
+          _c("rect", {
+            attrs: {
+              x: "99.80546",
+              y: "689.02332",
+              width: "24",
+              height: "43",
+              transform: "translate(-31.32451 -62.31008) rotate(0.67509)",
+              fill: "#2f2e41"
+            }
+          }),
+          _c("rect", {
+            attrs: {
+              x: "147.80213",
+              y: "689.58887",
+              width: "24",
+              height: "43",
+              transform: "translate(-31.31452 -62.87555) rotate(0.67509)",
+              fill: "#2f2e41"
+            }
+          }),
+          _c("ellipse", {
+            attrs: {
+              cx: "119.54569",
+              cy: "732.61606",
+              rx: "7.5",
+              ry: "20",
+              transform: "translate(-654.1319 782.47948) rotate(-89.32491)",
+              fill: "#2f2e41"
+            }
+          }),
+          _c("ellipse", {
+            attrs: {
+              cx: "167.55414",
+              cy: "732.18168",
+              rx: "7.5",
+              ry: "20",
+              transform: "translate(-606.25475 830.05533) rotate(-89.32491)",
+              fill: "#2f2e41"
+            }
+          }),
+          _c("circle", {
+            attrs: { cx: "99.31925", cy: "546.29477", r: "27", fill: "#fff" }
+          }),
+          _c("circle", {
+            attrs: { cx: "99.31925", cy: "546.29477", r: "9", fill: "#3f3d56" }
+          }),
+          _c("path", {
+            attrs: {
+              d:
+                "M61.02588,552.94636c-6.04185-28.64075,14.68758-57.26483,46.30049-63.93367s62.13813,11.14292,68.18,39.78367-14.97834,38.93-46.59124,45.59886S67.06774,581.58712,61.02588,552.94636Z",
+              transform: "translate(-39.70387 -61.04208)",
+              fill: "#0077b5"
+            }
+          }),
+          _c("path", {
+            attrs: {
+              d:
+                "M257.29613,671.38411c0,55.07585-32.73985,74.3063-73.13,74.3063q-1.40351,0-2.80255-.0312c-1.87139-.04011-3.72494-.1292-5.55619-.254-36.45135-2.57979-64.77127-22.79937-64.77127-74.02113,0-53.00843,67.73872-119.89612,72.827-124.84633l.00892-.00889c.19608-.19159.29409-.28516.29409-.28516S257.29613,616.30827,257.29613,671.38411Z",
+              transform: "translate(-39.70387 -61.04208)",
+              fill: "#0077b5"
+            }
+          }),
+          _c("path", {
+            attrs: {
+              d:
+                "M181.50168,737.26482l26.747-37.37367-26.81386,41.4773-.07125,4.29076c-1.87139-.04011-3.72494-.1292-5.55619-.254l2.88282-55.10258-.0223-.42775.049-.0802.27179-5.20415-26.88076-41.5798,26.96539,37.67668.06244,1.105,2.17874-41.63324-23.0132-42.96551,23.29391,35.6583,2.26789-86.31419.00892-.294v.28516l-.37871,68.064,22.91079-26.98321-23.00435,32.84678-.60595,37.27566L204.18523,621.958l-21.4805,41.259-.33863,20.723,31.05561-49.79149-31.17146,57.023Z",
+              transform: "translate(-39.70387 -61.04208)",
+              fill: "#3f3d56"
+            }
+          }),
+          _c("circle", {
+            attrs: {
+              cx: "712.48505",
+              cy: "565.41532",
+              r: "79",
+              fill: "#2f2e41"
+            }
+          }),
+          _c("rect", {
+            attrs: {
+              x: "741.77716",
+              y: "691.82355",
+              width: "24",
+              height: "43",
+              transform: "translate(-215.99457 191.86399) rotate(-17.08345)",
+              fill: "#2f2e41"
+            }
+          }),
+          _c("rect", {
+            attrs: {
+              x: "787.6593",
+              y: "677.72286",
+              width: "24",
+              height: "43",
+              transform:
+                "matrix(0.95588, -0.29376, 0.29376, 0.95588, -209.82788, 204.72037)",
+              fill: "#2f2e41"
+            }
+          }),
+          _c("ellipse", {
+            attrs: {
+              cx: "767.887",
+              cy: "732.00275",
+              rx: "20",
+              ry: "7.5",
+              transform: "translate(-220.8593 196.83312) rotate(-17.08345)",
+              fill: "#2f2e41"
+            }
+          }),
+          _c("ellipse", {
+            attrs: {
+              cx: "813.47537",
+              cy: "716.94619",
+              rx: "20",
+              ry: "7.5",
+              transform: "translate(-214.42477 209.56103) rotate(-17.08345)",
+              fill: "#2f2e41"
+            }
+          }),
+          _c("circle", {
+            attrs: { cx: "708.52153", cy: "545.71023", r: "27", fill: "#fff" }
+          }),
+          _c("circle", {
+            attrs: { cx: "708.52153", cy: "545.71023", r: "9", fill: "#3f3d56" }
+          }),
+          _c("path", {
+            attrs: {
+              d:
+                "M657.35526,578.74316c-14.48957-25.43323-3.47841-59.016,24.59412-75.0092s62.57592-8.34055,77.06549,17.09268-2.39072,41.6435-30.46325,57.63671S671.84483,604.17639,657.35526,578.74316Z",
+              transform: "translate(-39.70387 -61.04208)",
+              fill: "#0077b5"
+            }
+          }),
+          _c("path", {
+            attrs: {
+              d:
+                "M611.29613,661.29875c0,50.55711-30.05368,68.20979-67.13,68.20979q-1.28835,0-2.57261-.02864c-1.71785-.03682-3.41933-.1186-5.10033-.23313-33.46068-2.36813-59.45707-20.92878-59.45707-67.948,0-48.65932,62.18106-110.05916,66.85186-114.60322l.00819-.00817c.18-.17587.27-.26177.27-.26177S611.29613,610.74164,611.29613,661.29875Z",
+              transform: "translate(-39.70387 -61.04208)",
+              fill: "#0077b5"
+            }
+          }),
+          _c("path", {
+            attrs: {
+              d:
+                "M541.72029,721.77424l24.55253-34.30732-24.6139,38.07426-.0654,3.93872c-1.71785-.03682-3.41933-.1186-5.10033-.23313l2.6463-50.58165-.02047-.39266.045-.07361.24949-4.77718-24.67531-38.16836,24.753,34.58547.05731,1.01433,2-38.21741-21.12507-39.44039L541.80616,625.928l2.08182-79.23247.00819-.26994v.26177l-.34764,62.47962,21.031-24.76934-21.11693,30.15184-.55624,34.21735,19.63634-32.839-19.71812,37.87389-.31085,19.0228,28.50763-45.70631-28.614,52.34448Z",
+              transform: "translate(-39.70387 -61.04208)",
+              fill: "#3f3d56"
+            }
+          }),
+          _c("path", {
+            attrs: {
+              d:
+                "M875.29613,682.38411c0,55.07585-32.73985,74.3063-73.13,74.3063q-1.4035,0-2.80255-.0312c-1.87139-.04011-3.72494-.1292-5.55619-.254-36.45135-2.57979-64.77127-22.79937-64.77127-74.02113,0-53.00843,67.73872-119.89612,72.827-124.84633l.00892-.00889c.19608-.19159.29409-.28516.29409-.28516S875.29613,627.30827,875.29613,682.38411Z",
+              transform: "translate(-39.70387 -61.04208)",
+              fill: "#0077b5"
+            }
+          }),
+          _c("path", {
+            attrs: {
+              d:
+                "M799.50168,748.26482l26.747-37.37367-26.81386,41.4773-.07125,4.29076c-1.87139-.04011-3.72494-.1292-5.55619-.254l2.88282-55.10258-.0223-.42775.049-.0802.27179-5.20415L770.108,654.01076l26.96539,37.67668.06244,1.105,2.17874-41.63324-23.0132-42.96551,23.29391,35.6583,2.26789-86.31419.00892-.294v.28516l-.37871,68.064,22.91079-26.98321-23.00435,32.84678-.606,37.27566L822.18523,632.958l-21.4805,41.259-.33863,20.723,31.05561-49.79149-31.17146,57.023Z",
+              transform: "translate(-39.70387 -61.04208)",
+              fill: "#3f3d56"
+            }
+          }),
+          _c("ellipse", {
+            attrs: {
+              cx: "721.51694",
+              cy: "656.82212",
+              rx: "12.40027",
+              ry: "39.5",
+              transform: "translate(-220.83517 966.22323) rotate(-64.62574)",
+              fill: "#2f2e41"
+            }
+          }),
+          _c("ellipse", {
+            attrs: {
+              cx: "112.51694",
+              cy: "651.82212",
+              rx: "12.40027",
+              ry: "39.5",
+              transform: "translate(-574.07936 452.71367) rotate(-68.15829)",
+              fill: "#2f2e41"
+            }
+          })
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "h1",
+        { staticClass: "text-center mt-3", staticStyle: { color: "#3F3D56" } },
+        [_vm._v("404 Not Found")]
+      )
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -59698,7 +59908,8 @@ var render = function() {
                               _c(
                                 "a",
                                 {
-                                  staticClass: "btn btn-secondary btn-sm",
+                                  staticClass:
+                                    "btn btn-secondary btn-xs disabled",
                                   attrs: { href: "#Details" }
                                 },
                                 [_vm._v("Details")]
@@ -59707,7 +59918,7 @@ var render = function() {
                               _c(
                                 "router-link",
                                 {
-                                  staticClass: "btn btn-secondary btn-sm",
+                                  staticClass: "btn btn-secondary btn-xs",
                                   attrs: { to: "/ServiceMatrix" }
                                 },
                                 [_vm._v("Service Matrix")]
@@ -59775,7 +59986,7 @@ var render = function() {
       _c("div", { staticClass: "card shadow-custom" }, [
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-12" }, [
+            _c("div", { staticClass: "col-md-10" }, [
               _c("h4", { staticClass: "header-title mt-3" }, [
                 _vm._v("List of Wallet Accounts")
               ]),
@@ -59784,7 +59995,8 @@ var render = function() {
                 _c(
                   "table",
                   {
-                    staticClass: "table striped text-center",
+                    staticClass:
+                      "table table-striped table-responsive text-center",
                     attrs: { id: "table_id" }
                   },
                   [
@@ -59809,21 +60021,46 @@ var render = function() {
                               "a",
                               {
                                 staticClass:
-                                  "btn btn-primary btn-xs text-white",
+                                  "btn btn-primary btn-md text-white btn-xs disabled",
                                 on: {
                                   click: function($event) {
-                                    return _vm.openAccount(lwa)
+                                    return _vm.goToAvailableServices(
+                                      lwa.wallet_account_no
+                                    )
                                   }
                                 }
                               },
-                              [
-                                _c("i", { staticClass: "ti-eye" }),
-                                _vm._v(
-                                  "\n                                                 Open\n                                            "
-                                )
-                              ]
+                              [_vm._v("Available Services")]
                             )
-                          ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass:
+                                    "btn btn-primary btn-md text-white btn-xs",
+                                  attrs: {
+                                    to: {
+                                      name: "List of Merchants",
+                                      params: { uid: lwa.wallet_account_no }
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("span", [
+                                    _c("i", { staticClass: "ti-user" })
+                                  ]),
+                                  _vm._v(
+                                    "\n                                                List of Merchants\n                                            "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
                         ])
                       }),
                       0
@@ -59855,7 +60092,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Wallet Tittle")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Action")])
+        _c("th", [_vm._v("Services")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Merchants")])
       ])
     ])
   }
@@ -59967,7 +60206,7 @@ var render = function() {
               _c(
                 "table",
                 {
-                  staticClass: "table table-hover",
+                  staticClass: "table table-hover table-responsive text-center",
                   attrs: { id: "table-service-gateway" }
                 },
                 [
@@ -60013,7 +60252,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-flat btn-primary mb-3",
+                staticClass: "btn btn-primary mb-3",
                 attrs: { type: "button" },
                 on: { click: _vm.openModal }
               },
@@ -60155,7 +60394,7 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "btn btn-secondary btn-flat",
+                        staticClass: "btn btn-secondary",
                         attrs: { type: "button", "data-dismiss": "modal" }
                       },
                       [_vm._v("Close")]
@@ -60172,10 +60411,23 @@ var render = function() {
                             expression: "editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit", id: "updateServiceGateWay" }
                       },
-                      [_vm._v("Update")]
+                      [
+                        _vm._v(
+                          "\n                    Update\n                "
+                        ),
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: {
+                            role: "status",
+                            "aria-hidden": "true",
+                            hidden: "true",
+                            id: "updateSpinner"
+                          }
+                        })
+                      ]
                     ),
                     _vm._v(" "),
                     _c(
@@ -60189,8 +60441,8 @@ var render = function() {
                             expression: "!editmode"
                           }
                         ],
-                        staticClass: "btn btn-primary btn-flat",
-                        attrs: { type: "submit" }
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit", id: "saveServiceGateWay" }
                       },
                       [
                         _vm._v(
@@ -62212,7 +62464,7 @@ var render = function() {
         on: {
           submit: function($event) {
             $event.preventDefault()
-            _vm.editmode ? _vm.UpdateWalletAccount() : _vm.StoreWalletAccount()
+            return _vm.StoreWalletAccount()
           }
         }
       },
@@ -62301,9 +62553,7 @@ var render = function() {
                                 style: props.fillButtonStyle,
                                 nativeOn: {
                                   click: function($event) {
-                                    _vm.editmode
-                                      ? _vm.UpdateWalletAccount()
-                                      : _vm.StoreWalletAccount()
+                                    return _vm.StoreWalletAccount()
                                   }
                                 }
                               },
@@ -89899,7 +90149,7 @@ var routes = [{
   name: 'Wallet Account Profile',
   beforeEnter: requireLogin
 }, {
-  path: '/listmerchants/:uid',
+  path: '/listwalletaccounts/listmerchants/:uid',
   component: __webpack_require__(/*! ../components/ListWalletAccounts/ListMerchants.vue */ "./resources/js/components/ListWalletAccounts/ListMerchants.vue")["default"],
   name: 'List of Merchants',
   beforeEnter: requireLogin
@@ -89993,9 +90243,12 @@ function checkAdmin(to, from, next) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+
+
 __webpack_require__(/*! C:\xampp\htdocs\e-wallet\resources\js\app.js */"./resources/js/app.js");
 __webpack_require__(/*! C:\xampp\htdocs\e-wallet\resources\sass\app.scss */"./resources/sass/app.scss");
 module.exports = __webpack_require__(/*! C:\xampp\htdocs\e-wallet\resources\sass\ewallet.scss */"./resources/sass/ewallet.scss");
+
 
 
 /***/ })
