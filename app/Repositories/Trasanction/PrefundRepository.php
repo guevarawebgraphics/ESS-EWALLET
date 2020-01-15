@@ -27,7 +27,7 @@ class PrefundRepository
     /**
      * @ Store Prefund 
      **/
-    public function StorePrefund($prefund_data){
+    public function storePrefund($prefund_data){
         $user = auth('api')->user();
         /**
          * @ Handle File Upload 

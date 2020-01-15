@@ -1,18 +1,19 @@
 <template>
     <div id="list-of-wallet-accounts">
-        <div class="box ptb--100">
+        <div class="box ptb--100 col-md-10 offset-md-1">
             <!-- Card -->
              <div class="card shadow-custom">
                 <!-- Card Body -->
                 <div class="card-body">
                     <!--Form Group Row-->
-                    <div class="form-group row">
+                    <div class="row">
                         <!-- Col -->
-                        <div class="col-md-10">
+                        <div class="col-md-12">
                             <!-- <div class="col-md-4">
                                 <router-link class="btn btn-primary" to="#">List of Wallet Accounts <i class="ti-arrow-right"></i></router-link>
                             </div> -->
-                            <h4 class="header-title mt-3">List of Wallet Accounts</h4>
+                            <h4 class="header-title mt-3 text-center">List of Wallet Accounts</h4>
+                            <hr>
                             <div class="data-tables datatable-dark">
                                <!-- Table -->
                                 <table class="table table-striped table-responsive text-center" id="table_id">
@@ -44,7 +45,7 @@
                                                 </a>
                                             </td> -->
                                             <td>
-                                                <a class="btn btn-primary btn-md text-white btn-xs disabled" v-on:click="goToAvailableServices( lwa.wallet_account_no)">Available Services</a>
+                                                <a class="btn btn-primary btn-md text-white btn-xs" v-on:click="goToAvailableServices( lwa.wallet_account_no)">Available Services</a>
                                             </td>
                                             <td>
                                                 <router-link :to="{ name: 'List of Merchants', params: { uid: lwa.wallet_account_no }}" class="btn btn-primary btn-md text-white btn-xs">
@@ -89,7 +90,7 @@ export default {
                     fixedColumns: false,
                     "order": [6, "desc"]
                 })
-            }, 1000);
+            }, 2000);
         },
         GetallWalletAccount(){
             axios.get('api/walletaccount/ListOfWalletAccounts')

@@ -2,11 +2,12 @@
     <div class="container">
      <div id="list-of-service">
          <!-- Box -->
-            <div class="box ptb--100">
+            <div class="box ptb--100 col-md-8 offset-md-2">
                 <!-- Card -->
                 <div class="card shadow-custom">
                     <div class="col-md-12">
-                        <h4 class="header-title mt-3">List of Services - Acct No. {{this.wi}}</h4>   
+                        <h4 class="header-title mt-3 text-center">List of Services - Acct No. {{this.wi}}</h4>   
+                        <hr>
                     </div>  
                     <!-- Card Body -->
                     <div class="card-body">
@@ -31,7 +32,7 @@
                                         <td>{{ s.rwan }}</td>
                                         <td>{{ s.rname }}</td>
                                         <td>
-                                            <router-link to="/prefundECPay" class="btn btn-primary btn-custom"> Transact</router-link> 
+                                            <router-link to="/prefundECPay" class="btn btn-primary btn-xs"> Transact</router-link> 
                                         </td>   
                                     </tr>  
                                 </tbody>
@@ -69,7 +70,7 @@ methods: {
                 fixedColumns: false,
                 "order": [3, "desc"]
             });
-        }, 1000);
+        }, 2000);
     },
     getListServices() {
         axios.get('/api/service/listservices')
