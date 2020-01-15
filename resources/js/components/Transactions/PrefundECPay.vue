@@ -1,7 +1,7 @@
 <template>
     <div id="prefundEcPay">
         <!-- Box -->
-            <div class="box ptb--100">
+            <div class="box ptb--100 col-md-6 offset-md-3">
                 <!-- Card -->
                     <div class="card shadow-custom">
                         <div class="col-md-12">
@@ -14,16 +14,16 @@
                                     <div class="card-body">
                                         <!-- Row -->
                                         <div class="row">
-                                            <div class="col-md-12 offset-md-4">
-                                                <button class="btn btn-secondary">View Transaction History</button>
-                                                <button class="btn btn-secondary">Balance</button>
-                                                <button class="btn btn-secondary">Ave. Daily Usage</button>
+                                            <div class="col-md-8 offset-md-2">
+                                                <button type="button" class="btn btn-secondary btn-xs">View Transaction History</button>
+                                                <button type="button" class="btn btn-secondary btn-xs">Balance</button>
+                                                <button type="button" class="btn btn-secondary btn-xs">Ave. Daily Usage</button>
                                             </div>
                                         </div>
                                         <!-- ./ Row -->
                                         <!-- Row -->
-                                            <div class="row">
-                                                <div class="col-md-4 offset-md-1">
+                                            <div class="row mt-3">
+                                                <div class="col-md-8 offset-md-2">
                                                     <!-- Prefund Amount-->
                                                     <div class="form-group row">
                                                         <label class="control-label custom-label" for="prefundAmount">Prefund Amount: </label>
