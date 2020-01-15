@@ -1984,6 +1984,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2004,7 +2005,7 @@ __webpack_require__.r(__webpack_exports__);
           fixedColumns: false,
           "order": [3, "desc"]
         });
-      }, 1000);
+      }, 2000);
     },
     getListServices: function getListServices() {
       var _this = this;
@@ -2089,6 +2090,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2109,7 +2111,7 @@ __webpack_require__.r(__webpack_exports__);
           fixedColumns: false,
           "order": [4, "desc"]
         });
-      }, 500);
+      }, 1000);
     },
     listMerchants: function listMerchants() {
       var _this = this;
@@ -2199,6 +2201,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2216,9 +2229,9 @@ __webpack_require__.r(__webpack_exports__);
           //lengthChange: false,
           responsive: true,
           fixedColumns: false,
-          "order": [3, "desc"]
+          "order": [6, "desc"]
         });
-      }, 500);
+      }, 2000);
     },
     GetallWalletAccount: function GetallWalletAccount() {
       var _this = this;
@@ -2231,6 +2244,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     openAccount: function openAccount(lwa) {
       this.$router.push("/walletaccountprofile/".concat(lwa['wallet_account_no']));
+    },
+    back: function back() {
+      this.$router.push('/listwalletaccounts');
+    },
+    goToAvailableServices: function goToAvailableServices(wan) {
+      this.$router.push("/walletaccountprofile/".concat(wan, "/ListServices"));
     }
   },
   created: function created() {
@@ -59742,12 +59761,14 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { attrs: { id: "list-of-service" } }, [
-      _c("div", { staticClass: "box ptb--100" }, [
+      _c("div", { staticClass: "box ptb--100 col-md-8 offset-md-2" }, [
         _c("div", { staticClass: "card shadow-custom" }, [
           _c("div", { staticClass: "col-md-12" }, [
-            _c("h4", { staticClass: "header-title mt-3" }, [
+            _c("h4", { staticClass: "header-title mt-3 text-center" }, [
               _vm._v("List of Services - Acct No. " + _vm._s(this.wi))
-            ])
+            ]),
+            _vm._v(" "),
+            _c("hr")
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
@@ -59782,7 +59803,7 @@ var render = function() {
                             _c(
                               "router-link",
                               {
-                                staticClass: "btn btn-primary btn-custom",
+                                staticClass: "btn btn-primary btn-xs",
                                 attrs: { to: "/prefundECPay" }
                               },
                               [_vm._v(" Transact")]
@@ -59847,12 +59868,12 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "list-merchants" } }, [
-    _c("div", { staticClass: "box ptb--100" }, [
+    _c("div", { staticClass: "box ptb--100 col-md-8 offset-md-2" }, [
       _c("div", { staticClass: "card shadow-custom" }, [
         _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-12" }, [
-              _c("h4", { staticClass: "header-title mt-3" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-10 offset-sm-1" }, [
+              _c("h4", { staticClass: "header-title mt-3 text-center" }, [
                 _vm._v(
                   "\n                            List of Merchants Accounts - " +
                     _vm._s(_vm.wan) +
@@ -59860,11 +59881,14 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
               _c("div", { staticClass: "data-tables datatable-dark" }, [
                 _c(
                   "table",
                   {
-                    staticClass: "table striped text-center",
+                    staticClass:
+                      "table table-striped table-hover table-responsive text-center",
                     attrs: { id: "table_id" }
                   },
                   [
@@ -59892,7 +59916,8 @@ var render = function() {
                               _c(
                                 "a",
                                 {
-                                  staticClass: "btn btn-secondary btn-sm",
+                                  staticClass:
+                                    "btn btn-primary btn-xs disabled",
                                   attrs: { href: "#Details" }
                                 },
                                 [_vm._v("Details")]
@@ -59901,7 +59926,7 @@ var render = function() {
                               _c(
                                 "router-link",
                                 {
-                                  staticClass: "btn btn-secondary btn-sm",
+                                  staticClass: "btn btn-primary btn-xs",
                                   attrs: { to: "/ServiceMatrix" }
                                 },
                                 [_vm._v("Service Matrix")]
@@ -59965,14 +59990,16 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "list-of-wallet-accounts" } }, [
-    _c("div", { staticClass: "box ptb--100" }, [
+    _c("div", { staticClass: "box ptb--100 col-md-10 offset-md-1" }, [
       _c("div", { staticClass: "card shadow-custom" }, [
         _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-10 offset-md-2" }, [
-              _c("h4", { staticClass: "header-title mt-3" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-12" }, [
+              _c("h4", { staticClass: "header-title mt-3 text-center" }, [
                 _vm._v("List of Wallet Accounts")
               ]),
+              _vm._v(" "),
+              _c("hr"),
               _vm._v(" "),
               _c("div", { staticClass: "data-tables datatable-dark" }, [
                 _c(
@@ -60004,21 +60031,46 @@ var render = function() {
                               "a",
                               {
                                 staticClass:
-                                  "btn btn-primary btn-xs text-white",
+                                  "btn btn-primary btn-md text-white btn-xs",
                                 on: {
                                   click: function($event) {
-                                    return _vm.openAccount(lwa)
+                                    return _vm.goToAvailableServices(
+                                      lwa.wallet_account_no
+                                    )
                                   }
                                 }
                               },
-                              [
-                                _c("i", { staticClass: "ti-eye" }),
-                                _vm._v(
-                                  "\n                                                 Open\n                                            "
-                                )
-                              ]
+                              [_vm._v("Available Services")]
                             )
-                          ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass:
+                                    "btn btn-primary btn-md text-white btn-xs",
+                                  attrs: {
+                                    to: {
+                                      name: "List of Merchants",
+                                      params: { uid: lwa.wallet_account_no }
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("span", [
+                                    _c("i", { staticClass: "ti-user" })
+                                  ]),
+                                  _vm._v(
+                                    "\n                                                List of Merchants\n                                            "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
                         ])
                       }),
                       0
@@ -60050,7 +60102,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Wallet Tittle")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Action")])
+        _c("th", [_vm._v("Services")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Merchants")])
       ])
     ])
   }
@@ -60108,7 +60162,7 @@ var render = function() {
                     _c(
                       "router-link",
                       {
-                        staticClass: "btn btn-primary btn-md text-white",
+                        staticClass: "btn btn-primary btn-xs text-white",
                         attrs: {
                           to: {
                             name: "List of Merchants",
@@ -61400,7 +61454,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "prefundEcPay" } }, [
-    _c("div", { staticClass: "box ptb--100" }, [
+    _c("div", { staticClass: "box ptb--100 col-md-6 offset-md-3" }, [
       _c("div", { staticClass: "card shadow-custom" }, [
         _vm._m(0),
         _vm._v(" "),
@@ -61418,8 +61472,8 @@ var render = function() {
             _c("div", { staticClass: "card-body" }, [
               _vm._m(1),
               _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-4 offset-md-1" }, [
+              _c("div", { staticClass: "row mt-3" }, [
+                _c("div", { staticClass: "col-md-8 offset-md-2" }, [
                   _c(
                     "div",
                     { staticClass: "form-group row" },
@@ -61833,16 +61887,33 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12 offset-md-4" }, [
-        _c("button", { staticClass: "btn btn-secondary" }, [
-          _vm._v("View Transaction History")
-        ]),
+      _c("div", { staticClass: "col-md-8 offset-md-2" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-secondary btn-xs",
+            attrs: { type: "button" }
+          },
+          [_vm._v("View Transaction History")]
+        ),
         _vm._v(" "),
-        _c("button", { staticClass: "btn btn-secondary" }, [_vm._v("Balance")]),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-secondary btn-xs",
+            attrs: { type: "button" }
+          },
+          [_vm._v("Balance")]
+        ),
         _vm._v(" "),
-        _c("button", { staticClass: "btn btn-secondary" }, [
-          _vm._v("Ave. Daily Usage")
-        ])
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-secondary btn-xs",
+            attrs: { type: "button" }
+          },
+          [_vm._v("Ave. Daily Usage")]
+        )
       ])
     ])
   },
