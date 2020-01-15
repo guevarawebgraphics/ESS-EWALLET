@@ -36,8 +36,8 @@ class PrefundController extends Controller
     /**
      * @ Store Prefund 
      **/
-    public function StorePrefund(StorePrefund $request){
-        $prefund = $this->prefund->StorePrefund($request);
+    public function storePrefund(StorePrefund $request){
+        $prefund = $this->prefund->storePrefund($request);
         return response()->json($prefund);
     }
 }
