@@ -3,9 +3,10 @@
      <div class="col-12 mt-5">
         <div class="card shadow-custom">
             <div class="col-md-12">
-                <h4 class="header-title mt-3">E-Wallet Services </h4>   
-                <router-link to="/createservice/create" class="btn btn-primary btn-custom">Create Solo Services</router-link>  
-                <router-link to="/createjointservice" class="btn btn-primary btn-custom">Create Joint Services</router-link> 
+                <h4 class="header-title mt-3 text-center">E-Wallet Services </h4>   
+                <hr>
+                <router-link to="/createservice/create" class="btn btn-primary btn-sm">Create Solo Services <i class="ti-pencil-alt"></i></router-link>  
+                <router-link to="/createjointservice" class="btn btn-primary btn-sm">Create Joint Services <i class="ti-pencil-alt"></i></router-link> 
             </div>  
             <div class="card-body">
      
@@ -59,9 +60,9 @@
                             </p>
                         </td>
                         <td> 
-                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'view' }}" class="btn btn-primary btn-custom" v-if="method_name === 'view' && s.wallet_condition =='solo'">Update</router-link>  
-                            <router-link :to="{ name: 'list-joint-services', params: { id: s.id }}" class="btn btn-primary btn-custom" v-if="method_name === 'view' && s.wallet_condition =='joint'">View</router-link> 
-                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'joint' }}" class="btn btn-primary btn-custom" v-if="method_name === 'joint' && s.wallet_condition === 'solo'" :hidden="checksExistId(s.id)"> Add</router-link> 
+                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'view' }}" class="btn btn-primary" v-if="method_name === 'view' && s.wallet_condition =='solo'"> <i class="ti-pencil-alt"></i> Update</router-link>  
+                            <router-link :to="{ name: 'list-joint-services', params: { id: s.id }}" class="btn btn-primary" v-if="method_name === 'view' && s.wallet_condition =='joint'">View</router-link> 
+                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'joint' }}" class="btn btn-primary" v-if="method_name === 'joint' && s.wallet_condition === 'solo'" :hidden="checksExistId(s.id)"> Add</router-link> 
                             <a href="#" class="badge badge-secondary" v-show="checksExistId(s.id) && method_name === 'joint'">TAKEN</a> 
                             <a href="#" class="badge badge-secondary" v-show="method_name === 'joint' && s.wallet_condition === 'joint'">UNAVAILABLE</a>
                         </td>   

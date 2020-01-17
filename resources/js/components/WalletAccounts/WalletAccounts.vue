@@ -1,16 +1,17 @@
 <template>
   <div class="wallet-accounts">
-    <div class="box ptb--100">
+    <div class="box col-md-8 offset-md-2 ptb--100">
         <div class="card shadow-custom">
             <div class="card-body">
-                <div class="form-group row">
+                <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-4">
-                            <router-link class="btn btn-primary" to="/createwalletaccount">Create Wallet Account <i class="ti-arrow-right"></i></router-link>
                         </div>
-                            <h4 class="header-title mt-3">Wallet Accounts</h4>
+                            <h4 class="header-title mt-3 text-center">Wallet Accounts</h4>
+                            <hr>
+                            <router-link class="btn btn-primary btn-sm float-left mb-3" to="/createwalletaccount">Create Wallet Account <i class="ti-pencil-alt"></i></router-link>
                             <div class="data-tables datatable-dark">
-                            <table class="table table-striped" id="table_id">
+                            <table class="table table-hover table-striped text-center" id="table_id">
                             <thead>
                                 <tr class="th-table">
                                     <th>Wallet Type</th>
@@ -104,10 +105,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-th {
-    text-align:  center;
-}
-td {
-    text-align: center;
-}
 </style>

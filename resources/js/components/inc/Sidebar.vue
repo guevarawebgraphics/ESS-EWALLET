@@ -1,6 +1,6 @@
 <template>
  <!-- sidebar menu area start -->
- <div class="sidebar-menu nav-custom">
+ <div class="sidebar-menu bg-white">
         <div class="sidebar-header nav-custom">
             <div class="logo">
             <router-link to="/dashboard"><h6 class="text-white">E-Wallet</h6></router-link>
