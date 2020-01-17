@@ -16,9 +16,9 @@
         window.user = @json((auth()->user() ? auth()->user() :  Session::get('user') ))
     </script>
     @if( Session::get('user'))
-    <script>
-        window.localStorage.setItem('user', @json(Session::get('username')));
-    </script>
+        <script>
+            window.localStorage.setItem('user', @json(Session::get('username')));
+        </script>
     @endif
     @endauth
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -31,10 +31,10 @@
     </div>
     <div id="app">
       @if(auth::check())
-       @include('inc/sidebar')
-       <Navbar></Navbar>
+            @include('inc/sidebar')
+            <Navbar></Navbar>
       @endif
-     <div class="main-content-inner" id="main-content">
+    <div class="main-content-inner {{auth::check() ? '' : 'login-area login-s2' }}" id="{{auth::check() ? '' : 'main-content'}}">
         <router-view></router-view>
          <!-- set progressbar -->
          <vue-progress-bar></vue-progress-bar>
@@ -43,7 +43,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/ewallet.js') }}" type="application/javascript"></script>
     @if(auth::check())
-    @include('inc/footer')
+        @include('inc/footer')
     @endif
     <!--
         ______                                                               ________ __________

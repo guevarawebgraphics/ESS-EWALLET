@@ -14,278 +14,305 @@
             </wizard-step>
             <!-- E-Wallet Account Information (KYC) -->
             <tab-content title="E-Wallet Account Information (KYC)" :before-change="ValidateFirstStep">
-                <div class="box">
-                    <div class="card shadow-custom">
-                            <div class="card-body">
-                                <div class="row">
-                                <div class="col-md-4 offset-md-1">
-                                    <!-- <hr> -->
-                                    <!-- ESSID Username -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="username">ESSID/Username</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('username') } " v-on:change="SearchESSID"  name="username" v-validate="'required'" type="text" v-model="form.username" placeholder="ESSID/Username" :disabled="editmode">
-                                        <has-error :form="form" field="username"></has-error>
-                                        <p class="text-danger" v-if="errors.has('username')">{{errors.first('username')}}</p>
-                                    </div>
-                                    <!-- Lastname -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="lastname">Lastname</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('lastname') }" name="lastname" v-validate="'required'" v-model="form.lastname" type="text" placeholder="Lastname" disabled>
-                                        <has-error :form="form" field="lastname"></has-error>
-                                        <p class="text-danger" v-if="errors.has('lastname')">{{errors.first('lastname')}}</p>
-                                    </div>
-                                    <!-- Firstname -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="firstname">Firstname</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('firstname') }" name="firstname" v-validate="'required'" v-model="form.firstname" type="text" placeholder="Firstname" disabled>
-                                        <has-error :form="form" field="firstname"></has-error>
-                                        <p class="text-danger" v-if="errors.has('firstname')">{{errors.first('firstname')}}</p>
-                                    </div>
-                                    <!-- Middlename -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="middlename">Middlename</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('middlename') }" name="middlename" v-validate="'required'" v-model="form.middlename" type="text" placeholder="Middlename" disabled>
-                                        <has-error :form="form" field="middlename"></has-error>
-                                        <p class="text-danger" v-if="errors.has('middlename')">{{errors.first('middlename')}}</p>
-                                    </div>
-                                    <!-- Present Address -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="presentaddress">Present Address</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('presentaddress') }" name="presentaddress" v-validate="'required'" v-model="form.presentaddress" type="text" placeholder="Present Address" disabled>
-                                        <has-error :form="form" field="presentaddress"></has-error>
-                                        <p class="text-danger" v-if="errors.has('presentaddress')">{{errors.first('presentaddress')}}</p>
-                                    </div>
-                                    <!-- Permanent Address -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="permanentaddress">Permanent Address</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('permanentaddress') }" name="permanentaddress" v-validate="'required'" v-model="form.permanentaddress" type="text" placeholder="Permanent Address" disabled>
-                                        <has-error :form="form" field="permanentaddress"></has-error>
-                                        <p class="text-danger" v-if="errors.has('permanentaddress')">{{errors.first('permanentaddress')}}</p>
-                                    </div>
-                                    <h6>Upload Documents</h6>
-                                    <hr>
-                                    <div class="form-group">
-                                        <div class="input-group mb-3">
-                                            <div class="custom-file">
-                                                <input type="file" @change="uploadKycForm" class="custom-file-input" id="kyc_form" ref="file">
-                                                <label v-if="this.editmode == true" class="custom-file-label" for="kyc_form" id="kyc_form_filename">{{ form.kyc_form | substring }}</label>
-                                                <label v-if="this.editmode == false" class="custom-file-label" for="kyc_form" id="kyc_form_filename">{{ kyc_form_file_name}}</label>
+                <div class="box shadow-custom">
+                        <div class="single-report mb-xs-30">
+                        <div class="s-report-inner pr--30 pt--30 mb-3">
+                            <div class="icon icon-background"><i class="ti-pencil-alt"></i></div>
+                            <div class="s-report-title d-flex justify-content-between">
+                            <!-- content -->
+                            <!-- <div class="card shadow-custom"> -->
+                                <div class="card-body">
+                                    <div class="row">
+                                    <div class="col-md-4 offset-md-1">
+                                        <!-- <hr> -->
+                                        <!-- ESSID Username -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="username">ESSID/Username</label>
+                                            <input class="form-control" :class="{ 'is-invalid': errors.has('username') } " v-on:change="SearchESSID"  name="username" v-validate="'required'" type="text" v-model="form.username" placeholder="ESSID/Username" :disabled="editmode">
+                                            <has-error :form="form" field="username"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('username')">{{errors.first('username')}}</p>
+                                        </div>
+                                        <!-- Lastname -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="lastname">Lastname</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('lastname') }" name="lastname" v-validate="'required'" v-model="form.lastname" type="text" placeholder="Lastname" disabled>
+                                            <has-error :form="form" field="lastname"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('lastname')">{{errors.first('lastname')}}</p>
+                                        </div>
+                                        <!-- Firstname -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="firstname">Firstname</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('firstname') }" name="firstname" v-validate="'required'" v-model="form.firstname" type="text" placeholder="Firstname" disabled>
+                                            <has-error :form="form" field="firstname"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('firstname')">{{errors.first('firstname')}}</p>
+                                        </div>
+                                        <!-- Middlename -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="middlename">Middlename</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('middlename') }" name="middlename" v-validate="'required'" v-model="form.middlename" type="text" placeholder="Middlename" disabled>
+                                            <has-error :form="form" field="middlename"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('middlename')">{{errors.first('middlename')}}</p>
+                                        </div>
+                                        <!-- Present Address -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="presentaddress">Present Address</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('presentaddress') }" name="presentaddress" v-validate="'required'" v-model="form.presentaddress" type="text" placeholder="Present Address" disabled>
+                                            <has-error :form="form" field="presentaddress"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('presentaddress')">{{errors.first('presentaddress')}}</p>
+                                        </div>
+                                        <!-- Permanent Address -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="permanentaddress">Permanent Address</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('permanentaddress') }" name="permanentaddress" v-validate="'required'" v-model="form.permanentaddress" type="text" placeholder="Permanent Address" disabled>
+                                            <has-error :form="form" field="permanentaddress"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('permanentaddress')">{{errors.first('permanentaddress')}}</p>
+                                        </div>
+                                        <h6>Upload Documents</h6>
+                                        <hr>
+                                        <div class="form-group">
+                                            <div class="input-group mb-3">
+                                                <div class="custom-file">
+                                                    <input type="file" @change="uploadKycForm" class="custom-file-input" id="kyc_form" ref="file">
+                                                    <label v-if="this.editmode == true" class="custom-file-label" for="kyc_form" id="kyc_form_filename">{{ form.kyc_form | substring }}</label>
+                                                    <label v-if="this.editmode == false" class="custom-file-label" for="kyc_form" id="kyc_form_filename">{{ kyc_form_file_name}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" @change="uploadValidId" class="custom-file-input" id="valid_id" ref="valid_id">
+                                                    <label v-if="this.editmode == true" class="custom-file-label" for="valid_id" id="valid_id_filename">{{ form.valid_id | substring }}</label>
+                                                    <label v-if="this.editmode == false" class="custom-file-label" for="valid_id" i="valid_id_filename">{{ valid_id_file_name }}</label>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" @change="uploadValidId" class="custom-file-input" id="valid_id" ref="valid_id">
-                                                <label v-if="this.editmode == true" class="custom-file-label" for="valid_id" id="valid_id_filename">{{ form.valid_id | substring }}</label>
-                                                <label v-if="this.editmode == false" class="custom-file-label" for="valid_id" i="valid_id_filename">{{ valid_id_file_name }}</label>
-                                            </div>
+                                    </div>
+                                    <div class="col-md-4 offset-md-1">
+                                        <!-- <hr> -->
+                                        <!-- Date of Birth -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="birthdate">Birthdate</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('birthdate') }" name="birthdate" v-validate="'required'" v-model="form.birthdate" type="text" placeholder="Birthdate" disabled>
+                                            <has-error :form="form" field="birthdate"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('birthdate')">{{errors.first('birthdate')}}</p>
+                                        </div>
+                                        <!-- Place of Birth -->
+                                        <!-- <div class="form-group">
+                                            <label class="control-label custom-label" for="placeofbirth">Place of Birth</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('placeofbirth') }" name="placeofbirth" v-validate="'required'" v-model="form.placeofbirth" type="text" placeholder="Place of Birthdate" disabled>
+                                            <has-error :form="form" field="birthdate"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('placeofbirth')">{{errors.first('placeofbirth')}}</p>
+                                        </div> -->
+                                        <!-- Nationality -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="nationality">Nationality</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('nationality') }" name="nationality" v-validate="'required'" v-model="form.nationality" type="text" placeholder="Nationality" disabled>
+                                            <has-error :form="form" field="nationality"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('nationality')">{{errors.first('nationality')}}</p>
+                                        </div>
+                                        <!-- Email Address -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="emailaddress">Email Address</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('emailaddress') }" name="emailaddress" v-validate="'required'" v-model="form.emailaddress" type="text" placeholder="Email Address" disabled>
+                                            <has-error :form="form" field="emailaddress"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('emailaddress')">{{errors.first('emailaddress')}}</p>
+                                        </div>
+                                        <h6>Goverment Numbers</h6>
+                                        <hr>
+                                        <!-- Tin -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="tin">Tin</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('tin') }" name="tin" v-validate="'required'" v-model="form.tin" type="text" placeholder="Tin" disabled>
+                                            <has-error :form="form" field="tin"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('tin')">{{errors.first('tin')}}</p>
+                                        </div>
+                                        <!-- SSSS -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="sss">SSS</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('sss') }" name="sss" v-validate="'required'" v-model="form.sss" type="text" placeholder="SSS" disabled>
+                                            <has-error :form="form" field="sss"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('sss')">{{errors.first('sss')}}</p>
+                                        </div>
+                                        <!-- National Id No -->
+                                        <!-- <div class="form-group">
+                                            <label class="control-label custom-label" for="NationalIdNo">National Id No</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('NationalIdNo') }" name="NationalIdNo" v-validate="'required'" v-model="form.NationalIdNo" type="text" placeholder="National Id No" disabled>
+                                            <has-error :form="form" field="sss"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('NationalIdNo')">{{errors.first('NationalIdNo')}}</p>
+                                        </div> -->
+                                        <!-- Employer Name -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="EmployerName">Employer Name</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('EmployerName') }" name="EmployerName" v-validate="'required'" v-model="form.EmployerName" type="text" placeholder="Employer Name" disabled>
+                                            <has-error :form="form" field="EmployerName"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('EmployerName')">{{errors.first('EmployerName')}}</p>
+                                        </div>
+                                        <!-- Business Name -->
+                                        <div class="form-group">
+                                            <label class="control-label custom-label" for="BusinessName">Business Name</label>
+                                            <input class="form-control" :class="{ 'is-invalid': form.errors.has('BusinessName') }" name="BusinessName" v-validate="'required'" v-model="form.BusinessName" type="text" placeholder="Business Name" disabled>
+                                            <has-error :form="form" field="BusinessName"></has-error>
+                                            <p class="text-danger bg-white" v-if="errors.has('BusinessName')">{{errors.first('BusinessName')}}</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 offset-md-1">
-                                    <!-- <hr> -->
-                                    <!-- Date of Birth -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="birthdate">Birthdate</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('birthdate') }" name="birthdate" v-validate="'required'" v-model="form.birthdate" type="text" placeholder="Birthdate" disabled>
-                                        <has-error :form="form" field="birthdate"></has-error>
-                                        <p class="text-danger" v-if="errors.has('birthdate')">{{errors.first('birthdate')}}</p>
-                                    </div>
-                                    <!-- Place of Birth -->
-                                    <!-- <div class="form-group">
-                                        <label class="control-label custom-label" for="placeofbirth">Place of Birth</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('placeofbirth') }" name="placeofbirth" v-validate="'required'" v-model="form.placeofbirth" type="text" placeholder="Place of Birthdate" disabled>
-                                        <has-error :form="form" field="birthdate"></has-error>
-                                        <p class="text-danger" v-if="errors.has('placeofbirth')">{{errors.first('placeofbirth')}}</p>
-                                    </div> -->
-                                    <!-- Nationality -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="nationality">Nationality</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('nationality') }" name="nationality" v-validate="'required'" v-model="form.nationality" type="text" placeholder="Nationality" disabled>
-                                        <has-error :form="form" field="nationality"></has-error>
-                                        <p class="text-danger" v-if="errors.has('nationality')">{{errors.first('nationality')}}</p>
-                                    </div>
-                                    <!-- Email Address -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="emailaddress">Email Address</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('emailaddress') }" name="emailaddress" v-validate="'required'" v-model="form.emailaddress" type="text" placeholder="Email Address" disabled>
-                                        <has-error :form="form" field="emailaddress"></has-error>
-                                        <p class="text-danger" v-if="errors.has('emailaddress')">{{errors.first('emailaddress')}}</p>
-                                    </div>
-                                    <h6>Goverment Numbers</h6>
-                                    <hr>
-                                    <!-- Tin -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="tin">Tin</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('tin') }" name="tin" v-validate="'required'" v-model="form.tin" type="text" placeholder="Tin" disabled>
-                                        <has-error :form="form" field="tin"></has-error>
-                                        <p class="text-danger" v-if="errors.has('tin')">{{errors.first('tin')}}</p>
-                                    </div>
-                                    <!-- SSSS -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="sss">SSS</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('sss') }" name="sss" v-validate="'required'" v-model="form.sss" type="text" placeholder="SSS" disabled>
-                                        <has-error :form="form" field="sss"></has-error>
-                                        <p class="text-danger" v-if="errors.has('sss')">{{errors.first('sss')}}</p>
-                                    </div>
-                                    <!-- National Id No -->
-                                    <!-- <div class="form-group">
-                                        <label class="control-label custom-label" for="NationalIdNo">National Id No</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('NationalIdNo') }" name="NationalIdNo" v-validate="'required'" v-model="form.NationalIdNo" type="text" placeholder="National Id No" disabled>
-                                        <has-error :form="form" field="sss"></has-error>
-                                        <p class="text-danger" v-if="errors.has('NationalIdNo')">{{errors.first('NationalIdNo')}}</p>
-                                    </div> -->
-                                    <!-- Employer Name -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="EmployerName">Employer Name</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('EmployerName') }" name="EmployerName" v-validate="'required'" v-model="form.EmployerName" type="text" placeholder="Employer Name" disabled>
-                                        <has-error :form="form" field="EmployerName"></has-error>
-                                        <p class="text-danger" v-if="errors.has('EmployerName')">{{errors.first('EmployerName')}}</p>
-                                    </div>
-                                    <!-- Business Name -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="BusinessName">Business Name</label>
-                                        <input class="form-control" :class="{ 'is-invalid': form.errors.has('BusinessName') }" name="BusinessName" v-validate="'required'" v-model="form.BusinessName" type="text" placeholder="Business Name" disabled>
-                                        <has-error :form="form" field="BusinessName"></has-error>
-                                        <p class="text-danger" v-if="errors.has('BusinessName')">{{errors.first('BusinessName')}}</p>
-                                    </div>
                                 </div>
+                            <!-- </div> -->
                             </div>
                         </div>
                     </div>
+
                 </div>
             </tab-content>
             <!-- ./ End E-Wallet Account Information (KYC)  -->
             <!-- E-Wallet Account Setup Step 2 -->
-            <tab-content title="E-Wallet Acount Setup" :before-change="ValidateSecondStep">
+            <tab-content title="Wallet Details" :before-change="ValidateSecondStep">
                 <!-- Create Wallet Account Step 2 -->
-                <div class="box">
-                    <div class="card shadow-custom">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4 offset-md-1">
-                                    <!-- <hr> -->
-                                    <!-- ESSID/Username -->
-                                        <!-- <div class="form-group">
-                                            <label class="control-label custom-label" for="ess_id">ESS ID/Username</label>
-                                            <input class="form-control" v-model="form.username"  type="text" placeholder="ESSID/Username" disabled>
-                                        </div> -->
-                                        <!-- <hr> -->
-                                        <h4>Wallet Details</h4>
-                                        <!-- Wallet Type -->
-                                        <div class="form-group mt-3">
-                                            <label class="control-label custom-label" for="WalletType">Wallet Type</label>
-                                            <select class="custom-select" :class="{ 'is-invalid': errors.has('WalletType') } "  name="WalletType" v-validate="'required'" v-on:change="ValidateSecondStep" v-model="form.WalletType">
-                                                <option value="" selected disabled>Select</option>
-                                                <option value="Credit">Credit</option>
-                                                <option value="Prepaid">Prepaid</option>
-                                            </select>
-                                            <has-error :form="form" field="WalletType"></has-error>
-                                            <p class="text-danger" v-if="errors.has('WalletType')">{{errors.first('WalletType')}}</p>
-                                        </div>
-                                        <!-- Wallet Account Type -->
-                                        <div class="form-group">
-                                            <label class="control-label custom-label" for="WalletAccountType">Wallet Account Type</label>
-                                            <select class="custom-select" :class="{ 'is-invalid': errors.has('WalletAccountType') } "  name="WalletAccountType" v-on:change="ValidateSecondStep" v-validate="'required'"  v-model="form.WalletAccountType">
-                                                <option value="" selected disabled>Select</option>
-                                                <option v-for="wat in walletAccountTypes" :key="wat.id" :value="wat.id">
-                                                    {{ wat.wallet_account_type}}
-                                                </option>
-                                            </select>
-                                            <has-error :form="form" field="WalletAccountType"></has-error>
-                                            <p class="text-danger" v-if="errors.has('WalletAccountType')">{{errors.first('WalletAccountType')}}</p>
-                                        </div>
-                                        <!-- Wallet Account No -->
-                                        <div class="form-group">
-                                            <label class="control-label custom-label" for="WalletAccountNo">Wallet Account No</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNo') } " v-on:change="SerachJointWalletAccount"  name="WalletAccountNo" v-validate="'required'" type="text" v-model="form.WalletAccountNo" placeholder="WalletAccountNo" disabled="disabled">
-                                            <has-error :form="form" field="WalletAccountNo"></has-error>
-                                            <p class="text-danger" v-if="errors.has('WalletAccountNo')">{{errors.first('WalletAccountNo')}}</p>
-                                        </div>
-                                        <!-- Wallet Account Name -->
-                                        <div class="form-group">
-                                            <label class="control-label custom-label" for="WalletAccountName">Wallet Account Name</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountName') } "  name="WalletAccountName" v-validate="'required'" type="text" v-model="form.WalletAccountName" placeholder="WalletAccountName" disabled="disabled">
-                                            <has-error :form="form" field="WalletAccountName"></has-error>
-                                            <p class="text-danger" v-if="errors.has('WalletAccountName')">{{errors.first('WalletAccountName')}}</p>
-                                        </div>
-                                        <!-- Wallet Title -->
-                                        <div class="form-group">
-                                            <label class="control-label custom-label" for="Wallettitle">Wallet Title</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('Wallettitle') } " v-on:change="ValidateSecondStep"  name="Wallettitle" v-validate="'required'" type="text" v-model="form.Wallettitle" placeholder="Wallet Title">
-                                            <has-error :form="form" field="Wallettitle"></has-error>
-                                            <p class="text-danger" v-if="errors.has('Wallettitle')">{{errors.first('Wallettitle')}}</p>
-                                        </div>
+                <div class="box col-md-6 offset-md-3">
+                    <!-- <div class="card shadow-custom"> -->
+                        <div class="single-report mb-xs-30">
+                            <div class="s-report-inner pr--20 pt--30 mb-3">
+                                <div class="icon icon-background"><i class="ti-pencil-alt"></i></div>
+                                    <div class="s-report-title d-flex justify-content-between">
+                                    <!-- content -->
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-8 offset-md-1">
+                                                <!-- <hr> -->
+                                                <!-- ESSID/Username -->
+                                                    <!-- <div class="form-group">
+                                                        <label class="control-label custom-label" for="ess_id">ESS ID/Username</label>
+                                                        <input class="form-control" v-model="form.username"  type="text" placeholder="ESSID/Username" disabled>
+                                                    </div> -->
+                                                    <!-- <hr> -->
+                                                    <h4 class="text-center">Wallet Details</h4>
+                                                    <hr>
+                                                    <!-- Wallet Type -->
+                                                    <div class="form-group mt-3">
+                                                        <label class="control-label custom-label" for="WalletType">Wallet Type</label>
+                                                        <select class="custom-select" :class="{ 'is-invalid': errors.has('WalletType') } "  name="WalletType" v-validate="'required'" v-on:change="ValidateSecondStep" v-model="form.WalletType">
+                                                            <option value="" selected disabled>Select</option>
+                                                            <option value="Credit">Credit</option>
+                                                            <option value="Prepaid">Prepaid</option>
+                                                        </select>
+                                                        <has-error :form="form" field="WalletType"></has-error>
+                                                        <p class="text-danger bg-white" v-if="errors.has('WalletType')">{{errors.first('WalletType')}}</p>
+                                                    </div>
+                                                    <!-- Wallet Account Type -->
+                                                    <div class="form-group">
+                                                        <label class="control-label custom-label" for="WalletAccountType">Wallet Account Type</label>
+                                                        <select class="custom-select" :class="{ 'is-invalid': errors.has('WalletAccountType') } "  name="WalletAccountType" v-on:change="ValidateSecondStep" v-validate="'required'"  v-model="form.WalletAccountType">
+                                                            <option value="" selected disabled>Select</option>
+                                                            <option v-for="wat in walletAccountTypes" :key="wat.id" :value="wat.id">
+                                                                {{ wat.wallet_account_type}}
+                                                            </option>
+                                                        </select>
+                                                        <has-error :form="form" field="WalletAccountType"></has-error>
+                                                        <p class="text-danger bg-white" v-if="errors.has('WalletAccountType')">{{errors.first('WalletAccountType')}}</p>
+                                                    </div>
+                                                    <!-- Wallet Account No -->
+                                                    <div class="form-group">
+                                                        <label class="control-label custom-label" for="WalletAccountNo">Wallet Account No</label>
+                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNo') } " v-on:change="SerachJointWalletAccount"  name="WalletAccountNo" v-validate="'required'" type="text" v-model="form.WalletAccountNo" placeholder="WalletAccountNo" disabled="disabled">
+                                                        <has-error :form="form" field="WalletAccountNo"></has-error>
+                                                        <p class="text-danger bg-white" v-if="errors.has('WalletAccountNo')">{{errors.first('WalletAccountNo')}}</p>
+                                                    </div>
+                                                    <!-- Wallet Account Name -->
+                                                    <div class="form-group">
+                                                        <label class="control-label custom-label" for="WalletAccountName">Wallet Account Name</label>
+                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountName') } "  name="WalletAccountName" v-validate="'required'" type="text" v-model="form.WalletAccountName" placeholder="WalletAccountName" disabled="disabled">
+                                                        <has-error :form="form" field="WalletAccountName"></has-error>
+                                                        <p class="text-danger bg-white" v-if="errors.has('WalletAccountName')">{{errors.first('WalletAccountName')}}</p>
+                                                    </div>
+                                                    <!-- Wallet Title -->
+                                                    <div class="form-group">
+                                                        <label class="control-label custom-label" for="Wallettitle">Wallet Title</label>
+                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('Wallettitle') } " v-on:change="ValidateSecondStep"  name="Wallettitle" v-validate="'required'" type="text" v-model="form.Wallettitle" placeholder="Wallet Title">
+                                                        <has-error :form="form" field="Wallettitle"></has-error>
+                                                        <p class="text-danger bg-white" v-if="errors.has('Wallettitle')">{{errors.first('Wallettitle')}}</p>
+                                                    </div>
 
-                                </div>
-                                <!--Joint Column-->
-                                <div class="col-md-4 offset-md-1" :hidden="CheckWalletAccountType()">
-                                    <hr>
-                                    <h4>Joint Wallet Account</h4>
-                                        <!-- Joint Wallet Type -->
-                                        <div class="form-group">
-                                            <label class="control-label custom-label" for="JointWalletType">Joint Wallet Type</label>
-                                            <input type="text" class="form-control" :class="{ 'is-invalid' : errors.has('JointWalletType') }" v-model="form.JointWalletType" name="JointWalletType" v-validate="'required'" disabled>
-                                                <!-- <option value="" selected disabled>Select Joint Wallet Type</option>
-                                                <option >Select Joint Wallet Type</option>
-                                            </select> -->
+                                            </div>
+                                            <!--Joint Column-->
+                                            <div class="col-md-8 offset-md-2" :hidden="CheckWalletAccountType()">
+                                                <hr>
+                                                <h4>Joint Wallet Account</h4>
+                                                    <!-- Joint Wallet Type -->
+                                                    <div class="form-group">
+                                                        <label class="control-label custom-label" for="JointWalletType">Joint Wallet Type</label>
+                                                        <input type="text" class="form-control" :class="{ 'is-invalid' : errors.has('JointWalletType') }" v-model="form.JointWalletType" name="JointWalletType" v-validate="'required'" disabled>
+                                                            <!-- <option value="" selected disabled>Select Joint Wallet Type</option>
+                                                            <option >Select Joint Wallet Type</option>
+                                                        </select> -->
+                                                    </div>
+                                                    <!-- Joint Wallet Account Type -->
+                                                    <div class="form-group">
+                                                        <label class="control-label custom-label" for="JointWalletAccountType">Joint Wallet Account Type</label>
+                                                        <input type="text" class="form-control" :class="{'is-invalid' : errors.has('JointWalletType') }" v-model="form.jointWalletAccountType" name="JointWalletType" v-validate="'required'" disabled>
+                                                            <!-- <option value="" selected disabled>Select Wallet Account Type</option>
+                                                            <option value="">Select Wallet Account Type</option>
+                                                        </select> -->
+                                                    </div>
+                                                    <!-- Joint Wallet Account No -->
+                                                    <div class="form-group">
+                                                        <label class="control-label custom-label" for="JointWalletAccountNo">Joint Wallet Account No</label>
+                                                        <input type="text" class="form-control" :class="{'is-invalid' : errors.has('JointWalletAccountNo') }" name="JointWalletAccountNo" v-on:change="SerachJointWalletAccount" v-model="form.JointWalletAccountNo" v-validate="'required'" :disabled="editmode">
+                                                        <!-- <select class="custom-select"  disabled>
+                                                            <option value=""></option>
+                                                        </select> -->
+                                                    </div>
+                                                    <!-- Joint Wallet Account Name -->
+                                                    <div class="form-group">
+                                                        <label class="control-label custom-label" for="JointWalletAccountName">Joint Wallet Account Name</label>
+                                                        <input type="text" class="form-control" :class="{'is-invalid' : errors.has('JointWalletAccountName') }" v-model="form.JointWalletAccountName" name="JointWalletAccountName" v-validate="'required'" disabled>
+                                                            <!-- <option value=""></option>
+                                                        </select> -->
+                                                    </div>
+                                                    <!-- CMS Credit Account No -->
+                                                    <div class="form-group" v-if="form.WalletAccountType == 8">
+                                                        <label class="control-label custom-label" for="CMSCreditAccountNo">CMS Credit Account No</label>
+                                                        <input class="form-control" :class="{'is-invalid': errors.has('CMSCreditAccountNo') }" v-model="form.CMSCreditAccountNo" name="CMSCreditAccountNo" v-validate="'required'" type="text" placeholder="CMS Credit Account No">
+                                                        <p class="text-danger bg-white" v-if="errors.has('CMSCreditAccountNo')">{{errors.first('CMSCreditAccountNo')}}</p>
+                                                    </div>
+                                            </div>
                                         </div>
-                                        <!-- Joint Wallet Account Type -->
-                                        <div class="form-group">
-                                            <label class="control-label custom-label" for="JointWalletAccountType">Joint Wallet Account Type</label>
-                                            <input type="text" class="form-control" :class="{'is-invalid' : errors.has('JointWalletType') }" v-model="form.jointWalletAccountType" name="JointWalletType" v-validate="'required'" disabled>
-                                                <!-- <option value="" selected disabled>Select Wallet Account Type</option>
-                                                <option value="">Select Wallet Account Type</option>
-                                            </select> -->
-                                        </div>
-                                        <!-- Joint Wallet Account No -->
-                                        <div class="form-group">
-                                            <label class="control-label custom-label" for="JointWalletAccountNo">Joint Wallet Account No</label>
-                                            <input type="text" class="form-control" :class="{'is-invalid' : errors.has('JointWalletAccountNo') }" name="JointWalletAccountNo" v-on:change="SerachJointWalletAccount" v-model="form.JointWalletAccountNo" v-validate="'required'" :disabled="editmode">
-                                            <!-- <select class="custom-select"  disabled>
-                                                <option value=""></option>
-                                            </select> -->
-                                        </div>
-                                        <!-- Joint Wallet Account Name -->
-                                        <div class="form-group">
-                                            <label class="control-label custom-label" for="JointWalletAccountName">Joint Wallet Account Name</label>
-                                            <input type="text" class="form-control" :class="{'is-invalid' : errors.has('JointWalletAccountName') }" v-model="form.JointWalletAccountName" name="JointWalletAccountName" v-validate="'required'" disabled>
-                                                <!-- <option value=""></option>
-                                            </select> -->
-                                        </div>
-                                        <!-- CMS Credit Account No -->
-                                        <div class="form-group" v-if="form.WalletAccountType == 8">
-                                            <label class="control-label custom-label" for="CMSCreditAccountNo">CMS Credit Account No</label>
-                                            <input class="form-control" :class="{'is-invalid': errors.has('CMSCreditAccountNo') }" v-model="form.CMSCreditAccountNo" name="CMSCreditAccountNo" v-validate="'required'" type="text" placeholder="CMS Credit Account No">
-                                            <p class="text-danger" v-if="errors.has('CMSCreditAccountNo')">{{errors.first('CMSCreditAccountNo')}}</p>
-                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+
+                    <!-- </div> -->
                 </div>
             </tab-content>
             <!-- E-Wallet Account Setup -->
-            <tab-content title="E-Wallet Acount Setup">
-                <div class="box">
-                    <div class="card shadow-custom">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4 offset-md-1">
-                                    <h4>Wallet Details</h4>
-                                    <hr>
-                                    <div class="form-group">
-                                            <label class="control-label custom-label" for="WalletAccountNameDetails">Account Name</label>
-                                            <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNameDetails') } "  name="WalletAccountNameDetails" v-validate="'required'" type="text" v-model="form.WalletAccountNameDetails" disabled>
-                                            <has-error :form="form" field="WalletAccountNameDetails"></has-error>
-                                            <p class="text-danger" v-if="errors.has('WalletAccountNameDetails')">{{errors.first('WalletAccountNameDetails')}}</p>
-                                    </div>
-                                    <div class="form-group">
-                                            <label class="control-label custom-label" for="WalletAccountNoDetails">Account No</label>
-                                            <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNoDetails') } " v-on:change="searchAccountNo"  name="WalletAccountNoDetails" v-validate="'required'" type="text" v-model="form.WalletAccountNoDetails">
-                                            <has-error :form="form" field="WalletAccountNoDetails"></has-error>
-                                            <p class="text-danger" v-if="errors.has('WalletAccountNoDetails')">{{errors.first('WalletAccountNoDetails')}}</p>
-                                    </div>
-                                </div>
+            <tab-content title="Wallet Details">
+                <div class="box col-md-4 offset-md-4">
+                    <div class="single-report mb-xs-30">
+                        <div class="s-report-inner pr--30 pt--30 mb-3">
+                            <div class="icon icon-background"><i class="ti-pencil-alt"></i></div>
+                            <div class="s-report-title d-flex justify-content-between">
+                                    <!-- <div class="card shadow-custom"> -->
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h4 class="text-center">Wallet Details</h4>
+                                                    <hr>
+                                                    <div class="form-group">
+                                                            <label class="control-label custom-label" for="WalletAccountNameDetails">Account Name</label>
+                                                            <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNameDetails') } "  name="WalletAccountNameDetails" v-validate="'required'" type="text" v-model="form.WalletAccountNameDetails" disabled>
+                                                            <has-error :form="form" field="WalletAccountNameDetails"></has-error>
+                                                            <p class="text-danger bg-white" v-if="errors.has('WalletAccountNameDetails')">{{errors.first('WalletAccountNameDetails')}}</p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                            <label class="control-label custom-label" for="WalletAccountNoDetails">Account No</label>
+                                                            <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNoDetails') } " v-on:change="searchAccountNo"  name="WalletAccountNoDetails" v-validate="'required'" type="text" v-model="form.WalletAccountNoDetails">
+                                                            <has-error :form="form" field="WalletAccountNoDetails"></has-error>
+                                                            <p class="text-danger bg-white" v-if="errors.has('WalletAccountNoDetails')">{{errors.first('WalletAccountNoDetails')}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <!-- </div> -->
                             </div>
                         </div>
                     </div>
@@ -306,14 +333,14 @@
                                         <label class="control-label custom-label" for="WalletAccountName">Wallet Account Name</label>
                                         <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountName') } "  name="WalletAccountName" v-validate="'required'" type="text" v-model="form.WalletAccountName" placeholder="WalletAccountName" disabled>
                                             <has-error :form="form" field="WalletAccountName"></has-error>
-                                            <p class="text-danger" v-if="errors.has('WalletAccountName')">{{errors.first('WalletAccountName')}}</p>
+                                            <p class="text-danger bg-white" v-if="errors.has('WalletAccountName')">{{errors.first('WalletAccountName')}}</p>
                                     </div>
                                     Account No
                                     <div class="form-group">
                                         <label class="control-label custom-label" for="WalletAccountNo">Wallet Account No</label>
                                         <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNo') } "  name="WalletAccountNo" v-validate="'required'" type="text" v-model="form.WalletAccountNo" placeholder="WalletAccountNo" disabled>
                                             <has-error :form="form" field="WalletAccountNo"></has-error>
-                                            <p class="text-danger" v-if="errors.has('WalletAccountNo')">{{errors.first('WalletAccountNo')}}</p>
+                                            <p class="text-danger bg-white" v-if="errors.has('WalletAccountNo')">{{errors.first('WalletAccountNo')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -324,363 +351,404 @@
             </tab-content>-->
             <!--./ End E-Wallet Account Setup Step 3-->
             <!-- E-Wallet Account Setup Step 4 -->
-            <tab-content title="E-Wallet Acount Setup" :before-change="ValidateFourthStep">
+            <tab-content title="Designated Bank Account's" :before-change="ValidateFourthStep">
                 <div class="box">
-                    <div class="card shadow-custom">
-                        <div class="card-body">
-                            <h5>Designated Bank Account/s:</h5>
-                            <hr>
-                            <div class="row" id="bankRow">
-                                <div class="col-md-4 offset-md-1" v-for="(key, index) in BankAccount" :key="index.id">
-                                    
-                                    <button class="float-right" @click.prevent="removeElement(index);" id="ba-close-button" style="cursor: pointer" v-if="index != 0">
-                                        <span class="ti-close"></span>
-                                    </button>
-                                    <hr>
-                                    <!-- Name of Bank -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="bank_name">Name of Bank</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('bank_name') } "  name="bank_name" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.bank_name" placeholder="Name Of Bank">
-                                            <has-error :form="form" field="bank_name"></has-error>
-                                            <p class="text-danger" v-if="errors.has('bank_name')">{{errors.first('bank_name')}}</p>
-                                    </div>
-                                    <!-- Branch -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="Branch">Branch</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('Branch') } "  name="Branch" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.Branch" placeholder="Branch">
-                                            <has-error :form="form" field="Branch"></has-error>
-                                            <p class="text-danger" v-if="errors.has('Branch')">{{errors.first('Branch')}}</p>
-                                    </div>
-                                    <!-- Account Type -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="account_type">Account Type</label>
-                                        <!-- <input class="form-control" :class="{ 'is-invalid': errors.has('WalletType') } "  name="WalletType" v-validate="'required'" type="text" v-model="form.WalletType" placeholder="Account Type"> -->
-                                        <select class="custom-select" :class="{ 'is-invalid': errors.has('account_type') } "  name="account_type" v-validate="'required'" v-on:change="ValidateFourthStep" v-model="key.account_type">
-                                                <option value="" selected disabled>Select</option>
-                                                <option>Credit</option>
-                                                <option>Prepaid</option>
-                                        </select>
-                                        <has-error :form="form" field="account_type"></has-error>
-                                        <p class="text-danger" v-if="errors.has('account_type')">{{errors.first('account_type')}}</p>
-                                    </div>
-                                    <!-- Account Name -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="WalletAccountName">Account Name</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('account_name') } "  name="account_name" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.account_name" placeholder="Account Name">
-                                            <has-error :form="form" field="account_name"></has-error>
-                                            <p class="text-danger" v-if="errors.has('account_name')">{{errors.first('account_name')}}</p>
-                                    </div>
-                                    <!-- Account No -->
-                                    <div class="form-group">
-                                        <label class="control-label custom-label" for="account_no">Account No</label>
-                                        <input class="form-control" :class="{ 'is-invalid': errors.has('account_no') } "  name="account_no" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.account_no" placeholder="Account No">
-                                            <has-error :form="form" field="account_no"></has-error>
-                                            <p class="text-danger" v-if="errors.has('account_no')">{{errors.first('account_no')}}</p>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="form-check custom-control custom-checkbox"> 
-                                            <input type="checkbox" class="form-check-input" id="bank_default" name="default" v-model="key.default"> 
-                                            <label class="form-check-label" for="bank_default">Default</label>
+                    <!-- <div class="card shadow-custom"> -->
+                        <div class="single-report mb-xs-30">
+                            <div class="s-report-inner pr--30 pt--30 mb-3">
+                                <div class="icon icon-background"><i class="ti-pencil-alt"></i></div>
+                                    <div class="s-report-title d-flex justify-content-between">
+                                    <!-- content -->
+                                    <div class="card-body">
+                                        <h5>Designated Bank Account/s</h5>
+                                        <hr>
+                                        <div class="row" id="bankRow">
+                                            <div class="col-md-4 offset-md-1" v-for="(key, index) in BankAccount" :key="index.id">
+                                                
+                                                <button class="float-right" @click.prevent="removeElement(index);" id="ba-close-button" style="cursor: pointer" v-if="index != 0">
+                                                    <span class="ti-close"></span>
+                                                </button>
+                                                <!-- <hr> -->
+                                                <!-- Name of Bank -->
+                                                <div class="form-group">
+                                                    <label class="control-label custom-label" for="bank_name">Name of Bank</label>
+                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('bank_name') } "  name="bank_name" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.bank_name" placeholder="Name Of Bank">
+                                                        <has-error :form="form" field="bank_name"></has-error>
+                                                        <p class="text-danger bg-white" v-if="errors.has('bank_name')">{{errors.first('bank_name')}}</p>
+                                                </div>
+                                                <!-- Branch -->
+                                                <div class="form-group">
+                                                    <label class="control-label custom-label" for="Branch">Branch</label>
+                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('Branch') } "  name="Branch" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.Branch" placeholder="Branch">
+                                                        <has-error :form="form" field="Branch"></has-error>
+                                                        <p class="text-danger bg-white" v-if="errors.has('Branch')">{{errors.first('Branch')}}</p>
+                                                </div>
+                                                <!-- Account Type -->
+                                                <div class="form-group">
+                                                    <label class="control-label custom-label" for="account_type">Account Type</label>
+                                                    <!-- <input class="form-control" :class="{ 'is-invalid': errors.has('WalletType') } "  name="WalletType" v-validate="'required'" type="text" v-model="form.WalletType" placeholder="Account Type"> -->
+                                                    <select class="custom-select" :class="{ 'is-invalid': errors.has('account_type') } "  name="account_type" v-validate="'required'" v-on:change="ValidateFourthStep" v-model="key.account_type">
+                                                            <option value="" selected disabled>Select</option>
+                                                            <option>Credit</option>
+                                                            <option>Prepaid</option>
+                                                    </select>
+                                                    <has-error :form="form" field="account_type"></has-error>
+                                                    <p class="text-danger bg-white" v-if="errors.has('account_type')">{{errors.first('account_type')}}</p>
+                                                </div>
+                                                <!-- Account Name -->
+                                                <div class="form-group">
+                                                    <label class="control-label custom-label" for="WalletAccountName">Account Name</label>
+                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('account_name') } "  name="account_name" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.account_name" placeholder="Account Name">
+                                                        <has-error :form="form" field="account_name"></has-error>
+                                                        <p class="text-danger bg-white" v-if="errors.has('account_name')">{{errors.first('account_name')}}</p>
+                                                </div>
+                                                <!-- Account No -->
+                                                <div class="form-group">
+                                                    <label class="control-label custom-label" for="account_no">Account No</label>
+                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('account_no') } "  name="account_no" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.account_no" placeholder="Account No">
+                                                        <has-error :form="form" field="account_no"></has-error>
+                                                        <p class="text-danger bg-white" v-if="errors.has('account_no')">{{errors.first('account_no')}}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-check custom-control custom-checkbox"> 
+                                                        <input type="checkbox" class="form-check-input" id="bank_default" name="default" v-model="key.default"> 
+                                                        <label class="form-check-label" for="bank_default">Default</label>
+                                                    </div>
+                                                    <div class="form-check custom-control custom-checkbox"> 
+                                                        <input type="checkbox" class="form-check-input" id="bank_status" name="status" v-model="key.status"> 
+                                                        <label class="form-check-label" for="bank_status">Active</label>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-check custom-control custom-checkbox"> 
-                                            <input type="checkbox" class="form-check-input" id="bank_status" name="status" v-model="key.status"> 
-                                            <label class="form-check-label" for="bank_status">Active</label>
+                                        <div class="form-group">
+                                            <!-- Add New Bank Account -->
+                                            <button class="btn btn-primary btn-flat" @click.prevent="addBank" :hidden="BankAccount.length>2"> Add New Bank Account</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <!-- Add New Bank Account -->
-                                <button class="btn btn-primary btn-flat" @click.prevent="addBank" :hidden="BankAccount.length>2"> Add New Bank Account</button>
-                            </div>
                         </div>
-                    </div>
+
+
+                    <!-- </div> -->
                 </div>
             </tab-content>
             <!-- ./ End E-Wallet Account Setup 4 -->
             <!-- E-Wallet Account Setup 5 -->
-            <tab-content title="E-Wallet Acount Setup">
+            <tab-content title="Amount Limits">
                 <!-- Box -->
-                <div class="box">
-                    <!-- Card -->
-                    <div class="card shadow-custom">
-                        <!-- Card Body -->
-                        <div class="card-body">
-                            <h5>Amount Limits:</h5>
-                            <hr>
-                            <!-- Row -->
-                            <div class="row">
-                                <div class="col-md-10 offset-md-1">
-                                    <!-- Unordered List -->
-                                    <ul class="list-group list-group-flush">
-                                        <!-- List item 1 -->
-                                        <li class="list-group-item">
-                                            <div class="form-group row">
-                                                <div class="form-check custom-control custom-checkbox"> 
-                                                    <input v-model="form.amount_limit" type="checkbox" class="form-check-input" name="amount_limit" id="amount_limit"> 
-                                                    <label class="form-check-label custom-label" for="amount_limit">
-                                                        Amount Limit (minimum and maximum) of wallet balance at any givin time Minimum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_minimum" name="am_minimum" value="0">
-                                                        Maximum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_maximum" name="am_maximum" value="200000">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- ./ List item 1 -->
-                                        <!-- List item 2 -->
-                                        <li class="list-group-item">
-                                            <div class="form-group row">
-                                                <div class="form-check custom-control custom-checkbox"> 
-                                                    <input v-model="form.am_per_transaction" name="am_per_transaction" type="checkbox" class="form-check-input" id="exampleCheck2"> 
-                                                    <label class="form-check-label custom-label" for="exampleCheck2">
-                                                        Amount Limit (minimum and maximum) per transaction: <input class="custom-limit-input" type="number" min="0" v-model="form.am_transaction_minimun" name="am_transaction_minimun" value="0">
-                                                        Maximum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_transaction_maximum" name="am_transaction_maximum" value="200000">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- ./ List item 2 -->
-                                        <!-- List item 3 -->
-                                        <li class="list-group-item">
-                                            <div class="form-group row">
-                                                <div class="form-check custom-control custom-checkbox"> 
-                                                    <input v-model="form.am_per_day" name="am_per_day" type="checkbox" class="form-check-input" id="exampleCheck3"> 
-                                                    <label class="form-check-label custom-label" for="exampleCheck3">
-                                                        Limit of total transaction amount per day Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_day_minimum" name="am_day_minimum" value="0">
-                                                        Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_day_maximum" name="am_day_maximum" value="200000">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- ./ List item 3 -->
-                                        <!-- List item 4 -->
-                                        <li class="list-group-item">
-                                            <div class="form-group row">
-                                                <div class="form-check custom-control custom-checkbox"> 
-                                                    <input v-model="form.am_per_month" name="am_per_month" type="checkbox" class="form-check-input" id="exampleCheck4"> 
-                                                    <label class="form-check-label custom-label" for="exampleCheck4">
-                                                        Limit of total transaction amount per month Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_month_minimum" name="am_month_minimum" value="0">
-                                                        Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_month_maximum" name="am_month_maximum" value="200000">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- ./ List item 4 -->
-                                        <!-- List item 5 -->
-                                        <li class="list-group-item">
-                                            <div class="form-group row">
-                                                <div class="form-check custom-control custom-checkbox"> 
-                                                    <input v-model="form.am_per_year" name="am_per_year" type="checkbox" class="form-check-input" id="exampleCheck5"> 
-                                                    <label class="form-check-label custom-label" for="exampleCheck5">
-                                                        Limit of total transaction amount per year Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_year_minimum" name="am_year_minimum" value="0">
-                                                        Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_year_maximum" name="am_year_maximum" value="200000">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- ./ List item 5 -->
-                                    </ul>
+                <div class="box col-md-8 offset-md-2">
+                    <div class="single-report mb-xs-30">
+                        <div class="s-report-inner pr--30 pt--30 mb-3">
+                            <div class="icon icon-background"><i class="ti-pencil-alt"></i></div>
+                                <div class="s-report-title d-flex justify-content-between">
+                                <!-- content -->
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <h5>Amount Limits</h5>
+                                    <hr>
+                                    <!-- Row -->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!-- Unordered List -->
+                                            <ul class="list-group list-group-flush">
+                                                <!-- List item 1 -->
+                                                <li class="list-group-item">
+                                                    <div class="form-group row">
+                                                        <div class="form-check custom-control custom-checkbox"> 
+                                                            <input v-model="form.amount_limit" type="checkbox" class="form-check-input" name="amount_limit" id="amount_limit"> 
+                                                            <label class="form-check-label custom-label" for="amount_limit">
+                                                                Amount Limit (minimum and maximum) of wallet balance at any givin time Minimum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_minimum" name="am_minimum" value="0">
+                                                                Maximum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_maximum" name="am_maximum" value="200000">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- ./ List item 1 -->
+                                                <!-- List item 2 -->
+                                                <li class="list-group-item">
+                                                    <div class="form-group row">
+                                                        <div class="form-check custom-control custom-checkbox"> 
+                                                            <input v-model="form.am_per_transaction" name="am_per_transaction" type="checkbox" class="form-check-input" id="exampleCheck2"> 
+                                                            <label class="form-check-label custom-label" for="exampleCheck2">
+                                                                Amount Limit (minimum and maximum) per transaction: <input class="custom-limit-input" type="number" min="0" v-model="form.am_transaction_minimun" name="am_transaction_minimun" value="0">
+                                                                Maximum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_transaction_maximum" name="am_transaction_maximum" value="200000">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- ./ List item 2 -->
+                                                <!-- List item 3 -->
+                                                <li class="list-group-item">
+                                                    <div class="form-group row">
+                                                        <div class="form-check custom-control custom-checkbox"> 
+                                                            <input v-model="form.am_per_day" name="am_per_day" type="checkbox" class="form-check-input" id="exampleCheck3"> 
+                                                            <label class="form-check-label custom-label" for="exampleCheck3">
+                                                                Limit of total transaction amount per day Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_day_minimum" name="am_day_minimum" value="0">
+                                                                Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_day_maximum" name="am_day_maximum" value="200000">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- ./ List item 3 -->
+                                                <!-- List item 4 -->
+                                                <li class="list-group-item">
+                                                    <div class="form-group row">
+                                                        <div class="form-check custom-control custom-checkbox"> 
+                                                            <input v-model="form.am_per_month" name="am_per_month" type="checkbox" class="form-check-input" id="exampleCheck4"> 
+                                                            <label class="form-check-label custom-label" for="exampleCheck4">
+                                                                Limit of total transaction amount per month Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_month_minimum" name="am_month_minimum" value="0">
+                                                                Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_month_maximum" name="am_month_maximum" value="200000">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- ./ List item 4 -->
+                                                <!-- List item 5 -->
+                                                <li class="list-group-item">
+                                                    <div class="form-group row">
+                                                        <div class="form-check custom-control custom-checkbox"> 
+                                                            <input v-model="form.am_per_year" name="am_per_year" type="checkbox" class="form-check-input" id="exampleCheck5"> 
+                                                            <label class="form-check-label custom-label" for="exampleCheck5">
+                                                                Limit of total transaction amount per year Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_year_minimum" name="am_year_minimum" value="0">
+                                                                Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_year_maximum" name="am_year_maximum" value="200000">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- ./ List item 5 -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- ./ Row -->
                                 </div>
+                                <!-- ./ Card Body -->
                             </div>
-                            <!-- ./ Row -->
                         </div>
-                        <!-- ./ Card Body -->
                     </div>
+
+                    <!-- Card -->
+                    <!-- <div class="card shadow-custom"> -->
+
+                    <!-- </div> -->
                     <!-- ./ Card -->
                 </div>
                 <!-- ./ Box -->
             </tab-content>
             <!-- ./ E-Wallet Account Setup 5 -->
              <!-- E-Wallet Account Setup 6 -->
-            <tab-content title="E-Wallet Acount Setup">
+            <tab-content title="Limits No. Of Transactions">
                 <!-- Box -->
-                <div class="box">
-                    <!-- Card -->
-                    <div class="card shadow-custom">
-                        <!-- Card body -->
-                        <div class="card-body">
-                            <h5>Limits No. Of Transactions</h5>
-                            <hr>
-                            <!-- Row -->
-                            <div class="row">
-                                <div class="col-md-10 offset-md-1">
-                                    <!-- Unordered List -->
-                                    <ul class="list-group list-group-flush">
-                                        <!-- List item 1 -->
-                                        <li class="list-group-item">
-                                            <div class="form-group row">
-                                                <div class="form-check custom-control custom-checkbox"> 
-                                                    <input v-model="form.c_lm_per_day" type="checkbox" class="form-check-input" name="lm_per_day"> 
-                                                    <label class="form-check-label custom-label" for="lm_per_day">
-                                                        Limit no. of transactions per day Maximum No. of Transactions: <input class="custom-limit-input" type="number" min="0" v-model="form.lm_per_day" name="c_lm_per_day" value="0">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- ./ List item 1 -->
-                                        <!-- List item 2 -->
-                                        <li class="list-group-item">
-                                            <div class="form-group row">
-                                                <div class="form-check custom-control custom-checkbox"> 
-                                                    <input v-model="form.c_lm_per_month" type="checkbox" class="form-check-input" name="lm_per_month"> 
-                                                    <label class="form-check-label custom-label" for="lm_per_month">
-                                                        Limit no. of transactions per month Maximum No. of Transactions: <input class="custom-limit-input" type="number" min="0"  v-model="form.lm_per_month" name="c_lm_per_month" value="0">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- ./ List item 2 -->
-                                        <!-- List item 3 -->
-                                        <li class="list-group-item">
-                                            <div class="form-group row">
-                                                <div class="form-check custom-control custom-checkbox"> 
-                                                    <input v-model="form.c_lm_per_year" type="checkbox" class="form-check-input" name="lm_per_year" > 
-                                                    <label class="form-check-label custom-label" for="lm_per_year">
-                                                        Limit no. of transactions per year Maximum No. of Transactions: <input class="custom-limit-input" min="0" v-model="form.lm_per_year" type="number" name="c_lm_per_year" id="c_lm_per_year" value="0">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- ./ List item 3 -->
-                                        <h5 class="custom-label">Other Options</h5>
-                                        <!-- List item 4 -->
-                                        <li class="list-group-item">
-                                            <div class="form-group row">
-                                                <div class="form-check custom-control custom-checkbox"> 
-                                                    <input v-model="form.c_allow_negative_balance" type="checkbox" class="form-check-input" name="allow_negative_balance"> 
-                                                    <label class="form-check-label custom-label" for="allow_negative_balance">
-                                                        Allow negative Balance Maximum negative Balance: <input class="custom-limit-input" type="number" v-model="form.allow_negative_balance" name="c_allow_negative_balance" id="c_allow_negative_balance" value="0">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- ./ List item 4 -->
-                                        <!-- List item 5 -->
-                                        <li class="list-group-item">
-                                            <div class="form-group row">
-                                                <div class="form-check custom-control custom-checkbox"> 
-                                                    <input v-model="form.c_com_daily_balance" type="checkbox" class="form-check-input" name="com_daily_balance"> 
-                                                    <label class="form-check-label custom-label" for="com_daily_balance">
-                                                        Compute Average Daily Balance
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- ./ List item 5 -->
-                                        <!-- List item 6 -->
-                                        <li class="list-group-item">
-                                            <div class="form-group row">
-                                                <div class="form-check custom-control custom-checkbox"> 
-                                                    <input v-model="form.c_com_daily_usage" type="checkbox" class="form-check-input" name="com_daily_usage" id="com_daily_usage"> 
-                                                    <label class="form-check-label custom-label" for="com_daily_usage">
-                                                        Compute Average Daily Usage
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- ./ List item 6 -->
-                                    </ul>
+                <div class="box col-md-8 offset-md-2">
+                    <div class="single-report mb-xs-30">
+                        <div class="s-report-inner pr--30 pt--30 mb-3">
+                            <div class="icon icon-background"><i class="ti-pencil-alt"></i></div>
+                                <div class="s-report-title d-flex justify-content-between">
+                                <!-- content -->
+                                <!-- Card body -->
+                                <div class="card-body">
+                                    <h5>Limits No. Of Transactions</h5>
+                                    <hr>
+                                    <!-- Row -->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!-- Unordered List -->
+                                            <ul class="list-group list-group-flush">
+                                                <!-- List item 1 -->
+                                                <li class="list-group-item">
+                                                    <div class="form-group row">
+                                                        <div class="form-check custom-control custom-checkbox"> 
+                                                            <input v-model="form.c_lm_per_day" type="checkbox" class="form-check-input" name="lm_per_day"> 
+                                                            <label class="form-check-label custom-label" for="lm_per_day">
+                                                                Limit no. of transactions per day Maximum No. of Transactions: <input class="custom-limit-input" type="number" min="0" v-model="form.lm_per_day" name="c_lm_per_day" value="0">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- ./ List item 1 -->
+                                                <!-- List item 2 -->
+                                                <li class="list-group-item">
+                                                    <div class="form-group row">
+                                                        <div class="form-check custom-control custom-checkbox"> 
+                                                            <input v-model="form.c_lm_per_month" type="checkbox" class="form-check-input" name="lm_per_month"> 
+                                                            <label class="form-check-label custom-label" for="lm_per_month">
+                                                                Limit no. of transactions per month Maximum No. of Transactions: <input class="custom-limit-input" type="number" min="0"  v-model="form.lm_per_month" name="c_lm_per_month" value="0">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- ./ List item 2 -->
+                                                <!-- List item 3 -->
+                                                <li class="list-group-item">
+                                                    <div class="form-group row">
+                                                        <div class="form-check custom-control custom-checkbox"> 
+                                                            <input v-model="form.c_lm_per_year" type="checkbox" class="form-check-input" name="lm_per_year" > 
+                                                            <label class="form-check-label custom-label" for="lm_per_year">
+                                                                Limit no. of transactions per year Maximum No. of Transactions: <input class="custom-limit-input" min="0" v-model="form.lm_per_year" type="number" name="c_lm_per_year" id="c_lm_per_year" value="0">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- ./ List item 3 -->
+                                                <h5 class="custom-label">Other Options</h5>
+                                                <!-- List item 4 -->
+                                                <li class="list-group-item">
+                                                    <div class="form-group row">
+                                                        <div class="form-check custom-control custom-checkbox"> 
+                                                            <input v-model="form.c_allow_negative_balance" type="checkbox" class="form-check-input" name="allow_negative_balance"> 
+                                                            <label class="form-check-label custom-label" for="allow_negative_balance">
+                                                                Allow negative Balance Maximum negative Balance: <input class="custom-limit-input" type="number" v-model="form.allow_negative_balance" name="c_allow_negative_balance" id="c_allow_negative_balance" value="0">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- ./ List item 4 -->
+                                                <!-- List item 5 -->
+                                                <li class="list-group-item">
+                                                    <div class="form-group row">
+                                                        <div class="form-check custom-control custom-checkbox"> 
+                                                            <input v-model="form.c_com_daily_balance" type="checkbox" class="form-check-input" name="com_daily_balance"> 
+                                                            <label class="form-check-label custom-label" for="com_daily_balance">
+                                                                Compute Average Daily Balance
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- ./ List item 5 -->
+                                                <!-- List item 6 -->
+                                                <li class="list-group-item">
+                                                    <div class="form-group row">
+                                                        <div class="form-check custom-control custom-checkbox"> 
+                                                            <input v-model="form.c_com_daily_usage" type="checkbox" class="form-check-input" name="com_daily_usage" id="com_daily_usage"> 
+                                                            <label class="form-check-label custom-label" for="com_daily_usage">
+                                                                Compute Average Daily Usage
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- ./ List item 6 -->
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- ./ Card Body -->
                             </div>
                         </div>
                     </div>
+
+                    <!-- Card -->
+                    <!-- <div class="card shadow-custom">
+
+                    </div> -->
                 </div>
             </tab-content>
             <!-- ./ E-Wallet Account Setup 6  -->
              <!-- E-Wallet Account Setup 7 -->
-            <tab-content title="E-Wallet Acount Setup">
+            <tab-content title="Service Matrix Setup">
                 <!-- Box -->
-                <div class="box">
-                    <!-- Card -->
-                    <div class="card shadow-custom">
-                        <!-- Card body -->
-                        <div class="card-body">
-                            <h5>Service Matrix</h5>
-                            <hr>
-                            <!-- Row Table -->
-                        <div class="form-group row">
-                            <!-- Cold lg 6 -->
-                            <div class="col-md-12">
-                                <div class="header-title">Services Matrix Setup</div>
-                                <div class="data-tables datatable-dark">
-                                    <!-- Table -->
-                                    <table class="table table-hover table-bordered text-center" id="service_matrix">
-                                        <thead class="text-capitalize">
-                                            <tr class="th-table">
-                                                <th colspan="3"><h3>Service Matrix</h3></th>
-                                                <!-- <th>Applies To:</th> -->
-                                                <th colspan="2">Admin</th>
-                                                <th colspan="2">Merchant</th>
-                                                <th colspan="2">Branch</th>
-                                                <th colspan="2">Agent</th>
-                                            </tr>
-                                            <tr class="th-table">
-                                                <th>Service Type</th>
-                                                <th>Service Name</th>
-                                                <th>Group</th>
-                                                <!-- <th>Inc. Redeem</th> -->
-                                                <th>All</th>
-                                                <th>Some</th>
-                                                <th>All</th>
-                                                <th>Some</th>
-                                                <th>All</th>
-                                                <th>Some</th>
-                                                <th>All</th>
-                                                <th>Some</th>
+                <div class="box col-md-8 offset-md-2">
+                    <div class="single-report mb-xs-30">
+                        <div class="s-report-inner pr--30 pt--30 mb-3">
+                            <div class="icon icon-background"><i class="ti-pencil-alt"></i></div>
+                                <div class="s-report-title d-flex justify-content-between">
+                                <!-- content -->
+                                <!-- Card body -->
+                                <div class="card-body">
+                                        <!-- Row Table -->
+                                    <div class="row">
+                                        <!-- Cold lg 6 -->
+                                        <div class="">
+                                            <div class="header-title">Services Matrix Setup</div>
+                                            <hr>
+                                            <div class="data-tables datatable-dark">
+                                                <!-- Table -->
+                                                <table class="table table-hover table-bordered text-center" id="service_matrix">
+                                                    <thead class="text-capitalize">
+                                                        <tr class="th-table">
+                                                            <th colspan="3"><h3>Service Matrix</h3></th>
+                                                            <!-- <th>Applies To:</th> -->
+                                                            <th colspan="2">Admin</th>
+                                                            <th colspan="2">Merchant</th>
+                                                            <th colspan="2">Branch</th>
+                                                            <th colspan="2">Agent</th>
+                                                        </tr>
+                                                        <tr class="th-table">
+                                                            <th>Service Type</th>
+                                                            <th>Service Name</th>
+                                                            <th>Group</th>
+                                                            <!-- <th>Inc. Redeem</th> -->
+                                                            <th>All</th>
+                                                            <th>Some</th>
+                                                            <th>All</th>
+                                                            <th>Some</th>
+                                                            <th>All</th>
+                                                            <th>Some</th>
+                                                            <th>All</th>
+                                                            <th>Some</th>
 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="sm in Services" :key="sm.id">
-                                                <td>{{sm.st_name}}</td>
-                                                <td>{{sm.service_name}}</td>
-                                                <td>{{sm.group_description}}</td>
-                                                <!-- <td>Test</td> -->
-                                                <td><input :key="sm.id" type="checkbox" name="admin_all[]" class="form-check-input" v-model="sm.admin_all" ></td>
-                                                <td><input :key="sm.id" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" ></td>
-                                                <td><input :key="sm.id" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" ></td>
-                                                <td><input :key="sm.id" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some" ></td>
-                                                <td><input :key="sm.id" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" ></td>
-                                                <td><input :key="sm.id" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" ></td>
-                                                <td><input :key="sm.id" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" ></td>
-                                                <td><input :key="sm.id" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" ></td>
-                                                <!-- <td>
-                                                    <div class="custom-control custom-switch">
-                                                        <input :key="sm.id" type="checkbox" v-model="sm.admin" name="admin[]" class="custom-control-input" v-bind:id="'admin' + sm.id">
-                                                        <label class="custom-control-label" v-if="sm.admin == true" v-bind:for="'admin' + sm.id">ALL</label>
-                                                        <label class="custom-control-label" v-if="sm.admin == false" v-bind:for="'admin' + sm.id">SOME</label>
-                                                    </div>
-                                                </td>
-                                                 <td>
-                                                    <div class="custom-control custom-switch">
-                                                        <input :key="sm.id" type="checkbox" v-model="sm.merchant" name="merchant[]" class="custom-control-input" v-bind:id="'merchant' + sm.id">
-                                                        <label class="custom-control-label" v-if="sm.merchant == true" v-bind:for="'merchant' + sm.id">ALL</label>
-                                                        <label class="custom-control-label" v-if="sm.merchant == false" v-bind:for="'merchant' + sm.id">SOME</label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="custom-control custom-switch">
-                                                        <input :key="sm.id" type="checkbox" v-model="sm.branch" name="branch[]" class="custom-control-input" v-bind:id="'branch' + sm.id">
-                                                        <label class="custom-control-label" v-if="sm.branch == true" v-bind:for="'branch' + sm.id">ALL</label>
-                                                        <label class="custom-control-label" v-if="sm.branch == false" v-bind:for="'branch' + sm.id">SOME</label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="custom-control custom-switch">
-                                                        <input :key="sm.id" type="checkbox" v-model="sm.agent" name="agent[]" class="custom-control-input" v-bind:id="'agent' + sm.id">
-                                                        <label class="custom-control-label" v-if="sm.agent == true" v-bind:for="'agent' + sm.id">ALL</label>
-                                                        <label class="custom-control-label" v-if="sm.agent == false" v-bind:for="'agent' + sm.id">SOME</label>
-                                                    </div>
-                                                </td> -->
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <!-- ./ Table -->
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr v-for="sm in Services" :key="sm.id">
+                                                            <td>{{sm.st_name}}</td>
+                                                            <td>{{sm.service_name}}</td>
+                                                            <td>{{sm.group_description}}</td>
+                                                            <!-- <td>Test</td> -->
+                                                            <td><input :key="sm.id" type="checkbox" name="admin_all[]" class="form-check-input" v-model="sm.admin_all" ></td>
+                                                            <td><input :key="sm.id" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" ></td>
+                                                            <td><input :key="sm.id" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" ></td>
+                                                            <td><input :key="sm.id" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some" ></td>
+                                                            <td><input :key="sm.id" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" ></td>
+                                                            <td><input :key="sm.id" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" ></td>
+                                                            <td><input :key="sm.id" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" ></td>
+                                                            <td><input :key="sm.id" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" ></td>
+                                                            <!-- <td>
+                                                                <div class="custom-control custom-switch">
+                                                                    <input :key="sm.id" type="checkbox" v-model="sm.admin" name="admin[]" class="custom-control-input" v-bind:id="'admin' + sm.id">
+                                                                    <label class="custom-control-label" v-if="sm.admin == true" v-bind:for="'admin' + sm.id">ALL</label>
+                                                                    <label class="custom-control-label" v-if="sm.admin == false" v-bind:for="'admin' + sm.id">SOME</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="custom-control custom-switch">
+                                                                    <input :key="sm.id" type="checkbox" v-model="sm.merchant" name="merchant[]" class="custom-control-input" v-bind:id="'merchant' + sm.id">
+                                                                    <label class="custom-control-label" v-if="sm.merchant == true" v-bind:for="'merchant' + sm.id">ALL</label>
+                                                                    <label class="custom-control-label" v-if="sm.merchant == false" v-bind:for="'merchant' + sm.id">SOME</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="custom-control custom-switch">
+                                                                    <input :key="sm.id" type="checkbox" v-model="sm.branch" name="branch[]" class="custom-control-input" v-bind:id="'branch' + sm.id">
+                                                                    <label class="custom-control-label" v-if="sm.branch == true" v-bind:for="'branch' + sm.id">ALL</label>
+                                                                    <label class="custom-control-label" v-if="sm.branch == false" v-bind:for="'branch' + sm.id">SOME</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="custom-control custom-switch">
+                                                                    <input :key="sm.id" type="checkbox" v-model="sm.agent" name="agent[]" class="custom-control-input" v-bind:id="'agent' + sm.id">
+                                                                    <label class="custom-control-label" v-if="sm.agent == true" v-bind:for="'agent' + sm.id">ALL</label>
+                                                                    <label class="custom-control-label" v-if="sm.agent == false" v-bind:for="'agent' + sm.id">SOME</label>
+                                                                </div>
+                                                            </td> -->
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <!-- ./ Table -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- ./ Row Table -->
                                 </div>
+                                <!-- ./ Card Body -->
                             </div>
                         </div>
-                        <!-- ./ Row Table -->
-                        </div>
                     </div>
+
+                    <!-- Card -->
+                    <!-- <div class="card shadow-custom">
+
+                    </div> -->
                 </div>
             </tab-content>
             <!-- ./ E-Wallet Account Setup 7  -->
@@ -1128,7 +1196,7 @@ export default {
                             this.form.reset()
                             toast.fire({
                                 type: 'success',
-                                title: 'Wallet Account Successfully created!'
+                                title: (this.editmode ? 'Wallet Account Successfully Updated!' : 'Wallet Account Successfully created!')
                             })
                             this.$router.push('/walletaccounts')
                         }
