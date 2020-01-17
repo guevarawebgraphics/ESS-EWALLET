@@ -32,7 +32,7 @@ class PrefundRepository
         /**
          * @ Handle File Upload 
          **/
-         if(!$prefund_data->depositSlip) {
+         if($prefund_data->depositSlip) {
              //gets the original file name
             $depositSlip_ext = $prefund_data->depositSlip->getClientOriginalName();
             //gets the original file name except the extension
@@ -51,7 +51,7 @@ class PrefundRepository
             'account_type' => $prefund_data->accountType,
             'account_name' => $prefund_data->accountName,
             'account_no' => $prefund_data->accountNo,
-            'deposit_slip' => (!$prefund_data->depositSlip ? $depositSlip_filename : 'none' ),
+            'deposit_slip' => ($prefund_data->depositSlip ? $depositSlip_filename : 'none' ),
             'remarks' => 'remarks',
             'created_by' => $user->id,
             'updated_by' => $user->id

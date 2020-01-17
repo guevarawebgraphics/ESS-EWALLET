@@ -2,11 +2,18 @@
      <div class="container">
             <div class="login-box ptb--100">
                 <form @submit.prevent="login" @keydown="form.onKeydown($event)">
-                    <div class="login-form-head" id="form-header">
-                        <h4>E - Wallet</h4>
+                    <div class="login-form-head single-report" id="form-header">
+                        <div class="s-report-inner pr--20 pt--10 mb-3">
+                            <div class="icon icon-background"><i class="ti-wallet"></i></div>
+                                <div class="s-report-title d-flex justify-content-between">
+                                <!-- content -->
+                            </div>
+                        </div>
+                        <h4 class="text-white">E - Wallet</h4>
                     </div>
-                    <div class="login-form-body shadow-custom">
+                    <div class="login-form-body shadow-custom bg-white">
                         <div class="form-group">
+                            <label for="username" :hidden="form.username == ''">Username</label>
                         <input v-model="form.username" type="text" name="username"
                             placeholder="Username"
                             class="form-control" :class="{ 'is-invalid': form.errors.has('username') }" id="username">
@@ -14,6 +21,7 @@
                             <p v-if="status != null" class="text-danger" id="err-msg">These credentials do not match our records</p>
                         </div>
                         <div class="form-group">
+                            <label for="password" :hidden="form.password == ''">Password</label>
                         <input v-model="form.password" type="password" name="password"
                             placeholder="Password"
                             class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
@@ -82,7 +90,7 @@ input {
 }
 
 #form-header {
-    background-color: #283E4A !important;
+    background-color: #504F60 !important;
 }
 
 #err-msg {
