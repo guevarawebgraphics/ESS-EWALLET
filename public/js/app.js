@@ -2460,9 +2460,9 @@ __webpack_require__.r(__webpack_exports__);
       this.form.post('/api/service_gateway/createservicegateway').then(function (response) {
         _this2.$Progress.increase(10);
 
-        _this2.$Progress.finish();
+        _this2.$Progress.finish(); // /console.log("ho"); 
 
-        console.log("ho");
+
         $('#serviceGatewayModal').modal('hide');
         $('#saveSpinner').attr('hidden', true);
         $('#saveServiceGateWay').removeAttr('disabled');
@@ -2487,8 +2487,7 @@ __webpack_require__.r(__webpack_exports__);
       this.editmode = true;
       this.form.reset();
       this.form.clear();
-      this.form.fill(sw);
-      console.log('hi');
+      this.form.fill(sw); // /console.log('hi');
     },
     updateGateway: function updateGateway() {
       var _this3 = this;
@@ -60536,50 +60535,6 @@ var render = function() {
                 },
                 [
                   _c("div", { staticClass: "modal-body" }, [
-                    _c(
-                      "div",
-                      { staticClass: "form-group" },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.gateway_code,
-                              expression: "form.gateway_code"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: {
-                            "is-invalid": _vm.form.errors.has("gateway_code")
-                          },
-                          attrs: {
-                            type: "number",
-                            name: "gateway_code",
-                            placeholder: "Service Gateway Code"
-                          },
-                          domProps: { value: _vm.form.gateway_code },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.form,
-                                "gateway_code",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("has-error", {
-                          attrs: { form: _vm.form, field: "gateway_code" }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
                     _c(
                       "div",
                       { staticClass: "form-group" },

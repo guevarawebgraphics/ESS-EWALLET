@@ -51,10 +51,10 @@
             <form @submit.prevent="editmode ? updateGateway() : createGateway()">
                 <!-- <input type="hidden" name="_token" :value="csrf"> -->
                 <div class="modal-body">
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <input type="number" v-model="form.gateway_code" class="form-control"  :class="{ 'is-invalid': form.errors.has('gateway_code') }" name="gateway_code" placeholder="Service Gateway Code"> 
                         <has-error :form="form" field="gateway_code"></has-error>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <input type="text" v-model="form.gateway_name"  :class="{ 'is-invalid': form.errors.has('gateway_name') }"  class="form-control" name="gateway_name" placeholder="Service Gateway Name">
                          <has-error :form="form" field="gateway_name"></has-error>
@@ -131,7 +131,7 @@ methods : {
                 .then((response) => { 
                     this.$Progress.increase(10)
                     this.$Progress.finish()
-                    console.log("ho"); 
+                    // /console.log("ho"); 
                     $('#serviceGatewayModal').modal('hide') 
                     $('#saveSpinner').attr('hidden', true)
                     $('#saveServiceGateWay').removeAttr('disabled')
@@ -155,7 +155,7 @@ methods : {
             this.form.reset();
             this.form.clear();
             this.form.fill(sw)
-            console.log('hi');
+            // /console.log('hi');
     
         },
         updateGateway(){ 
