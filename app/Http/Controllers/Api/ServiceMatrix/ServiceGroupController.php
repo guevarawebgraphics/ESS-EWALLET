@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
  * @ Form Request 
  **/
 use App\Http\Requests\ServiceMatrix\StoreServiceGroup;
+use App\Http\Requests\ServiceMatrix\UpdateServiceGroup;
 /**
  * @ Repository 
  **/
@@ -52,7 +53,7 @@ class ServiceGroupController extends Controller
     /**
      * @ Update Service Group
      **/
-    public function UpdateServiceGroup(StoreServiceGroup $request, $id){
+    public function UpdateServiceGroup(UpdateServiceGroup $request, $id){
         $service_group = $this->ServiceGroup->UpdateServiceGroup($request, $id);
 
         return response()->json([
