@@ -2640,6 +2640,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 $(document).ready(function () {
   $('#serviceGroupModal').on('shown.bs.modal', function (e) {
     // Show the backdrop
@@ -60857,6 +60858,17 @@ var render = function() {
                       "div",
                       { staticClass: "form-group" },
                       [
+                        _c(
+                          "label",
+                          {
+                            attrs: {
+                              for: "group_description",
+                              hidden: _vm.form.group_description == ""
+                            }
+                          },
+                          [_vm._v(" Group Description")]
+                        ),
+                        _vm._v(" "),
                         _c("input", {
                           directives: [
                             {
@@ -60874,6 +60886,7 @@ var render = function() {
                           },
                           attrs: {
                             type: "text",
+                            id: "group_description",
                             name: "group_description",
                             placeholder: "Group Description"
                           },

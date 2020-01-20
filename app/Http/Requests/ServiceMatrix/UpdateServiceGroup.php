@@ -4,7 +4,7 @@ namespace App\Http\Requests\ServiceMatrix;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreServiceGroup extends FormRequest
+class UpdateServiceGroup extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class StoreServiceGroup extends FormRequest
     public function rules()
     {
         return [
-            'group_description' => 'required|max:255|unique:service_grouping'
+            'group_description' => 'required|max:255|unique:service_grouping,group_description,'.\Request::instance()->id
         ];
     }
 }
