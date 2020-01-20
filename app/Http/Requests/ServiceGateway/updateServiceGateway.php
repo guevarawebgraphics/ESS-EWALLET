@@ -4,7 +4,7 @@ namespace App\Http\Requests\ServiceGateway;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ServiceGateway extends FormRequest
+class updateServiceGateway extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class ServiceGateway extends FormRequest
     public function rules()
     {
         return [
-            // /'gateway_code' => 'required',
-            'gateway_name' => 'required|unique:service_gateway',
+            'gateway_name' => 'required|unique:service_gateway,gateway_name,'.\Request::instance()->gw_id,
         ];
     }
 }

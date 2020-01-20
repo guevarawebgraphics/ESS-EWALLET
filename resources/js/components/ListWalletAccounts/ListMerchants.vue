@@ -1,20 +1,21 @@
 <template>
     <div id="list-merchants">
-        <div class="box ptb--100">
+        <div class="box ptb--100 col-md-8 offset-md-2">
             <!-- Card -->
             <div class="card shadow-custom">
                 <!-- Card Body -->
                 <div class="card-body">
                     <!-- Form Group Row -->
-                    <div class="form-group row">
+                    <div class="row">
                         <!-- Col -->
-                        <div class="col-md-12">
-                            <h4 class="header-title mt-3">
+                        <div class="col-md-10 offset-sm-1">
+                            <h4 class="header-title mt-3 text-center">
                                 List of Merchants Accounts - {{ wan }}
                             </h4>
+                            <hr>
                             <div class="data-tables datatable-dark">
                                 <!-- Table -->
-                                <table class="table striped text-center" id="table_id">
+                                <table class="table table-striped table-hover table-responsive text-center" id="table_id">
                                     <!-- Thead -->
                                     <thead>
                                         <tr class="th-table">
@@ -34,12 +35,12 @@
                                             <td>{{ merchants.wallet_account_no }}</td>
                                             <td>{{ merchants.wallet_account_name}}</td>
                                             <td>
-                                                <a class="btn btn-secondary btn-sm" href="#Details">Details</a>
-                                                <router-link class="btn btn-secondary btn-sm" to="/ServiceMatrix">Service Matrix</router-link>
+                                                <a class="btn btn-primary btn-xs disabled" href="#Details">Details</a>
+                                                <router-link class="btn btn-primary btn-xs" to="/ServiceMatrix">Service Matrix</router-link>
                                             </td>
                                         </tr>
                                     </tbody>
-                                    <!-- ./ Tobody -->
+                                    <!-- ./ TBody -->
                                 </table>
                                 <!-- ./ Table -->
                             </div>
@@ -75,7 +76,7 @@ export default {
                     fixedColumns: false,
                     "order": [4, "desc"]
                 })
-            }, 500);
+            }, 1000);
         },
         listMerchants(){
             axios.get('/api/walletaccount/ListofMerchantsAccounts')

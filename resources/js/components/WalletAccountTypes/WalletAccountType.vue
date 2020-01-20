@@ -1,16 +1,17 @@
 <template>
     <div id="WalletAccountType">
         <!-- Box -->
-        <div class="box ptb--100">
+        <div class="box ptb--100 col-md-8 offset-md-2">
             <!-- Card -->
             <div class="card shadow-custom">
                 <!-- Card Body -->
                 <div class="card-body">
                     <!-- Row Table -->
-                    <div class="form-group row">
+                    <div class="row">
                         <!-- Col md 6 -->
-                        <div class="col-md-8">
-                            <div class="header-title">Wallet Account Types</div>
+                        <div class="col-md-10 offset-md-1">
+                            <div class="header-title text-center">Wallet Account Types</div>
+                            <hr>
                             <div class="data-tables datatable-dark">
                                 <!-- Table -->
                                 <table class="table table-hover table-striped text-center" id="wallet_account_types">

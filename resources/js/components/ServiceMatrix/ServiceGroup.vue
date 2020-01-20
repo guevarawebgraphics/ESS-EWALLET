@@ -1,7 +1,7 @@
 <template>
     <div id="serviceGroup">
         <!-- Box -->
-        <div class="box ptb--100">
+        <div class="box col-md-8 offset-md-2 ptb--100">
             <!-- Card -->
             <div class="card shadow-custom">
                 <!-- Card Body -->
@@ -9,8 +9,10 @@
                     <!-- Row Table -->
                     <div class="form-group row">
                         <!-- Col lg 6 -->
-                        <div class="col-md-6">
-                            <div class="header-title">Service Group</div>
+                        <div class="col-md-8 offset-md-2">
+                            <div class="header-title text-center">Service Group</div>
+                            <hr>
+                            <button type="button" class="btn btn-primary btn-sm mb-3" @click="openModal">Create New <i class="ti-pencil-alt text-white"></i></button>
                             <div class="data-tables datatable-dark">
                                 <!-- Table -->
                                 <table class="table table-hover table-striped text-center" id="service_group_table">
@@ -41,7 +43,6 @@
                     <!-- ./ Row Table -->
                     <!-- Row Button -->
                     <div class="form-group row">
-                        <button type="button" class="btn btn-primary mb-3" @click="openModal"><i class="ti-plus text-white"></i> Create New</button>
                     </div>
                     <!-- ./Row Button -->
                 </div>
