@@ -10,6 +10,7 @@ use App\Repositories\ServiceGateway\ServiceGatewayRepository;
  */ 
 
 use App\Http\Requests\ServiceGateway\ServiceGateway;
+use App\Http\Requests\ServiceGateway\updateServiceGateway;
 /**
  * Service Gateway Module For Create 
  * 
@@ -41,7 +42,7 @@ class ServiceGatewayController extends Controller
     /**
      * For updating Service Gateway
      */
-    public function UpdateServiceGateway(ServiceGateway $request,$gw_id) {
+    public function UpdateServiceGateway(updateServiceGateway $request,$gw_id) {
         $update_servicegateway = $this->servicegateway->UpdateServiceGatewayMethod($request,$gw_id);
         return response()->json([
             'status' => 'success'
