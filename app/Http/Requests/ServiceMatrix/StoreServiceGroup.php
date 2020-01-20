@@ -24,7 +24,6 @@ class StoreServiceGroup extends FormRequest
     public function rules()
     {
         return [
-            'group_code' => 'required|max:255',
             'group_description' => 'required|max:255'
         ];
     }

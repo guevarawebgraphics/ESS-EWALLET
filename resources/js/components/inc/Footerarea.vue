@@ -2,7 +2,7 @@
    <!-- footer area start-->
  <footer>
         <div class="footer-area">
-            <p>© Copyright 2019. All right reserved CSI</p>
+            <p>© Copyright {{ currentYear }}. All right reserved CSI</p>
         </div>
     </footer>
 <!-- footer area end-->
@@ -10,10 +10,16 @@
 
 <script>
 export default {
-
+    data(){
+        return {
+            currentYear: new Date().getFullYear(),
+        }
+    }
 }
 </script>
 
 <style>
-
+.footer-area {
+    background-color: #F3F8FB;
+}
 </style>

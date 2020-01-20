@@ -1,7 +1,7 @@
 <template>
     <div id="serviceGroup">
         <!-- Box -->
-        <div class="box ptb--100">
+        <div class="box col-md-8 offset-md-2 ptb--100">
             <!-- Card -->
             <div class="card shadow-custom">
                 <!-- Card Body -->
@@ -9,8 +9,10 @@
                     <!-- Row Table -->
                     <div class="form-group row">
                         <!-- Col lg 6 -->
-                        <div class="col-md-6">
-                            <div class="header-title">Service Group</div>
+                        <div class="col-md-8 offset-md-2">
+                            <div class="header-title text-center">Service Group</div>
+                            <hr>
+                            <button type="button" class="btn btn-primary btn-sm mb-3" @click="openModal">Create New <i class="ti-pencil-alt text-white"></i></button>
                             <div class="data-tables datatable-dark">
                                 <!-- Table -->
                                 <table class="table table-hover table-striped text-center" id="service_group_table">
@@ -41,7 +43,6 @@
                     <!-- ./ Row Table -->
                     <!-- Row Button -->
                     <div class="form-group row">
-                        <button type="button" class="btn btn-primary mb-3" @click="openModal"><i class="ti-plus text-white"></i> Create New</button>
                     </div>
                     <!-- ./Row Button -->
                 </div>
@@ -63,10 +64,10 @@
             <form @submit.prevent="editmode ? updateGroup() : createGroup()">
                 <!-- <input type="hidden" name="_token" :value="csrf"> -->
                 <div class="modal-body">
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <input type="text" v-model="form.group_code" class="form-control" name="group_code" :class="{ 'is-invalid': form.errors.has('group_code') }" placeholder="Group Code">
                         <has-error :form="form" field="group_code"></has-error>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <input type="text" v-model="form.group_description" class="form-control" name="group_description" :class="{ 'is-invalid': form.errors.has('group_description') }"  placeholder="Group Description">
                         <has-error :form="form" field="group_description"></has-error>

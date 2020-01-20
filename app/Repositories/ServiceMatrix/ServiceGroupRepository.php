@@ -5,6 +5,7 @@ namespace App\Repositories\ServiceMatrix;
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 //use Your Model
 use DB;
+use Keygen;
 use App\Models\ServiceMatrix\ServiceGroup;
 
 /**
@@ -27,7 +28,7 @@ class ServiceGroupRepository
     public function StoreServiceGroup($servicedata){
         $user = auth('api')->user();
         $service_group = ServiceGroup::create([
-            'group_code' => $servicedata->group_code,
+            'group_code' => $this->generate_group_code(),
             'group_description' => $servicedata->group_description,
             'created_by' => $user->id,
             'updated_by' => $user->id
@@ -43,7 +44,7 @@ class ServiceGroupRepository
         $service_group = ServiceGroup::where('created_by', '=', $user->id)
             ->where('id', '=', $id)
             ->update([
-            'group_code' => $servicedata->group_code,
+            //'group_code' => $servicedata->group_code,
             'group_description' => $servicedata->group_description,
             'created_by' => $user->id,
             'updated_by' => $user->id
@@ -51,4 +52,38 @@ class ServiceGroupRepository
         return $service_group;
     }
 
+
+    /***********************************************************************************
+     * Helpers Functions
+     * Below Add Helpers Function
+     * Securities
+     ***********************************************************************************/
+    
+     /**
+      * @ Generate Group Code
+      * @return 
+      */
+      public function generate_group_code(){
+        $group_no = $this->generate_no();
+
+        /**
+         * @ Check if thereis existing group code
+         * @ generate a new one if already exists 
+         **/
+        while(ServiceGroup::where('group_code', '=', $group_no)->count() > 0){
+            $group_no = $this->generate_no();
+        }
+        
+        return $group_no;
+      }
+
+      /**
+       * @ Generate No
+       * @return generate_no 
+       **/
+      public function generate_no(){
+          $group_no = Keygen::length(8)->numeric()->prefix('SGC-', false)->generate();
+
+          return $group_no;
+      }
 }
