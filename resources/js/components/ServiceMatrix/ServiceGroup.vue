@@ -69,7 +69,8 @@
                         <has-error :form="form" field="group_code"></has-error>
                     </div> -->
                     <div class="form-group">
-                        <input type="text" v-model="form.group_description" class="form-control" name="group_description" :class="{ 'is-invalid': form.errors.has('group_description') }"  placeholder="Group Description">
+                        <label for="group_description" :hidden="form.group_description == ''"> Group Description</label>
+                        <input type="text" v-model="form.group_description" class="form-control" id="group_description" name="group_description" :class="{ 'is-invalid': form.errors.has('group_description') }"  placeholder="Group Description">
                         <has-error :form="form" field="group_description"></has-error>
                     </div>
 

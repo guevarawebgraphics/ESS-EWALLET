@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\ServiceGateway;
+namespace App\Http\Requests\ServiceMatrix;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ServiceGateway extends FormRequest
+class UpdateServiceGroup extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class ServiceGateway extends FormRequest
     public function rules()
     {
         return [
-            // /'gateway_code' => 'required',
-            'gateway_name' => 'required|unique:service_gateway',
+            'group_description' => 'required|max:255|unique:service_grouping,group_description,'.\Request::instance()->id
         ];
     }
 }
