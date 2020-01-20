@@ -17,6 +17,7 @@ use App\Http\Requests\ServiceGateway\ServiceGateway;
 class ServiceGatewayController extends Controller
 { 
     protected $ServiceGateway;
+    
     public function __construct(ServiceGatewayRepository $ServiceGateway){
         $this->servicegateway = $ServiceGateway; 
         $this->middleware('auth:api');
