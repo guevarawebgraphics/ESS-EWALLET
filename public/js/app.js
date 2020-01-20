@@ -2410,6 +2410,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2455,6 +2456,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       $('#saveServiceGateWay').attr('disabled', true);
+      $('#btn-close').attr('disabled', true);
       $('#saveSpinner').removeAttr('hidden');
       this.$Progress.start();
       this.form.post('/api/service_gateway/createservicegateway').then(function (response) {
@@ -2466,6 +2468,7 @@ __webpack_require__.r(__webpack_exports__);
         $('#serviceGatewayModal').modal('hide');
         $('#saveSpinner').attr('hidden', true);
         $('#saveServiceGateWay').removeAttr('disabled');
+        $('#btn-close').removeAttr('disabled');
 
         _this2.getServiceGateway();
 
@@ -2479,7 +2482,8 @@ __webpack_require__.r(__webpack_exports__);
         _this2.$Progress.fail();
 
         $('#saveSpinner').attr('hidden', true);
-        $('#saveServiceGateWay').removeAttr('disabled'); //    console.log("eerrrrr");  
+        $('#saveServiceGateWay').removeAttr('disabled');
+        $('#btn-close').removeAttr('disabled'); //    console.log("eerrrrr");  
       });
     },
     ShowServiceGateway: function ShowServiceGateway(sw) {
@@ -2493,6 +2497,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       $('#updateServiceGateWay').attr('disabled', true);
+      $('#btn-close').attr('disabled', true);
       $('#updateSpinner').removeAttr('hidden');
       this.$Progress.start();
       this.form.put('/api/service_gateway/updateservicegateway/' + this.form.id).then(function (response) {
@@ -2502,6 +2507,7 @@ __webpack_require__.r(__webpack_exports__);
 
         $('#serviceGatewayModal').modal('hide');
         $('#updateSpinner').attr('hidden', true);
+        $('#btn-close').removeAttr('disabled');
         $('#updateServiceGateWay').removeAttr('disabled');
 
         _this3.getServiceGateway();
@@ -2516,8 +2522,8 @@ __webpack_require__.r(__webpack_exports__);
         _this3.$Progress.fail();
 
         $('#updateSpinner').attr('hidden', true);
-        $('#updateServiceGateWay').removeAttr('disabled');
-        console.log('err');
+        $('#btn-close').removeAttr('disabled');
+        $('#updateServiceGateWay').removeAttr('disabled'); //console.log('err');
       });
     }
   },
@@ -60539,6 +60545,10 @@ var render = function() {
                       "div",
                       { staticClass: "form-group" },
                       [
+                        _c("label", { attrs: { for: "gateway_name" } }, [
+                          _vm._v("Gateway Name")
+                        ]),
+                        _vm._v(" "),
                         _c("input", {
                           directives: [
                             {
@@ -60554,6 +60564,7 @@ var render = function() {
                           },
                           attrs: {
                             type: "text",
+                            id: "gateway_name",
                             name: "gateway_name",
                             placeholder: "Service Gateway Name"
                           },
@@ -60585,7 +60596,11 @@ var render = function() {
                       "button",
                       {
                         staticClass: "btn btn-secondary",
-                        attrs: { type: "button", "data-dismiss": "modal" }
+                        attrs: {
+                          type: "button",
+                          id: "btn-close",
+                          "data-dismiss": "modal"
+                        }
                       },
                       [_vm._v("Close")]
                     ),
