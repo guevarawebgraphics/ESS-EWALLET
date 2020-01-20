@@ -51,17 +51,18 @@
             <form @submit.prevent="editmode ? updateGateway() : createGateway()">
                 <!-- <input type="hidden" name="_token" :value="csrf"> -->
                 <div class="modal-body">
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <input type="number" v-model="form.gateway_code" class="form-control"  :class="{ 'is-invalid': form.errors.has('gateway_code') }" name="gateway_code" placeholder="Service Gateway Code"> 
                         <has-error :form="form" field="gateway_code"></has-error>
-                    </div>
+                    </div> -->
                     <div class="form-group">
-                        <input type="text" v-model="form.gateway_name"  :class="{ 'is-invalid': form.errors.has('gateway_name') }"  class="form-control" name="gateway_name" placeholder="Service Gateway Name">
+                        <label for="gateway_name">Gateway Name</label>
+                        <input type="text" v-model="form.gateway_name"  :class="{ 'is-invalid': form.errors.has('gateway_name') }" id="gateway_name"  class="form-control" name="gateway_name" placeholder="Service Gateway Name">
                          <has-error :form="form" field="gateway_name"></has-error>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" id="btn-close" data-dismiss="modal">Close</button>
                     <button v-show="editmode" type="submit" class="btn btn-primary" id="updateServiceGateWay">
                         <i class="ti-save"></i>
                         Update
@@ -95,7 +96,7 @@ data() {
         })
     }
 },
-methods : {
+methods: {
         getServiceGateway(){
             axios.get('/api/service_gateway/getservicegateway')
             .then((response) => {
@@ -125,16 +126,18 @@ methods : {
         },
         createGateway(){  
                 $('#saveServiceGateWay').attr('disabled', true)
+                $('#btn-close').attr('disabled', true)
                 $('#saveSpinner').removeAttr('hidden')
                 this.$Progress.start()
                 this.form.post('/api/service_gateway/createservicegateway')
                 .then((response) => { 
                     this.$Progress.increase(10)
                     this.$Progress.finish()
-                    console.log("ho"); 
+                    // /console.log("ho"); 
                     $('#serviceGatewayModal').modal('hide') 
                     $('#saveSpinner').attr('hidden', true)
                     $('#saveServiceGateWay').removeAttr('disabled')
+                    $('#btn-close').removeAttr('disabled')
                     this.getServiceGateway()
                     toast.fire({
                         type: 'success',
@@ -146,6 +149,7 @@ methods : {
                    this.$Progress.fail()
                    $('#saveSpinner').attr('hidden', true)
                    $('#saveServiceGateWay').removeAttr('disabled')
+                   $('#btn-close').removeAttr('disabled')
                 //    console.log("eerrrrr");  
                 })
         },
@@ -155,11 +159,12 @@ methods : {
             this.form.reset();
             this.form.clear();
             this.form.fill(sw)
-            console.log('hi');
+            // /console.log('hi');
     
         },
         updateGateway(){ 
            $('#updateServiceGateWay').attr('disabled', true)
+           $('#btn-close').attr('disabled', true)
            $('#updateSpinner').removeAttr('hidden')
            this.$Progress.start()
            this.form.put('/api/service_gateway/updateservicegateway/'+this.form.id)
@@ -168,6 +173,7 @@ methods : {
                     this.$Progress.finish()
                     $('#serviceGatewayModal').modal('hide');
                     $('#updateSpinner').attr('hidden', true)
+                     $('#btn-close').removeAttr('disabled')
                     $('#updateServiceGateWay').removeAttr('disabled')
                     this.getServiceGateway();
                     toast.fire({
@@ -179,16 +185,17 @@ methods : {
                console.clear()
                this.$Progress.fail() 
                 $('#updateSpinner').attr('hidden', true)
+                 $('#btn-close').removeAttr('disabled')
                 $('#updateServiceGateWay').removeAttr('disabled')
-               console.log('err');
+               //console.log('err');
            })
         }
-},
-created(){
-         this.datatable();
-         this.getServiceGateway();
-}
-}
+    },
+    created(){
+            this.datatable();
+            this.getServiceGateway();
+    }
+    }
 </script>
 
 <style>
