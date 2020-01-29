@@ -14,7 +14,7 @@ use App\Http\Requests\Transaction\StorePrefund;
  * @ SOLID SRP
  * @ Repository 
  **/
-use App\Repositories\Trasanction\PrefundRepository;
+use App\Repositories\Transaction\PrefundRepository;
 
 class PrefundController extends Controller
 {
