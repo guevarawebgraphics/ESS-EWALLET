@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Trasanction;
+namespace App\Repositories\Transaction;
 
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 //use Your Model

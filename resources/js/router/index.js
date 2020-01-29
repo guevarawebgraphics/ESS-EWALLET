@@ -181,6 +181,12 @@ const routes = [
       name: 'Approval',
       beforeEnter: requireLogin,
     },
+    {
+      path: '/put-money',
+      component: require('../components/Transactions/PutMoney').default,
+      name: 'PutMoney',
+      beforeEnter: requireLogin,
+    },
     /** List Services */
     /**
      *@ Return Error 404 Page 
