@@ -249,4 +249,17 @@ Route::prefix('service_gateway')->group(function(){
     Route::post('/storeprefund', [
         'uses' => 'Api\\Transaction\PrefundController@storePrefund'
     ]);
+
+    // api/transaction/updatePrefundStatus
+    Route::post('/updatePrefundStatus/{id}', [
+        'uses' => 'Api\\Transaction\PrefundController@updatePrefundStatus'
+    ]);
+ });
+
+ // Approval
+ Route::prefix('approval')->group(function () {
+    // api/approval/showapprovaltransaction
+    Route::get('/showapprovaltransaction', [
+        'uses' => 'Api\\Approval\ApprovalController@showApprovalTransaction'
+    ]);
  });

@@ -32,7 +32,7 @@
                                         <td>{{ s.rwan }}</td>
                                         <td>{{ s.rname }}</td>
                                         <td>
-                                            <router-link to="/prefundECPay" class="btn btn-primary btn-xs"> Transact</router-link> 
+                                            <router-link :to="{ name: 'Prefund EC Pay', params: { wi: s.rwan } }" para class="btn btn-primary btn-xs"> Transact</router-link> 
                                         </td>   
                                     </tr>  
                                 </tbody>

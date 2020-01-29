@@ -3136,7 +3136,8 @@ __webpack_require__.r(__webpack_exports__);
         accountType: '',
         accountName: '',
         accountNo: '',
-        depositSlip: ''
+        depositSlip: '',
+        walletId: this.$route.params.wi
       })
     };
   },
@@ -3167,6 +3168,7 @@ __webpack_require__.r(__webpack_exports__);
               formData.append('accountType', _this.form.accountType);
               formData.append('accountName', _this.form.accountName);
               formData.append('accountNo', _this.form.accountNo);
+              formData.append('walletId', _this.form.walletId);
               axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
               axios.post('/api/transaction/storeprefund', formData, {
                 headers: {
@@ -3193,9 +3195,9 @@ __webpack_require__.r(__webpack_exports__);
                   _this.$validator.reset();
 
                   _this.DepositSlipName = null;
-                }
+                } //console.log(res)
 
-                console.log(res);
+
                 $('#submitSpinner').attr('hidden', true);
               })["catch"](function (err) {
                 _this.$Progress.fail();
@@ -7547,6 +7549,159 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.showServices();
     this.showDatatable();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/approval/Approval.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/approval/Approval.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      transactionRequest: []
+    };
+  },
+  methods: {
+    dataTable: function dataTable() {
+      setTimeout(function () {
+        $('#table_id').dataTable({
+          paging: true,
+          "pageLength": 10,
+          scrollY: true,
+          "autoWidth": true,
+          responsive: true,
+          fixedColumns: true,
+          "order": [6, "desc"]
+        });
+      }, 1000);
+    },
+    showApprovalTransaction: function showApprovalTransaction() {
+      var _this = this;
+
+      axios.get('/api/approval/showapprovaltransaction').then(function (response) {
+        return _this.transactionRequest = response.data;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    updateTransactionStatus: function updateTransactionStatus(transactionData) {
+      var _this2 = this;
+
+      swal.fire({
+        title: "Are you sure? you want to approved this Transaction Prefund Request? ".concat(transactionData['wallet_id']),
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Save'
+      }).then(function (result) {
+        if (result.value) {
+          _this2.$Progress.start();
+
+          axios.post("/api/transaction/updatePrefundStatus/".concat(transactionData['id'])).then(function (response) {
+            if (response.status === 200) {
+              toast.fire({
+                type: 'success',
+                title: 'Transaction has been approved'
+              });
+
+              _this2.$Progress.increase(10);
+
+              _this2.$Progress.finish();
+
+              _this2.showApprovalTransaction();
+            }
+          })["catch"](function (err) {
+            return _this2.$Progress.fail();
+          });
+        }
+      });
+    }
+  },
+  created: function created() {},
+  mounted: function mounted() {
+    this.dataTable();
+    this.showApprovalTransaction();
+    console.log('Mounted');
   }
 });
 
@@ -60029,7 +60184,13 @@ var render = function() {
                               "router-link",
                               {
                                 staticClass: "btn btn-primary btn-xs",
-                                attrs: { to: "/prefundECPay" }
+                                attrs: {
+                                  to: {
+                                    name: "Prefund EC Pay",
+                                    params: { wi: s.rwan }
+                                  },
+                                  para: ""
+                                }
                               },
                               [_vm._v(" Transact")]
                             )
@@ -61722,7 +61883,8 @@ var render = function() {
                               attrs: {
                                 type: "number",
                                 name: "prefundAmount",
-                                id: "prefundAmount"
+                                id: "prefundAmount",
+                                min: "0"
                               },
                               domProps: { value: _vm.form.prefundAmount },
                               on: {
@@ -74915,6 +75077,161 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/approval/Approval.vue?vue&type=template&id=40b3ae74&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/approval/Approval.vue?vue&type=template&id=40b3ae74& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "approval" } }, [
+    _c("div", { staticClass: "box col-md-10 offset-md-1 ptb--100" }, [
+      _c("div", { staticClass: "card shadow-custom" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-12" }, [
+              _c("h4", { staticClass: "header-title mt-3 text-center" }, [
+                _vm._v("Approvals | Transaction Request")
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("div", { staticClass: "data-tables datatable-dark" }, [
+                _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-hover table-striped table-bordered text-center",
+                    attrs: { id: "table_id" }
+                  },
+                  [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.transactionRequest, function(tr) {
+                        return _c("tr", { key: tr.id }, [
+                          _c("td", [_vm._v(_vm._s(tr.wallet_id))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("span", [_vm._v("₱")]),
+                            _vm._v(" " + _vm._s(tr.prefund_amount) + " ")
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(tr.name_of_bank))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(tr.branch))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(tr.account_type))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(tr.account_name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(tr.transaction_type))]),
+                          _vm._v(" "),
+                          tr.transaction_status === 0
+                            ? _c("th", [_vm._m(1, true)])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          tr.transaction_status === 1
+                            ? _c("th", [_vm._m(2, true)])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary btn-sm",
+                                attrs: {
+                                  disabled: tr.transaction_status === 1
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.updateTransactionStatus(tr)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "ti-thumb-up text-sm" }),
+                                _vm._v(
+                                  "\n                                                Approve\n                                            "
+                                )
+                              ]
+                            )
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  ]
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", { staticClass: "th-table" }, [
+        _c("th", [_vm._v("Wallet ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Amount")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Bank")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Branch")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Account Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Account Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Transaction Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "badge badge-secondary" }, [
+      _vm._v("Pending "),
+      _c("i", { staticClass: "fa fa-ellipsis-h" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "badge badge-primary" }, [
+      _vm._v("Approved "),
+      _c("i", { staticClass: "fa fa-check-circle" })
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Login.vue?vue&type=template&id=4221c3ad&scoped=true&":
 /*!*************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/Login.vue?vue&type=template&id=4221c3ad&scoped=true& ***!
@@ -75471,7 +75788,20 @@ var render = function() {
                 _vm._v(" "),
                 _vm._m(6),
                 _vm._v(" "),
-                _vm._m(7)
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      { attrs: { to: "/approval", "aria-expanded": "true" } },
+                      [
+                        _c("i", { staticClass: "ti-thumb-up text-blue" }),
+                        _c("span", [_vm._v("Approvals")])
+                      ]
+                    )
+                  ],
+                  1
+                )
               ])
             : _vm._e()
         ])
@@ -75533,7 +75863,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("li", [
       _c("a", { attrs: { href: "#dashboard", "aria-expanded": "true" } }, [
-        _c("i", { staticClass: "ti-wallet text-blue" }),
+        _c("i", { staticClass: "ti-bell text-blue" }),
         _c("span", [_vm._v("Notification Template")])
       ])
     ])
@@ -75544,7 +75874,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("li", [
       _c("a", { attrs: { href: "#dashboard", "aria-expanded": "true" } }, [
-        _c("i", { staticClass: "ti-wallet text-blue" }),
+        _c("i", { staticClass: "ti-files text-blue" }),
         _c("span", [_vm._v("View Statement")])
       ])
     ])
@@ -75555,19 +75885,8 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("li", [
       _c("a", { attrs: { href: "#dashboard", "aria-expanded": "true" } }, [
-        _c("i", { staticClass: "ti-wallet text-blue" }),
+        _c("i", { staticClass: "ti-calendar text-blue" }),
         _c("span", [_vm._v("Schedule Trans")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [
-      _c("a", { attrs: { href: "#dashboard", "aria-expanded": "true" } }, [
-        _c("i", { staticClass: "ti-wallet text-blue" }),
-        _c("span", [_vm._v("Approvals")])
       ])
     ])
   }
@@ -92303,6 +92622,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/approval/Approval.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/approval/Approval.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Approval_vue_vue_type_template_id_40b3ae74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Approval.vue?vue&type=template&id=40b3ae74& */ "./resources/js/components/approval/Approval.vue?vue&type=template&id=40b3ae74&");
+/* harmony import */ var _Approval_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Approval.vue?vue&type=script&lang=js& */ "./resources/js/components/approval/Approval.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Approval_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Approval_vue_vue_type_template_id_40b3ae74___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Approval_vue_vue_type_template_id_40b3ae74___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/approval/Approval.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/approval/Approval.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/approval/Approval.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Approval_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Approval.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/approval/Approval.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Approval_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/approval/Approval.vue?vue&type=template&id=40b3ae74&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/approval/Approval.vue?vue&type=template&id=40b3ae74& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Approval_vue_vue_type_template_id_40b3ae74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Approval.vue?vue&type=template&id=40b3ae74& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/approval/Approval.vue?vue&type=template&id=40b3ae74&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Approval_vue_vue_type_template_id_40b3ae74___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Approval_vue_vue_type_template_id_40b3ae74___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/auth/Login.vue":
 /*!************************************************!*\
   !*** ./resources/js/components/auth/Login.vue ***!
@@ -92844,9 +93232,17 @@ var routes = [{
   name: 'List of Services',
   beforeEnter: requireLogin
 }, {
-  path: '/prefundECPay',
+  path: '/prefundECPay/:wi',
   component: __webpack_require__(/*! ../components/Transactions/PrefundECPay */ "./resources/js/components/Transactions/PrefundECPay.vue")["default"],
   name: 'Prefund EC Pay',
+  beforeEnter: requireLogin,
+  props: {
+    "default": true
+  }
+}, {
+  path: '/approval',
+  component: __webpack_require__(/*! ../components/approval/Approval */ "./resources/js/components/approval/Approval.vue")["default"],
+  name: 'Approval',
   beforeEnter: requireLogin
 },
 /** List Services */

@@ -16,18 +16,22 @@ class PrefundRepository
      * @ Connection 
      **/
     protected $connection;
+    private $user;
     /**
      * @ Constructor 
      **/
-    public function __construct(){
+    public function __construct()
+    {
         // E-Wallet
         $this->connection = DB::connection('mysql');
+        $this->user = auth('api')->user();
     }
 
     /**
      * @ Store Prefund 
      **/
-    public function storePrefund($prefund_data){
+    public function storePrefund($prefund_data)
+    {
         $user = auth('api')->user();
         /**
          * @ Handle File Upload 
@@ -45,6 +49,7 @@ class PrefundRepository
 
         // Store Prefund Data
         $prefund = Prefund::create([
+            'wallet_id' => $prefund_data->walletId,
             'prefund_amount' => $prefund_data->prefundAmount,
             'name_of_bank' => $prefund_data->nameofbank,
             'branch' => $prefund_data->branch,
@@ -53,9 +58,20 @@ class PrefundRepository
             'account_no' => $prefund_data->accountNo,
             'deposit_slip' => ($prefund_data->depositSlip ? $depositSlip_filename : 'none' ),
             'remarks' => 'remarks',
+            'transaction_type' => 'Prefund',
             'created_by' => $user->id,
             'updated_by' => $user->id
         ]);
         return $prefund;
+    }
+
+    /**
+     * Update Transaction Request 
+     * @return updatePrefundStatus
+     **/
+    public function updatePrefundStatus($id)
+    {
+        $updatePrefundStatus = Prefund::where('id', '=', $id)->update(['transaction_status' => 1]);
+        return $updatePrefundStatus;
     }
 }
