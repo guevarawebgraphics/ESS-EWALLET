@@ -169,9 +169,16 @@ const routes = [
       beforeEnter: requireLogin
     },
     {
-      path: '/prefundECPay',
+      path: '/prefundECPay/:wi',
       component: require('../components/Transactions/PrefundECPay').default,
       name: 'Prefund EC Pay',
+      beforeEnter: requireLogin,
+      props: { default: true }
+    },
+    {
+      path: '/approval',
+      component: require('../components/approval/Approval').default,
+      name: 'Approval',
       beforeEnter: requireLogin,
     },
     /** List Services */
