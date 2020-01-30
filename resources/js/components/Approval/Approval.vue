@@ -1,7 +1,7 @@
 <template>
     <div id="approval">
         <!-- Box -->
-        <div class="box col-md-10 offset-md-1 ptb--100">
+        <div class="box col-md-12 ptb--100">
             <!-- Card -->
             <div class="card shadow-custom">
                 <!-- Card Body -->
@@ -82,11 +82,14 @@ export default {
                 $('#table_id').dataTable({
                     paging: true,
                     "pageLength": 10,
+                    lengthChange: false,
                     scrollY: true,
                     "autoWidth": true,
                     responsive: true,
                     fixedColumns: true,
-                    "order": [6, "desc"]
+                    fixedHeaders: true,
+                    "ordering": false
+                    //"order": [6, "desc"]
                 });
             }, 1000);
         },
