@@ -268,3 +268,9 @@ Route::prefix('service_gateway')->group(function(){
         'uses' => 'Api\\Approval\ApprovalController@showApprovalTransaction'
     ]);
  });
+
+
+ // Gate
+ Route::get('/auth-gate', [
+    'uses' => 'Api\Gate\GateController@gate'
+ ]);

@@ -227,6 +227,20 @@ const routes = [
     next(true);
   }
 
+  /**
+   * @ Route Guard for Prepaid Merchant 
+   **/
+  function checkPrepaidMerchant(to, from, next) {
+    let user_type = this.$gate.isPrepaidMerchant();
+    if (user != null){
+      // check if the current user is Prepaid Merchant
+      if(user_type !== 3) {
+        window.location.href="/";
+      }
+    }
+    next(true);
+  }
+
 export default new VueRouter({
     mode: 'history',
     routes // short for routes: routes
