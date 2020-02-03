@@ -33,6 +33,13 @@ class WalletAccountTypeController extends Controller
     }
 
     /**
+     * @ Show All Wallet Account Type 
+     **/
+    public function showAllWalletAccountType() {
+        return response()->json($this->walletAccountRepository->showAllWalletAccountType());
+    }
+
+    /**
      * @ Get all wallet account types 
      **/
     public function GetAllWalletAccountType(){
@@ -60,6 +67,13 @@ class WalletAccountTypeController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+    }
+
+    /**
+     * @ Search Wallet Account Type 
+     **/
+    public function searchWalletAccountType($query){
+        return response()->json($this->walletAccountRepository->searchWalletAccountType($query));
     }
 
 }

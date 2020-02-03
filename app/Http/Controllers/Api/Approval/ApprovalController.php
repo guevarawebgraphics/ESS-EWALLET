@@ -32,4 +32,9 @@ class ApprovalController extends Controller
         $approvalTransaction = $this->approval->showApprovalTransaction();
         return response()->json($approvalTransaction);
     }
+
+    public function searchApprovalTransaction($query)
+    {
+        return response()->json($this->approval->searchApprovalTransaction($query));
+    }
 }

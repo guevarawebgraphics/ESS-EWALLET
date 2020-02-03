@@ -112,4 +112,13 @@ class ServiceController extends Controller
         return response()->json($list_services);
     }
 
+    /**
+     * @ List Services 
+     * @return searchListofServices
+     **/
+    public function searchListOfServices($query)
+    {
+        return response()->json($this->services->searchListOfServices($query));
+    }
+
 }

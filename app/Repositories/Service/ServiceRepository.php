@@ -423,7 +423,7 @@ class ServiceRepository
          **/
         $get_service_with_joint = $this->connection
                         ->table('service_type_details_basetable')
-                            ->join('services', 'service_type_details_basetable.joint_services_id', '=', 'services.id')
+                        ->join('services', 'service_type_details_basetable.joint_services_id', '=', 'services.id')
                         ->get(); 
 
         foreach($get_service_with_joint as $test2){
@@ -453,7 +453,38 @@ class ServiceRepository
                             'wallet_account.wallet_account_name as rname'
 
                         )
-                        ->get();
+                        ->paginate(10);
+        return $listServices;
+    }
+
+    /**
+     * @ Search list services
+     * @return  searchlistServices
+     **/
+    public function searchListOfServices($query){
+        $listServices = $this->connection
+                        ->table('services')
+                        ->join('services_basetable', 'services.id', '=', 'services_basetable.service_id')
+                        ->join('wallet_account', 'services_basetable.pr_details_id', '=', 'wallet_account.id')
+                        ->select(
+                            'services.id',
+                            'services.service_code',
+                            'services.service_name',
+                            'services.service_description',
+                            'services.s_wallet_type',
+                            'services.wallet_condition',
+                            'wallet_account.wallet_account_no as rwan',
+                            'wallet_account.wallet_account_name as rname'
+
+                        )
+                        ->orWhere('services.service_code', 'LIKE', '%'.$query.'%')
+                        ->orWhere('services.service_name', 'LIKE', '%'.$query.'%')
+                        ->orWhere('services.service_description', 'LIKE', '%'.$query.'%')
+                        ->orWhere('services.s_wallet_type', 'LIKE', '%'.$query.'%')
+                        ->orWhere('services.service_code', 'LIKE', '%'.$query.'%')
+                        ->orWhere('wallet_account.wallet_account_no', 'LIKE', '%'.$query.'%')
+                        ->orWhere('wallet_account.wallet_account_name', 'LIKE', '%'.$query.'%')
+                        ->paginate(10);
         return $listServices;
     }
 
@@ -518,16 +549,24 @@ class ServiceRepository
      * @return service_type_code 
      **/
     public function GetServiceTypeCode($id,$wallet_condition){
-                    if($wallet_condition === "solo"){
-                        $service_type_code = $this->connection 
-                                            ->table('services_basetable')
-                                            ->Join('servicetypedetails','servicetypedetails.id','=','services_basetable.service_type_id') 
-                                            ->where('services_basetable.service_id','=',$id)
-                                            ->select('st_code')
-                                            ->first();
-                    }
-               
-                    return $service_type_code;
+        if($wallet_condition === "solo"){
+            $service_type_code = $this->connection 
+                                ->table('services_basetable')
+                                ->Join('servicetypedetails','servicetypedetails.id','=','services_basetable.service_type_id') 
+                                ->where('services_basetable.service_id','=',$id)
+                                ->select('st_code')
+                                ->first();
+        }
+    
+        return $service_type_code;
+    }
+
+    /**
+     * @ search service 
+     **/
+    public function searchService($query)
+    {
+        
     }
 
 }

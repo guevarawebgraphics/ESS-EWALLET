@@ -60,4 +60,12 @@ class ServiceGroupController extends Controller
             'status' => 'success'
         ]);
     }
+
+    /**
+     * @ search service group 
+     **/
+    public function searchServiceGroup($query)
+    {
+        return response()->json($this->ServiceGroup->searchServiceGroup($query));
+    }
 }

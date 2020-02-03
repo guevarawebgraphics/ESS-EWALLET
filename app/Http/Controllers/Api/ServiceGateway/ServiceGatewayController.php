@@ -48,5 +48,13 @@ class ServiceGatewayController extends Controller
             'status' => 'success'
         ]);
     }
+
+    /**
+     * @ search service gateway 
+     **/
+    public function searchServiceGateway($query)
+    {
+        return response()->json($this->servicegateway->searchServiceGateway($query));
+    }
     
 }

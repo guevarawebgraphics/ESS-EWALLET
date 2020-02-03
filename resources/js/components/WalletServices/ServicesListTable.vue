@@ -5,72 +5,81 @@
             <div class="col-md-12">
                 <h4 class="header-title mt-3 text-center">E-Wallet Services </h4>   
                 <hr>
-                <router-link to="/createservice/create" class="btn btn-primary btn-sm">Create Solo Services <i class="ti-pencil-alt"></i></router-link>  
-                <router-link to="/createjointservice" class="btn btn-primary btn-sm">Create Joint Services <i class="ti-pencil-alt"></i></router-link> 
+                <router-link to="/createservice/create" class="btn btn-primary btn-sm float-left mr-3">Create Solo Services <i class="ti-pencil-alt"></i></router-link>  
+                <router-link to="/createjointservice" class="btn btn-primary btn-sm float-left">Create Joint Services <i class="ti-pencil-alt"></i></router-link> 
+                <div class="float-right">
+                    <div class="search-box">
+                        <form action="#">
+                            <input class="form-control" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account Types..." required>
+                            <i class="ti-search"></i>
+                        </form>
+                    </div>
+                </div>
             </div>  
-            <div class="card-body">
-     
-                <div class="data-tables datatable-dark">
-                <table class="table table-hover table-striped table-responsive text-center" id="table-services">
-                <thead>
-                    <tr class="th-table">
-                        <th>Service Code</th>
-                        <th>Service Name</th>
-                        <th>Service Type Code</th>
-                        <th>Service Type Name</th>
-                        <th>Available In Wallet Type</th> 
-                        <th>Service Condition</th>
-                        <th>Action</th>
-                    </tr>  
-                </thead>
-                <tbody>
-                    <tr v-for="s in Services" :key="s.id"> 
-                        <td> 
-                            <p>
-                            {{s.service_code}}  
-                            </p>
-                        </td> 
-                        <td> 
-                            <p>
-                            {{s.service_name}} 
-                            </p>
-                        </td>
-                        <td>
-                            <p v-if="s.st_code">
-                            <!-- {{ showServiceType(s.id,s.wallet_condition) }} -->
-                            {{ s.st_code }}
-                            </p>
-                            <p v-if="s.st_code == null">
-                                Joint
-                            </p>
-                        </td>
-                        <td> 
-                            <p>
-                            -----
-                            </p>
-                        </td>
-                        <td> 
-                            <p>
-                            {{s.s_wallet_type}}
-                            </p>
-                        </td>
-                        <td> 
-                            <p>
-                            {{s.wallet_condition}} 
-                            </p>
-                        </td>
-                        <td> 
-                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'view' }}" class="btn btn-primary" v-if="method_name === 'view' && s.wallet_condition =='solo'"> <i class="ti-pencil-alt"></i> Update</router-link>  
-                            <router-link :to="{ name: 'list-joint-services', params: { id: s.id }}" class="btn btn-primary" v-if="method_name === 'view' && s.wallet_condition =='joint'">View</router-link> 
-                            <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'joint' }}" class="btn btn-primary" v-if="method_name === 'joint' && s.wallet_condition === 'solo'" :hidden="checksExistId(s.id)"> Add</router-link> 
-                            <a href="#" class="badge badge-secondary" v-show="checksExistId(s.id) && method_name === 'joint'">TAKEN</a> 
-                            <a href="#" class="badge badge-secondary" v-show="method_name === 'joint' && s.wallet_condition === 'joint'">UNAVAILABLE</a>
-                        </td>   
-                    </tr>  
-               
-                </tbody>
-                </table> 
-
+            <div class="row">
+                <div class="col -md-12">
+                    <div class="card-body">
+                        <div class="data-tables datatable-dark">
+                        <table class="table table-hover table-striped table-bordered table-responsive text-center" id="table-services">
+                        <thead>
+                            <tr class="th-table">
+                                <th>Service Code</th>
+                                <th>Service Name</th>
+                                <th>Service Type Code</th>
+                                <th>Service Type Name</th>
+                                <th>Available In Wallet Type</th> 
+                                <th>Service Condition</th>
+                                <th>Action</th>
+                            </tr>  
+                        </thead>
+                        <tbody>
+                            <tr v-for="s in Services" :key="s.service_name"> 
+                                <td> 
+                                    <p>
+                                    {{s.service_code}}  
+                                    </p>
+                                </td> 
+                                <td> 
+                                    <p>
+                                    {{s.service_name}} 
+                                    </p>
+                                </td>
+                                <td>
+                                    <p v-if="s.st_code">
+                                    <!-- {{ showServiceType(s.id,s.wallet_condition) }} -->
+                                    {{ s.st_code }}
+                                    </p>
+                                    <p v-if="s.st_code == null">
+                                        Joint
+                                    </p>
+                                </td>
+                                <td> 
+                                    <p>
+                                    -----
+                                    </p>
+                                </td>
+                                <td> 
+                                    <p>
+                                    {{s.s_wallet_type}}
+                                    </p>
+                                </td>
+                                <td> 
+                                    <p>
+                                    {{s.wallet_condition}} 
+                                    </p>
+                                </td>
+                                <td> 
+                                    <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'view' }}" class="btn btn-primary" v-if="method_name === 'view' && s.wallet_condition =='solo'"> <i class="ti-pencil-alt"></i> Update</router-link>  
+                                    <router-link :to="{ name: 'list-joint-services', params: { id: s.id }}" class="btn btn-primary" v-if="method_name === 'view' && s.wallet_condition =='joint'">View</router-link> 
+                                    <router-link :to="{ name: '/update-service', params: { id: s.id, method_name: 'joint' }}" class="btn btn-primary" v-if="method_name === 'joint' && s.wallet_condition === 'solo'" :hidden="checksExistId(s.id)"> Add</router-link> 
+                                    <a href="#" class="badge badge-secondary" v-show="checksExistId(s.id) && method_name === 'joint'">TAKEN</a> 
+                                    <a href="#" class="badge badge-secondary" v-show="method_name === 'joint' && s.wallet_condition === 'joint'">UNAVAILABLE</a>
+                                </td>   
+                            </tr>  
+                            </tbody>
+                        </table> 
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -84,14 +93,17 @@ export default {
  * This module is related with other modules to be completed.
  */
  data() {
-     return {
-           Services : {},
-           method_name: this.$route.params.method_name,
-           joint_services : JSON.parse(localStorage.getItem('list_services')),
-           st_code_get : '',
-           
-     }
-   
+    return {
+        message: null,
+        typing: null,
+        debounce: null,
+        Services : {},
+        method_name: this.$route.params.method_name,
+        joint_services : JSON.parse(localStorage.getItem('list_services')),
+        st_code_get : '',
+          
+    }
+
  },
  methods : {
         showDatatable(){
@@ -126,6 +138,26 @@ export default {
                     return joint_services.some(service); 
                 }
         },
+        debounceSearch(event) {
+            this.message = null
+            this.typing = 'You are typing'
+            clearTimeout(this.debounce)
+            this.debounce = setTimeout(() => {
+                this.typing = null
+                this.message = event.target.value
+                //console.log(this.message)
+                if(this.message !== "") {
+                    axios.get(`api/service_type/searchservicetype/${this.message}`)
+                    .then(response => {
+                        this.services = response.data;
+                    })
+                    .catch(err => console.log(err))
+                }
+                else {
+                    this.showServices()
+                }
+            }, 600)
+        }
         /*
         // Sir Manuel :
         showServiceType(id,wallet_condition){ 
@@ -148,7 +180,7 @@ export default {
  },
  created() {
     this.showServices()
-    this.showDatatable() 
+    // this.showDatatable() 
  }
 
 }

@@ -65,4 +65,12 @@ class ServiceTypeController extends Controller
         $ShowServices = $this->serviceType->show_belong_services($st_id);
         return $ShowServices;
     }
+
+    /**
+     * @ search Service Type 
+     **/
+    public function searchServiceType($query)
+    {
+        return response()->json($this->serviceType->searchServiceType($query));
+    }
 }

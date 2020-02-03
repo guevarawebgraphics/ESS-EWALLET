@@ -647,7 +647,7 @@
              <!-- E-Wallet Account Setup 7 -->
             <tab-content title="Service Matrix Setup">
                 <!-- Box -->
-                <div class="box col-md-8 offset-md-2">
+                <div class="box col-md-12">
                     <div class="single-report mb-xs-30">
                         <div class="s-report-inner pr--30 pt--30 mb-3">
                             <div class="icon icon-background"><i class="ti-pencil-alt"></i></div>
@@ -657,7 +657,7 @@
                                 <div class="card-body">
                                         <!-- Row Table -->
                                     <div class="row">
-                                        <!-- Cold lg 6 -->
+                                        <!-- col-md-12 -->
                                         <div class="">
                                             <div class="header-title">Services Matrix Setup</div>
                                             <hr>
@@ -1334,7 +1334,7 @@ export default {
          **/
         GetServices(){
             if(this.editmode == false){
-                axios.get('api/servicematrix/GetServices').then(({ data }) => (this.Services = data));
+                axios.get('api/walletaccount/showservicematrix').then(({ data }) => (this.Services = data));
             }
         },
         /**
