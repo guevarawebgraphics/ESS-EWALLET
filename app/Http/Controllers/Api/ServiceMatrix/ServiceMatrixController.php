@@ -52,5 +52,14 @@ class ServiceMatrixController extends Controller
         return response()->json($ServiceMatrix);
     }
 
+    /**
+     * @ search service matrix setup
+     * @return  ServiceMatrix
+     **/
+    public function searchServiceMatrix($query)
+    {
+        return response()->json($this->ServiceMatrix->searchServiceMatrix($query));
+    }
+
 
 }

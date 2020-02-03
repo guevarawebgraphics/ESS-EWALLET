@@ -44,7 +44,7 @@ class ServiceGatewayRepository
     public function GetServiceGatewayMethod(){  
         $service_gateway = $this->connection
                                 ->table('service_gateway')
-                                ->get();
+                                ->paginate(10);
         return $service_gateway;
     }
 
@@ -62,6 +62,19 @@ class ServiceGatewayRepository
                             ));
 
         return $update_gateway;
+    }
+
+    /**
+     * @ search Prepaid Service Gateway 
+     **/
+    public function searchServiceGateway($query)
+    {
+        $service_gateway = $this->connection
+                        ->table('service_gateway')
+                        ->orWhere('gateway_code', 'LIKE', '%'.$query.'%')
+                        ->orWhere('gateway_name', 'LIKE', '%'.$query.'%')
+                        ->paginate(10);
+        return $service_gateway;
     }
 
 

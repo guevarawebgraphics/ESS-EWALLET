@@ -38,6 +38,10 @@ Route::prefix('servicematrix')->group(function(){
     Route::get('/GetAllService', [
         'uses' => 'Api\\ServiceMatrix\ServiceGroupController@GetAllService'
     ]);
+    // api/servicematrix/GetAllService
+    Route::get('/searchServiceGroup/{query}', [
+        'uses' => 'Api\\ServiceMatrix\ServiceGroupController@searchServiceGroup'
+    ]);
     // api/servicematrix/StoreServiceMatrix
     Route::post('/StoreServiceMatrix', [
         'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@StoreServiceMatrix'
@@ -51,6 +55,11 @@ Route::prefix('servicematrix')->group(function(){
     Route::get('/ServiceMatrixConfig', [
         'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@GetServiceMatrixConfig'
     ]);
+
+    // api/servicematrix/GetServiceMatrixConfig
+    Route::get('/searchServiceMatrix/{query}', [
+        'uses' => 'Api\\ServiceMatrix\ServiceMatrixController@searchServiceMatrix'
+    ]);
 });
 /**
  *  @ Wallet Account
@@ -63,6 +72,14 @@ Route::prefix('walletaccount')->group(function(){
      // api/walletaccount/StoreWalletAccountType
      Route::get('/GetAllWalletAccountType', [
         'uses' => 'Api\\WalletAccountType\WalletAccountTypeController@GetAllWalletAccountType'
+    ]);
+     // api/walletaccount/StoreWalletAccountType
+     Route::get('/showAllWalletAccountType', [
+        'uses' => 'Api\\WalletAccountType\WalletAccountTypeController@showAllWalletAccountType'
+    ]);
+     // api/walletaccount/searchWalletAccountType
+     Route::get('/searchWalletAccountType/{q}', [
+        'uses' => 'Api\\WalletAccountType\WalletAccountTypeController@searchWalletAccountType'
     ]);
      // api/walletaccount/UpdateWalletAccountType
      Route::put('/UpdateWalletAccountType', [
@@ -112,9 +129,21 @@ Route::prefix('walletaccount')->group(function(){
     Route::get('/ListOfWalletAccounts', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@ListOfWalletAccounts'
     ]);
+    // api/walletaccount/searchlistwalletaccount
+    Route::get('/searchlistwalletaccount/{query}', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@searchListWalletAccount'
+    ]);
     // api/walletacccount/ListofMerchantsAccounts
     Route::get('/ListofMerchantsAccounts', [
         'uses' => 'Api\\WalletAccount\WalletAccountController@ListofMerchantsAccounts'
+    ]);
+    // api/walletacccount/ListofMerchantsAccounts
+    Route::get('/searchWalletAccount/{q}', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@searchWalletAccount'
+    ]);
+    // api/walletacccount/showservicematrix
+    Route::get('/showservicematrix', [
+        'uses' => 'Api\\WalletAccount\WalletAccountController@showServiceMatrix'
     ]);
 });
 /**
@@ -191,6 +220,11 @@ Route::prefix('service')->group(function(){
     Route::get('/listservices', [
         'uses' => 'Api\\Services\ServiceController@ListServices'
     ]);
+
+    // api/service/searchlistofservices
+    Route::get('/searchlistofservices/{query}', [
+        'uses' => 'Api\\Services\ServiceController@searchListOfServices'
+    ]);
      
 });
     /**
@@ -219,6 +253,10 @@ Route::prefix('service_type')->group(function(){
     Route::post('/updateservicetype/templates',[
         'uses' => 'Api\\ServiceType\ServiceTypeController@SaveServiceTemplates'
     ]);
+
+    Route::get('/searchservicetype/{query}',[
+        'uses' => 'Api\\ServiceType\ServiceTypeController@searchServiceType'
+    ]);
 });
     
     /**
@@ -236,6 +274,10 @@ Route::prefix('service_gateway')->group(function(){
     Route::put('/updateservicegateway/{gw_id}',[
         'uses' => 'Api\\ServiceGateway\ServiceGatewayController@UpdateServiceGateway'
     ]);
+
+    Route::get('/searchServiceGateway/{query}' ,[
+        'uses' => 'Api\\ServiceGateway\ServiceGatewayController@searchServiceGateway'
+    ]);
 });
 
 /**
@@ -249,4 +291,33 @@ Route::prefix('service_gateway')->group(function(){
     Route::post('/storeprefund', [
         'uses' => 'Api\\Transaction\PrefundController@storePrefund'
     ]);
+
+    // api/transaction/updatePrefundStatus
+    Route::post('/updatePrefundStatus/{id}', [
+        'uses' => 'Api\\Transaction\PrefundController@updatePrefundStatus'
+    ]);
+    
+    // api/transaction/storeputmoney
+    Route::post('/storePutMoney', [
+        'uses' => 'Api\\Transaction\PutMoneyController@storePutMoney'
+    ]);
  });
+
+ // Approval
+ Route::prefix('approval')->group(function () {
+    // api/approval/showapprovaltransaction
+    Route::get('/showapprovaltransaction', [
+        'uses' => 'Api\\Approval\ApprovalController@showApprovalTransaction'
+    ]);
+
+    // api/approval/showapprovaltransaction
+    Route::get('/searchapprovaltransaction/{query}', [
+        'uses' => 'Api\\Approval\ApprovalController@searchApprovalTransaction'
+    ]);
+ });
+
+
+ // Gate
+ Route::get('/auth-gate', [
+    'uses' => 'Api\Gate\GateController@gate'
+ ]);

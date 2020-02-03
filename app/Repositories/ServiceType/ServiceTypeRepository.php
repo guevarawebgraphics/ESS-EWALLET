@@ -15,118 +15,124 @@ use App\Models\ServiceType\STBehavior;
  */
 class ServiceTypeRepository 
 {
+    private $connection;
+
+    /**
+     * @ constructor 
+     **/
+    public function __construct()
+    {
+        $this->conneciton = DB::connection('mysql');
+    }
    /**
      * @return string
      * @ mysql (E-Wallet Database)
      * @ get service type table
      */  
     public function get_service_type_table(){
-                $servicetype_table = DB::connection('mysql')
-                                        ->table('servicetypedetails')
-                                        ->select('id',
-                                                 'st_code',
-                                                 'st_name',
-                                                 'st_description')
-                                        ->get();
-                                        return $servicetype_table;
-                } 
+        $servicetype_table = DB::connection('mysql')
+                                ->table('servicetypedetails')
+                                ->select('id',
+                                         'st_code',
+                                         'st_name',
+                                         'st_description')
+                                ->latest()
+                                ->paginate(10);
+        return $servicetype_table;
+    } 
        /**
          * @return string
          * @ mysql (E-Wallet Database)
          * @ get service details and behavior
         */  
     public function get_service_details_and_behavior($st_id){ 
-               $user = auth('api')->user();
-                $behavior_details = DB::connection('mysql') 
-                                        ->table('servicetypedetails')
-                                        ->join('stbehavior','servicetypedetails.id','=','stbehavior.st_id')
-                                        ->where('stbehavior.st_id','=',$st_id)
-                                        ->first();  
-                                        return $behavior_details;
+        $user = auth('api')->user();
+        $behavior_details = DB::connection('mysql') 
+                                ->table('servicetypedetails')
+                                ->join('stbehavior','servicetypedetails.id','=','stbehavior.st_id')
+                                ->where('stbehavior.st_id','=',$st_id)
+                                ->first();  
+        return $behavior_details;
     }
     public function update_service_details_and_behavior($stdata,$st_id){  
-                $user = auth('api')->user();
-                $update_details = DB::connection('mysql') 
-                                        ->table('servicetypedetails')->where('id','=',$st_id)
-                                        ->update(array(
-                                                'st_name' => $stdata->service_name,
-                                                'st_description' =>  $stdata->service_description
-                                        )); 
-
-                $update_behavior = DB::connection('mysql') 
-                                        ->table('stbehavior')->where('st_id','=',$st_id)
-                                        ->update(array(
-                                             /*   'added_ssw_sdw' => $stdata->added_ssw_sdw,
-                                                'added_ssw_mdw' => $stdata->added_ssw_mdw,
-                                                'added_msw_sdw' => $stdata->added_msw_sdw,
-                                                'added_msw_mdw' => $stdata->added_msw_mdw,
-                                                'deducted_sdw_ssw' => $stdata->deducted_sdw_ssw,
-                                                'deducted_sdw_msw' => $stdata->deducted_sdw_msw,
-                                                'deducted_mdw_ssw' => $stdata->deducted_mdw_ssw,
-                                                'deducted_mdw_msw' => $stdata->deducted_mdw_msw*/
-                                                'behavior_value' => $stdata->behavior_value,
-                                        ));
-                                        return $update_behavior;
+        $user = auth('api')->user();
+        $update_details = DB::connection('mysql') 
+                                ->table('servicetypedetails')->where('id','=',$st_id)
+                                ->update(array(
+                                        'st_name' => $stdata->service_name,
+                                        'st_description' =>  $stdata->service_description
+                                ));
+        $update_behavior = DB::connection('mysql') 
+                                ->table('stbehavior')->where('st_id','=',$st_id)
+                                ->update(array(
+                                     /*   'added_ssw_sdw' => $stdata->added_ssw_sdw,
+                                        'added_ssw_mdw' => $stdata->added_ssw_mdw,
+                                        'added_msw_sdw' => $stdata->added_msw_sdw,
+                                        'added_msw_mdw' => $stdata->added_msw_mdw,
+                                        'deducted_sdw_ssw' => $stdata->deducted_sdw_ssw,
+                                        'deducted_sdw_msw' => $stdata->deducted_sdw_msw,
+                                        'deducted_mdw_ssw' => $stdata->deducted_mdw_ssw,
+                                        'deducted_mdw_msw' => $stdata->deducted_mdw_msw*/
+                                        'behavior_value' => $stdata->behavior_value,
+                                ));
+        return $update_behavior;
     }
-    public function update_service_type_templates($service_type_data){ 
-              
-                /**
-                 * Declaration of Variables (Important)
-                 */
-                $acknowledgement_template_get = DB::connection('mysql')->table('servicetypedetails')
-                                        ->where('id','=',$service_type_data->id)
-                                        ->select('acknowledgement_template')
-                                        ->first();
-                $acknowledgement_template = $acknowledgement_template_get->acknowledgement_template;
+    public function update_service_type_templates($service_type_data)
+    { 
+        /**
+         * Declaration of Variables (Important)
+         */
+        $acknowledgement_template_get = DB::connection('mysql')->table('servicetypedetails')
+                                ->where('id','=',$service_type_data->id)
+                                ->select('acknowledgement_template')
+                                ->first();
+        $acknowledgement_template = $acknowledgement_template_get->acknowledgement_template;
+        $approval_template_get = DB::connection('mysql')->table('servicetypedetails')
+                                ->where('id','=',$service_type_data->id) 
+                                ->select('approval_template')
+                                ->first();
+        $approval_template = $approval_template_get->approval_template;
+        $confirmation_template_get = DB::connection('mysql')->table('servicetypedetails')
+                                ->where('id','=',$service_type_data->id)
+                                ->select('confirmation_template')
+                                ->first();
+        $confirmation_template = $confirmation_template_get->confirmation_template;
+        if($service_type_data->file_acknowledgement_template != "null"){
+            if($service_type_data->file_acknowledgement_template != $acknowledgement_template){
+                $filename_with_extension_ack = $service_type_data->file_acknowledgement_template->getClientOriginalName(); /**Whole File Name w/ ext.*/
+                $file_name_ack = pathinfo($filename_with_extension_ack, PATHINFO_FILENAME); /**Actual File Name */ 
+                Storage::delete('public/uploads/templates/acknowledgement_template/'.$acknowledgement_template); /** Delete old file */
+                $acknowledgement_template = time().'_'.$file_name_ack.'.'.$service_type_data->file_acknowledgement_template->getClientOriginalExtension();
+                $upload_ack = $service_type_data->file_acknowledgement_template->storeAs('public/uploads/templates/acknowledgement_template', $acknowledgement_template);    
+            }
+        }
+        if($service_type_data->file_approval_template != "null"){
+            if($service_type_data->file_approval_template != $approval_template){
+                $filename_with_extension_app = $service_type_data->file_approval_template->getClientOriginalName();
+                $file_name_app = pathinfo($filename_with_extension_app, PATHINFO_FILENAME);
+                Storage::delete('public/uploads/templates/approval_template/'.$approval_template); 
+                $approval_template = time().'_'.$file_name_app.'.'.$service_type_data->file_approval_template->getClientOriginalExtension();
+                $upload_app = $service_type_data->file_approval_template->storeAs('public/uploads/templates/approval_template', $approval_template);     
+            } 
+        }
+        if($service_type_data->file_confirmation_template != "null"){
+            if($service_type_data->file_confirmation_template != $confirmation_template){
+                $filename_with_extension_con = $service_type_data->file_confirmation_template->getClientOriginalName();
+                $file_name_con = pathinfo($filename_with_extension_con, PATHINFO_FILENAME);
+                Storage::delete('public/uploads/templates/confirmation_template/'.$confirmation_template);
+                $confirmation_template = time().'_'.$file_name_con.'.'.$service_type_data->file_confirmation_template->getClientOriginalExtension();
+                $upload_con = $service_type_data->file_confirmation_template->storeAs('public/uploads/templates/confirmation_template', $confirmation_template);    
+            }
+        }
 
-                $approval_template_get = DB::connection('mysql')->table('servicetypedetails')
-                                        ->where('id','=',$service_type_data->id) 
-                                        ->select('approval_template')
-                                        ->first();
-                $approval_template = $approval_template_get->approval_template;
-
-                $confirmation_template_get = DB::connection('mysql')->table('servicetypedetails')
-                                        ->where('id','=',$service_type_data->id)
-                                        ->select('confirmation_template')
-                                        ->first();
-                $confirmation_template = $confirmation_template_get->confirmation_template;
-
-                if($service_type_data->file_acknowledgement_template != "null"){
-                    if($service_type_data->file_acknowledgement_template != $acknowledgement_template){
-                        $filename_with_extension_ack = $service_type_data->file_acknowledgement_template->getClientOriginalName(); /**Whole File Name w/ ext.*/
-                        $file_name_ack = pathinfo($filename_with_extension_ack, PATHINFO_FILENAME); /**Actual File Name */ 
-                        Storage::delete('public/uploads/templates/acknowledgement_template/'.$acknowledgement_template); /** Delete old file */
-                        $acknowledgement_template = time().'_'.$file_name_ack.'.'.$service_type_data->file_acknowledgement_template->getClientOriginalExtension();
-                        $upload_ack = $service_type_data->file_acknowledgement_template->storeAs('public/uploads/templates/acknowledgement_template', $acknowledgement_template);    
-                    }
-                }
-                if($service_type_data->file_approval_template != "null"){
-                    if($service_type_data->file_approval_template != $approval_template){
-                        $filename_with_extension_app = $service_type_data->file_approval_template->getClientOriginalName();
-                        $file_name_app = pathinfo($filename_with_extension_app, PATHINFO_FILENAME);
-                        Storage::delete('public/uploads/templates/approval_template/'.$approval_template); 
-                        $approval_template = time().'_'.$file_name_app.'.'.$service_type_data->file_approval_template->getClientOriginalExtension();
-                        $upload_app = $service_type_data->file_approval_template->storeAs('public/uploads/templates/approval_template', $approval_template);     
-                    } 
-                }
-                if($service_type_data->file_confirmation_template != "null"){
-                    if($service_type_data->file_confirmation_template != $confirmation_template){
-                        $filename_with_extension_con = $service_type_data->file_confirmation_template->getClientOriginalName();
-                        $file_name_con = pathinfo($filename_with_extension_con, PATHINFO_FILENAME);
-                        Storage::delete('public/uploads/templates/confirmation_template/'.$confirmation_template);
-                        $confirmation_template = time().'_'.$file_name_con.'.'.$service_type_data->file_confirmation_template->getClientOriginalExtension();
-                        $upload_con = $service_type_data->file_confirmation_template->storeAs('public/uploads/templates/confirmation_template', $confirmation_template);    
-                    }
-                }
-     
-                $update_template = DB::connection('mysql') 
-                ->table('servicetypedetails')->where('id','=',$service_type_data->id)
-                ->update(array(
-                        'acknowledgement_template' => $acknowledgement_template, 
-                        'approval_template' =>  $approval_template,
-                        'confirmation_template' => $confirmation_template 
-                ));
-                return $update_template;
+        $update_template = DB::connection('mysql') 
+        ->table('servicetypedetails')->where('id','=',$service_type_data->id)
+        ->update(array(
+                'acknowledgement_template' => $acknowledgement_template, 
+                'approval_template' =>  $approval_template,
+                'confirmation_template' => $confirmation_template 
+        ));
+        return $update_template;
     }
     public function create_service_type($service_type_data){  
                 $user = auth('api')->user();   
@@ -210,6 +216,21 @@ class ServiceTypeRepository
                                     ->get();
                 return $show_services;
      }
+
+    /**
+    * @ Serach service type 
+    **/
+    public function searchServiceType($query)
+    {
+        $servicetype_table = DB::connection('mysql')
+                            ->table('servicetypedetails')
+                            ->orWhere('st_code', 'LIKE', '%'.$query.'%')
+                            ->orWhere('st_name', 'LIKE', '%'.$query.'%')
+                            ->orWhere('st_description', 'LIKE', '%'.$query.'%')
+                            ->latest()
+                            ->paginate(10);
+        return $servicetype_table;
+    }
 
 
 }

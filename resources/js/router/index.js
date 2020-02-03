@@ -169,9 +169,22 @@ const routes = [
       beforeEnter: requireLogin
     },
     {
-      path: '/prefundECPay',
+      path: '/prefundECPay/:wi',
       component: require('../components/Transactions/PrefundECPay').default,
       name: 'Prefund EC Pay',
+      beforeEnter: requireLogin,
+      props: { default: true }
+    },
+    {
+      path: '/approval',
+      component: require('../components/approval/Approval').default,
+      name: 'Approval',
+      beforeEnter: requireLogin,
+    },
+    {
+      path: '/put-money',
+      component: require('../components/Transactions/PutMoney').default,
+      name: 'PutMoney',
       beforeEnter: requireLogin,
     },
     /** List Services */
@@ -208,6 +221,20 @@ const routes = [
     let user_type = window.user.user_type_id;
     if (user != null){
       if(user_type !== 1){
+        window.location.href="/";
+      }
+    }
+    next(true);
+  }
+
+  /**
+   * @ Route Guard for Prepaid Merchant 
+   **/
+  function checkPrepaidMerchant(to, from, next) {
+    let user_type = this.$gate.isPrepaidMerchant();
+    if (user != null){
+      // check if the current user is Prepaid Merchant
+      if(user_type !== 3) {
         window.location.href="/";
       }
     }

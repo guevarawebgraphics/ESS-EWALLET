@@ -11,6 +11,9 @@ window.Vue = require('vue');
 
 import router from './router/index'
 import { Form, HasError, AlertError } from 'vform';
+// Gate
+import Gate from './Gate';
+Vue.prototype.$gate = new Gate(window.user);
 //global registration
 import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'

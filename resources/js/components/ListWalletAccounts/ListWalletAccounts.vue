@@ -1,6 +1,6 @@
 <template>
     <div id="list-of-wallet-accounts">
-        <div class="box ptb--100 col-md-10 offset-md-1">
+        <div class="box ptb--100">
             <!-- Card -->
              <div class="card shadow-custom">
                 <!-- Card Body -->
@@ -14,9 +14,17 @@
                             </div> -->
                             <h4 class="header-title mt-3 text-center">List of Wallet Accounts</h4>
                             <hr>
+                            <div class="float-right">
+                                <div class="search-box">
+                                    <form action="#">
+                                        <input class="form-control mb-3" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account..." required>
+                                        <i class="ti-search"></i>
+                                    </form>
+                                </div>
+                            </div>
                             <div class="data-tables datatable-dark">
                                <!-- Table -->
-                                <table class="table table-striped table-responsive text-center" id="table_id">
+                                <table class="table table-striped table-bordered table-hover text-center" id="table_id">
                                     <!-- Thead -->
                                     <thead>
                                         <tr class="th-table">
@@ -32,7 +40,7 @@
                                     <!-- ./ Thead -->
                                     <!-- Tbody -->
                                     <tbody>
-                                        <tr v-for="lwa in listofwalletaccount" :key="lwa.id">
+                                        <tr v-for="lwa in listofwalletaccount.data" :key="lwa.id">
                                             <td>{{ lwa.wallet_type }}</td>
                                             <td>{{ lwa.wat }}</td>
                                             <td>{{ lwa.wallet_account_no }}</td>
@@ -58,12 +66,31 @@
                                     <!-- ./ Tbody -->
                                 </table>
                                <!-- ./ Table -->
+                            <div class="text-center" v-if="this.listofwalletaccount.data == 0">
+                                <label>No Results found</label>
+                            </div>
                             </div>
                         </div>
                         <!-- ./ Col -->
                     </div>
                 </div>
                 <!-- ./ Card body -->
+            <!-- Card Footer -->
+            <div class="card-footer bg-white">
+                <!-- Pagination Length -->
+                <div class="float-left">
+                    {{ (listofwalletaccount.next_page_url == null && listofwalletaccount.prev_page_url == null) ? '' : 'Total ' + listofwalletaccount.to }}
+                    {{ (listofwalletaccount.next_page_url == null && listofwalletaccount.prev_page_url == null) ? '' : 'of ' + listofwalletaccount.total }}
+                </div>
+                <!-- Pagination -->
+                <!-- <pagination class="float-right" :data="WalletAccount" @pagination-change-page="getResults"></pagination> -->
+                <pagination class="float-right" :data="listofwalletaccount" @pagination-change-page="getResults">
+                    <span slot="prev-nav"><i class="ti-angle-left"></i>  Previous</span>
+                    <span slot="next-nav">Next <i class="ti-angle-right"></i> </span>
+                </pagination>
+                <!-- Pagination -->
+            </div>
+            <!-- ./ Card Footer -->
             </div>
             <!-- ./End Card -->
         </div>
@@ -74,23 +101,18 @@
 export default {
     data(){
         return{
-            listofwalletaccount: [],
+            message: null,
+            typing: null,
+            debounce: null,
+            listofwalletaccount: {},
         }
     },
     methods: {
-        datatable(){
-            setTimeout(function() {
-                $('#table_id').DataTable({
-                    "paging": true,
-                    "pageLength": 10,
-                    scrollY: true,
-                    "autoWidth": true,
-                    //lengthChange: false,
-                    responsive: true,
-                    fixedColumns: false,
-                    "order": [6, "desc"]
-                })
-            }, 2000);
+        getResults(page = 1) {
+            axios.get(`api/walletaccount/ListOfWalletAccounts?page=${page}`)
+                .then(response => {
+                    this.listofwalletaccount = response.data;
+                });
         },
         GetallWalletAccount(){
             axios.get('api/walletaccount/ListOfWalletAccounts')
@@ -107,11 +129,30 @@ export default {
         },
         goToAvailableServices(wan){
             this.$router.push(`/walletaccountprofile/${wan}/ListServices`)
-        }
+        },
+        debounceSearch(event) {
+            this.message = null
+            this.typing = 'You are typing'
+            clearTimeout(this.debounce)
+            this.debounce = setTimeout(() => {
+                this.typing = null
+                this.message = event.target.value
+                //console.log(this.message)
+                if(this.message !== "") {
+                    axios.get(`/api/walletaccount/searchlistwalletaccount/${this.message}`)
+                    .then(response => {
+                        this.listofwalletaccount = response.data;
+                    })
+                    .catch(err => console.log(err))
+                }
+                else {
+                    this.GetallWalletAccount()
+                }
+            }, 600)
+        },
     },
     created(){
         this.GetallWalletAccount()
-        this.datatable()
     }
 }
 </script>

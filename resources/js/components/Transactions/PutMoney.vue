@@ -1,17 +1,17 @@
 <template>
-    <div id="prefundEcPay">
-        <!-- Box -->
-            <div class="box ptb--100 col-md-6 offset-md-3">
+    <div id="putmoney">
+    <!-- Box -->
+        <div class="box ptb--100 col-md-6 offset-md-3">
                 <div class="single-report mb-xs-30">
                     <div class="s-report-inner pr--30 pt--30 mb-3">
                         <div class="icon icon-background"><i class="ti-pencil-alt"></i></div>
                             <div class="s-report-title d-flex justify-content-between">
                             <!-- content -->
                             <!-- Form -->
-                                <form @submit.prevent="submitPrefund()">
+                                <form @submit.prevent="storePutMoney()">
                                     <!-- Card Body -->
                                         <div class="card-body">
-                                            <h4 class="header-title mt-3 text-center">Prefund ECPay</h4>
+                                            <h4 class="header-title mt-3 text-center">Put Money</h4>
                                             <hr>
                                             <!-- Row -->
                                             <div class="row">
@@ -27,21 +27,21 @@
                                                     <div class="col-md-12">
                                                         <!-- Prefund Amount-->
                                                         <div class="form-group row">
-                                                            <label class="control-label custom-label" for="prefundAmount">Prefund Amount: </label>
-                                                            <input type="number" class="form-control" :class="{ 'is-invalid': errors.has('prefundAmount') } " v-model="form.prefundAmount" name="prefundAmount" v-validate="'required'" id="prefundAmount" min="0">
-                                                            <has-error :form="form" field="prefundAmount"></has-error>
-                                                            <p class="text-danger bg-white" v-if="errors.has('prefundAmount')">{{errors.first('prefundAmount')}}</p>
+                                                            <label class="control-label custom-label" for="putMoneyAmount">Prefund Amount: </label>
+                                                            <input type="number" class="form-control" :class="{ 'is-invalid': errors.has('putMoneyAmount') } " v-model="form.putMoneyAmount" name="putMoneyAmount" v-validate="'required'" id="putMoneyAmount" min="0">
+                                                            <has-error :form="form" field="putMoneyAmount"></has-error>
+                                                            <p class="text-danger bg-white" v-if="errors.has('putMoneyAmount')">{{errors.first('putMoneyAmount')}}</p>
                                                         </div>
                                                         <hr>
                                                         <!-- ./ Prefund Amount -->
                                                         <!-- Deposited To -->
                                                             <div class="form-group row mt-3">
-                                                                <h5 class="control-label custom-label font-weight-bold" for="nameofBank">Deposited to:</h5>
+                                                                <h5 class="control-label custom-label font-weight-bold" for="bankName">Deposited to:</h5>
                                                                     <!-- Name of Bank -->
-                                                                        <label class="control-label custom-label mt-3" for="nameofBank">Name of Bank:</label>
-                                                                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('nameofBank') } " v-model="form.nameofbank" id="nameofBank" name="nameofBank" v-validate="'required'">
-                                                                        <has-error :form="form" field="nameofBank"></has-error>
-                                                                        <p class="text-danger bg-white" v-if="errors.has('nameofBank')">{{errors.first('nameofBank')}}</p>
+                                                                        <label class="control-label custom-label mt-3" for="bankName">Name of Bank:</label>
+                                                                        <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('bankName') } " v-model="form.bankName" id="bankName" name="bankName" v-validate="'required'">
+                                                                        <has-error :form="form" field="bankName"></has-error>
+                                                                        <p class="text-danger bg-white" v-if="errors.has('bankName')">{{errors.first('bankName')}}</p>
                                                                     <!-- ./ Name of Bank -->
                                                                     <!-- Branch -->
                                                                         <label class="control-label custom-label mt-3" for="branch">Branch:</label>
@@ -99,31 +99,31 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        <!-- ./ Box -->
+        </div>
+    <!-- ./ Box -->        
     </div>
 </template>
 
 <script>
 export default {
     data(){
-        return{
+        return {
             DepositSlipName: null,
             csrf_token: $('meta[name="csrf-token"]').attr('content'),
             form: new Form({
-                prefundAmount: 0,
-                nameofbank: '',
+                putMoneyAmount: 0,
+                bankName: '',
                 branch: '',
                 accountType: '',
                 accountName: '',
                 accountNo: '',
                 depositSlip: '',
-                walletId: this.$route.params.wi
+                walletId: '',
             })
         }
     },
     methods: {
-        submitPrefund(){
+        storePutMoney() {
             swal.fire({
                 title: 'Are you sure?',
                 type: 'warning',
@@ -139,50 +139,46 @@ export default {
                             $('#submitSpinner').removeAttr('hidden')
                             let formData = new FormData();
                             formData.append('depositSlip', this.form.depositSlip)
-                            formData.append('_token', this.form.csrf_token)
-                            formData.append('prefundAmount', this.form.prefundAmount)
-                            formData.append('nameofbank', this.form.nameofbank)
+                            formData.append('_token', this.csrf_token)
+                            formData.append('put_money_amount', this.form.putMoneyAmount)
+                            formData.append('bank_name', this.form.bankName)
                             formData.append('branch', this.form.branch)
                             formData.append('accountType', this.form.accountType)
                             formData.append('accountName', this.form.accountName)
                             formData.append('accountNo', this.form.accountNo)
                             formData.append('walletId', this.form.walletId)
                             axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-                            axios.post('/api/transaction/storeprefund', formData, {
+                            axios.post('/api/transaction/storePutMoney', formData, {
                                 headers: {
                                     'Content-Type': 'multipart/form-data',
                                     'X-CSRF-TOKEN': this.csrf_token
                                 }
                             })
                             .then(res => {
-                            this.$Progress.increase(10)
-                            this.$Progress.finish()
-                            console.log(res)
-                                if(res){
+                                this.$Progress.increase(10)
+                                this.$Progress.finish()
+                                if (res) {
                                     toast.fire({
                                         type: 'success',
-                                        title: 'Prefund ECpay Saved!!'
+                                        title: 'Put Money Saved',
                                     })
                                     this.form.clear()
                                     this.form.reset()
                                     this.$validator.reset()
                                     this.DepositSlipName = null
                                 }
-                                //console.log(res)
                                 $('#submitSpinner').attr('hidden', true)
                             })
                             .catch(err => {
                                 this.$Progress.fail()
-                                if(err.response.status === 422) {
+                                if(err.status === 422) {
                                     toast.fire({
                                         type: 'info',
-                                        title: 'Deposit Slip is Required',
+                                        title: 'Deposit Slip is Required'
                                     })
+                                    $('#submitSpinner').attr('hidden', true)
                                 }
-                                console.clear()
-                                $('#submitSpinner').attr('hidden', true)
                             })
-                            return
                         }
                         $('#submitSpinner').attr('hidden', true)
                         this.$Progress.fail()
@@ -195,11 +191,10 @@ export default {
             e.preventDefault()
             this.form.depositSlip = this.$refs.file.files[0];
             this.DepositSlipName = e.target.files[0].name;
-            //return true;
         }
     },
     created(){
-        console.log('Mounted')
+
     }
 }
 </script>

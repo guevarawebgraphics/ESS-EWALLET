@@ -19,7 +19,8 @@ class ServiceMatrixRepository
     /**
      * @ constructor 
      **/
-    public function __construct(){
+    public function __construct()
+    {
         // E-Wallet
         $this->connection = DB::connection('mysql');
     }
@@ -27,9 +28,10 @@ class ServiceMatrixRepository
      * @return string
      *  Store Service Matrix
      */
-    public function StoreServiceMatrix($service_matrix_data){
+    public function StoreServiceMatrix($service_matrix_data)
+    {
         $user = auth('api')->user();
-        foreach($service_matrix_data as $data){
+        foreach($service_matrix_data['data'] as $data){
             $service_matrix = $this->connection
                     ->table('service_matrix')
                     ->where('id', '=', $data['id'])
@@ -55,7 +57,8 @@ class ServiceMatrixRepository
     /**
      * @ Get Services 
      **/
-    public function GetServices(){
+    public function GetServices()
+    {
         $services = $this->connection
                      ->table('service_matrix')
                      ->join('wservice', 'service_matrix.service_id', '=', 'wservice.id')
@@ -77,7 +80,7 @@ class ServiceMatrixRepository
                          'service_matrix.agent_all',
                          'service_matrix.agent_some',
                      )
-                     ->get();
+                     ->paginate(10);
         return $services;
     }
 
@@ -85,7 +88,8 @@ class ServiceMatrixRepository
      * @ Get Service Matrix
      * @return ServiceMatrix 
      **/
-    public function GetServiceMatrix(){
+    public function GetServiceMatrix()
+    {
         /**
          * @ Get Wallet Account Id
          * @return WalletAccountId 
@@ -119,5 +123,38 @@ class ServiceMatrixRepository
                             ->where('wallet_service_matrix_config.wallet_account_id' , '=', $wallet_account_id->id)
                             ->get();
         return $ServiceMatrix;
+    }
+
+    /**
+     * @ search service matrix 
+     **/
+    public function searchServiceMatrix($query)
+    {
+        $services = $this->connection
+                    ->table('service_matrix')
+                    ->join('wservice', 'service_matrix.service_id', '=', 'wservice.id')
+                    ->join('service_and_servicetype', 'service_matrix.service_id', 'service_and_servicetype.service_id')
+                    ->join('servicetypedetails', 'service_and_servicetype.service_type_id', '=', 'servicetypedetails.id')
+                    ->join('service_grouping', 'wservice.service_group_id', '=', 'service_grouping.id')
+                    ->select(
+                        'service_matrix.id',
+                        'service_matrix.service_id',
+                        'wservice.service_name',
+                        'servicetypedetails.st_name',
+                        'service_grouping.group_description',
+                        'service_matrix.admin_all',
+                        'service_matrix.admin_some',
+                        'service_matrix.merchant_all',
+                        'service_matrix.merchant_some',
+                        'service_matrix.branch_all',
+                        'service_matrix.branch_some',
+                        'service_matrix.agent_all',
+                        'service_matrix.agent_some',
+                    )
+                    ->orWhere('servicetypedetails.st_name', 'LIKE', '%'.$query.'%')
+                    ->orWhere('wservice.service_name', 'LIKE', '%'.$query.'%')
+                    ->orWhere('service_grouping.group_description', 'LIKE', '%'.$query.'%')
+                    ->paginate(10);
+        return $services;
     }
 }
