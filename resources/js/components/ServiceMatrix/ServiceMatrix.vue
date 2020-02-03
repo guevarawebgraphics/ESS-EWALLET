@@ -10,12 +10,21 @@
                     <div class="card-body">
                         <!-- Row Table -->
                         <div class="form-group row">
-                            <!-- Cold lg 6 -->
+                            <!-- Cold lg 12 -->
                             <div class="col-md-12">
-                                <div class="header-title">Services Matrix Setup</div>
+                                <div class="header-title text-center">Services Matrix Setup</div>
+                                <hr>
+                                <div class="float-right">
+                                    <div class="search-box">
+                                        <form action="#">
+                                            <input class="form-control mb-3" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account Types..." required>
+                                            <i class="ti-search"></i>
+                                        </form>
+                                    </div>
+                                </div>
                                 <div class="data-tables datatable-dark">
                                     <!-- Table -->
-                                    <table class="table table-hover table-bordered text-center" id="service_matrix">
+                                    <table class="table table-hover table-bordered table-striped text-center" id="service_matrix">
                                         <thead class="text-capitalize">
                                             <tr class="th-table">
                                                  <th colspan="3"><h3>Service Matrix</h3></th>
@@ -41,7 +50,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="sm in Services" :key="sm.id">
+                                            <tr v-for="sm in Services.data" :key="sm.id">
                                                 <td>{{sm.st_name}}</td>
                                                 <td>{{sm.service_name}}</td>
                                                 <td>{{sm.group_description}}</td>
@@ -86,6 +95,9 @@
                                         </tbody>
                                     </table>
                                     <!-- ./ Table -->
+                                    <div class="text-center" v-if="this.Services.data == 0">
+                                        <label>No Results found</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -98,6 +110,22 @@
                         </div>
                         <!-- ./ Row button -->
                     </div>
+                    <!-- Card Footer -->
+                    <div class="card-footer bg-white">
+                        <!-- Pagination Length -->
+                        <div class="float-left">
+                            {{ (Services.next_page_url == null && Services.prev_page_url == null) ? '' : 'Total ' + Services.to }}
+                            {{ (Services.next_page_url == null && Services.prev_page_url == null) ? '' : 'of ' + Services.total }}
+                        </div>
+                        <!-- Pagination -->
+                        <!-- <pagination class="float-right" :data="WalletAccount" @pagination-change-page="getResults"></pagination> -->
+                        <pagination class="float-right mb-3" :data="Services" @pagination-change-page="getResults">
+                            <span slot="prev-nav"><i class="ti-angle-left"></i> Previous</span>
+                            <span slot="next-nav">Next <i class="ti-angle-right"></i></span>
+                        </pagination>
+                        <!-- Pagination -->
+                    </div>
+                    <!-- ./ Card Footer -->
                 </div>
                 <!-- ./ Card -->
             </form>
@@ -111,6 +139,9 @@
 export default {
     data(){
         return {
+            message: null,
+            typing: null,
+            debounce: null,
             mode: 0,
             currentUser: window.user.user_type_id,
             Services: {},
@@ -142,6 +173,12 @@ export default {
                 });
             }, 1000);
         },
+        getResults(page = 1) {
+            axios.get(`/api/servicematrix/GetServices?page=${page}`)
+                .then(response => {
+                    this.Services = response.data;
+                });
+        },
         SaveChanges(){
             swal.fire({
                 title: 'Are you sure?',
@@ -156,10 +193,11 @@ export default {
                 if (result.value) {
                     axios.post('api/servicematrix/StoreServiceMatrix', this.Services)
                     .then((response) => {
+                        console.log(response)
                         this.$Progress.increase(10)
                         this.$Progress.finish()
-                        $("#service_matrix").DataTable().destroy()
-                        this.datatable();
+                        // $("#service_matrix").DataTable().destroy()
+                        // this.datatable();
                         this.GetServices();
                         toast.fire({
                             type: 'success',
@@ -188,10 +226,30 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
-        }
+        },
+        debounceSearch(event) {
+            this.message = null
+            this.typing = 'You are typing'
+            clearTimeout(this.debounce)
+            this.debounce = setTimeout(() => {
+                this.typing = null
+                this.message = event.target.value
+                //console.log(this.message)
+                if(this.message !== "") {
+                    axios.get(`/api/servicematrix/searchServiceMatrix/${this.message}`)
+                    .then(response => {
+                        this.Services = response.data;
+                    })
+                    .catch(err => console.log(err))
+                }
+                else {
+                    this.GetServices()
+                }
+            }, 600)
+        },
     },
     created(){
-        this.datatable();
+        // this.datatable();
         if(this.currentUser === 3){
             this.mode = 1;
             this.GetServiceMatrixConfig()

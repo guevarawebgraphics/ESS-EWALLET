@@ -1985,40 +1985,84 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      ListServices: [],
+      message: null,
+      typing: null,
+      debounce: null,
+      ListServices: {},
       wi: this.$route.params.wi
     };
   },
   methods: {
-    datatable: function datatable() {
-      setTimeout(function () {
-        $('#table-services').DataTable({
-          "paging": true,
-          "pageLength": 10,
-          scrollY: true,
-          "autoWidth": true,
-          //lengthChange: false,
-          responsive: true,
-          fixedColumns: false,
-          "order": [3, "desc"]
-        });
-      }, 2000);
-    },
-    getListServices: function getListServices() {
+    getResults: function getResults() {
       var _this = this;
 
-      axios.get('/api/service/listservices').then(function (response) {
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/api/service/listservices?page=".concat(page)).then(function (response) {
         _this.ListServices = response.data;
+      });
+    },
+    getListServices: function getListServices() {
+      var _this2 = this;
+
+      axios.get('/api/service/listservices').then(function (response) {
+        _this2.ListServices = response.data;
       })["catch"](function (err) {
         console.log(err);
       });
+    },
+    debounceSearch: function debounceSearch(event) {
+      var _this3 = this;
+
+      this.message = null;
+      this.typing = 'You are typing';
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this3.typing = null;
+        _this3.message = event.target.value; //console.log(this.message)
+
+        if (_this3.message !== "") {
+          axios.get("/api/service/searchlistofservices/".concat(_this3.message)).then(function (response) {
+            _this3.ListServices = response.data;
+          })["catch"](function (err) {
+            return console.log(err);
+          });
+        } else {
+          _this3.getListServices();
+        }
+      }, 600);
     }
   },
   created: function created() {
-    this.datatable();
     this.getListServices();
   }
 });
@@ -2212,32 +2256,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      listofwalletaccount: []
+      message: null,
+      typing: null,
+      debounce: null,
+      listofwalletaccount: {}
     };
   },
   methods: {
-    datatable: function datatable() {
-      setTimeout(function () {
-        $('#table_id').DataTable({
-          "paging": true,
-          "pageLength": 10,
-          scrollY: true,
-          "autoWidth": true,
-          //lengthChange: false,
-          responsive: true,
-          fixedColumns: false,
-          "order": [6, "desc"]
-        });
-      }, 2000);
-    },
-    GetallWalletAccount: function GetallWalletAccount() {
+    getResults: function getResults() {
       var _this = this;
 
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("api/walletaccount/ListOfWalletAccounts?page=".concat(page)).then(function (response) {
+        _this.listofwalletaccount = response.data;
+      });
+    },
+    GetallWalletAccount: function GetallWalletAccount() {
+      var _this2 = this;
+
       axios.get('api/walletaccount/ListOfWalletAccounts').then(function (res) {
-        _this.listofwalletaccount = res.data;
+        _this2.listofwalletaccount = res.data;
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -2250,11 +2318,31 @@ __webpack_require__.r(__webpack_exports__);
     },
     goToAvailableServices: function goToAvailableServices(wan) {
       this.$router.push("/walletaccountprofile/".concat(wan, "/ListServices"));
+    },
+    debounceSearch: function debounceSearch(event) {
+      var _this3 = this;
+
+      this.message = null;
+      this.typing = 'You are typing';
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this3.typing = null;
+        _this3.message = event.target.value; //console.log(this.message)
+
+        if (_this3.message !== "") {
+          axios.get("/api/walletaccount/searchlistwalletaccount/".concat(_this3.message)).then(function (response) {
+            _this3.listofwalletaccount = response.data;
+          })["catch"](function (err) {
+            return console.log(err);
+          });
+        } else {
+          _this3.GetallWalletAccount();
+        }
+      }, 600);
     }
   },
   created: function created() {
     this.GetallWalletAccount();
-    this.datatable();
   }
 });
 
@@ -2411,9 +2499,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      message: null,
+      typing: null,
+      debounce: null,
       editmode: false,
       ServiceGateway: {},
       form: new Form({
@@ -2424,11 +2542,19 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getServiceGateway: function getServiceGateway() {
+    getResults: function getResults() {
       var _this = this;
 
-      axios.get('/api/service_gateway/getservicegateway').then(function (response) {
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/api/service_gateway/getservicegateway?page=".concat(page)).then(function (response) {
         _this.ServiceGateway = response.data;
+      });
+    },
+    getServiceGateway: function getServiceGateway() {
+      var _this2 = this;
+
+      axios.get('/api/service_gateway/getservicegateway').then(function (response) {
+        _this2.ServiceGateway = response.data;
       });
     },
     datatable: function datatable() {
@@ -2453,16 +2579,16 @@ __webpack_require__.r(__webpack_exports__);
       $('#serviceGatewayModal').modal('show');
     },
     createGateway: function createGateway() {
-      var _this2 = this;
+      var _this3 = this;
 
       $('#saveServiceGateWay').attr('disabled', true);
       $('#btn-close').attr('disabled', true);
       $('#saveSpinner').removeAttr('hidden');
       this.$Progress.start();
       this.form.post('/api/service_gateway/createservicegateway').then(function (response) {
-        _this2.$Progress.increase(10);
+        _this3.$Progress.increase(10);
 
-        _this2.$Progress.finish(); // /console.log("ho"); 
+        _this3.$Progress.finish(); // /console.log("ho"); 
 
 
         $('#serviceGatewayModal').modal('hide');
@@ -2470,7 +2596,7 @@ __webpack_require__.r(__webpack_exports__);
         $('#saveServiceGateWay').removeAttr('disabled');
         $('#btn-close').removeAttr('disabled');
 
-        _this2.getServiceGateway();
+        _this3.getServiceGateway();
 
         toast.fire({
           type: 'success',
@@ -2479,7 +2605,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function () {
         console.clear();
 
-        _this2.$Progress.fail();
+        _this3.$Progress.fail();
 
         $('#saveSpinner').attr('hidden', true);
         $('#saveServiceGateWay').removeAttr('disabled');
@@ -2494,23 +2620,23 @@ __webpack_require__.r(__webpack_exports__);
       this.form.fill(sw); // /console.log('hi');
     },
     updateGateway: function updateGateway() {
-      var _this3 = this;
+      var _this4 = this;
 
       $('#updateServiceGateWay').attr('disabled', true);
       $('#btn-close').attr('disabled', true);
       $('#updateSpinner').removeAttr('hidden');
       this.$Progress.start();
       this.form.put('/api/service_gateway/updateservicegateway/' + this.form.id).then(function (response) {
-        _this3.$Progress.increase(10);
+        _this4.$Progress.increase(10);
 
-        _this3.$Progress.finish();
+        _this4.$Progress.finish();
 
         $('#serviceGatewayModal').modal('hide');
         $('#updateSpinner').attr('hidden', true);
         $('#btn-close').removeAttr('disabled');
         $('#updateServiceGateWay').removeAttr('disabled');
 
-        _this3.getServiceGateway();
+        _this4.getServiceGateway();
 
         toast.fire({
           type: 'success',
@@ -2519,16 +2645,37 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function () {
         console.clear();
 
-        _this3.$Progress.fail();
+        _this4.$Progress.fail();
 
         $('#updateSpinner').attr('hidden', true);
         $('#btn-close').removeAttr('disabled');
         $('#updateServiceGateWay').removeAttr('disabled'); //console.log('err');
       });
+    },
+    debounceSearch: function debounceSearch(event) {
+      var _this5 = this;
+
+      this.message = null;
+      this.typing = 'You are typing';
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this5.typing = null;
+        _this5.message = event.target.value; //console.log(this.message)
+
+        if (_this5.message !== "") {
+          axios.get("/api/service_gateway/searchServiceGateway/".concat(_this5.message)).then(function (response) {
+            _this5.ServiceGateway = response.data;
+          })["catch"](function (err) {
+            return console.log(err);
+          });
+        } else {
+          _this5.getServiceGateway();
+        }
+      }, 600);
     }
   },
   created: function created() {
-    this.datatable();
+    //this.datatable();
     this.getServiceGateway();
   }
 });
@@ -2641,6 +2788,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 $(document).ready(function () {
   $('#serviceGroupModal').on('shown.bs.modal', function (e) {
     // Show the backdrop
@@ -2655,6 +2829,9 @@ $(document).ready(function () {
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      message: null,
+      typing: null,
+      debounce: null,
       editmode: false,
       serviceGroups: {},
       form: new Form({
@@ -2681,12 +2858,20 @@ $(document).ready(function () {
         });
       }, 1000);
     },
-    get_service_group: function get_service_group() {
+    getResults: function getResults() {
       var _this = this;
+
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/api/servicematrix/GetAllService?page=".concat(page)).then(function (response) {
+        _this.serviceGroups = response.data;
+      });
+    },
+    get_service_group: function get_service_group() {
+      var _this2 = this;
 
       axios.get("api/servicematrix/GetAllService").then(function (_ref) {
         var data = _ref.data;
-        return _this.serviceGroups = data;
+        return _this2.serviceGroups = data;
       });
     },
     editServiceGroup: function editServiceGroup(sg) {
@@ -2697,24 +2882,22 @@ $(document).ready(function () {
       this.form.fill(sg);
     },
     updateGroup: function updateGroup() {
-      var _this2 = this;
+      var _this3 = this;
 
       $('#btnUpdate').attr('disabled', true);
       $('#modalClose').attr('disabled', true);
       $('#Spinner').removeAttr('hidden');
       this.$Progress.start();
       this.form.put('api/servicematrix/UpdateServiceGroup/' + this.form.id).then(function (response) {
-        _this2.$Progress.increase(10);
+        _this3.$Progress.increase(10);
 
-        _this2.$Progress.finish();
+        _this3.$Progress.finish();
 
         $('#serviceGroupModal').modal('hide');
-        $(document.body).removeAttr('class');
-        $("#service_group_table").DataTable().destroy();
+        $(document.body).removeAttr('class'); //$("#service_group_table").DataTable().destroy()
 
-        _this2.get_service_group();
+        _this3.get_service_group(); //this.datatable()
 
-        _this2.datatable();
 
         $('#btnUpdate').removeAttr('disabled');
         $('#modalClose').removeAttr('disabled');
@@ -2724,7 +2907,7 @@ $(document).ready(function () {
           title: 'Saved!'
         });
       })["catch"](function () {
-        _this2.$Progress.fail();
+        _this3.$Progress.fail();
 
         console.clear();
         $('#btnUpdate').removeAttr('disabled');
@@ -2733,24 +2916,24 @@ $(document).ready(function () {
       });
     },
     createGroup: function createGroup() {
-      var _this3 = this;
+      var _this4 = this;
 
       $('#btnSave').attr('disabled', true);
       $('#modalClose').attr('disabled', true);
       $('#saveSpinner').removeAttr('hidden');
       this.$Progress.start();
       this.form.post('api/servicematrix/StoreServiceGroup').then(function (response) {
-        _this3.$Progress.increase(10);
+        _this4.$Progress.increase(10);
 
-        _this3.$Progress.finish();
+        _this4.$Progress.finish();
 
         $('#serviceGroupModal').modal('hide');
         $(document.body).removeAttr('class');
         $("#service_group_table").DataTable().destroy();
 
-        _this3.get_service_group();
+        _this4.get_service_group();
 
-        _this3.datatable();
+        _this4.datatable();
 
         $('#btnSave').removeAttr('disabled');
         $('#modalClose').removeAttr('disabled');
@@ -2760,7 +2943,7 @@ $(document).ready(function () {
           title: 'Saved!'
         });
       })["catch"](function () {
-        _this3.$Progress.fail();
+        _this4.$Progress.fail();
 
         console.clear();
         $('#btnSave').removeAttr('disabled');
@@ -2773,10 +2956,30 @@ $(document).ready(function () {
       this.editmode = false;
       this.form.reset();
       $('#serviceGroupModal').modal('show');
+    },
+    debounceSearch: function debounceSearch(event) {
+      var _this5 = this;
+
+      this.message = null;
+      this.typing = 'You are typing';
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this5.typing = null;
+        _this5.message = event.target.value; //console.log(this.message)
+
+        if (_this5.message !== "") {
+          axios.get("/api/servicematrix/searchServiceGroup/".concat(_this5.message)).then(function (response) {
+            _this5.serviceGroups = response.data;
+          })["catch"](function (err) {
+            return console.log(err);
+          });
+        } else {
+          _this5.get_service_group();
+        }
+      }, 600);
     }
   },
   created: function created() {
-    this.datatable();
     this.get_service_group();
   }
 });
@@ -2901,9 +3104,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      message: null,
+      typing: null,
+      debounce: null,
       mode: 0,
       currentUser: window.user.user_type_id,
       Services: {},
@@ -2935,8 +3169,16 @@ __webpack_require__.r(__webpack_exports__);
         });
       }, 1000);
     },
-    SaveChanges: function SaveChanges() {
+    getResults: function getResults() {
       var _this = this;
+
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/api/servicematrix/GetServices?page=".concat(page)).then(function (response) {
+        _this.Services = response.data;
+      });
+    },
+    SaveChanges: function SaveChanges() {
+      var _this2 = this;
 
       swal.fire({
         title: 'Are you sure?',
@@ -2947,26 +3189,26 @@ __webpack_require__.r(__webpack_exports__);
         cancelButtonColor: '#d33',
         confirmButtonText: 'Save'
       }).then(function (result) {
-        _this.$Progress.start();
+        _this2.$Progress.start();
 
         if (result.value) {
-          axios.post('api/servicematrix/StoreServiceMatrix', _this.Services).then(function (response) {
-            _this.$Progress.increase(10);
+          axios.post('api/servicematrix/StoreServiceMatrix', _this2.Services).then(function (response) {
+            console.log(response);
 
-            _this.$Progress.finish();
+            _this2.$Progress.increase(10);
 
-            $("#service_matrix").DataTable().destroy();
+            _this2.$Progress.finish(); // $("#service_matrix").DataTable().destroy()
+            // this.datatable();
 
-            _this.datatable();
 
-            _this.GetServices();
+            _this2.GetServices();
 
             toast.fire({
               type: 'success',
               title: 'Saved!'
             });
           })["catch"](function (err) {
-            _this.$Progress.fail();
+            _this2.$Progress.fail();
 
             swal.fire('Something Went Wrong!', 'Something Went Wrong!', 'error');
           });
@@ -2974,27 +3216,47 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     GetServices: function GetServices() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get('api/servicematrix/GetServices').then(function (_ref) {
         var data = _ref.data;
-        return _this2.Services = data;
+        return _this3.Services = data;
       });
     },
     GetServiceMatrixConfig: function GetServiceMatrixConfig() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get('api/servicematrix/ServiceMatrixConfig').then(function (_ref2) {
         var data = _ref2.data;
-        return _this3.Services = data;
+        return _this4.Services = data;
       })["catch"](function (err) {
         console.log(err);
       });
+    },
+    debounceSearch: function debounceSearch(event) {
+      var _this5 = this;
+
+      this.message = null;
+      this.typing = 'You are typing';
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this5.typing = null;
+        _this5.message = event.target.value; //console.log(this.message)
+
+        if (_this5.message !== "") {
+          axios.get("/api/servicematrix/searchServiceMatrix/".concat(_this5.message)).then(function (response) {
+            _this5.Services = response.data;
+          })["catch"](function (err) {
+            return console.log(err);
+          });
+        } else {
+          _this5.GetServices();
+        }
+      }, 600);
     }
   },
   created: function created() {
-    this.datatable();
-
+    // this.datatable();
     if (this.currentUser === 3) {
       this.mode = 1;
       this.GetServiceMatrixConfig();
@@ -3584,9 +3846,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      message: null,
+      typing: null,
+      debounce: null,
       editmode: false,
       walletAccountTypes: {},
       form: new Form({
@@ -3603,23 +3897,32 @@ __webpack_require__.r(__webpack_exports__);
     datatable: function datatable() {
       setTimeout(function () {
         $('#wallet_account_types').DataTable({
-          "paging": true,
+          "paging": false,
           "pageLength": 10,
-          scrollY: true,
-          "autoWidth": true,
+          scrollY: false,
+          "autoWidth": false,
           //lengthChange: false,
-          responsive: true,
+          responsive: false,
           fixedColumns: true,
-          "order": [0, "desc"]
+          "ordering": false // "order": [0, "desc"]
+
         });
       }, 1000);
     },
-    get_walle_account_type: function get_walle_account_type() {
+    getResults: function getResults() {
       var _this = this;
 
-      axios.get('api/walletaccount/GetAllWalletAccountType').then(function (_ref) {
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("api/walletaccount/showAllWalletAccountType?page=".concat(page)).then(function (response) {
+        _this.walletAccountTypes = response.data;
+      });
+    },
+    get_wallet_account_type: function get_wallet_account_type() {
+      var _this2 = this;
+
+      axios.get('api/walletaccount/showAllWalletAccountType').then(function (_ref) {
         var data = _ref.data;
-        return _this.walletAccountTypes = data;
+        return _this2.walletAccountTypes = data;
       });
     },
     editWalletAccountType: function editWalletAccountType(wat) {
@@ -3636,7 +3939,7 @@ __webpack_require__.r(__webpack_exports__);
       $('#walletAccountType').modal('show');
     },
     updateWalletType: function updateWalletType() {
-      var _this2 = this;
+      var _this3 = this;
 
       $('#btnUpdate').attr('disabled', true);
       $('#modalClose').attr('disabled', true);
@@ -3644,47 +3947,10 @@ __webpack_require__.r(__webpack_exports__);
       this.$Progress.start();
       this.form.put('api/walletaccount/UpdateWalletAccountType').then(function (res) {
         $('#walletAccountType').modal('hide');
-        $(document.body).removeAttr('class');
-        $("#wallet_account_types").DataTable().destroy();
+        $(document.body).removeAttr('class'); //$("#wallet_account_types").DataTable().destroy()
 
-        _this2.get_walle_account_type();
+        _this3.get_wallet_account_type(); //this.datatable()
 
-        _this2.datatable();
-
-        toast.fire({
-          type: 'success',
-          title: 'Saved!'
-        });
-
-        _this2.$Progress.increase(10);
-
-        _this2.$Progress.finish();
-
-        $('#btnUpdate').removeAttr('disabled');
-        $('#modalClose').removeAttr('disabled');
-        $('#updateSpinner').attr('hidden', true);
-      })["catch"](function () {
-        $('#btnUpdate').removeAttr('disabled');
-        $('#modalClose').removeAttr('disabled');
-        $('#updateSpinner').attr('hidden', true);
-        console.clear();
-
-        _this2.$Progress.fail();
-      });
-    },
-    createWalletAccountType: function createWalletAccountType() {
-      var _this3 = this;
-
-      this.$Progress.start();
-      this.form.post('api/walletaccount/StoreWalletAccountType').then(function (res) {
-        console.log(res);
-        $('#walletAccountType').modal('hide');
-        $(document.body).removeAttr('class');
-        $("#wallet_account_types").DataTable().destroy();
-
-        _this3.get_walle_account_type();
-
-        _this3.datatable();
 
         toast.fire({
           type: 'success',
@@ -3694,16 +3960,70 @@ __webpack_require__.r(__webpack_exports__);
         _this3.$Progress.increase(10);
 
         _this3.$Progress.finish();
+
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#updateSpinner').attr('hidden', true);
       })["catch"](function () {
+        $('#btnUpdate').removeAttr('disabled');
+        $('#modalClose').removeAttr('disabled');
+        $('#updateSpinner').attr('hidden', true);
         console.clear();
 
         _this3.$Progress.fail();
       });
+    },
+    createWalletAccountType: function createWalletAccountType() {
+      var _this4 = this;
+
+      this.$Progress.start();
+      this.form.post('api/walletaccount/StoreWalletAccountType').then(function (res) {
+        console.log(res);
+        $('#walletAccountType').modal('hide');
+        $(document.body).removeAttr('class'); //$("#wallet_account_types").DataTable().destroy()
+
+        _this4.get_wallet_account_type(); //this.datatable()
+
+
+        toast.fire({
+          type: 'success',
+          title: 'Saved!'
+        });
+
+        _this4.$Progress.increase(10);
+
+        _this4.$Progress.finish();
+      })["catch"](function () {
+        console.clear();
+
+        _this4.$Progress.fail();
+      });
+    },
+    debounceSearch: function debounceSearch(event) {
+      var _this5 = this;
+
+      this.message = null;
+      this.typing = 'You are typing';
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this5.typing = null;
+        _this5.message = event.target.value; //console.log(this.message)
+
+        if (_this5.message !== "") {
+          axios.get("api/walletaccount/searchWalletAccountType/".concat(_this5.message)).then(function (response) {
+            _this5.walletAccountTypes = response.data;
+          })["catch"](function (err) {
+            return console.log(err);
+          });
+        } else {
+          _this5.get_wallet_account_type();
+        }
+      }, 600);
     }
   },
   created: function created() {
-    this.datatable();
-    this.get_walle_account_type();
+    //this.datatable()
+    this.get_wallet_account_type();
   }
 });
 
@@ -5080,7 +5400,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this7 = this;
 
       if (this.editmode == false) {
-        axios.get('api/servicematrix/GetServices').then(function (_ref2) {
+        axios.get('api/walletaccount/showservicematrix').then(function (_ref2) {
           var data = _ref2.data;
           return _this7.Services = data;
         });
@@ -5219,6 +5539,38 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5278,29 +5630,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {
-      editmode: false,
-      WalletAccount: []
-    };
+    var _ref;
+
+    return _ref = {
+      message: null,
+      typing: null,
+      debounce: null,
+      editmode: false
+    }, _defineProperty(_ref, "editmode", false), _defineProperty(_ref, "WalletAccount", {}), _ref;
   },
   methods: {
-    loadWalletAccounts: function loadWalletAccounts() {
+    getResults: function getResults() {
       var _this = this;
 
-      // axios({
-      //     method: 'get',
-      //     url: 'http://127.0.0.1:8080/api/users',
-      //     dataType: 'json',
-      //     contentType: 'application/json',
-      //     secure: true,
-      //     headers: {
-      //     "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MTM4MDE4NywiZXhwIjoxNTcxNDY2NTg3LCJuYmYiOjE1NzEzODAxODcsImp0aSI6Ikw5WnNXbXhkdFdLYm9pR1IiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.S4k-b9vxwPtwbEBONyT1yxvK5-LYyrzGq0r5C0GJBsk',
-      //     },
-      // })
-      // .then(({ data }) => (this.users = data));
-      axios.get('api/walletaccount/GetAllWalletAccount').then(function (_ref) {
-        var data = _ref.data;
-        return _this.WalletAccount = data;
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("api/walletaccount/GetAllWalletAccount?page=".concat(page)).then(function (response) {
+        _this.WalletAccount = response.data;
+      });
+    },
+    loadWalletAccounts: function loadWalletAccounts() {
+      var _this2 = this;
+
+      axios.get('api/walletaccount/GetAllWalletAccount').then(function (response) {
+        _this2.WalletAccount = response.data;
       });
     },
     datatable: function datatable() {
@@ -5319,11 +5671,31 @@ __webpack_require__.r(__webpack_exports__);
     },
     editWalletAccount: function editWalletAccount(ess_id) {
       this.$router.push('/updatewalletaccount/' + ess_id);
+    },
+    debounceSearch: function debounceSearch(event) {
+      var _this3 = this;
+
+      this.message = null;
+      this.typing = 'You are typing';
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this3.typing = null;
+        _this3.message = event.target.value; //console.log(this.message)
+
+        if (_this3.message !== "") {
+          axios.get("api/walletaccount/searchWalletAccount/".concat(_this3.message)).then(function (response) {
+            _this3.WalletAccount = response.data;
+          })["catch"](function (err) {
+            return console.log(err);
+          });
+        } else {
+          _this3.loadWalletAccounts();
+        }
+      }, 600);
     }
   },
   mounted: function mounted() {
-    this.loadWalletAccounts();
-    this.datatable();
+    this.loadWalletAccounts(); //this.datatable();
   }
 });
 
@@ -6304,19 +6676,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      message: null,
+      typing: null,
+      debounce: null,
       services: {}
     };
   },
   methods: {
-    loadServices: function loadServices() {
+    getResults: function getResults() {
       var _this = this;
+
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/api/service_type/servicetypetable?page=".concat(page)).then(function (response) {
+        _this.services = response.data;
+      });
+    },
+    loadServices: function loadServices() {
+      var _this2 = this;
 
       axios.get("/api/service_type/servicetypetable").then(function (_ref) {
         var data = _ref.data;
-        return _this.services = data;
+        return _this2.services = data;
       });
     },
     loadDataTable: function loadDataTable() {
@@ -6334,11 +6743,31 @@ __webpack_require__.r(__webpack_exports__);
           "order": [1, "desc"]
         });
       }, 1000);
+    },
+    debounceSearch: function debounceSearch(event) {
+      var _this3 = this;
+
+      this.message = null;
+      this.typing = 'You are typing';
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this3.typing = null;
+        _this3.message = event.target.value; //console.log(this.message)
+
+        if (_this3.message !== "") {
+          axios.get("api/service_type/searchservicetype/".concat(_this3.message)).then(function (response) {
+            _this3.services = response.data;
+          })["catch"](function (err) {
+            return console.log(err);
+          });
+        } else {
+          _this3.loadServices();
+        }
+      }, 600);
     }
   },
   created: function created() {
-    this.loadServices();
-    this.loadDataTable();
+    this.loadServices(); // this.loadDataTable();
   }
 });
 
@@ -7698,12 +8127,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * This module is related with other modules to be completed.
    */
   data: function data() {
     return {
+      message: null,
+      typing: null,
+      debounce: null,
       Services: {},
       method_name: this.$route.params.method_name,
       joint_services: JSON.parse(localStorage.getItem('list_services')),
@@ -7745,6 +8186,27 @@ __webpack_require__.r(__webpack_exports__);
       if (joint_services !== null) {
         return joint_services.some(service);
       }
+    },
+    debounceSearch: function debounceSearch(event) {
+      var _this2 = this;
+
+      this.message = null;
+      this.typing = 'You are typing';
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this2.typing = null;
+        _this2.message = event.target.value; //console.log(this.message)
+
+        if (_this2.message !== "") {
+          axios.get("api/service_type/searchservicetype/".concat(_this2.message)).then(function (response) {
+            _this2.services = response.data;
+          })["catch"](function (err) {
+            return console.log(err);
+          });
+        } else {
+          _this2.showServices();
+        }
+      }, 600);
     }
     /*
     // Sir Manuel :
@@ -7767,8 +8229,7 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   created: function created() {
-    this.showServices();
-    this.showDatatable();
+    this.showServices(); // this.showDatatable() 
   }
 });
 
@@ -7854,10 +8315,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      transactionRequest: []
+      message: null,
+      typing: null,
+      debounce: null,
+      transactionRequest: {}
     };
   },
   methods: {
@@ -7877,17 +8368,25 @@ __webpack_require__.r(__webpack_exports__);
         });
       }, 1000);
     },
-    showApprovalTransaction: function showApprovalTransaction() {
+    getResults: function getResults() {
       var _this = this;
 
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/api/approval/showapprovaltransaction?page=".concat(page)).then(function (response) {
+        _this.transactionRequest = response.data;
+      });
+    },
+    showApprovalTransaction: function showApprovalTransaction() {
+      var _this2 = this;
+
       axios.get('/api/approval/showapprovaltransaction').then(function (response) {
-        return _this.transactionRequest = response.data;
+        return _this2.transactionRequest = response.data;
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     updateTransactionStatus: function updateTransactionStatus(transactionData) {
-      var _this2 = this;
+      var _this3 = this;
 
       swal.fire({
         title: "Are you sure? you want to approved this Transaction Prefund Request? ".concat(transactionData['wallet_id']),
@@ -7898,7 +8397,7 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Save'
       }).then(function (result) {
         if (result.value) {
-          _this2.$Progress.start();
+          _this3.$Progress.start();
 
           axios.post("/api/transaction/updatePrefundStatus/".concat(transactionData['id'])).then(function (response) {
             if (response.status === 200) {
@@ -7907,23 +8406,45 @@ __webpack_require__.r(__webpack_exports__);
                 title: 'Transaction has been approved'
               });
 
-              _this2.$Progress.increase(10);
+              _this3.$Progress.increase(10);
 
-              _this2.$Progress.finish();
+              _this3.$Progress.finish();
 
-              _this2.showApprovalTransaction();
+              _this3.showApprovalTransaction();
             }
           })["catch"](function (err) {
-            return _this2.$Progress.fail();
+            return _this3.$Progress.fail();
           });
         }
       });
+    },
+    debounceSearch: function debounceSearch(event) {
+      var _this4 = this;
+
+      this.message = null;
+      this.typing = 'You are typing';
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this4.typing = null;
+        _this4.message = event.target.value; //console.log(this.message)
+
+        if (_this4.message !== "") {
+          axios.get("/api/approval/searchapprovaltransaction/".concat(_this4.message)).then(function (response) {
+            _this4.transactionRequest = response.data;
+          })["catch"](function (err) {
+            return console.log(err);
+          });
+        } else {
+          _this4.showApprovalTransaction();
+        }
+      }, 600);
     }
   },
-  created: function created() {},
-  mounted: function mounted() {
-    this.dataTable();
+  created: function created() {
     this.showApprovalTransaction();
+  },
+  mounted: function mounted() {
+    //this.dataTable()
     console.log('Mounted');
   }
 });
@@ -8058,6 +8579,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -60364,14 +60891,33 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { attrs: { id: "list-of-service" } }, [
-      _c("div", { staticClass: "box ptb--100 col-md-8 offset-md-2" }, [
+      _c("div", { staticClass: "box ptb--100" }, [
         _c("div", { staticClass: "card shadow-custom" }, [
           _c("div", { staticClass: "col-md-12" }, [
             _c("h4", { staticClass: "header-title mt-3 text-center" }, [
               _vm._v("List of Services - Acct No. " + _vm._s(this.wi))
             ]),
             _vm._v(" "),
-            _c("hr")
+            _c("hr"),
+            _vm._v(" "),
+            _c("div", { staticClass: "float-right" }, [
+              _c("div", { staticClass: "search-box float-left" }, [
+                _c("form", { attrs: { action: "#" } }, [
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      name: "search",
+                      placeholder: "Search Wallet Account Types...",
+                      required: ""
+                    },
+                    on: { input: _vm.debounceSearch }
+                  }),
+                  _vm._v(" "),
+                  _c("i", { staticClass: "ti-search" })
+                ])
+              ])
+            ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
@@ -60380,7 +60926,7 @@ var render = function() {
                 "table",
                 {
                   staticClass:
-                    "table table-hover table-stripe table-responsive",
+                    "table table-hover table-striped table-bordered text-center",
                   attrs: { id: "table-services" }
                 },
                 [
@@ -60388,7 +60934,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "tbody",
-                    _vm._l(_vm.ListServices, function(s) {
+                    _vm._l(_vm.ListServices.data, function(s) {
                       return _c("tr", { key: s.id }, [
                         _c("td", [_vm._v(_vm._s(s.s_wallet_type))]),
                         _vm._v(" "),
@@ -60425,9 +60971,70 @@ var render = function() {
                     0
                   )
                 ]
-              )
+              ),
+              _vm._v(" "),
+              this.ListServices.data == 0
+                ? _c("div", { staticClass: "text-center" }, [
+                    _c("label", [_vm._v("No Results found")])
+                  ])
+                : _vm._e()
             ])
-          ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-footer bg-white" },
+            [
+              _c("div", { staticClass: "float-left" }, [
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(
+                      _vm.ListServices.next_page_url == null &&
+                        _vm.ListServices.prev_page_url == null
+                        ? ""
+                        : "Total " + _vm.ListServices.to
+                    ) +
+                    "\n                        " +
+                    _vm._s(
+                      _vm.ListServices.next_page_url == null &&
+                        _vm.ListServices.prev_page_url == null
+                        ? ""
+                        : "of " + _vm.ListServices.total
+                    ) +
+                    "\n                    "
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "pagination",
+                {
+                  staticClass: "float-right mb-3",
+                  attrs: { data: _vm.ListServices },
+                  on: { "pagination-change-page": _vm.getResults }
+                },
+                [
+                  _c(
+                    "span",
+                    { attrs: { slot: "prev-nav" }, slot: "prev-nav" },
+                    [
+                      _c("i", { staticClass: "ti-angle-left" }),
+                      _vm._v(" Previous")
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    { attrs: { slot: "next-nav" }, slot: "next-nav" },
+                    [
+                      _vm._v("Next "),
+                      _c("i", { staticClass: "ti-angle-right" })
+                    ]
+                  )
+                ]
+              )
+            ],
+            1
+          )
         ])
       ])
     ])
@@ -60599,7 +61206,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "list-of-wallet-accounts" } }, [
-    _c("div", { staticClass: "box ptb--100 col-md-10 offset-md-1" }, [
+    _c("div", { staticClass: "box ptb--100" }, [
       _c("div", { staticClass: "card shadow-custom" }, [
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "row" }, [
@@ -60610,12 +61217,31 @@ var render = function() {
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
+              _c("div", { staticClass: "float-right" }, [
+                _c("div", { staticClass: "search-box" }, [
+                  _c("form", { attrs: { action: "#" } }, [
+                    _c("input", {
+                      staticClass: "form-control mb-3",
+                      attrs: {
+                        type: "text",
+                        name: "search",
+                        placeholder: "Search Wallet Account...",
+                        required: ""
+                      },
+                      on: { input: _vm.debounceSearch }
+                    }),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "ti-search" })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "data-tables datatable-dark" }, [
                 _c(
                   "table",
                   {
                     staticClass:
-                      "table table-striped table-responsive text-center",
+                      "table table-striped table-bordered table-hover text-center",
                     attrs: { id: "table_id" }
                   },
                   [
@@ -60623,7 +61249,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "tbody",
-                      _vm._l(_vm.listofwalletaccount, function(lwa) {
+                      _vm._l(_vm.listofwalletaccount.data, function(lwa) {
                         return _c("tr", { key: lwa.id }, [
                           _c("td", [_vm._v(_vm._s(lwa.wallet_type))]),
                           _vm._v(" "),
@@ -60685,11 +61311,64 @@ var render = function() {
                       0
                     )
                   ]
-                )
+                ),
+                _vm._v(" "),
+                this.listofwalletaccount.data == 0
+                  ? _c("div", { staticClass: "text-center" }, [
+                      _c("label", [_vm._v("No Results found")])
+                    ])
+                  : _vm._e()
               ])
             ])
           ])
-        ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-footer bg-white" },
+          [
+            _c("div", { staticClass: "float-left" }, [
+              _vm._v(
+                "\n                " +
+                  _vm._s(
+                    _vm.listofwalletaccount.next_page_url == null &&
+                      _vm.listofwalletaccount.prev_page_url == null
+                      ? ""
+                      : "Total " + _vm.listofwalletaccount.to
+                  ) +
+                  "\n                " +
+                  _vm._s(
+                    _vm.listofwalletaccount.next_page_url == null &&
+                      _vm.listofwalletaccount.prev_page_url == null
+                      ? ""
+                      : "of " + _vm.listofwalletaccount.total
+                  ) +
+                  "\n            "
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "pagination",
+              {
+                staticClass: "float-right",
+                attrs: { data: _vm.listofwalletaccount },
+                on: { "pagination-change-page": _vm.getResults }
+              },
+              [
+                _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
+                  _c("i", { staticClass: "ti-angle-left" }),
+                  _vm._v("  Previous")
+                ]),
+                _vm._v(" "),
+                _c("span", { attrs: { slot: "next-nav" }, slot: "next-nav" }, [
+                  _vm._v("Next "),
+                  _c("i", { staticClass: "ti-angle-right" })
+                ])
+              ]
+            )
+          ],
+          1
+        )
       ])
     ])
   ])
@@ -60814,11 +61493,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "box col-md-8 offset-md-2" }, [
+  return _c("div", { staticClass: "box col-md-12" }, [
     _c("div", { staticClass: "col-12 mt-5" }, [
       _c("div", { staticClass: "card shadow-custom" }, [
         _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "col-md-10 offset-md-1" }, [
+          _c("div", { staticClass: "col-md-12" }, [
             _c("h4", { staticClass: "header-title mt-3 text-center" }, [
               _vm._v(
                 "\n                    Prepaid Service Gateway \n                "
@@ -60830,7 +61509,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-primary btn-sm mb-3",
+                staticClass: "btn btn-primary btn-xs float-left mb-3",
                 attrs: { type: "button" },
                 on: { click: _vm.openModal }
               },
@@ -60840,11 +61519,31 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
+            _c("div", { staticClass: "float-right" }, [
+              _c("div", { staticClass: "search-box" }, [
+                _c("form", { attrs: { action: "#" } }, [
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      name: "search",
+                      placeholder: "Search Wallet Account Types...",
+                      required: ""
+                    },
+                    on: { input: _vm.debounceSearch }
+                  }),
+                  _vm._v(" "),
+                  _c("i", { staticClass: "ti-search" })
+                ])
+              ])
+            ]),
+            _vm._v(" "),
             _c("div", { staticClass: "data-tables datatable-dark" }, [
               _c(
                 "table",
                 {
-                  staticClass: "table table-hover table-striped text-center",
+                  staticClass:
+                    "table table-hover table-striped table-bordered text-center",
                   attrs: { id: "table-service-gateway" }
                 },
                 [
@@ -60852,7 +61551,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "tbody",
-                    _vm._l(_vm.ServiceGateway, function(sw) {
+                    _vm._l(_vm.ServiceGateway.data, function(sw) {
                       return _c("tr", { key: sw.id }, [
                         _c("td", [_vm._v(_vm._s(sw.gateway_code))]),
                         _vm._v(" "),
@@ -60882,6 +61581,67 @@ var render = function() {
                     0
                   )
                 ]
+              ),
+              _vm._v(" "),
+              this.ServiceGateway.data == 0
+                ? _c("div", { staticClass: "text-center" }, [
+                    _c("label", [_vm._v("No Results found")])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "card-footer bg-white" },
+                [
+                  _c("div", { staticClass: "float-left" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(
+                          _vm.ServiceGateway.next_page_url == null &&
+                            _vm.ServiceGateway.prev_page_url == null
+                            ? ""
+                            : "Total " + _vm.ServiceGateway.to
+                        ) +
+                        "\n                        " +
+                        _vm._s(
+                          _vm.ServiceGateway.next_page_url == null &&
+                            _vm.ServiceGateway.prev_page_url == null
+                            ? ""
+                            : "of " + _vm.ServiceGateway.total
+                        ) +
+                        "\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "pagination",
+                    {
+                      staticClass: "float-right mb-3",
+                      attrs: { data: _vm.ServiceGateway },
+                      on: { "pagination-change-page": _vm.getResults }
+                    },
+                    [
+                      _c(
+                        "span",
+                        { attrs: { slot: "prev-nav" }, slot: "prev-nav" },
+                        [
+                          _c("i", { staticClass: "ti-angle-left" }),
+                          _vm._v(" Previous")
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        { attrs: { slot: "next-nav" }, slot: "next-nav" },
+                        [
+                          _vm._v("Next "),
+                          _c("i", { staticClass: "ti-angle-right" })
+                        ]
+                      )
+                    ]
+                  )
+                ],
+                1
               )
             ])
           ]),
@@ -61127,11 +61887,11 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "serviceGroup" } }, [
-    _c("div", { staticClass: "box col-md-8 offset-md-2 ptb--100" }, [
+    _c("div", { staticClass: "box col-md-12 ptb--100" }, [
       _c("div", { staticClass: "card shadow-custom" }, [
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-8 offset-md-2" }, [
+            _c("div", { staticClass: "col-md-12" }, [
               _c("div", { staticClass: "header-title text-center" }, [
                 _vm._v("Service Group")
               ]),
@@ -61141,7 +61901,7 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "btn btn-primary btn-sm mb-3",
+                  staticClass: "btn btn-primary btn-sm float-left mb-3",
                   attrs: { type: "button" },
                   on: { click: _vm.openModal }
                 },
@@ -61151,11 +61911,31 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
+              _c("div", { staticClass: "float-right" }, [
+                _c("div", { staticClass: "search-box" }, [
+                  _c("form", { attrs: { action: "#" } }, [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        name: "search",
+                        placeholder: "Search Wallet Account Types...",
+                        required: ""
+                      },
+                      on: { input: _vm.debounceSearch }
+                    }),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "ti-search" })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "data-tables datatable-dark" }, [
                 _c(
                   "table",
                   {
-                    staticClass: "table table-hover table-striped text-center",
+                    staticClass:
+                      "table table-hover table-striped table-bordered text-center",
                     attrs: { id: "service_group_table" }
                   },
                   [
@@ -61163,7 +61943,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "tbody",
-                      _vm._l(_vm.serviceGroups, function(sg) {
+                      _vm._l(_vm.serviceGroups.data, function(sg) {
                         return _c("tr", { key: sg.id }, [
                           _c("td", [_vm._v(_vm._s(sg.group_code))]),
                           _vm._v(" "),
@@ -61193,13 +61973,66 @@ var render = function() {
                       0
                     )
                   ]
-                )
+                ),
+                _vm._v(" "),
+                this.serviceGroups.data == 0
+                  ? _c("div", { staticClass: "text-center" }, [
+                      _c("label", [_vm._v("No Results found")])
+                    ])
+                  : _vm._e()
               ])
             ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group row" })
-        ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-footer bg-white" },
+          [
+            _c("div", { staticClass: "float-left" }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(
+                    _vm.serviceGroups.next_page_url == null &&
+                      _vm.serviceGroups.prev_page_url == null
+                      ? ""
+                      : "Total " + _vm.serviceGroups.to
+                  ) +
+                  "\n                    " +
+                  _vm._s(
+                    _vm.serviceGroups.next_page_url == null &&
+                      _vm.serviceGroups.prev_page_url == null
+                      ? ""
+                      : "of " + _vm.serviceGroups.total
+                  ) +
+                  "\n                "
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "pagination",
+              {
+                staticClass: "float-right mb-3",
+                attrs: { data: _vm.serviceGroups },
+                on: { "pagination-change-page": _vm.getResults }
+              },
+              [
+                _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
+                  _c("i", { staticClass: "ti-angle-left" }),
+                  _vm._v(" Previous")
+                ]),
+                _vm._v(" "),
+                _c("span", { attrs: { slot: "next-nav" }, slot: "next-nav" }, [
+                  _vm._v("Next "),
+                  _c("i", { staticClass: "ti-angle-right" })
+                ])
+              ]
+            )
+          ],
+          1
+        )
       ])
     ]),
     _vm._v(" "),
@@ -61466,8 +62299,29 @@ var render = function() {
             _c("div", { staticClass: "card-body" }, [
               _c("div", { staticClass: "form-group row" }, [
                 _c("div", { staticClass: "col-md-12" }, [
-                  _c("div", { staticClass: "header-title" }, [
+                  _c("div", { staticClass: "header-title text-center" }, [
                     _vm._v("Services Matrix Setup")
+                  ]),
+                  _vm._v(" "),
+                  _c("hr"),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "float-right" }, [
+                    _c("div", { staticClass: "search-box" }, [
+                      _c("form", { attrs: { action: "#" } }, [
+                        _c("input", {
+                          staticClass: "form-control mb-3",
+                          attrs: {
+                            type: "text",
+                            name: "search",
+                            placeholder: "Search Wallet Account Types...",
+                            required: ""
+                          },
+                          on: { input: _vm.debounceSearch }
+                        }),
+                        _vm._v(" "),
+                        _c("i", { staticClass: "ti-search" })
+                      ])
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "data-tables datatable-dark" }, [
@@ -61475,7 +62329,7 @@ var render = function() {
                       "table",
                       {
                         staticClass:
-                          "table table-hover table-bordered text-center",
+                          "table table-hover table-bordered table-striped text-center",
                         attrs: { id: "service_matrix" }
                       },
                       [
@@ -61483,7 +62337,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "tbody",
-                          _vm._l(_vm.Services, function(sm) {
+                          _vm._l(_vm.Services.data, function(sm) {
                             return _c("tr", { key: sm.id }, [
                               _c("td", [_vm._v(_vm._s(sm.st_name))]),
                               _vm._v(" "),
@@ -61943,7 +62797,13 @@ var render = function() {
                           0
                         )
                       ]
-                    )
+                    ),
+                    _vm._v(" "),
+                    this.Services.data == 0
+                      ? _c("div", { staticClass: "text-center" }, [
+                          _c("label", [_vm._v("No Results found")])
+                        ])
+                      : _vm._e()
                   ])
                 ])
               ]),
@@ -61965,7 +62825,62 @@ var render = function() {
                     : _vm._e()
                 ])
               ])
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "card-footer bg-white" },
+              [
+                _c("div", { staticClass: "float-left" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(
+                        _vm.Services.next_page_url == null &&
+                          _vm.Services.prev_page_url == null
+                          ? ""
+                          : "Total " + _vm.Services.to
+                      ) +
+                      "\n                        " +
+                      _vm._s(
+                        _vm.Services.next_page_url == null &&
+                          _vm.Services.prev_page_url == null
+                          ? ""
+                          : "of " + _vm.Services.total
+                      ) +
+                      "\n                    "
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "pagination",
+                  {
+                    staticClass: "float-right mb-3",
+                    attrs: { data: _vm.Services },
+                    on: { "pagination-change-page": _vm.getResults }
+                  },
+                  [
+                    _c(
+                      "span",
+                      { attrs: { slot: "prev-nav" }, slot: "prev-nav" },
+                      [
+                        _c("i", { staticClass: "ti-angle-left" }),
+                        _vm._v(" Previous")
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { attrs: { slot: "next-nav" }, slot: "next-nav" },
+                      [
+                        _vm._v("Next "),
+                        _c("i", { staticClass: "ti-angle-right" })
+                      ]
+                    )
+                  ]
+                )
+              ],
+              1
+            )
           ])
         ]
       )
@@ -63208,22 +64123,40 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "WalletAccountType" } }, [
-    _c("div", { staticClass: "box ptb--100 col-md-8 offset-md-2" }, [
+    _c("div", { staticClass: "box ptb--100 col-md-12" }, [
       _c("div", { staticClass: "card shadow-custom" }, [
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-10 offset-md-1" }, [
-              _c("div", { staticClass: "header-title text-center" }, [
-                _vm._v("Wallet Account Types")
-              ]),
-              _vm._v(" "),
+            _c("div", { staticClass: "col-md-12" }, [
+              _c("div", { staticClass: "float-right" }, [
+                _c("div", { staticClass: "search-box float-left" }, [
+                  _c("form", { attrs: { action: "#" } }, [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        name: "search",
+                        placeholder: "Search Wallet Account Types...",
+                        required: ""
+                      },
+                      on: { input: _vm.debounceSearch }
+                    }),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "ti-search" })
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-12" }, [
               _c("hr"),
               _vm._v(" "),
               _c("div", { staticClass: "data-tables datatable-dark" }, [
                 _c(
                   "table",
                   {
-                    staticClass: "table table-hover table-striped text-center",
+                    staticClass:
+                      "table table-hover table-bordered table-striped text-center",
                     attrs: { id: "wallet_account_types" }
                   },
                   [
@@ -63231,7 +64164,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "tbody",
-                      _vm._l(_vm.walletAccountTypes, function(wat) {
+                      _vm._l(_vm.walletAccountTypes.data, function(wat) {
                         return _c("tr", { key: wat.id }, [
                           _c("td", [_vm._v(_vm._s(wat.type_code))]),
                           _vm._v(" "),
@@ -63282,10 +64215,63 @@ var render = function() {
                     )
                   ]
                 )
-              ])
+              ]),
+              _vm._v(" "),
+              this.walletAccountTypes.data == 0
+                ? _c("div", { staticClass: "text-center" }, [
+                    _c("label", [_vm._v("No Results found")])
+                  ])
+                : _vm._e()
             ])
           ])
-        ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-footer bg-white" },
+          [
+            _c("div", { staticClass: "float-left" }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(
+                    _vm.walletAccountTypes.next_page_url == null &&
+                      _vm.walletAccountTypes.prev_page_url == null
+                      ? ""
+                      : "Total " + _vm.walletAccountTypes.to
+                  ) +
+                  "\n                    " +
+                  _vm._s(
+                    _vm.walletAccountTypes.next_page_url == null &&
+                      _vm.walletAccountTypes.prev_page_url == null
+                      ? ""
+                      : "of " + _vm.walletAccountTypes.total
+                  ) +
+                  "\n                "
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "pagination",
+              {
+                staticClass: "float-right",
+                attrs: { data: _vm.walletAccountTypes },
+                on: { "pagination-change-page": _vm.getResults }
+              },
+              [
+                _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
+                  _c("i", { staticClass: "ti-angle-left" }),
+                  _vm._v(" Previous")
+                ]),
+                _vm._v(" "),
+                _c("span", { attrs: { slot: "next-nav" }, slot: "next-nav" }, [
+                  _vm._v("Next "),
+                  _c("i", { staticClass: "ti-angle-right" })
+                ])
+              ]
+            )
+          ],
+          1
+        )
       ])
     ]),
     _vm._v(" "),
@@ -68978,7 +69964,7 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("tab-content", { attrs: { title: "Service Matrix Setup" } }, [
-              _c("div", { staticClass: "box col-md-8 offset-md-2" }, [
+              _c("div", { staticClass: "box col-md-12" }, [
                 _c("div", { staticClass: "single-report mb-xs-30" }, [
                   _c(
                     "div",
@@ -69727,7 +70713,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "wallet-accounts" }, [
-    _c("div", { staticClass: "box col-md-8 offset-md-2 ptb--100" }, [
+    _c("div", { staticClass: "box col-md-12 ptb--100" }, [
       _c("div", { staticClass: "card shadow-custom" }, [
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "row" }, [
@@ -69735,14 +70721,6 @@ var render = function() {
               "div",
               { staticClass: "col-md-12" },
               [
-                _c("div", { staticClass: "col-md-4" }),
-                _vm._v(" "),
-                _c("h4", { staticClass: "header-title mt-3 text-center" }, [
-                  _vm._v("Wallet Accounts")
-                ]),
-                _vm._v(" "),
-                _c("hr"),
-                _vm._v(" "),
                 _c(
                   "router-link",
                   {
@@ -69755,72 +70733,148 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "data-tables datatable-dark" }, [
-                  _c(
-                    "table",
-                    {
-                      staticClass:
-                        "table table-hover table-striped text-center",
-                      attrs: { id: "table_id" }
-                    },
-                    [
-                      _vm._m(0),
+                _c("div", { staticClass: "float-right" }, [
+                  _c("div", { staticClass: "search-box" }, [
+                    _c("form", { attrs: { action: "#" } }, [
+                      _c("input", {
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          name: "search",
+                          placeholder: "Search Wallet Account...",
+                          required: ""
+                        },
+                        on: { input: _vm.debounceSearch }
+                      }),
                       _vm._v(" "),
-                      _c(
-                        "tbody",
-                        _vm._l(_vm.WalletAccount, function(wa) {
-                          return _c("tr", { key: wa.id }, [
-                            _c("td", [_vm._v(_vm._s(wa.wallet_type))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(wa.wallet_account_type))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(wa.wallet_account_no))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(wa.wallet_account_name))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(wa.ess_id))]),
-                            _vm._v(" "),
-                            (wa.AccountStatus = 1)
-                              ? _c("td", [
-                                  _c(
-                                    "span",
-                                    { staticClass: "badge badge-primary" },
-                                    [_vm._v("Active")]
-                                  )
-                                ])
-                              : _c("td", [_vm._v("Deactivated")]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c(
-                                "a",
-                                {
-                                  staticClass: "btn btn-primary btn-xs",
-                                  attrs: { href: "#EditWalletAccount" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.editWalletAccount(wa.ess_id)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("i", { staticClass: "fa fa-edit blue" }),
-                                  _vm._v(" "),
-                                  _c("span", [_vm._v("Update")])
-                                ]
-                              )
-                            ])
-                          ])
-                        }),
-                        0
-                      )
-                    ]
-                  )
+                      _c("i", { staticClass: "ti-search" })
+                    ])
+                  ])
                 ])
               ],
               1
-            )
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-12" }, [
+              _c("div", { staticClass: "col-md-4" }),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("div", { staticClass: "data-tables datatable-dark" }, [
+                _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-hover table-bordered table-striped text-center",
+                    attrs: { id: "table_id" }
+                  },
+                  [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.WalletAccount.data, function(wa) {
+                        return _c("tr", { key: wa.id }, [
+                          _c("td", [_vm._v(_vm._s(wa.wallet_type))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(wa.wallet_account_type))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(wa.wallet_account_no))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(wa.wallet_account_name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(wa.ess_id))]),
+                          _vm._v(" "),
+                          (wa.AccountStatus = 1)
+                            ? _c("td", [
+                                _c(
+                                  "span",
+                                  { staticClass: "badge badge-primary" },
+                                  [_vm._v("Active")]
+                                )
+                              ])
+                            : _c("td", [_vm._v("Deactivated")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "btn btn-primary btn-xs",
+                                attrs: { href: "#EditWalletAccount" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editWalletAccount(wa.ess_id)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "fa fa-edit blue" }),
+                                _vm._v(" "),
+                                _c("span", [_vm._v("Update")])
+                              ]
+                            )
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              this.WalletAccount.data == 0
+                ? _c("div", { staticClass: "text-center" }, [
+                    _c("label", [_vm._v("No Results found")])
+                  ])
+                : _vm._e()
+            ])
           ])
-        ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-footer bg-white" },
+          [
+            _c("div", { staticClass: "float-left" }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(
+                    _vm.WalletAccount.next_page_url == null &&
+                      _vm.WalletAccount.prev_page_url == null
+                      ? ""
+                      : "Total " + _vm.WalletAccount.to
+                  ) +
+                  "\n                    " +
+                  _vm._s(
+                    _vm.WalletAccount.next_page_url == null &&
+                      _vm.WalletAccount.prev_page_url == null
+                      ? ""
+                      : "of " + _vm.WalletAccount.total
+                  ) +
+                  "\n              "
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "pagination",
+              {
+                staticClass: "float-right",
+                attrs: { data: _vm.WalletAccount },
+                on: { "pagination-change-page": _vm.getResults }
+              },
+              [
+                _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
+                  _vm._v("< Previous")
+                ]),
+                _vm._v(" "),
+                _c("span", { attrs: { slot: "next-nav" }, slot: "next-nav" }, [
+                  _vm._v("Next >")
+                ])
+              ]
+            )
+          ],
+          1
+        )
       ])
     ]),
     _vm._v(" "),
@@ -72166,8 +73220,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "col-md-6 offset-md-3 mt-5" }, [
+  return _c("div", { staticClass: "serviceType" }, [
+    _c("div", { staticClass: "col-md-12 mt-5" }, [
       _c("div", { staticClass: "card shadow-custom" }, [
         _c(
           "div",
@@ -72189,7 +73243,26 @@ var render = function() {
                 _vm._v("Create New Service Type "),
                 _c("i", { staticClass: "ti-pencil-alt" })
               ]
-            )
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "float-right" }, [
+              _c("div", { staticClass: "search-box" }, [
+                _c("form", { attrs: { action: "#" } }, [
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      name: "search",
+                      placeholder: "Search Wallet Account Types...",
+                      required: ""
+                    },
+                    on: { input: _vm.debounceSearch }
+                  }),
+                  _vm._v(" "),
+                  _c("i", { staticClass: "ti-search" })
+                ])
+              ])
+            ])
           ],
           1
         ),
@@ -72202,7 +73275,7 @@ var render = function() {
                   "table",
                   {
                     staticClass:
-                      "table table-hover table-striped table-responsive text-center",
+                      "table table-hover table-bordered table-striped text-center",
                     attrs: { id: "table-service-type" }
                   },
                   [
@@ -72210,7 +73283,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "tbody",
-                      _vm._l(_vm.services, function(service) {
+                      _vm._l(_vm.services.data, function(service) {
                         return _c("tr", { key: service.id }, [
                           _c("td", [_vm._v(_vm._s(service.st_code))]),
                           _vm._v(" "),
@@ -72243,9 +73316,70 @@ var render = function() {
                       0
                     )
                   ]
-                )
+                ),
+                _vm._v(" "),
+                this.services.data == 0
+                  ? _c("div", { staticClass: "text-center" }, [
+                      _c("label", [_vm._v("No Results found")])
+                    ])
+                  : _vm._e()
               ])
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "card-footer bg-white" },
+              [
+                _c("div", { staticClass: "float-left" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(
+                        _vm.services.next_page_url == null &&
+                          _vm.services.prev_page_url == null
+                          ? ""
+                          : "Total " + _vm.services.to
+                      ) +
+                      "\n                        " +
+                      _vm._s(
+                        _vm.services.next_page_url == null &&
+                          _vm.services.prev_page_url == null
+                          ? ""
+                          : "of " + _vm.services.total
+                      ) +
+                      "\n                    "
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "pagination",
+                  {
+                    staticClass: "float-right mb-3",
+                    attrs: { data: _vm.services },
+                    on: { "pagination-change-page": _vm.getResults }
+                  },
+                  [
+                    _c(
+                      "span",
+                      { attrs: { slot: "prev-nav" }, slot: "prev-nav" },
+                      [
+                        _c("i", { staticClass: "ti-angle-left" }),
+                        _vm._v(" Previous")
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { attrs: { slot: "next-nav" }, slot: "next-nav" },
+                      [
+                        _vm._v("Next "),
+                        _c("i", { staticClass: "ti-angle-right" })
+                      ]
+                    )
+                  ]
+                )
+              ],
+              1
+            )
           ])
         ])
       ])
@@ -75628,7 +76762,7 @@ var render = function() {
             _c(
               "router-link",
               {
-                staticClass: "btn btn-primary btn-sm",
+                staticClass: "btn btn-primary btn-sm float-left mr-3",
                 attrs: { to: "/createservice/create" }
               },
               [
@@ -75640,202 +76774,231 @@ var render = function() {
             _c(
               "router-link",
               {
-                staticClass: "btn btn-primary btn-sm",
+                staticClass: "btn btn-primary btn-sm float-left",
                 attrs: { to: "/createjointservice" }
               },
               [
                 _vm._v("Create Joint Services "),
                 _c("i", { staticClass: "ti-pencil-alt" })
               ]
-            )
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "float-right" }, [
+              _c("div", { staticClass: "search-box" }, [
+                _c("form", { attrs: { action: "#" } }, [
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      name: "search",
+                      placeholder: "Search Wallet Account Types...",
+                      required: ""
+                    },
+                    on: { input: _vm.debounceSearch }
+                  }),
+                  _vm._v(" "),
+                  _c("i", { staticClass: "ti-search" })
+                ])
+              ])
+            ])
           ],
           1
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "data-tables datatable-dark" }, [
-            _c(
-              "table",
-              {
-                staticClass:
-                  "table table-hover table-striped table-responsive text-center",
-                attrs: { id: "table-services" }
-              },
-              [
-                _vm._m(0),
-                _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col -md-12" }, [
+            _c("div", { staticClass: "card-body" }, [
+              _c("div", { staticClass: "data-tables datatable-dark" }, [
                 _c(
-                  "tbody",
-                  _vm._l(_vm.Services, function(s) {
-                    return _c("tr", { key: s.id }, [
-                      _c("td", [
-                        _c("p", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(s.service_code) +
-                              "  \n                        "
-                          )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("p", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(s.service_name) +
-                              " \n                        "
-                          )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        s.st_code
-                          ? _c("p", [
+                  "table",
+                  {
+                    staticClass:
+                      "table table-hover table-striped table-bordered table-responsive text-center",
+                    attrs: { id: "table-services" }
+                  },
+                  [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.Services, function(s) {
+                        return _c("tr", { key: s.service_name }, [
+                          _c("td", [
+                            _c("p", [
                               _vm._v(
-                                "\n                        " +
-                                  _vm._s(s.st_code) +
-                                  "\n                        "
+                                "\n                                " +
+                                  _vm._s(s.service_code) +
+                                  "  \n                                "
                               )
                             ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        s.st_code == null
-                          ? _c("p", [
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("p", [
                               _vm._v(
-                                "\n                            Joint\n                        "
+                                "\n                                " +
+                                  _vm._s(s.service_name) +
+                                  " \n                                "
                               )
                             ])
-                          : _vm._e()
-                      ]),
-                      _vm._v(" "),
-                      _vm._m(1, true),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("p", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(s.s_wallet_type) +
-                              "\n                        "
-                          )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("p", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(s.wallet_condition) +
-                              " \n                        "
-                          )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        [
-                          _vm.method_name === "view" &&
-                          s.wallet_condition == "solo"
-                            ? _c(
-                                "router-link",
-                                {
-                                  staticClass: "btn btn-primary",
-                                  attrs: {
-                                    to: {
-                                      name: "/update-service",
-                                      params: { id: s.id, method_name: "view" }
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("i", { staticClass: "ti-pencil-alt" }),
-                                  _vm._v(" Update")
-                                ]
-                              )
-                            : _vm._e(),
+                          ]),
                           _vm._v(" "),
-                          _vm.method_name === "view" &&
-                          s.wallet_condition == "joint"
-                            ? _c(
-                                "router-link",
-                                {
-                                  staticClass: "btn btn-primary",
-                                  attrs: {
-                                    to: {
-                                      name: "list-joint-services",
-                                      params: { id: s.id }
-                                    }
-                                  }
-                                },
-                                [_vm._v("View")]
-                              )
-                            : _vm._e(),
+                          _c("td", [
+                            s.st_code
+                              ? _c("p", [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(s.st_code) +
+                                      "\n                                "
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            s.st_code == null
+                              ? _c("p", [
+                                  _vm._v(
+                                    "\n                                    Joint\n                                "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]),
                           _vm._v(" "),
-                          _vm.method_name === "joint" &&
-                          s.wallet_condition === "solo"
-                            ? _c(
-                                "router-link",
-                                {
-                                  staticClass: "btn btn-primary",
-                                  attrs: {
-                                    to: {
-                                      name: "/update-service",
-                                      params: { id: s.id, method_name: "joint" }
+                          _vm._m(1, true),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("p", [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(s.s_wallet_type) +
+                                  "\n                                "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("p", [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(s.wallet_condition) +
+                                  " \n                                "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _vm.method_name === "view" &&
+                              s.wallet_condition == "solo"
+                                ? _c(
+                                    "router-link",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      attrs: {
+                                        to: {
+                                          name: "/update-service",
+                                          params: {
+                                            id: s.id,
+                                            method_name: "view"
+                                          }
+                                        }
+                                      }
                                     },
-                                    hidden: _vm.checksExistId(s.id)
-                                  }
+                                    [
+                                      _c("i", { staticClass: "ti-pencil-alt" }),
+                                      _vm._v(" Update")
+                                    ]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.method_name === "view" &&
+                              s.wallet_condition == "joint"
+                                ? _c(
+                                    "router-link",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      attrs: {
+                                        to: {
+                                          name: "list-joint-services",
+                                          params: { id: s.id }
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("View")]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.method_name === "joint" &&
+                              s.wallet_condition === "solo"
+                                ? _c(
+                                    "router-link",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      attrs: {
+                                        to: {
+                                          name: "/update-service",
+                                          params: {
+                                            id: s.id,
+                                            method_name: "joint"
+                                          }
+                                        },
+                                        hidden: _vm.checksExistId(s.id)
+                                      }
+                                    },
+                                    [_vm._v(" Add")]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c(
+                                "a",
+                                {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value:
+                                        _vm.checksExistId(s.id) &&
+                                        _vm.method_name === "joint",
+                                      expression:
+                                        "checksExistId(s.id) && method_name === 'joint'"
+                                    }
+                                  ],
+                                  staticClass: "badge badge-secondary",
+                                  attrs: { href: "#" }
                                 },
-                                [_vm._v(" Add")]
+                                [_vm._v("TAKEN")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "a",
+                                {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value:
+                                        _vm.method_name === "joint" &&
+                                        s.wallet_condition === "joint",
+                                      expression:
+                                        "method_name === 'joint' && s.wallet_condition === 'joint'"
+                                    }
+                                  ],
+                                  staticClass: "badge badge-secondary",
+                                  attrs: { href: "#" }
+                                },
+                                [_vm._v("UNAVAILABLE")]
                               )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c(
-                            "a",
-                            {
-                              directives: [
-                                {
-                                  name: "show",
-                                  rawName: "v-show",
-                                  value:
-                                    _vm.checksExistId(s.id) &&
-                                    _vm.method_name === "joint",
-                                  expression:
-                                    "checksExistId(s.id) && method_name === 'joint'"
-                                }
-                              ],
-                              staticClass: "badge badge-secondary",
-                              attrs: { href: "#" }
-                            },
-                            [_vm._v("TAKEN")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "a",
-                            {
-                              directives: [
-                                {
-                                  name: "show",
-                                  rawName: "v-show",
-                                  value:
-                                    _vm.method_name === "joint" &&
-                                    s.wallet_condition === "joint",
-                                  expression:
-                                    "method_name === 'joint' && s.wallet_condition === 'joint'"
-                                }
-                              ],
-                              staticClass: "badge badge-secondary",
-                              attrs: { href: "#" }
-                            },
-                            [_vm._v("UNAVAILABLE")]
+                            ],
+                            1
                           )
-                        ],
-                        1
-                      )
-                    ])
-                  }),
-                  0
+                        ])
+                      }),
+                      0
+                    )
+                  ]
                 )
-              ]
-            )
+              ])
+            ])
           ])
         ])
       ])
@@ -75871,7 +77034,9 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("td", [
       _c("p", [
-        _vm._v("\n                        -----\n                        ")
+        _vm._v(
+          "\n                                -----\n                                "
+        )
       ])
     ])
   }
@@ -75909,6 +77074,25 @@ var render = function() {
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
+              _c("div", { staticClass: "float-right" }, [
+                _c("div", { staticClass: "search-box" }, [
+                  _c("form", { attrs: { action: "#" } }, [
+                    _c("input", {
+                      staticClass: "form-control mb-3",
+                      attrs: {
+                        type: "text",
+                        name: "search",
+                        placeholder: "Search Wallet Account...",
+                        required: ""
+                      },
+                      on: { input: _vm.debounceSearch }
+                    }),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "ti-search" })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "data-tables datatable-dark" }, [
                 _c(
                   "table",
@@ -75922,7 +77106,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "tbody",
-                      _vm._l(_vm.transactionRequest, function(tr) {
+                      _vm._l(_vm.transactionRequest.data, function(tr) {
                         return _c("tr", { key: tr.id }, [
                           _c("td", [_vm._v(_vm._s(tr.wallet_id))]),
                           _vm._v(" "),
@@ -75976,11 +77160,64 @@ var render = function() {
                       0
                     )
                   ]
-                )
+                ),
+                _vm._v(" "),
+                this.transactionRequest.data == 0
+                  ? _c("div", { staticClass: "text-center" }, [
+                      _c("label", [_vm._v("No Results found")])
+                    ])
+                  : _vm._e()
               ])
             ])
           ])
-        ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-footer bg-white" },
+          [
+            _c("div", { staticClass: "float-left" }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(
+                    _vm.transactionRequest.next_page_url == null &&
+                      _vm.transactionRequest.prev_page_url == null
+                      ? ""
+                      : "Total " + _vm.transactionRequest.to
+                  ) +
+                  "\n                    " +
+                  _vm._s(
+                    _vm.transactionRequest.next_page_url == null &&
+                      _vm.transactionRequest.prev_page_url == null
+                      ? ""
+                      : "of " + _vm.transactionRequest.total
+                  ) +
+                  "\n                "
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "pagination",
+              {
+                staticClass: "float-right",
+                attrs: { data: _vm.transactionRequest },
+                on: { "pagination-change-page": _vm.getResults }
+              },
+              [
+                _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
+                  _c("i", { staticClass: "ti-angle-left" }),
+                  _vm._v("  Previous")
+                ]),
+                _vm._v(" "),
+                _c("span", { attrs: { slot: "next-nav" }, slot: "next-nav" }, [
+                  _vm._v("Next "),
+                  _c("i", { staticClass: "ti-angle-right" })
+                ])
+              ]
+            )
+          ],
+          1
+        )
       ])
     ])
   ])
@@ -76286,6 +77523,21 @@ var staticRenderFns = [
             _c("span"),
             _vm._v(" "),
             _c("span")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "search-box pull-left" }, [
+            _c("form", { attrs: { action: "#" } }, [
+              _c("input", {
+                attrs: {
+                  type: "text",
+                  name: "search",
+                  placeholder: "Search...",
+                  required: ""
+                }
+              }),
+              _vm._v(" "),
+              _c("i", { staticClass: "ti-search" })
+            ])
           ])
         ])
       ])

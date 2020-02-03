@@ -27,7 +27,37 @@ class WalletAccountTypeRepository
         $this->connection = DB::connection('mysql');
     }
     /**
-     *@ Get All Wallet Account Types 
+     * @ Show All Wallet Account Types 
+     **/
+    public function showAllWalletAccountType(){
+        $user = auth('api')->user();
+        if($user->user_type_id == 1){
+            $wallet_account_type = wallet_account_type::where('created_by', '=', 1)
+                                    ->select(
+                                        'id',
+                                        'type_code',
+                                        'wallet_account_type',
+                                        'wallet_type',
+                                        'status')
+                                    ->latest()
+                                    ->paginate(10);
+        }
+        else {
+            $wallet_account_type = wallet_account_type::whereNotIn('id', [1, 2])
+                                    ->select(
+                                        'id',
+                                        'type_code',
+                                        'wallet_account_type',
+                                        'wallet_type',
+                                        'status')
+                                    ->latest()
+                                    ->paginate(10);
+        }
+
+        return $wallet_account_type;
+    }
+    /**
+     *@ Get All Wallet Account Types for Create Wallet Account
      **/
     public function get_wallet_account_types(){
         $user = auth('api')->user();
@@ -90,6 +120,42 @@ class WalletAccountTypeRepository
                                 'updated_by' => $user->id,
                                 'updated_at' => Carbon::now()
                             ]);
+        return $wallet_account_type;
+    }
+    
+    /**
+     * @ Search Wallet Account Type 
+     **/
+    public function searchWalletAccountType($query){
+        if (!$query) {
+            if($user->user_type_id == 1){
+                $wallet_account_type = wallet_account_type::where('created_by', '=', 1)
+                                        ->select(
+                                            'id',
+                                            'type_code',
+                                            'wallet_account_type',
+                                            'wallet_type',
+                                            'status')
+                                        ->latest()
+                                        ->paginate(10);
+            }
+            else {
+                $wallet_account_type = wallet_account_type::whereNotIn('id', [1, 2])
+                                        ->select(
+                                            'id',
+                                            'type_code',
+                                            'wallet_account_type',
+                                            'wallet_type',
+                                            'status')
+                                        ->latest()
+                                        ->paginate(10);
+            }
+        }
+        else {
+            $wallet_account_type = wallet_account_type::orWhere('type_code', 'LIKE', '%'.$query.'%')
+                                                        ->orWhere('wallet_account_type', 'LIKE', '%'.$query.'%')
+                                                        ->orWhere('wallet_type', 'LIKE', '%'.$query.'%')->paginate(10);
+        }
         return $wallet_account_type;
     }
 

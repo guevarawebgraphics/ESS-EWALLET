@@ -1,16 +1,24 @@
 <template>
-    <div class="box col-md-8 offset-md-2">
+    <div class="box col-md-12">
         <div class="col-12 mt-5">
             <div class="card shadow-custom">
                 <div class="card-body">  
-                <div class="col-md-10 offset-md-1">
+                <div class="col-md-12">
                     <h4 class="header-title mt-3 text-center">
                         Prepaid Service Gateway 
                     </h4>     
                     <hr>
-                    <button type="button" class="btn btn-primary btn-sm mb-3" @click="openModal">Create New <i class="ti-pencil-alt text-white"></i></button>
+                    <button type="button" class="btn btn-primary btn-xs float-left mb-3" @click="openModal">Create New <i class="ti-pencil-alt text-white"></i></button>
+                    <div class="float-right">
+                        <div class="search-box">
+                            <form action="#">
+                                <input class="form-control" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account Types..." required>
+                                <i class="ti-search"></i>
+                            </form>
+                        </div>
+                    </div>
                     <div class="data-tables datatable-dark">
-                    <table class="table table-hover table-striped text-center" id="table-service-gateway">
+                    <table class="table table-hover table-striped table-bordered text-center" id="table-service-gateway">
                     <thead>
                         <tr class="th-table">
                             <th>Gateway Code</th>
@@ -19,7 +27,7 @@
                         </tr>  
                     </thead>
                     <tbody>
-                        <tr v-for="sw in ServiceGateway" :key="sw.id"> 
+                        <tr v-for="sw in ServiceGateway.data" :key="sw.id"> 
                             <td>{{sw.gateway_code}}</td> 
                             <td>{{sw.gateway_name}}</td>
                             <td>     
@@ -31,6 +39,25 @@
                         </tr> 
                     </tbody>
                     </table> 
+                    <div class="text-center" v-if="this.ServiceGateway.data == 0">
+                        <label>No Results found</label>
+                    </div>
+                    <!-- Card Footer -->
+                    <div class="card-footer bg-white">
+                        <!-- Pagination Length -->
+                        <div class="float-left">
+                            {{ (ServiceGateway.next_page_url == null && ServiceGateway.prev_page_url == null) ? '' : 'Total ' + ServiceGateway.to }}
+                            {{ (ServiceGateway.next_page_url == null && ServiceGateway.prev_page_url == null) ? '' : 'of ' + ServiceGateway.total }}
+                        </div>
+                        <!-- Pagination -->
+                        <!-- <pagination class="float-right" :data="WalletAccount" @pagination-change-page="getResults"></pagination> -->
+                        <pagination class="float-right mb-3" :data="ServiceGateway" @pagination-change-page="getResults">
+                            <span slot="prev-nav"><i class="ti-angle-left"></i> Previous</span>
+                            <span slot="next-nav">Next <i class="ti-angle-right"></i></span>
+                        </pagination>
+                        <!-- Pagination -->
+                    </div>
+                    <!-- ./ Card Footer -->
                     </div>
                 </div>
                     <div class="form-group row">
@@ -86,6 +113,9 @@
 export default {
 data() {
     return{
+        message: null,
+        typing: null,
+        debounce: null,
         editmode : false,
         ServiceGateway : {},
         form :new Form({
@@ -97,6 +127,12 @@ data() {
     }
 },
 methods: {
+        getResults(page = 1) {
+            axios.get(`/api/service_gateway/getservicegateway?page=${page}`)
+                .then(response => {
+                    this.ServiceGateway = response.data;
+                });
+        },
         getServiceGateway(){
             axios.get('/api/service_gateway/getservicegateway')
             .then((response) => {
@@ -189,10 +225,30 @@ methods: {
                 $('#updateServiceGateWay').removeAttr('disabled')
                //console.log('err');
            })
-        }
+        },
+        debounceSearch(event) {
+            this.message = null
+            this.typing = 'You are typing'
+            clearTimeout(this.debounce)
+            this.debounce = setTimeout(() => {
+                this.typing = null
+                this.message = event.target.value
+                //console.log(this.message)
+                if(this.message !== "") {
+                    axios.get(`/api/service_gateway/searchServiceGateway/${this.message}`)
+                    .then(response => {
+                        this.ServiceGateway = response.data;
+                    })
+                    .catch(err => console.log(err))
+                }
+                else {
+                    this.getServiceGateway()
+                }
+            }, 600)
+        },
     },
     created(){
-            this.datatable();
+            //this.datatable();
             this.getServiceGateway();
     }
     }

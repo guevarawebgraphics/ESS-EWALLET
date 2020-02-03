@@ -51,7 +51,9 @@ class WalletAccountRepository
                                 'wallet_account.status')
                             ->where('wallet_account.created_by', '=', $user->id)
                             ->orderBy('wallet_account.created_at', 'DESC')
-                            ->get();
+                            // ->get();
+                            //->latest()
+                            ->paginate(10);
         return $wallet_account;
     }
     /**
@@ -699,7 +701,33 @@ class WalletAccountRepository
                                         'wallet_account_types.wallet_account_type as wat'
                                     )
                                     //->where('wallet_account.created_by', '=', auth('api')->user()->id)
-                                    ->get();
+                                    ->paginate(10);
+        return $list_of_wallet_account;
+    }
+
+    /**
+     * @ List of Wallet Accounts
+     * @return WalletAccounts 
+     **/
+    public function searchListWalletAccount($query){
+        $list_of_wallet_account = $this->connection
+                                    ->table('wallet_account')
+                                    ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
+                                    ->select(
+                                        'wallet_account.wallet_account_no',
+                                        'wallet_account.wallet_account_name',
+                                        'wallet_account.wallet_type',
+                                        'wallet_account_types.wallet_account_type',
+                                        'wallet_account.wallet_title',
+                                        'wallet_account_types.wallet_account_type as wat'
+                                    )
+                                    ->orWhere('wallet_account.wallet_account_no', 'LIKE', '%'.$query.'%')
+                                    ->orWhere('wallet_account.wallet_account_name', 'LIKE', '%'.$query.'%')
+                                    ->orWhere('wallet_account.wallet_account_type', 'LIKE', '%'.$query.'%')
+                                    ->orWhere('wallet_account.wallet_title', 'LIKE', '%'.$query.'%')
+                                    ->orWhere('wallet_account_types.wallet_account_type', 'LIKE', '%'.$query.'%')
+                                    //->where('wallet_account.created_by', '=', auth('api')->user()->id)
+                                    ->paginate(10);
         return $list_of_wallet_account;
     }
 
@@ -723,6 +751,79 @@ class WalletAccountRepository
                                     //->where('wallet_account.wallet_account_type', '=', 3)
                                     ->get();
         return $list_of_merchant_account;
+    }
+
+    /**
+     * @ Search Function 
+     **/
+    public function searchWalletAccount($query)
+    {
+        if (!$query)
+        {
+            $user = auth('api')->user();
+            $walletAccount = $this->connection
+                                ->table('wallet_account')
+                                ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
+                                ->select(
+                                    'wallet_account.ess_id',
+                                    'wallet_account.wallet_type',
+                                    'wallet_account_types.wallet_account_type',
+                                    'wallet_account.wallet_account_no',
+                                    'wallet_account.wallet_account_name',
+                                    'wallet_account.status')
+                                ->where('wallet_account.created_by', '=', $user->id)
+                                ->orderBy('wallet_account.created_at', 'DESC')
+                                // ->get();
+                                //->latest()
+                                ->paginate(10);
+        }
+        else {
+            $walletAccount = wallet_account::join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
+                                            ->select(
+                                                'wallet_account.ess_id',
+                                                'wallet_account.wallet_type',
+                                                'wallet_account_types.wallet_account_type',
+                                                'wallet_account.wallet_account_no',
+                                                'wallet_account.wallet_account_name',
+                                                'wallet_account.status')
+                                            ->orWhere('wallet_account.ess_id', 'LIKE', "%".$query."%")
+                                            ->orWhere('wallet_account.wallet_type', 'LIKE', "%".$query."%")
+                                            ->orWhere('wallet_account.wallet_account_no', 'LIKE', "%".$query."%")
+                                            ->orWhere('wallet_account.wallet_account_name', 'LIKE', "%".$query."%")
+                                            //->orWhere('wallet_account.wallet_title', 'LIKE', "%".$query."%")
+                                            ->paginate(10);
+        }
+        return $walletAccount;
+    }
+
+    /**
+     * @ Get Services 
+     **/
+    public function showServiceMatrix()
+    {
+        $services = $this->connection
+                     ->table('service_matrix')
+                     ->join('wservice', 'service_matrix.service_id', '=', 'wservice.id')
+                     ->join('service_and_servicetype', 'service_matrix.service_id', 'service_and_servicetype.service_id')
+                     ->join('servicetypedetails', 'service_and_servicetype.service_type_id', '=', 'servicetypedetails.id')
+                     ->join('service_grouping', 'wservice.service_group_id', '=', 'service_grouping.id')
+                     ->select(
+                         'service_matrix.id',
+                         'service_matrix.service_id',
+                         'wservice.service_name',
+                         'servicetypedetails.st_name',
+                         'service_grouping.group_description',
+                         'service_matrix.admin_all',
+                         'service_matrix.admin_some',
+                         'service_matrix.merchant_all',
+                         'service_matrix.merchant_some',
+                         'service_matrix.branch_all',
+                         'service_matrix.branch_some',
+                         'service_matrix.agent_all',
+                         'service_matrix.agent_some',
+                     )
+                     ->get();
+        return $services;
     }
 
 

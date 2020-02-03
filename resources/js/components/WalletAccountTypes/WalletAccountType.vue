@@ -1,20 +1,30 @@
 <template>
     <div id="WalletAccountType">
         <!-- Box -->
-        <div class="box ptb--100 col-md-8 offset-md-2">
+        <div class="box ptb--100 col-md-12">
             <!-- Card -->
             <div class="card shadow-custom">
                 <!-- Card Body -->
                 <div class="card-body">
                     <!-- Row Table -->
                     <div class="row">
-                        <!-- Col md 6 -->
-                        <div class="col-md-10 offset-md-1">
-                            <div class="header-title text-center">Wallet Account Types</div>
+                        <div class="col-md-12">
+                            <div class="float-right">
+                                <div class="search-box float-left">
+                                    <form action="#">
+                                        <input class="form-control" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account Types..." required>
+                                        <i class="ti-search"></i>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Col md 12 -->
+                        <div class="col-md-12">
+                            <!-- <div class="header-title text-center">Wallet Account Types</div> -->
                             <hr>
                             <div class="data-tables datatable-dark">
                                 <!-- Table -->
-                                <table class="table table-hover table-striped text-center" id="wallet_account_types">
+                                <table class="table table-hover table-bordered table-striped text-center" id="wallet_account_types">
                                     <thead>
                                         <tr class="th-table">
                                             <th>Type Code</th>
@@ -25,7 +35,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="wat in walletAccountTypes" :key="wat.id">
+                                        <tr v-for="wat in walletAccountTypes.data" :key="wat.id">
                                             <td>{{ wat.type_code}}</td>
                                             <td>{{ wat.wallet_account_type}}</td>
                                             <td>{{ wat.wallet_type }}</td>
@@ -42,6 +52,9 @@
                                 </table>
                                 <!-- ./ Table -->
                             </div>
+                            <div class="text-center" v-if="this.walletAccountTypes.data == 0">
+                                <label>No Results found</label>
+                            </div>
                         </div>
                         <!-- ./ Col -->
                     </div>
@@ -53,6 +66,22 @@
                     <!-- ./Row Button -->
                 </div>
                 <!-- ./ Card bobdy -->
+                <!-- Card Footer -->
+                <div class="card-footer bg-white">
+                    <!-- Pagination Length -->
+                    <div class="float-left">
+                        {{ (walletAccountTypes.next_page_url == null && walletAccountTypes.prev_page_url == null) ? '' : 'Total ' + walletAccountTypes.to }}
+                        {{ (walletAccountTypes.next_page_url == null && walletAccountTypes.prev_page_url == null) ? '' : 'of ' + walletAccountTypes.total }}
+                    </div>
+                    <!-- Pagination -->
+                    <!-- <pagination class="float-right" :data="WalletAccount" @pagination-change-page="getResults"></pagination> -->
+                    <pagination class="float-right" :data="walletAccountTypes" @pagination-change-page="getResults">
+                        <span slot="prev-nav"><i class="ti-angle-left"></i> Previous</span>
+                        <span slot="next-nav">Next <i class="ti-angle-right"></i></span>
+                    </pagination>
+                    <!-- Pagination -->
+                </div>
+                <!-- ./ Card Footer -->
             </div>
             <!-- ./ Card -->
         </div>
@@ -120,6 +149,9 @@
 export default {
     data() {
         return{
+            message: null,
+            typing: null,
+            debounce: null,
             editmode: false,
             walletAccountTypes: {},
             form: new Form({
@@ -136,19 +168,26 @@ export default {
         datatable() {
             setTimeout(function(){
                 $('#wallet_account_types').DataTable({
-                    "paging": true,
+                    "paging": false,
                     "pageLength": 10,
-                    scrollY: true,
-                    "autoWidth": true,
+                    scrollY: false,
+                    "autoWidth": false,
                     //lengthChange: false,
-                    responsive: true,
+                    responsive: false,
                     fixedColumns: true,
-                    "order": [0, "desc"]
+                    "ordering": false,
+                    // "order": [0, "desc"]
                 });
-            },1000);
+            }, 1000);
         },
-        get_walle_account_type(){
-            axios.get('api/walletaccount/GetAllWalletAccountType').then(({ data}) => (this.walletAccountTypes = data));
+        getResults(page = 1) {
+            axios.get(`api/walletaccount/showAllWalletAccountType?page=${page}`)
+                .then(response => {
+                    this.walletAccountTypes = response.data;
+                });
+        },
+        get_wallet_account_type(){
+            axios.get('api/walletaccount/showAllWalletAccountType').then(({ data}) => (this.walletAccountTypes = data));
         },
         editWalletAccountType(wat){
             this.form.clear()
@@ -172,9 +211,9 @@ export default {
             .then(res => {
                 $('#walletAccountType').modal('hide')
                 $(document.body).removeAttr('class')
-                $("#wallet_account_types").DataTable().destroy()
-                this.get_walle_account_type()
-                this.datatable()
+                //$("#wallet_account_types").DataTable().destroy()
+                this.get_wallet_account_type()
+                //this.datatable()
                 toast.fire({
                     type: 'success',
                     title: 'Saved!'
@@ -200,9 +239,9 @@ export default {
                 console.log(res)
                 $('#walletAccountType').modal('hide')
                 $(document.body).removeAttr('class')
-                $("#wallet_account_types").DataTable().destroy()
-                this.get_walle_account_type()
-                this.datatable()
+                //$("#wallet_account_types").DataTable().destroy()
+                this.get_wallet_account_type()
+                //this.datatable()
                 toast.fire({
                     type: 'success',
                     title: 'Saved!'
@@ -215,10 +254,30 @@ export default {
                 this.$Progress.fail()
             })
         },
+        debounceSearch(event) {
+            this.message = null
+            this.typing = 'You are typing'
+            clearTimeout(this.debounce)
+            this.debounce = setTimeout(() => {
+                this.typing = null
+                this.message = event.target.value
+                //console.log(this.message)
+                if(this.message !== "") {
+                    axios.get(`api/walletaccount/searchWalletAccountType/${this.message}`)
+                    .then(response => {
+                        this.walletAccountTypes = response.data;
+                    })
+                    .catch(err => console.log(err))
+                }
+                else {
+                    this.get_wallet_account_type()
+                }
+            }, 600)
+        }
     },
     created(){
-        this.datatable()
-        this.get_walle_account_type()
+        //this.datatable()
+        this.get_wallet_account_type()
     }
 }
 </script>

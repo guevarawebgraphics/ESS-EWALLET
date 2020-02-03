@@ -130,6 +130,13 @@ class WalletAccountController extends Controller
     }
 
     /**
+     * @ ListOfWalletAccounts 
+     **/
+    public function searchListWalletAccount($query){
+        return response()->json($this->WalletAccount->searchListWalletAccount($query));
+    }
+
+    /**
      * @ List of Merchant Accounts 
      **/
     public function ListofMerchantsAccounts(){
@@ -137,8 +144,18 @@ class WalletAccountController extends Controller
         return response()->json($ListofMerchantsAccounts);
     }
 
-
-    public function ValidateFirstStep(ValidateFirstStep $request){
-        return response()->json('hello');
+    /**
+     * @ Search Wallet Account 
+     **/
+    public function searchWalletAccount($query) {
+        return response()->json($this->WalletAccount->searchWalletAccount($query));
     }
+
+    /**
+     * @ Search Wallet Account 
+     **/
+    public function showServiceMatrix() {
+        return response()->json($this->WalletAccount->showServiceMatrix());
+    }
+
 }

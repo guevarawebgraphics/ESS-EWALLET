@@ -11,6 +11,14 @@
                         <div class="col-md-12">
                             <h4 class="header-title mt-3 text-center">Approvals | Transaction Request</h4>
                             <hr>
+                            <div class="float-right">
+                                <div class="search-box">
+                                    <form action="#">
+                                        <input class="form-control mb-3" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account..." required>
+                                        <i class="ti-search"></i>
+                                    </form>
+                                </div>
+                            </div>
                             <div class="data-tables datatable-dark">
                                 <!-- Table -->
                                 <table class="table table-hover table-striped table-bordered text-center" id="table_id">
@@ -31,7 +39,7 @@
                                     <!-- Thead -->
                                     <!-- Tbody -->
                                     <tbody>
-                                        <tr v-for="tr in transactionRequest" :key="tr.id">
+                                        <tr v-for="tr in transactionRequest.data" :key="tr.id">
                                             <td>{{ tr.wallet_id }}</td>
                                             <td><span>&#8369;</span> {{ tr.prefund_amount }} </td>
                                             <td>{{ tr.name_of_bank }}</td>
@@ -56,12 +64,31 @@
                                     <!-- ./Tbody -->
                                 </table>
                                 <!-- ./Table -->
+                            <div class="text-center" v-if="this.transactionRequest.data == 0">
+                                <label>No Results found</label>
+                            </div>
                             </div>
                         </div>
                     </div>
                     <!-- ./Row -->
                 </div>
                 <!-- ./Card body -->
+                <!-- Card Footer -->
+                <div class="card-footer bg-white">
+                    <!-- Pagination Length -->
+                    <div class="float-left">
+                        {{ (transactionRequest.next_page_url == null && transactionRequest.prev_page_url == null) ? '' : 'Total ' + transactionRequest.to }}
+                        {{ (transactionRequest.next_page_url == null && transactionRequest.prev_page_url == null) ? '' : 'of ' + transactionRequest.total }}
+                    </div>
+                    <!-- Pagination -->
+                    <!-- <pagination class="float-right" :data="WalletAccount" @pagination-change-page="getResults"></pagination> -->
+                    <pagination class="float-right" :data="transactionRequest" @pagination-change-page="getResults">
+                        <span slot="prev-nav"><i class="ti-angle-left"></i>  Previous</span>
+                        <span slot="next-nav">Next <i class="ti-angle-right"></i> </span>
+                    </pagination>
+                    <!-- Pagination -->
+                </div>
+                <!-- ./ Card Footer -->
             </div>
             <!-- ./Card -->
         </div>
@@ -73,7 +100,10 @@
 export default {
     data() {
         return {
-            transactionRequest: []
+            message: null,
+            typing: null,
+            debounce: null,
+            transactionRequest: {}
         }
     },
     methods: {
@@ -92,6 +122,12 @@ export default {
                     //"order": [6, "desc"]
                 });
             }, 1000);
+        },
+        getResults(page = 1) {
+            axios.get(`/api/approval/showapprovaltransaction?page=${page}`)
+                .then(response => {
+                    this.transactionRequest = response.data;
+                });
         },
         showApprovalTransaction() {
             axios.get('/api/approval/showapprovaltransaction')
@@ -124,13 +160,34 @@ export default {
                     .catch(err => this.$Progress.fail())
                 }
             })
+        },
+        debounceSearch(event) {
+            this.message = null
+            this.typing = 'You are typing'
+            clearTimeout(this.debounce)
+            this.debounce = setTimeout(() => {
+                this.typing = null
+                this.message = event.target.value
+                //console.log(this.message)
+                if(this.message !== "") {
+                    axios.get(`/api/approval/searchapprovaltransaction/${this.message}`)
+                    .then(response => {
+                        this.transactionRequest = response.data;
+                    })
+                    .catch(err => console.log(err))
+                }
+                else {
+                    this.showApprovalTransaction()
+                }
+            }, 600)
         }
     },
     created() {
+        this.showApprovalTransaction()
     },
     mounted() {
-        this.dataTable()
-        this.showApprovalTransaction()
+        //this.dataTable()
+
         console.log('Mounted')
     }
 }

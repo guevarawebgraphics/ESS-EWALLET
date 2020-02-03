@@ -17,7 +17,9 @@ class ServiceGroupRepository
      * Get All Service group 
      **/
     public function GetAllService(){
-        $service_group = ServiceGroup::select('id', 'group_code', 'group_description')->orderBy('created_at', 'DESC')->get();
+        $service_group = ServiceGroup::select('id', 'group_code', 'group_description')
+                            ->latest()
+                            ->paginate(10);
         return $service_group;
     }
 
@@ -49,6 +51,19 @@ class ServiceGroupRepository
             'created_by' => $user->id,
             'updated_by' => $user->id
         ]);
+        return $service_group;
+    }
+
+    /**
+     * @ search service group 
+     **/
+    public function searchServiceGroup($query)
+    {
+        $service_group = ServiceGroup::select('id', 'group_code', 'group_description')
+                            ->orWhere('group_code', 'LIKE', '%'.$query.'%')
+                            ->orWhere('group_description', 'LIKE', '%'.$query.'%')
+                            ->latest()
+                            ->paginate();
         return $service_group;
     }
 
