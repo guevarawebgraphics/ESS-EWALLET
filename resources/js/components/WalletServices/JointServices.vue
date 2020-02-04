@@ -151,7 +151,7 @@ methods : {
                         /**
                          * Insert Joint Services
                          */
-                        this.form.post('/api/service/createjointservice')
+                        this.form.post('/api/service/storetJointServices')
                         .then((response) => {
                                 console.log(response.data);  
                                                     /**

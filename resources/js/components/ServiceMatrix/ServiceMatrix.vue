@@ -3,7 +3,7 @@
         <!-- Box -->
         <div class="box ptb--100">
             <!-- Form -->
-            <form @submit.prevent="SaveChanges()">
+            <form @submit.prevent="saveChanges()">
                 <!-- Card -->
                 <div class="card shadow-custom">
                     <!-- Card Body -->
@@ -158,7 +158,7 @@ export default {
         }
     },
     methods: {
-        datatable(){
+        datatable() {
             setTimeout(function(){
                 let table = $('#service_matrix').DataTable({
                     // "searching": false,
@@ -174,12 +174,12 @@ export default {
             }, 1000);
         },
         getResults(page = 1) {
-            axios.get(`/api/servicematrix/GetServices?page=${page}`)
+            axios.get(`/api/servicematrix/showServices?page=${page}`)
                 .then(response => {
                     this.Services = response.data;
                 });
         },
-        SaveChanges(){
+        saveChanges() {
             swal.fire({
                 title: 'Are you sure?',
                 text: "Save Service Matrix Configuration Setup",
@@ -191,14 +191,14 @@ export default {
             }).then((result) => {
                 this.$Progress.start()
                 if (result.value) {
-                    axios.post('api/servicematrix/StoreServiceMatrix', this.Services)
+                    axios.post('api/servicematrix/storeServiceMatrix', this.Services)
                     .then((response) => {
                         console.log(response)
                         this.$Progress.increase(10)
                         this.$Progress.finish()
                         // $("#service_matrix").DataTable().destroy()
                         // this.datatable();
-                        this.GetServices();
+                        this.getServices();
                         toast.fire({
                             type: 'success',
                             title: 'Saved!'
@@ -217,10 +217,10 @@ export default {
                 }
             })
         },
-        GetServices(){
-            axios.get('api/servicematrix/GetServices').then(({ data }) => (this.Services = data));
+        getServices() {
+            axios.get('api/servicematrix/showServices').then(({ data }) => (this.Services = data));
         },
-        GetServiceMatrixConfig(){
+        getServiceMatrixConfig() {
             axios.get('api/servicematrix/ServiceMatrixConfig')
                 .then(({ data }) => (this.Services = data))
                 .catch(err => {
@@ -243,20 +243,20 @@ export default {
                     .catch(err => console.log(err))
                 }
                 else {
-                    this.GetServices()
+                    this.getServices()
                 }
             }, 600)
         },
     },
-    created(){
+    created() {
         // this.datatable();
         if(this.currentUser === 3){
             this.mode = 1;
-            this.GetServiceMatrixConfig()
+            this.getServiceMatrixConfig()
         }
         else {
             this.mode = 0;
-            this.GetServices();
+            this.getServices();
         }
         
         

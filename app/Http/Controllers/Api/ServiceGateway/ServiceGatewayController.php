@@ -19,34 +19,33 @@ class ServiceGatewayController extends Controller
 { 
     protected $ServiceGateway;
     
-    public function __construct(ServiceGatewayRepository $ServiceGateway){
+    public function __construct(ServiceGatewayRepository $ServiceGateway)
+    {
         $this->servicegateway = $ServiceGateway; 
         $this->middleware('auth:api');
     }
     /**
      * For creating new service Gateway
      */
-    public function CreateServiceGateway(ServiceGateway $request){
-        $insert_servicegateway = $this->servicegateway->CreateServiceGatewayMethod($request);
-        return response()->json([
-            'status' => 'success'
-        ]);
+    public function storeServiceGateway(ServiceGateway $request)
+    {
+        $insert_servicegateway = $this->servicegateway->storeServiceGateway($request);
+        return response()->json(['status' => 'success']);
     }
     /**
      * For getting the service gateway info
      */
-    public function GetServiceGateway() { 
-        $get_servicegateway = $this->servicegateway->GetServiceGatewayMethod();
-        return response()->json($get_servicegateway);
+    public function showServiceGateway() 
+    { 
+        return response()->json($this->servicegateway->showServiceGateway());
     }
     /**
      * For updating Service Gateway
      */
-    public function UpdateServiceGateway(updateServiceGateway $request,$gw_id) {
-        $update_servicegateway = $this->servicegateway->UpdateServiceGatewayMethod($request,$gw_id);
-        return response()->json([
-            'status' => 'success'
-        ]);
+    public function updateServiceGateway(updateServiceGateway $request,$gw_id) 
+    {
+        $update_servicegateway = $this->servicegateway->updateServiceGateway($request,$gw_id);
+        return response()->json(['status' => 'success']);
     }
 
     /**

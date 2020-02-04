@@ -25,7 +25,8 @@ class AccountController extends Controller
      * @param AccountRespository $AccountRepository
      * @ constructor 
      **/
-    public function __construct(AccountRepository $AccountRepository){
+    public function __construct(AccountRepository $AccountRepository)
+    {
         $this->accountRepository = $AccountRepository;
         $this->middleware('auth:api');
     }
@@ -34,17 +35,18 @@ class AccountController extends Controller
      * @ Get Account
      * @ mysql2 (ESS Database)
      * @ Return Response JSon
+     * @param essid
      **/
-    public function GetAccountViaEssId(Request $request, $essid){
-        $Account = $this->accountRepository->GellAllAccount($essid);
-        return response()->json($Account);
+    public function showAccountViaEssId(Request $request, $essid)
+    {
+        return response()->json($this->accountRepository->showAccountViaEssId($essid));
     }
 
     /**
      * @ Generate Wallet Account No
      **/ 
-    public function GenerateAccountNo(Request $request){
-        $Account_No = $this->accountRepository->generate_account_no();
-        return response()->json($Account_No);
+    public function GenerateAccountNo(Request $request)
+    {
+        return response()->json($this->accountRepository->generate_account_no());
     }
 }

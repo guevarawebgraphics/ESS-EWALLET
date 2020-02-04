@@ -97,7 +97,7 @@
                 </button>
             </div>
             <!-- Form -->
-                <form @submit.prevent="editmode ? updateWalletType() : createWalletAccountType()">
+                <form @submit.prevent="editmode ? updateWalletType() : storeWalletAccountType()">
                     <!-- <input type="hidden" name="_token" :value="csrf"> -->
                     <div class="modal-body">
                         <div v-if="editmode" class="form-group">
@@ -148,7 +148,7 @@
 <script>
 export default {
     data() {
-        return{
+        return {
             message: null,
             typing: null,
             debounce: null,
@@ -186,33 +186,34 @@ export default {
                     this.walletAccountTypes = response.data;
                 });
         },
-        get_wallet_account_type(){
+        showWalletAccountType()
+        {
             axios.get('api/walletaccount/showAllWalletAccountType').then(({ data}) => (this.walletAccountTypes = data));
         },
-        editWalletAccountType(wat){
+        editWalletAccountType(wat) {
             this.form.clear()
             this.editmode = true;
             this.form.reset()
             $('#walletAccountType').modal('show')
             this.form.fill(wat)
         },
-        openModal(){
+        openModal() {
             this.form.clear()
             this.editmode = false;
             this.form.reset();
             $('#walletAccountType').modal('show')
         },
-        updateWalletType(){
+        updateWalletType() {
             $('#btnUpdate').attr('disabled', true)
             $('#modalClose').attr('disabled', true)
             $('#updateSpinner').removeAttr('hidden')
             this.$Progress.start()
-            this.form.put('api/walletaccount/UpdateWalletAccountType')
+            this.form.put('api/walletaccount/updateWalletAccountType')
             .then(res => {
                 $('#walletAccountType').modal('hide')
                 $(document.body).removeAttr('class')
                 //$("#wallet_account_types").DataTable().destroy()
-                this.get_wallet_account_type()
+                this.showWalletAccountType()
                 //this.datatable()
                 toast.fire({
                     type: 'success',
@@ -232,15 +233,15 @@ export default {
                 this.$Progress.fail()
             })
         },
-        createWalletAccountType(){
+        storeWalletAccountType() {
             this.$Progress.start()
-            this.form.post('api/walletaccount/StoreWalletAccountType')
+            this.form.post('api/walletaccount/storeWalletAccountType')
             .then(res => {
                 console.log(res)
                 $('#walletAccountType').modal('hide')
                 $(document.body).removeAttr('class')
                 //$("#wallet_account_types").DataTable().destroy()
-                this.get_wallet_account_type()
+                this.showWalletAccountType()
                 //this.datatable()
                 toast.fire({
                     type: 'success',
@@ -270,14 +271,14 @@ export default {
                     .catch(err => console.log(err))
                 }
                 else {
-                    this.get_wallet_account_type()
+                    this.showWalletAccountType()
                 }
             }, 600)
         }
     },
     created(){
         //this.datatable()
-        this.get_wallet_account_type()
+        this.showWalletAccountType()
     }
 }
 </script>

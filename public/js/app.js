@@ -2297,14 +2297,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get("api/walletaccount/ListOfWalletAccounts?page=".concat(page)).then(function (response) {
+      axios.get("api/walletaccount/showListWalletAccounts?page=".concat(page)).then(function (response) {
         _this.listofwalletaccount = response.data;
       });
     },
     GetallWalletAccount: function GetallWalletAccount() {
       var _this2 = this;
 
-      axios.get('api/walletaccount/ListOfWalletAccounts').then(function (res) {
+      axios.get('api/walletaccount/showListWalletAccounts').then(function (res) {
         _this2.listofwalletaccount = res.data;
       })["catch"](function (err) {
         return console.log(err);
@@ -2585,7 +2585,7 @@ __webpack_require__.r(__webpack_exports__);
       $('#btn-close').attr('disabled', true);
       $('#saveSpinner').removeAttr('hidden');
       this.$Progress.start();
-      this.form.post('/api/service_gateway/createservicegateway').then(function (response) {
+      this.form.post('/api/service_gateway/storeServiceGateway').then(function (response) {
         _this3.$Progress.increase(10);
 
         _this3.$Progress.finish(); // /console.log("ho"); 
@@ -2862,14 +2862,14 @@ $(document).ready(function () {
       var _this = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get("/api/servicematrix/GetAllService?page=".concat(page)).then(function (response) {
+      axios.get("/api/servicematrix/showAllService?page=".concat(page)).then(function (response) {
         _this.serviceGroups = response.data;
       });
     },
     get_service_group: function get_service_group() {
       var _this2 = this;
 
-      axios.get("api/servicematrix/GetAllService").then(function (_ref) {
+      axios.get("api/servicematrix/showAllService").then(function (_ref) {
         var data = _ref.data;
         return _this2.serviceGroups = data;
       });
@@ -2888,7 +2888,7 @@ $(document).ready(function () {
       $('#modalClose').attr('disabled', true);
       $('#Spinner').removeAttr('hidden');
       this.$Progress.start();
-      this.form.put('api/servicematrix/UpdateServiceGroup/' + this.form.id).then(function (response) {
+      this.form.put('api/servicematrix/updateServiceGroup/' + this.form.id).then(function (response) {
         _this3.$Progress.increase(10);
 
         _this3.$Progress.finish();
@@ -2922,18 +2922,16 @@ $(document).ready(function () {
       $('#modalClose').attr('disabled', true);
       $('#saveSpinner').removeAttr('hidden');
       this.$Progress.start();
-      this.form.post('api/servicematrix/StoreServiceGroup').then(function (response) {
+      this.form.post('api/servicematrix/storeServiceGroup').then(function (response) {
         _this4.$Progress.increase(10);
 
         _this4.$Progress.finish();
 
         $('#serviceGroupModal').modal('hide');
-        $(document.body).removeAttr('class');
-        $("#service_group_table").DataTable().destroy();
+        $(document.body).removeAttr('class'); // $("#service_group_table").DataTable().destroy()
 
-        _this4.get_service_group();
+        _this4.get_service_group(); // this.datatable()
 
-        _this4.datatable();
 
         $('#btnSave').removeAttr('disabled');
         $('#modalClose').removeAttr('disabled');
@@ -3173,11 +3171,11 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get("/api/servicematrix/GetServices?page=".concat(page)).then(function (response) {
+      axios.get("/api/servicematrix/showServices?page=".concat(page)).then(function (response) {
         _this.Services = response.data;
       });
     },
-    SaveChanges: function SaveChanges() {
+    saveChanges: function saveChanges() {
       var _this2 = this;
 
       swal.fire({
@@ -3192,7 +3190,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.$Progress.start();
 
         if (result.value) {
-          axios.post('api/servicematrix/StoreServiceMatrix', _this2.Services).then(function (response) {
+          axios.post('api/servicematrix/storeServiceMatrix', _this2.Services).then(function (response) {
             console.log(response);
 
             _this2.$Progress.increase(10);
@@ -3201,7 +3199,7 @@ __webpack_require__.r(__webpack_exports__);
             // this.datatable();
 
 
-            _this2.GetServices();
+            _this2.getServices();
 
             toast.fire({
               type: 'success',
@@ -3215,15 +3213,15 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    GetServices: function GetServices() {
+    getServices: function getServices() {
       var _this3 = this;
 
-      axios.get('api/servicematrix/GetServices').then(function (_ref) {
+      axios.get('api/servicematrix/showServices').then(function (_ref) {
         var data = _ref.data;
         return _this3.Services = data;
       });
     },
-    GetServiceMatrixConfig: function GetServiceMatrixConfig() {
+    getServiceMatrixConfig: function getServiceMatrixConfig() {
       var _this4 = this;
 
       axios.get('api/servicematrix/ServiceMatrixConfig').then(function (_ref2) {
@@ -3250,7 +3248,7 @@ __webpack_require__.r(__webpack_exports__);
             return console.log(err);
           });
         } else {
-          _this5.GetServices();
+          _this5.getServices();
         }
       }, 600);
     }
@@ -3259,10 +3257,10 @@ __webpack_require__.r(__webpack_exports__);
     // this.datatable();
     if (this.currentUser === 3) {
       this.mode = 1;
-      this.GetServiceMatrixConfig();
+      this.getServiceMatrixConfig();
     } else {
       this.mode = 0;
-      this.GetServices();
+      this.getServices();
     }
 
     console.log(this.$route.name);
@@ -3917,7 +3915,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.walletAccountTypes = response.data;
       });
     },
-    get_wallet_account_type: function get_wallet_account_type() {
+    showWalletAccountType: function showWalletAccountType() {
       var _this2 = this;
 
       axios.get('api/walletaccount/showAllWalletAccountType').then(function (_ref) {
@@ -3945,11 +3943,11 @@ __webpack_require__.r(__webpack_exports__);
       $('#modalClose').attr('disabled', true);
       $('#updateSpinner').removeAttr('hidden');
       this.$Progress.start();
-      this.form.put('api/walletaccount/UpdateWalletAccountType').then(function (res) {
+      this.form.put('api/walletaccount/updateWalletAccountType').then(function (res) {
         $('#walletAccountType').modal('hide');
         $(document.body).removeAttr('class'); //$("#wallet_account_types").DataTable().destroy()
 
-        _this3.get_wallet_account_type(); //this.datatable()
+        _this3.showWalletAccountType(); //this.datatable()
 
 
         toast.fire({
@@ -3973,16 +3971,16 @@ __webpack_require__.r(__webpack_exports__);
         _this3.$Progress.fail();
       });
     },
-    createWalletAccountType: function createWalletAccountType() {
+    storeWalletAccountType: function storeWalletAccountType() {
       var _this4 = this;
 
       this.$Progress.start();
-      this.form.post('api/walletaccount/StoreWalletAccountType').then(function (res) {
+      this.form.post('api/walletaccount/storeWalletAccountType').then(function (res) {
         console.log(res);
         $('#walletAccountType').modal('hide');
         $(document.body).removeAttr('class'); //$("#wallet_account_types").DataTable().destroy()
 
-        _this4.get_wallet_account_type(); //this.datatable()
+        _this4.showWalletAccountType(); //this.datatable()
 
 
         toast.fire({
@@ -4016,14 +4014,14 @@ __webpack_require__.r(__webpack_exports__);
             return console.log(err);
           });
         } else {
-          _this5.get_wallet_account_type();
+          _this5.showWalletAccountType();
         }
       }, 600);
     }
   },
   created: function created() {
     //this.datatable()
-    this.get_wallet_account_type();
+    this.showWalletAccountType();
   }
 });
 
@@ -4927,7 +4925,7 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Validate First Step 
      **/
-    ValidateFirstStep: function ValidateFirstStep() {
+    validateFirstStep: function validateFirstStep() {
       // if(this.form.emailaddress != null){
       //     if(this.step == 1){
       //         this.errors.clear()
@@ -4990,7 +4988,7 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Validate Second Step 
      **/
-    ValidateSecondStep: function ValidateSecondStep() {
+    validateSecondStep: function validateSecondStep() {
       if (this.form.WalletAccountType != null && this.form.WalletType != null && this.form.Wallettitle != null) {
         this.errors.clear();
         $('#nextTab').removeAttr('disabled');
@@ -5016,7 +5014,7 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Validate Fourth Step 
      **/
-    ValidateFourthStep: function ValidateFourthStep() {
+    validateFourthStep: function validateFourthStep() {
       // /var i;
       //for (i = 0; i < this.BankAccount.length; i++) {
       if (this.BankAccount[0].bank_name != null && this.BankAccount[0].Branch != null && this.BankAccount[0].account_type != null && this.BankAccount[0].account_name != null && this.BankAccount[0].account_no != null) {
@@ -5045,9 +5043,9 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     /**
-     * @ ValidateWalletAccountDetails 
+     * @ validateWalletAccountDetails 
      **/
-    ValidateWalletAccountDetails: function ValidateWalletAccountDetails() {
+    validateWalletAccountDetails: function validateWalletAccountDetails() {
       // console.log('asdfs')
       if (this.form.WalletAccountNoDetails == null) {
         toast.fire({
@@ -5070,7 +5068,7 @@ __webpack_require__.r(__webpack_exports__);
     /**
      *@ Search For Account ESS ID 
      **/
-    SearchESSID: function SearchESSID() {
+    searchESSID: function searchESSID() {
       var _this = this;
 
       if (!this.form.username) {
@@ -5089,7 +5087,7 @@ __webpack_require__.r(__webpack_exports__);
 
             $('#nextTab').removeAttr('disabled');
 
-            _this.GenerateAccountNo();
+            _this.generateAccountNo();
 
             _this.account = response.data;
             /**
@@ -5127,7 +5125,7 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Edit Wallet Account 
      **/
-    EditWalletAccount: function EditWalletAccount() {
+    editWalletAccount: function editWalletAccount() {
       /**
        * @ Check if the params is not empty then editmode = true 
        **/
@@ -5142,7 +5140,7 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Generate Account No 
      **/
-    GenerateAccountNo: function GenerateAccountNo() {
+    generateAccountNo: function generateAccountNo() {
       var _this2 = this;
 
       if (!this.editmode) {
@@ -5157,7 +5155,7 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Store Wallet Account 
      **/
-    StoreWalletAccount: function StoreWalletAccount() {
+    storeWalletAccount: function storeWalletAccount() {
       var _this3 = this;
 
       swal.fire({
@@ -5226,7 +5224,7 @@ __webpack_require__.r(__webpack_exports__);
           formData.append('joint_wallet_account_no', _this3.form.JointWalletAccountNo);
           formData.append('CMSCreditAccountNo', _this3.form.CMSCreditAccountNo);
           axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-          axios.post(_this3.editmode ? '/api/walletaccount/UpdateWalletAccount' : 'api/walletaccount/StoreWalletAccount', formData, {
+          axios.post(_this3.editmode ? '/api/walletaccount/updateWalletAccount' : 'api/walletaccount/storeWalletAccount', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               'X-CSRF-TOKEN': _this3.csrf_token
@@ -5272,10 +5270,10 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Get Wallet Account Type 
      **/
-    GetWalletAccountType: function GetWalletAccountType() {
+    getWalletAccountType: function getWalletAccountType() {
       var _this4 = this;
 
-      axios.get('/api/walletaccount/GetAllWalletAccountType').then(function (_ref) {
+      axios.get('/api/walletaccount/showWalletAccountTypes').then(function (_ref) {
         var data = _ref.data;
         return _this4.walletAccountTypes = data;
       });
@@ -5284,11 +5282,11 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Get Wallet Account Details 
      **/
-    GetWalletAccountDetails: function GetWalletAccountDetails() {
+    showWalletAccountDetails: function showWalletAccountDetails() {
       var _this5 = this;
 
-      //axios.get('api/walletaccount/GetWalletAccountDetails/'+ this.form.username).then(({ data}) => (console.log(data)));
-      axios.get('/api/walletaccount/GetWalletAccountDetails/' + this.$route.params.id).then(function (res) {
+      //axios.get('api/walletaccount/showWalletAccountDetails/'+ this.form.username).then(({ data}) => (console.log(data)));
+      axios.get('/api/walletaccount/showWalletAccountDetails/' + this.$route.params.id).then(function (res) {
         //console.log(res)
         _this5.form.WalletAccountType = res.data[0]['wallet_account_type'];
         _this5.form.WalletType = res.data[0]['wallet_type'];
@@ -5328,7 +5326,7 @@ __webpack_require__.r(__webpack_exports__);
         _this5.form.WalletAccountNameDetails = res.data[0]['WalletAccountNameDetails'];
         _this5.form.JointWalletAccountNo = res.data[0]['joint_wallet_account_no'];
 
-        _this5.SerachJointWalletAccount(res.data[0]['joint_wallet_account_no']);
+        _this5.serachJointWalletAccount(res.data[0]['joint_wallet_account_no']);
 
         _this5.form.WalletAccountNo = res.data[0]['wan'];
         _this5.form.Wallettitle = res.data[0]['wallet_title'];
@@ -5336,11 +5334,11 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err);
       });
     },
-    GetWalletBankAccounts: function GetWalletBankAccounts() {
+    showWalletBankAccount: function showWalletBankAccount() {
       var _this6 = this;
 
       this.BankAccount.splice(0, 1);
-      axios.get('/api/walletaccount/GetWalletBankAccount/' + this.$route.params.id).then(function (res) {
+      axios.get('/api/walletaccount/showWalletBankAccount/' + this.$route.params.id).then(function (res) {
         var i;
 
         for (i = 0; i < res.data.length; i++) {
@@ -5363,7 +5361,7 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Get Kyc Form File 
      **/
-    GetKycForm: function GetKycForm() {
+    getKycForm: function getKycForm() {
       var photo = this.form.photo.length > 200 ? this.form.photo : "img/profile/" + this.form.photo;
       return photo;
     },
@@ -5396,7 +5394,7 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Get Services 
      **/
-    GetServices: function GetServices() {
+    getServices: function getServices() {
       var _this7 = this;
 
       if (this.editmode == false) {
@@ -5410,11 +5408,11 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Get Service Matrix Config For Update 
      **/
-    Getsmc: function Getsmc() {
+    getsmc: function getsmc() {
       var _this8 = this;
 
       if (this.editmode == true) {
-        axios.get('/api/walletaccount/GetServiceMatrixConfig/' + this.$route.params.id).then(function (_ref3) {
+        axios.get('/api/walletaccount/showServiceMatrixConfig/' + this.$route.params.id).then(function (_ref3) {
           var data = _ref3.data;
           return _this8.Services = data;
         });
@@ -5424,7 +5422,7 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Check Wallet Account Type 
      **/
-    CheckWalletAccountType: function CheckWalletAccountType() {
+    checkWalletAccountType: function checkWalletAccountType() {
       // Check if Prepaid User
       if (this.form.WalletAccountType == 5) {
         return false;
@@ -5462,7 +5460,7 @@ __webpack_require__.r(__webpack_exports__);
     searchAccountNo: function searchAccountNo() {
       var _this9 = this;
 
-      axios.get('/api/walletaccount/SearchWalletAccountNo/' + this.form.WalletAccountNoDetails).then(function (res) {
+      axios.get('/api/walletaccount/searchWalletAccountNo/' + this.form.WalletAccountNoDetails).then(function (res) {
         console.log(res);
 
         if (res) {
@@ -5497,11 +5495,11 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @ Search Joint Wallet Account 
      **/
-    SerachJointWalletAccount: function SerachJointWalletAccount() {
+    serachJointWalletAccount: function serachJointWalletAccount() {
       var _this10 = this;
 
       var $jwan = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-      axios.get('/api/walletaccount/SearchWalletJointAccount/' + this.form.JointWalletAccountNo).then(function (res) {
+      axios.get('/api/walletaccount/searchWalletJointAccount/' + this.form.JointWalletAccountNo).then(function (res) {
         console.log(res);
         _this10.form.JointWalletType = res.data[0].wallet_type;
         _this10.form.jointWalletAccountType = res.data[0].wallet_account_type;
@@ -5513,17 +5511,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     if (this.editmode == false) {
-      this.GetWalletAccountType();
-      this.EditWalletAccount();
-      this.SearchESSID();
+      this.getWalletAccountType();
+      this.editWalletAccount();
+      this.searchESSID();
       this.datatable();
-      this.GetServices();
+      this.getServices();
     }
 
     if (this.editmode == true) {
-      this.GetWalletAccountDetails();
-      this.GetWalletBankAccounts();
-      this.Getsmc();
+      this.showWalletAccountDetails();
+      this.showWalletBankAccount();
+      this.getsmc();
     }
   }
 });
@@ -5644,14 +5642,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get("api/walletaccount/GetAllWalletAccount?page=".concat(page)).then(function (response) {
+      axios.get("api/walletaccount/showAllWalletAccount?page=".concat(page)).then(function (response) {
         _this.WalletAccount = response.data;
       });
     },
     loadWalletAccounts: function loadWalletAccounts() {
       var _this2 = this;
 
-      axios.get('api/walletaccount/GetAllWalletAccount').then(function (response) {
+      axios.get('api/walletaccount/showAllWalletAccount').then(function (response) {
         _this2.WalletAccount = response.data;
       });
     },
@@ -5981,7 +5979,7 @@ __webpack_require__.r(__webpack_exports__);
           Formtwo.append('servicetype_name', _this.form.servicetype_name);
           Formtwo.append('behavior_value', _this.form.behavior_value);
           Formtwo.append('servicetype_description', _this.form.servicetype_description);
-          axios.post("/api/service_type/createservicetype", Formtwo).then(function (response) {
+          axios.post("/api/service_type/storeservicetype", Formtwo).then(function (response) {
             _this.$router.push('servicetypes');
 
             toast.fire({
@@ -6716,14 +6714,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get("/api/service_type/servicetypetable?page=".concat(page)).then(function (response) {
+      axios.get("/api/service_type/showServiceTypeDetails?page=".concat(page)).then(function (response) {
         _this.services = response.data;
       });
     },
     loadServices: function loadServices() {
       var _this2 = this;
 
-      axios.get("/api/service_type/servicetypetable").then(function (_ref) {
+      axios.get("/api/service_type/showServiceTypeDetails").then(function (_ref) {
         var data = _ref.data;
         return _this2.services = data;
       });
@@ -7369,7 +7367,7 @@ __webpack_require__.r(__webpack_exports__);
           Formtwo.append('limit_per_year', _this.form.limit_per_year); //this.form.post('/api/service/createservice')  
 
           if (_this.edit_mode === false) {
-            axios.post("/api/service/createservice", Formtwo).then(function (response) {
+            axios.post("/api/service/storeService", Formtwo).then(function (response) {
               _this.$Progress.increase(10);
 
               _this.$Progress.finish();
@@ -7508,7 +7506,7 @@ __webpack_require__.r(__webpack_exports__);
     getServiceGroup: function getServiceGroup() {
       var _this6 = this;
 
-      axios.get("/api/servicematrix/GetAllService").then(function (_ref) {
+      axios.get("/api/servicematrix/showAllService").then(function (_ref) {
         var data = _ref.data;
         return _this6.ServiceGroups = data;
       });
@@ -7890,7 +7888,7 @@ __webpack_require__.r(__webpack_exports__);
              */
 
 
-            _this.form.post('/api/service/createjointservice').then(function (response) {
+            _this.form.post('/api/service/storetJointServices').then(function (response) {
               console.log(response.data);
               /**
               * Clears the local storage variable for joining services
@@ -13236,7 +13234,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\n#ba-close-button[data-v-64a2c4d3]{\r\n    background-color: Transparent;\r\n    background-repeat:no-repeat;\r\n    border: none;\r\n    cursor:pointer;\r\n    overflow: hidden;\r\n    outline:none;\r\n    margin-bottom: \"2px\";\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* input {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid #d9dadc;\r\n    border-radius: 0;\r\n    background-color: #fff;\r\n    background-image: none;\r\n}\r\n\r\n.custom-control-label::before, \r\n.custom-control-label::after {\r\n    top: .8rem;\r\n    width: 1.25rem;\r\n    height: 1.25rem;\r\n} */\n.custom-limit-input[data-v-64a2c4d3] {\r\n    width: 15%;\n}\n#ba-close-button[data-v-64a2c4d3]{\r\n    background-color: Transparent;\r\n    background-repeat:no-repeat;\r\n    border: none;\r\n    cursor:pointer;\r\n    overflow: hidden;\r\n    outline:none;\r\n    margin-bottom: \"2px\";\n}\r\n", ""]);
 
 // exports
 
@@ -62290,7 +62288,7 @@ var render = function() {
           on: {
             submit: function($event) {
               $event.preventDefault()
-              return _vm.SaveChanges()
+              return _vm.saveChanges()
             }
           }
         },
@@ -64306,7 +64304,7 @@ var render = function() {
                       $event.preventDefault()
                       _vm.editmode
                         ? _vm.updateWalletType()
-                        : _vm.createWalletAccountType()
+                        : _vm.storeWalletAccountType()
                     }
                   }
                 },
@@ -64716,7 +64714,7 @@ var render = function() {
         on: {
           submit: function($event) {
             $event.preventDefault()
-            return _vm.StoreWalletAccount()
+            return _vm.storeWalletAccount()
           }
         }
       },
@@ -64805,7 +64803,7 @@ var render = function() {
                                 style: props.fillButtonStyle,
                                 nativeOn: {
                                   click: function($event) {
-                                    return _vm.StoreWalletAccount()
+                                    return _vm.storeWalletAccount()
                                   }
                                 }
                               },
@@ -64833,7 +64831,7 @@ var render = function() {
               {
                 attrs: {
                   title: "E-Wallet Account Information (KYC)",
-                  "before-change": _vm.ValidateFirstStep
+                  "before-change": _vm.validateFirstStep
                 }
               },
               [
@@ -64905,7 +64903,7 @@ var render = function() {
                                             value: _vm.form.username
                                           },
                                           on: {
-                                            change: _vm.SearchESSID,
+                                            change: _vm.searchESSID,
                                             input: function($event) {
                                               if ($event.target.composing) {
                                                 return
@@ -66152,7 +66150,7 @@ var render = function() {
               {
                 attrs: {
                   title: "Wallet Details",
-                  "before-change": _vm.ValidateSecondStep
+                  "before-change": _vm.validateSecondStep
                 }
               },
               [
@@ -66248,7 +66246,7 @@ var render = function() {
                                                       : $$selectedVal[0]
                                                   )
                                                 },
-                                                _vm.ValidateSecondStep
+                                                _vm.validateSecondStep
                                               ]
                                             }
                                           },
@@ -66375,7 +66373,7 @@ var render = function() {
                                                       : $$selectedVal[0]
                                                   )
                                                 },
-                                                _vm.ValidateSecondStep
+                                                _vm.validateSecondStep
                                               ]
                                             }
                                           },
@@ -66492,7 +66490,7 @@ var render = function() {
                                           },
                                           on: {
                                             change:
-                                              _vm.SerachJointWalletAccount,
+                                              _vm.serachJointWalletAccount,
                                             input: function($event) {
                                               if ($event.target.composing) {
                                                 return
@@ -66667,7 +66665,7 @@ var render = function() {
                                             value: _vm.form.Wallettitle
                                           },
                                           on: {
-                                            change: _vm.ValidateSecondStep,
+                                            change: _vm.validateSecondStep,
                                             input: function($event) {
                                               if ($event.target.composing) {
                                                 return
@@ -66717,7 +66715,7 @@ var render = function() {
                                   {
                                     staticClass: "col-md-8 offset-md-2",
                                     attrs: {
-                                      hidden: _vm.CheckWalletAccountType()
+                                      hidden: _vm.checkWalletAccountType()
                                     }
                                   },
                                   [
@@ -66882,7 +66880,7 @@ var render = function() {
                                           value: _vm.form.JointWalletAccountNo
                                         },
                                         on: {
-                                          change: _vm.SerachJointWalletAccount,
+                                          change: _vm.serachJointWalletAccount,
                                           input: function($event) {
                                             if ($event.target.composing) {
                                               return
@@ -67272,7 +67270,7 @@ var render = function() {
               {
                 attrs: {
                   title: "Designated Bank Account's",
-                  "before-change": _vm.ValidateFourthStep
+                  "before-change": _vm.validateFourthStep
                 }
               },
               [
@@ -67380,7 +67378,7 @@ var render = function() {
                                             },
                                             domProps: { value: key.bank_name },
                                             on: {
-                                              change: _vm.ValidateFourthStep,
+                                              change: _vm.validateFourthStep,
                                               input: function($event) {
                                                 if ($event.target.composing) {
                                                   return
@@ -67465,7 +67463,7 @@ var render = function() {
                                             },
                                             domProps: { value: key.Branch },
                                             on: {
-                                              change: _vm.ValidateFourthStep,
+                                              change: _vm.validateFourthStep,
                                               input: function($event) {
                                                 if ($event.target.composing) {
                                                   return
@@ -67569,7 +67567,7 @@ var render = function() {
                                                         : $$selectedVal[0]
                                                     )
                                                   },
-                                                  _vm.ValidateFourthStep
+                                                  _vm.validateFourthStep
                                                 ]
                                               }
                                             },
@@ -67667,7 +67665,7 @@ var render = function() {
                                               value: key.account_name
                                             },
                                             on: {
-                                              change: _vm.ValidateFourthStep,
+                                              change: _vm.validateFourthStep,
                                               input: function($event) {
                                                 if ($event.target.composing) {
                                                   return
@@ -67752,7 +67750,7 @@ var render = function() {
                                             },
                                             domProps: { value: key.account_no },
                                             on: {
-                                              change: _vm.ValidateFourthStep,
+                                              change: _vm.validateFourthStep,
                                               input: function($event) {
                                                 if ($event.target.composing) {
                                                   return
@@ -74204,7 +74202,7 @@ var render = function() {
                                                 ),
                                                 _vm._v(" "),
                                                 _vm._l(
-                                                  _vm.ServiceGateway,
+                                                  _vm.ServiceGateway.data,
                                                   function(sg) {
                                                     return _c(
                                                       "option",
@@ -74329,7 +74327,7 @@ var render = function() {
                                                 ),
                                                 _vm._v(" "),
                                                 _vm._l(
-                                                  _vm.ServiceGroups,
+                                                  _vm.ServiceGroups.data,
                                                   function(g) {
                                                     return _c(
                                                       "option",
