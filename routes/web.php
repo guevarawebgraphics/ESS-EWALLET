@@ -31,11 +31,18 @@ Route::get('/autologin/{token}', function(Request $request, $token){
     // Check if Already Loggded In
     if(Auth::guest()){
         $user = DB::connection('mysql2')->table('users')->where('remember_token', '=', $token)->first();
-        Auth::loginUsingId($user->id);
-        //return redirect('/');
-        session(['user' => auth()->user()]);
-        session(['username' => auth()->user()->username]);
-        return view('layouts.app');
+        $check = DB::connection('mysql')->table('wallet_account')->where('ess_id', '=', $user->username)->first();
+        if($check){
+            Auth::loginUsingId($user->id);
+            //return redirect('/');
+            session(['user' => auth()->user()]);
+            session(['username' => auth()->user()->username]);
+            return view('layouts.app');
+        }
+        else{
+            abort(404);
+        }
+
     }
     else {
         abort(404);

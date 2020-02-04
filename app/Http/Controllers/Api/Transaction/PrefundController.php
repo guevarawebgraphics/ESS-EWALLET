@@ -14,7 +14,7 @@ use App\Http\Requests\Transaction\StorePrefund;
  * @ SOLID SRP
  * @ Repository 
  **/
-use App\Repositories\Trasanction\PrefundRepository;
+use App\Repositories\Transaction\PrefundRepository;
 
 class PrefundController extends Controller
 {
@@ -28,7 +28,8 @@ class PrefundController extends Controller
      * @param PrefundRepository
      * @ constructor 
      **/
-    public function __construct(PrefundRepository $PrefundRepository){
+    public function __construct(PrefundRepository $PrefundRepository)
+    {
         $this->prefund = $PrefundRepository;
         $this->middleware('auth:api');
     }
@@ -36,8 +37,20 @@ class PrefundController extends Controller
     /**
      * @ Store Prefund 
      **/
-    public function storePrefund(StorePrefund $request){
+    public function storePrefund(StorePrefund $request)
+    {
         $prefund = $this->prefund->storePrefund($request);
         return response()->json($prefund);
+    }
+
+    /**
+     * @ Update Prefund Transaction Status 
+     * @param id
+     * @return updatePrefundStatus
+     **/
+    public function updatePrefundStatus($id)
+    {
+        $updatePrefundStatus = $this->prefund->updatePrefundStatus($id);
+        return response()->json($updatePrefundStatus);
     }
 }

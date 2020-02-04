@@ -13,56 +13,65 @@ class ServiceTypeController extends Controller
 {
     protected $serviceType;
 
-    public function __construct(ServiceTypeRepository $ServiceTypeRepository){
+    public function __construct(ServiceTypeRepository $ServiceTypeRepository)
+    {
         $this->serviceType = $ServiceTypeRepository;
         $this->middleware('auth:api');
     }
+
     /**
      * For showing Service Types Table 
      */
-    public function GetServiceTypeTable(Request $request){
-        $ServiceTypeTable = $this->serviceType->get_service_type_table();
-        return response()->json($ServiceTypeTable);
+    public function showServiceTypeDetails(Request $request)
+    {
+        return response()->json($this->serviceType->showServiceTypeDetails());
     }
     /**
     * Retrieve all behaviors/Details on update
     */
-    public function ServiceTypeSetUp(Request $request,$st_id){
-        $STSetUp = $this->serviceType->get_service_details_and_behavior($st_id);
-        return response()->json($STSetUp);
+    public function serviceTypeSetUp(Request $request,$st_id)
+    {
+        return response()->json($this->serviceType->showServiceDetailsAndBehavior($st_id));
     }
     /**
      * Updating Service Details (Behaviors changes)
      */
-    public function SaveServiceDetailsBehavior(Request $request,$st_id){
-        $SaveDetailsBehavior = $this->serviceType->update_service_details_and_behavior($request,$st_id);
-        return response()->json([
-            'status' => 'success'
-        ]);    
+    public function saveServiceDetailsBehavior(Request $request,$st_id)
+    {
+        $SaveDetailsBehavior = $this->serviceType->updateServiceDetailsAndBehavior($request,$st_id);
+        return response()->json(['status' => 'success']);    
     }
     /**
      * For saving service type templates
      */
-    public function SaveServiceTemplates(Request $request){
-        $SaveServiceTypeTemplates = $this->serviceType->update_service_type_templates($request);
-        return response()->json([
-            'status' => 'success'
-        ]);    
+    public function saveServiceTemplates(Request $request)
+    {
+        $SaveServiceTypeTemplates = $this->serviceType->updateServiceTypeTemplates($request);
+        return response()->json(['status' => 'success']);    
     }
     /**
      * Saving Service Type
      */
-    public function SaveServiceType(Request $request){
-        $SaveServiceType = $this->serviceType->create_service_type($request);
-        return response()->json([
-            'status' => 'success'
-        ]);    
+    public function storeServiceType(Request $request)
+    {
+        $SaveServiceType = $this->serviceType->storeServiceType($request);
+        return response()->json(['status' => 'success']);    
     }
     /**
      * For showing all services that used this service type.
+     * @param st_id
      */
-    public function ShowServices($st_id){
-        $ShowServices = $this->serviceType->show_belong_services($st_id);
+    public function showServices($st_id)
+    {
+        $ShowServices = $this->serviceType->showBelongServices($st_id);
         return $ShowServices;
+    }
+
+    /**
+     * @ search Service Type 
+     **/
+    public function searchServiceType($query)
+    {
+        return response()->json($this->serviceType->searchServiceType($query));
     }
 }

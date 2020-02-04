@@ -27,39 +27,54 @@ class WalletAccountTypeController extends Controller
      * @param WalletAccountTypeRepository $walletAccountRepository
      * @ constructor 
      **/
-    public function __construct(WalletAccountTypeRepository $WalletAccountTypeRepository){
+    public function __construct(WalletAccountTypeRepository $WalletAccountTypeRepository)
+    {
         $this->walletAccountRepository = $WalletAccountTypeRepository;
         $this->middleware('auth:api');
     }
 
     /**
+     * @ Show All Wallet Account Type 
+     **/
+    public function showAllWalletAccountType() 
+    {
+        return response()->json($this->walletAccountRepository->showAllWalletAccountType());
+    }
+
+    /**
      * @ Get all wallet account types 
      **/
-    public function GetAllWalletAccountType(){
-        $wallet_account_type = $this->walletAccountRepository->get_wallet_account_types();
-        return response()->json($wallet_account_type);
+    public function showWalletAccountTypes()
+    {
+        return response()->json($this->walletAccountRepository->showWalletAccountTypes());
     }
 
     /**
      * @ Store Wallet Account Type 
      **/
-    public function StoreWalletAccountType(StoreWalletAccountType $request){
-        $wallet_account_type = $this->walletAccountRepository->store_wallet_account_type($request);
+    public function storeWalletAccountType(StoreWalletAccountType $request)
+    {
+        $wallet_account_type = $this->walletAccountRepository->storeWalletAccountType($request);
 
-        return response()->json([
-            'status' => 'success'
-        ]);
+        return response()->json(['status' => 'success']);
     }
 
     /**
      * @ Update Wallet Account Type 
      **/
-    public function UpdateWalletAccountType(StoreWalletAccountType $request){
-        $wallet_account_type = $this->walletAccountRepository->update_wallet_account_type($request);
+    public function updateWalletAccountType(StoreWalletAccountType $request)
+    {
+        $wallet_account_type = $this->walletAccountRepository->updateWalletAccountType($request);
 
-        return response()->json([
-            'status' => 'success'
-        ]);
+        return response()->json(['status' => 'success']);
+    }
+
+    /**
+     * @ Search Wallet Account Type 
+     **/
+    public function searchWalletAccountType($query)
+    {
+        return response()->json($this->walletAccountRepository->searchWalletAccountType($query));
     }
 
 }

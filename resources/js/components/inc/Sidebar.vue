@@ -1,6 +1,6 @@
 <template>
  <!-- sidebar menu area start -->
- <div class="sidebar-menu nav-custom">
+ <div class="sidebar-menu bg-white">
         <div class="sidebar-header nav-custom">
             <div class="logo">
             <router-link to="/dashboard"><h6 class="text-white">E-Wallet</h6></router-link>
@@ -46,20 +46,20 @@
                     </ul>
                     <ul class="metismenu" id="menu" v-if="user.user_type_id !== 1">
                         <li>
-                            <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Notification Template</span></a>
+                            <a href="#dashboard" aria-expanded="true"><i class="ti-bell text-blue"></i><span>Notification Template</span></a>
                         </li>
                         <li>
                             <!-- <router-link to="/listwalletaccounts" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>List of Wallet Accounts</span></router-link> -->
                             <router-link to="/listwalletaccounts" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>List of Wallet Accounts</span></router-link>
                         </li>
                         <li>
-                            <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>View Statement</span></a>
+                            <a href="#dashboard" aria-expanded="true"><i class="ti-files text-blue"></i><span>View Statement</span></a>
                         </li>
                         <li>
-                            <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Schedule Trans</span></a>
+                            <a href="#dashboard" aria-expanded="true"><i class="ti-calendar text-blue"></i><span>Schedule Trans</span></a>
                         </li>
                         <li>
-                            <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Approvals</span></a>
+                            <router-link to="/approval" aria-expanded="true"><i class="ti-thumb-up text-blue"></i><span>Approvals</span></router-link>
                         </li>
                     </ul>
                 </nav>
