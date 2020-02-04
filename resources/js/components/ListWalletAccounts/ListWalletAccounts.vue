@@ -109,13 +109,13 @@ export default {
     },
     methods: {
         getResults(page = 1) {
-            axios.get(`api/walletaccount/ListOfWalletAccounts?page=${page}`)
+            axios.get(`api/walletaccount/showListWalletAccounts?page=${page}`)
                 .then(response => {
                     this.listofwalletaccount = response.data;
                 });
         },
         GetallWalletAccount(){
-            axios.get('api/walletaccount/ListOfWalletAccounts')
+            axios.get('api/walletaccount/showListWalletAccounts')
                 .then(res => {
                     this.listofwalletaccount = res.data;
                 })

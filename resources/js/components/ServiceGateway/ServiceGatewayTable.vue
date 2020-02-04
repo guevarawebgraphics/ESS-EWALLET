@@ -165,7 +165,7 @@ methods: {
                 $('#btn-close').attr('disabled', true)
                 $('#saveSpinner').removeAttr('hidden')
                 this.$Progress.start()
-                this.form.post('/api/service_gateway/createservicegateway')
+                this.form.post('/api/service_gateway/storeServiceGateway')
                 .then((response) => { 
                     this.$Progress.increase(10)
                     this.$Progress.finish()

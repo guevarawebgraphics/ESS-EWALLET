@@ -99,13 +99,13 @@ export default {
     },
     methods: {
         getResults(page = 1) {
-            axios.get(`api/walletaccount/GetAllWalletAccount?page=${page}`)
+            axios.get(`api/walletaccount/showAllWalletAccount?page=${page}`)
                 .then(response => {
                     this.WalletAccount = response.data;
                 });
         },
         loadWalletAccounts() {
-            axios.get('api/walletaccount/GetAllWalletAccount')
+            axios.get('api/walletaccount/showAllWalletAccount')
             .then(response => {
                 this.WalletAccount = response.data;
             });
@@ -124,7 +124,7 @@ export default {
                 });
             },1000);
         },
-        editWalletAccount(ess_id){
+        editWalletAccount(ess_id) {
             this.$router.push('/updatewalletaccount/' + ess_id)
         },
         debounceSearch(event) {

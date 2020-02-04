@@ -167,13 +167,13 @@ export default {
             }, 1000);
         },
         getResults(page = 1) {
-            axios.get(`/api/servicematrix/GetAllService?page=${page}`)
+            axios.get(`/api/servicematrix/showAllService?page=${page}`)
                 .then(response => {
                     this.serviceGroups = response.data;
                 });
         },
         get_service_group(){
-            axios.get("api/servicematrix/GetAllService").then(({ data }) => (this.serviceGroups = data));  
+            axios.get("api/servicematrix/showAllService").then(({ data }) => (this.serviceGroups = data));  
            
         },
         editServiceGroup(sg){
@@ -188,7 +188,7 @@ export default {
             $('#modalClose').attr('disabled', true)
             $('#Spinner').removeAttr('hidden')
             this.$Progress.start()
-            this.form.put('api/servicematrix/UpdateServiceGroup/'+this.form.id)
+            this.form.put('api/servicematrix/updateServiceGroup/'+this.form.id)
             .then((response) => {
                 this.$Progress.increase(10)
                 this.$Progress.finish()
@@ -218,15 +218,15 @@ export default {
             $('#modalClose').attr('disabled', true)
             $('#saveSpinner').removeAttr('hidden')
             this.$Progress.start()
-            this.form.post('api/servicematrix/StoreServiceGroup')
+            this.form.post('api/servicematrix/storeServiceGroup')
             .then((response) => {
                 this.$Progress.increase(10)
                 this.$Progress.finish()
                 $('#serviceGroupModal').modal('hide')
                 $(document.body).removeAttr('class')
-                $("#service_group_table").DataTable().destroy()
+                // $("#service_group_table").DataTable().destroy()
                 this.get_service_group()
-                this.datatable()
+                // this.datatable()
                 $('#btnSave').removeAttr('disabled')
                 $('#modalClose').removeAttr('disabled')
                 $('#saveSpinner').attr('hidden', true)

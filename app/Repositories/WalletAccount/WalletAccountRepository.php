@@ -29,7 +29,8 @@ class WalletAccountRepository
     /**
      * @ constructor
      **/
-    public function __construct(){
+    public function __construct()
+    {
         // E-Wallet Connection
         $this->connection = DB::connection('mysql');
     }
@@ -37,7 +38,8 @@ class WalletAccountRepository
     /**
      * @ Get All E-Wallet Account 
      **/
-    public function GetAllWalletAccount(){
+    public function showAllWalletAccount()
+    {
         $user = auth('api')->user();
         $wallet_account = $this->connection
                             ->table('wallet_account')
@@ -59,10 +61,11 @@ class WalletAccountRepository
     /**
      * @ Get Wallet Account Details 
      **/
-    public function GetWalletAccountDetails($essid){
+    public function showWalletAccountDetails($essid)
+    {
         $user = auth('api')->user();
         // Check if the user is admin
-        if($user->user_type_id === 1){
+        if($user->user_type_id === 1) {
             $wallet_account = $this->connection
                             ->table('wallet_account')
                             ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
@@ -171,8 +174,10 @@ class WalletAccountRepository
     }
     /**
      * @ Get Wallet Bank Accounts 
+     * @param essid
      **/
-    public function GetWalletBankAccount($essid){
+    public function showWalletBankAccount($essid)
+    {
         $user = auth('api')->user();
         $wallet_account_id = wallet_account::where('ess_id', '=', $essid)->first();
         $wallet_account = wallet_bank_account::where('wallet_account_id', '=', $wallet_account_id->id)
@@ -193,7 +198,8 @@ class WalletAccountRepository
      * @return string
      *  Store Wallet Account
      */
-    public function StoreWalletAccount($wallet_account_data){
+    public function storeWalletAccount($wallet_account_data)
+    {
         $user = auth('api')->user();
         /**
          * @ Handle File Upload 
@@ -225,7 +231,7 @@ class WalletAccountRepository
                         ]);
         
         $BankAccount = json_decode($wallet_account_data->BankAccount, true);
-        foreach($BankAccount as $data){
+        foreach($BankAccount as $data) {
                     // Store to Wallet Bank Account
                     $wallet_account_bank = wallet_bank_account::create([
                         'wallet_account_id' => $wallet_account->id,
@@ -316,7 +322,7 @@ class WalletAccountRepository
          * @ Store Wallet Service Matrix Config 
          **/
         $Services = json_decode($wallet_account_data->Services, true);
-        foreach($Services as $data){
+        foreach($Services as $data) {
             $wallet_service_matrix_config = wallet_service_matrix_config::create([
                                             'wallet_account_id' => $wallet_account->id,
                                             'service_id' => $data['service_id'],
@@ -342,7 +348,7 @@ class WalletAccountRepository
          **/
 
          // Check if Prepaid
-        if($wallet_account_data->WalletAccountType === "5"){
+        if($wallet_account_data->WalletAccountType === "5") {
             $store_wallet_joint_account_prepaid = wallet_joint_account::create([
                                             'wallet_account_id' => $wallet_account->id,
                                             'wallet_account_no' => $wallet_account_data->WalletAccountNo,
@@ -351,7 +357,7 @@ class WalletAccountRepository
         }
 
         // Check if Credit
-        if($wallet_account_data->WalletAccountType === "8"){
+        if($wallet_account_data->WalletAccountType === "8") {
             $store_joint_wallet_account_credit = wallet_joint_account::create([
                                             'wallet_account_id' => $wallet_account->id,
                                             'wallet_account_no' => $wallet_account_data->WalletAccountNo,
@@ -360,23 +366,22 @@ class WalletAccountRepository
             ]);
         }
 
-
-            
-
         return $wallet_account->id;
     }
 
     /**
      * @ Update Wallet Account
+     * @param wallet_account_data
      **/
-    public function UpdateWalletAccount($wallet_account_data){
+    public function updateWalletAccount($wallet_account_data)
+    {
         $user = auth('api')->user();
         // Wallet ID
         $wallet_id = wallet_account::where('ess_id', '=', $wallet_account_data->username)->first();
         /**
          * @ Check kyc form 
          **/
-        if($wallet_account_data->kyc_form != $wallet_id->kyc_form){
+        if($wallet_account_data->kyc_form != $wallet_id->kyc_form) {
             /**
              * @ Handle File Upload 
              **/
@@ -401,7 +406,7 @@ class WalletAccountRepository
         /**
          * @ Check for valid id 
          **/
-        if($wallet_account_data->valid_id != $wallet_id->valid_id){
+        if($wallet_account_data->valid_id != $wallet_id->valid_id) {
             /**
              * @ Handle File Upload 
              **/
@@ -435,7 +440,7 @@ class WalletAccountRepository
         ]);
 
         $BankAccount = json_decode($wallet_account_data->BankAccount, true);
-        foreach($BankAccount as $data){
+        foreach($BankAccount as $data) {
                     
                     // Create if ID is not exists
                     if(empty($data['id'])){
@@ -541,7 +546,7 @@ class WalletAccountRepository
          * @ Store Wallet Service Matrix Config 
          **/
         $test = json_decode($wallet_account_data->Services, true);
-        foreach($test as $data){
+        foreach($test as $data) {
             $wallet_service_matrix_config = wallet_service_matrix_config::where('wallet_account_id', '=', $data['wallet_account_id'])
                                             ->where('service_id', '=', $data['service_id'])
                                             ->update([
@@ -565,10 +570,11 @@ class WalletAccountRepository
     /**
      * @ Store Service Matrix config 
      **/
-    public function StoreServiceMatrixConfig($wallet_account_data, $wallet_account_id){
+    public function storeServiceMatrixConfig($wallet_account_data, $wallet_account_id)
+    {
         // Store Wallet Account Service Matrix Config
         $user = auth('api')->user();
-        foreach($wallet_account_data as $data){
+        foreach($wallet_account_data as $data) {
             $wallet_service_matrix_config = wallet_service_matrix_config::create([
                                             'wallet_account_id' => $wallet_account_id,
                                             'service_id' => $data['service_id'],
@@ -592,13 +598,16 @@ class WalletAccountRepository
 
     /**
      * @ Update Service Matrix Config 
+     * @param wallet_account_date
+     * @param essid
      **/
-    public function UpdateServiceMatrixConfig($wallet_account_data, $essid){
+    public function updateServiceMatrixConfig($wallet_account_data, $essid)
+    {
         // Update Wallet Account Service Matrix Config
         $user = auth('api')->user();
         // Wallet ID
         $wallet_id = wallet_account::where('ess_id', '=', $essid)->first();
-        foreach($wallet_account_data as $data){
+        foreach($wallet_account_data as $data) {
             $wallet_service_matrix_config = wallet_service_matrix_config::where('wallet_account_id', '=', $wallet_id->id)
                                         ->where('id', '=', $data['id'])
                                         ->update([
@@ -621,8 +630,10 @@ class WalletAccountRepository
 
     /**
      * @ Get Service Matrix Config For Update 
+     * @param essid
      **/
-    public function GetServiceMatrixConfig($essid){
+    public function showServiceMatrixConfig($essid)
+    {
         $wallet_account = $this->connection
                             ->table('wallet_account')
                             ->where('ess_id', '=', $essid)
@@ -657,8 +668,10 @@ class WalletAccountRepository
 
     /**
      * @ Search Wallet Joint Account 
+     * @param wallet_account_no
      **/
-    public function SearchWalletJointAccount($wallet_account_no){
+    public function searchWalletJointAccount($wallet_account_no)
+    {
         $wallet_account = $this->connection
                             ->table('wallet_account')
                             ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
@@ -675,20 +688,23 @@ class WalletAccountRepository
 
     /**
      * @ Search Wallet Account No Details 
+     * @param wallet_account_no_details
      **/
-    public function SearchWalletAccountNo($wallet_account_no_details){
+    public function searchWalletAccountNo($wallet_account_no_details)
+    {
         $account_details = wallet_account::where('wallet_account_no', '=', $wallet_account_no_details)->select('wallet_account_name')->first();
-        if(!$account_details){
+        if(!$account_details) {
             return 404;
         }
         return $account_details->wallet_account_name;                     
     }
 
     /**
-     * @ List of Wallet Accounts
+     * @ show List of Wallet Accounts
      * @return WalletAccounts 
      **/
-    public function ListOfWalletAccounts(){
+    public function showListWalletAccounts()
+    {
         $list_of_wallet_account = $this->connection
                                     ->table('wallet_account')
                                     ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
@@ -708,8 +724,10 @@ class WalletAccountRepository
     /**
      * @ List of Wallet Accounts
      * @return WalletAccounts 
+     * @param query
      **/
-    public function searchListWalletAccount($query){
+    public function searchListWalletAccount($query)
+    {
         $list_of_wallet_account = $this->connection
                                     ->table('wallet_account')
                                     ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
@@ -735,7 +753,8 @@ class WalletAccountRepository
      * @ List of Merchant Accounts
      * @return ListofMerchantAccounts 
      **/
-    public function ListofMerchantsAccounts(){
+    public function showListofMerchantsAccounts()
+    {
         $list_of_merchant_account = $this->connection
                                     ->table('wallet_account')
                                     ->join('wallet_account_types', 'wallet_account.wallet_account_type', '=', 'wallet_account_types.id')
@@ -758,8 +777,7 @@ class WalletAccountRepository
      **/
     public function searchWalletAccount($query)
     {
-        if (!$query)
-        {
+        if (!$query) {
             $user = auth('api')->user();
             $walletAccount = $this->connection
                                 ->table('wallet_account')
@@ -836,7 +854,8 @@ class WalletAccountRepository
      * @ Check Value of the $value
      * @return $value 
      **/
-    public function checkValue($value){
+    public function checkValue($value)
+    {
         if($value == 'true'){
             return true;
         }
