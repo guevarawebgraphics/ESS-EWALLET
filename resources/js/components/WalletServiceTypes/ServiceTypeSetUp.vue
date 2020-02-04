@@ -111,7 +111,7 @@ data() {
     }
 },
 methods: {
-    showServices(){
+    showServices() {
             axios.get('/api/service_type/showservices/' +this.id) 
             .then((response) => {
                 this.Services = response.data;
@@ -143,12 +143,12 @@ methods: {
                     
                 }) 
     }, 
-    onFileChangeAcknowledgeTemplate(e){
+    onFileChangeAcknowledgeTemplate(e) {
             console.log(e.target.files[0]); 
             this.acknowledgement_template = e.target.files[0];  // for setting up the variables of templates
             this.form.acknowledgement_template = e.target.files[0]['name'];  // for displaying on the client side
     }, 
-    onFileChangeApprovalTemplate(e){
+    onFileChangeApprovalTemplate(e) {
             console.log(e.target.files[0]); 
             this.approval_template = e.target.files[0]; // for setting up the variables of templates
             this.form.approval_template = e.target.files[0]['name']; // for displaying on the client side
@@ -158,7 +158,7 @@ methods: {
             this.confirmation_template = e.target.files[0]; // for setting up the variables of templates
             this.form.confirmation_template = e.target.files[0]['name']; // for displaying on the client side
     },
-    saveServiceType(){
+    saveServiceType() {
         swal.fire({
             title: 'Are you sure you want to save?',
             type: 'info',

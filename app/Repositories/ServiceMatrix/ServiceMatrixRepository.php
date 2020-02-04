@@ -28,7 +28,7 @@ class ServiceMatrixRepository
      * @return string
      *  Store Service Matrix
      */
-    public function StoreServiceMatrix($service_matrix_data)
+    public function storeServiceMatrix($service_matrix_data)
     {
         $user = auth('api')->user();
         foreach($service_matrix_data['data'] as $data){
@@ -57,7 +57,7 @@ class ServiceMatrixRepository
     /**
      * @ Get Services 
      **/
-    public function GetServices()
+    public function showServices()
     {
         $services = $this->connection
                      ->table('service_matrix')
@@ -88,7 +88,7 @@ class ServiceMatrixRepository
      * @ Get Service Matrix
      * @return ServiceMatrix 
      **/
-    public function GetServiceMatrix()
+    public function getServiceMatrix()
     {
         /**
          * @ Get Wallet Account Id

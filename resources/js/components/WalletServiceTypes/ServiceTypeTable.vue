@@ -77,13 +77,13 @@
         },
         methods: {
         getResults(page = 1) {
-            axios.get(`/api/service_type/servicetypetable?page=${page}`)
+            axios.get(`/api/service_type/showServiceTypeDetails?page=${page}`)
                 .then(response => {
                     this.services = response.data;
                 });
         },
         loadServices(){
-              axios.get("/api/service_type/servicetypetable").then(({ data }) => (this.services = data));
+              axios.get("/api/service_type/showServiceTypeDetails").then(({ data }) => (this.services = data));
         },
         loadDataTable(){
                 setTimeout(function(){ 

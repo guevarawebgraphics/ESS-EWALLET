@@ -29,7 +29,8 @@ class WalletAccountController extends Controller
      * @param WalletAccountRepository $WalletAccountRepository
      * @ constructor 
      **/
-    public function __construct(WalletAccountRepository $WalletAccountRepository){
+    public function __construct(WalletAccountRepository $WalletAccountRepository)
+    {
         $this->WalletAccount = $WalletAccountRepository;
         $this->middleware('auth:api');
     }
@@ -37,124 +38,132 @@ class WalletAccountController extends Controller
     /**
      * @ Get all E-Wallet Account 
      **/
-    public function GetAllWalletAccount(){
-        $WalletAccount = $this->WalletAccount->GetAllWalletAccount();
-        return response()->json($WalletAccount);
+    public function showAllWalletAccount()
+    {
+        return response()->json($this->WalletAccount->showAllWalletAccount());
     }
 
     /**
      * @ Store Wallet Account 
      **/
-    public function StoreWalletAccount(StoreWalletAccount $request){
-        $WalletAccount = $this->WalletAccount->StoreWalletAccount($request);
-        return response()->json([
-            'status' => $WalletAccount
-        ]);
+    public function storeWalletAccount(StoreWalletAccount $request)
+    {
+        $WalletAccount = $this->WalletAccount->storeWalletAccount($request);
+        return response()->json(['status' => $WalletAccount]);
     }
     
     /**
      * @ Store Servicec Matrix Config 
      **/
-    public function StoreServiceMatrixconfig(Request $request, $wallet_account_id){
-        $WalletAccount = $this->WalletAccount->StoreServiceMatrixConfig($request->all(), $wallet_account_id);
-        return response()->json([
-            'status' => 'success'
-        ]);
+    public function storeServiceMatrixConfig(Request $request, $wallet_account_id)
+    {
+        $WalletAccount = $this->WalletAccount->storeServiceMatrixConfig($request->all(), $wallet_account_id);
+        return response()->json(['status' => 'success']);
     }
 
     /**
      * @ Update Wallet Account
      **/
-    public function UpdateWalletAccount(UpdateWalletAccount $request){
-        $WalletAccount = $this->WalletAccount->UpdateWalletAccount($request);
-        return response()->json([
-            'status' => 'success'
-        ]);
+    public function updateWalletAccount(UpdateWalletAccount $request)
+    {
+        $WalletAccount = $this->WalletAccount->updateWalletAccount($request);
+        return response()->json(['status' => 'success']);
     }
 
     /**
      * @ Get Wallet Account Details 
      **/
-    public function GetWalletAccountDetails(Request $request , $essid){
-        $WalletAccount = $this->WalletAccount->GetWalletAccountDetails($essid);
-        return response()->json($WalletAccount);
+    public function showWalletAccountDetails(Request $request , $essid)
+    {
+        return response()->json( $this->WalletAccount->showWalletAccountDetails($essid));
     }
 
     /**
      * @ Get Wallet Bank Account 
      **/
-    public function GetWalletBankAccount(Request $request, $essid){
-        $WalletAccount = $this->WalletAccount->GetWalletBankAccount($essid);
-            return response()->json($WalletAccount);
-        
+    public function showWalletBankAccount(Request $request, $essid)
+    {
+        return response()->json($this->WalletAccount->showWalletBankAccount($essid));
     }
 
     /**
      * @ Get Service Matrix Config 
+     * @param essid
      **/
-    public function GetServiceMatrixConfig(Request $request, $essid){
-        $WalletAccount = $this->WalletAccount->GetServiceMatrixConfig($essid);
-        return response()->json($WalletAccount);
+    public function showServiceMatrixConfig(Request $request, $essid)
+    {
+        return response()->json($this->WalletAccount->showServiceMatrixConfig($essid));
     }
 
     /**
      * @ Update Servicec Matrix Config 
+     * @param essid
      **/
-    public function UpdateServiceMatrixConfig(Request $request, $essid){
-        $WalletAccount = $this->WalletAccount->UpdateServiceMatrixConfig($request->all(), $essid);
+    public function updateServiceMatrixConfig(Request $request, $essid)
+    {
+        $WalletAccount = $this->WalletAccount->updateServiceMatrixConfig($request->all(), $essid);
         return response()->json($WalletAccount);
     }
 
     /**
      * @ Search Wallet Account Details 
+     * @param wallet_account_no_details
      **/
-    public function SearchWalletAccountNo($wallet_account_no_details){
-        $WalletAccount = $this->WalletAccount->SearchWalletAccountNo($wallet_account_no_details);
-        return response()->json($WalletAccount);
+    public function searchWalletAccountNo($wallet_account_no_details)
+    {
+        return response()->json($this->WalletAccount->searchWalletAccountNo($wallet_account_no_details));
     }
 
     /**
      * @ Search Wallet Joint Account 
+     * @param wallet_account_no
      **/
-    public function SearchWalletJointAccount($wallet_account_no){
-        $wallet_account = $this->WalletAccount->SearchWalletJointAccount($wallet_account_no);
-        return response()->json($wallet_account);
+    public function searchWalletJointAccount($wallet_account_no)
+    {
+        return response()->json($this->WalletAccount->searchWalletJointAccount($wallet_account_no));
     }
 
     /**
      * @ ListOfWalletAccounts 
+     * @return ListWalletAccounts
      **/
-    public function ListOfWalletAccounts(){
-        $ListOfWalletAccounts = $this->WalletAccount->ListOfWalletAccounts();
-        return response()->json($ListOfWalletAccounts);
+    public function showListWalletAccounts()
+    {
+        return response()->json($this->WalletAccount->showListWalletAccounts());
     }
 
     /**
-     * @ ListOfWalletAccounts 
+     * @ searchListWalletAccount 
+     * @param query
      **/
-    public function searchListWalletAccount($query){
+    public function searchListWalletAccount($query)
+    {
         return response()->json($this->WalletAccount->searchListWalletAccount($query));
     }
 
     /**
      * @ List of Merchant Accounts 
+     * @return merchantAccounts
      **/
-    public function ListofMerchantsAccounts(){
-        $ListofMerchantsAccounts = $this->WalletAccount->ListofMerchantsAccounts();
-        return response()->json($ListofMerchantsAccounts);
+    public function showListofMerchantsAccounts()
+    {
+        return response()->json($this->WalletAccount->showListofMerchantsAccounts());
     }
 
     /**
      * @ Search Wallet Account 
+     * @param query
      **/
-    public function searchWalletAccount($query) {
+    public function searchWalletAccount($query) 
+    {
         return response()->json($this->WalletAccount->searchWalletAccount($query));
     }
 
     /**
      * @ Search Wallet Account 
      **/
-    public function showServiceMatrix() {
+    public function showServiceMatrix()
+     {
         return response()->json($this->WalletAccount->showServiceMatrix());
     }
 

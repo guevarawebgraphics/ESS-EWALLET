@@ -231,7 +231,7 @@ export default {
         }
     }, 
     methods: {
-        validateTab:function(){ 
+        validateTab:function() { 
         /**
         * Form Validation 
         */
@@ -247,7 +247,7 @@ export default {
                 return true;
             }     
         },  
-        onComplete: function(){ 
+        onComplete: function() { 
               swal.fire({
                 title: 'Are you sure you want to save?',
                 type: 'info',
@@ -270,7 +270,7 @@ export default {
                     Formtwo.append('behavior_value', this.form.behavior_value); 
                     Formtwo.append('servicetype_description', this.form.servicetype_description);
 
-                    axios.post("/api/service_type/createservicetype",Formtwo)
+                    axios.post("/api/service_type/storeservicetype",Formtwo)
                     .then((response) =>{
                             this.$router.push('servicetypes') 
                             toast.fire({

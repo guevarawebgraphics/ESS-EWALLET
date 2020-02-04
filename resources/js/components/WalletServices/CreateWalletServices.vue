@@ -63,7 +63,7 @@
                                   <label for="exampleInputEmail1">Service Gateway:</label>
                                   <select class="custom-select" :class="{ 'is-invalid': errors.has('service_gateway')}" v-model="form.service_gateway"  name="service_gateway"  v-validate="'required'" :disabled="this.method_name == 'joint'"> 
                                   <option disabled>Please select one</option>
-                                  <option v-bind:value="sg.id" v-for="sg in ServiceGateway" :key="sg.id">{{sg.gateway_name}}</option>
+                                  <option v-bind:value="sg.id" v-for="sg in ServiceGateway.data" :key="sg.id">{{sg.gateway_name}}</option>
                                   </select>
                                   <p class="alert text-danger bg-white" v-if="errors.has('service_gateway')"> {{errors.first('service_gateway')}} </p>
                                 </div> 
@@ -71,7 +71,7 @@
                                   <label for="exampleInputEmail1">Service Group:</label>
                                   <select class="custom-select" :class="{ 'is-invalid': errors.has('service_group')}" v-model="form.service_group_id" name="service_group"  v-validate="'required'" :disabled="this.method_name == 'joint'"> 
                                   <option disabled >Please select one</option>
-                                  <option v-bind:value="g.id" v-for="g in ServiceGroups" :key="g.id"> {{g.group_description}}</option>
+                                  <option v-bind:value="g.id" v-for="g in ServiceGroups.data" :key="g.id"> {{g.group_description}}</option>
                                   </select>
                                   <p class="alert text-danger bg-white" v-if="errors.has('service_group')"> {{errors.first('service_group')}} </p>
                                 </div>
@@ -583,7 +583,7 @@ methods:{
             //this.form.post('/api/service/createservice')  
             if(this.edit_mode === false){
 
-                    axios.post("/api/service/createservice",Formtwo)
+                    axios.post("/api/service/storeService",Formtwo)
                     .then((response)=>{ 
                         this.$Progress.increase(10)
                         this.$Progress.finish()
@@ -709,7 +709,7 @@ methods:{
      * Gets the service group list from other module
      */
     getServiceGroup(){
-         axios.get("/api/servicematrix/GetAllService")
+         axios.get("/api/servicematrix/showAllService")
          .then(({ data }) => (
            this.ServiceGroups = data
          ));  

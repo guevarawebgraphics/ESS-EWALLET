@@ -1,7 +1,7 @@
 <template>
   <div id="CreateWalletAccount">
       <!-- Create Wallet Account Form -->
-     <form @submit.prevent="StoreWalletAccount()">
+     <form @submit.prevent="storeWalletAccount()">
       <!-- Create Wallet Accounts Form Wizard -->
         <form-wizard @on-complete="onComplete" title="Create Wallet Account" subtitle="Details" color="#0077B5">
             <!-- Form Wizard Step -->
@@ -13,7 +13,7 @@
                 :index="props.index">
             </wizard-step>
             <!-- E-Wallet Account Information (KYC) -->
-            <tab-content title="E-Wallet Account Information (KYC)" :before-change="ValidateFirstStep">
+            <tab-content title="E-Wallet Account Information (KYC)" :before-change="validateFirstStep">
                 <div class="box shadow-custom">
                         <div class="single-report mb-xs-30">
                         <div class="s-report-inner pr--30 pt--30 mb-3">
@@ -28,7 +28,7 @@
                                         <!-- ESSID Username -->
                                         <div class="form-group">
                                             <label class="control-label custom-label" for="username">ESSID/Username</label>
-                                            <input class="form-control" :class="{ 'is-invalid': errors.has('username') } " v-on:change="SearchESSID"  name="username" v-validate="'required'" type="text" v-model="form.username" placeholder="ESSID/Username" :disabled="editmode">
+                                            <input class="form-control" :class="{ 'is-invalid': errors.has('username') } " v-on:change="searchESSID"  name="username" v-validate="'required'" type="text" v-model="form.username" placeholder="ESSID/Username" :disabled="editmode">
                                             <has-error :form="form" field="username"></has-error>
                                             <p class="text-danger bg-white" v-if="errors.has('username')">{{errors.first('username')}}</p>
                                         </div>
@@ -165,7 +165,7 @@
             </tab-content>
             <!-- ./ End E-Wallet Account Information (KYC)  -->
             <!-- E-Wallet Account Setup Step 2 -->
-            <tab-content title="Wallet Details" :before-change="ValidateSecondStep">
+            <tab-content title="Wallet Details" :before-change="validateSecondStep">
                 <!-- Create Wallet Account Step 2 -->
                 <div class="box col-md-6 offset-md-3">
                     <!-- <div class="card shadow-custom"> -->
@@ -189,7 +189,7 @@
                                                     <!-- Wallet Type -->
                                                     <div class="form-group mt-3">
                                                         <label class="control-label custom-label" for="WalletType">Wallet Type</label>
-                                                        <select class="custom-select" :class="{ 'is-invalid': errors.has('WalletType') } "  name="WalletType" v-validate="'required'" v-on:change="ValidateSecondStep" v-model="form.WalletType">
+                                                        <select class="custom-select" :class="{ 'is-invalid': errors.has('WalletType') } "  name="WalletType" v-validate="'required'" v-on:change="validateSecondStep" v-model="form.WalletType">
                                                             <option value="" selected disabled>Select</option>
                                                             <option value="Credit">Credit</option>
                                                             <option value="Prepaid">Prepaid</option>
@@ -200,7 +200,7 @@
                                                     <!-- Wallet Account Type -->
                                                     <div class="form-group">
                                                         <label class="control-label custom-label" for="WalletAccountType">Wallet Account Type</label>
-                                                        <select class="custom-select" :class="{ 'is-invalid': errors.has('WalletAccountType') } "  name="WalletAccountType" v-on:change="ValidateSecondStep" v-validate="'required'"  v-model="form.WalletAccountType">
+                                                        <select class="custom-select" :class="{ 'is-invalid': errors.has('WalletAccountType') } "  name="WalletAccountType" v-on:change="validateSecondStep" v-validate="'required'"  v-model="form.WalletAccountType">
                                                             <option value="" selected disabled>Select</option>
                                                             <option v-for="wat in walletAccountTypes" :key="wat.id" :value="wat.id">
                                                                 {{ wat.wallet_account_type}}
@@ -212,7 +212,7 @@
                                                     <!-- Wallet Account No -->
                                                     <div class="form-group">
                                                         <label class="control-label custom-label" for="WalletAccountNo">Wallet Account No</label>
-                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNo') } " v-on:change="SerachJointWalletAccount"  name="WalletAccountNo" v-validate="'required'" type="text" v-model="form.WalletAccountNo" placeholder="WalletAccountNo" disabled="disabled">
+                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('WalletAccountNo') } " v-on:change="serachJointWalletAccount"  name="WalletAccountNo" v-validate="'required'" type="text" v-model="form.WalletAccountNo" placeholder="WalletAccountNo" disabled="disabled">
                                                         <has-error :form="form" field="WalletAccountNo"></has-error>
                                                         <p class="text-danger bg-white" v-if="errors.has('WalletAccountNo')">{{errors.first('WalletAccountNo')}}</p>
                                                     </div>
@@ -226,14 +226,14 @@
                                                     <!-- Wallet Title -->
                                                     <div class="form-group">
                                                         <label class="control-label custom-label" for="Wallettitle">Wallet Title</label>
-                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('Wallettitle') } " v-on:change="ValidateSecondStep"  name="Wallettitle" v-validate="'required'" type="text" v-model="form.Wallettitle" placeholder="Wallet Title">
+                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('Wallettitle') } " v-on:change="validateSecondStep"  name="Wallettitle" v-validate="'required'" type="text" v-model="form.Wallettitle" placeholder="Wallet Title">
                                                         <has-error :form="form" field="Wallettitle"></has-error>
                                                         <p class="text-danger bg-white" v-if="errors.has('Wallettitle')">{{errors.first('Wallettitle')}}</p>
                                                     </div>
 
                                             </div>
                                             <!--Joint Column-->
-                                            <div class="col-md-8 offset-md-2" :hidden="CheckWalletAccountType()">
+                                            <div class="col-md-8 offset-md-2" :hidden="checkWalletAccountType()">
                                                 <hr>
                                                 <h4>Joint Wallet Account</h4>
                                                     <!-- Joint Wallet Type -->
@@ -255,7 +255,7 @@
                                                     <!-- Joint Wallet Account No -->
                                                     <div class="form-group">
                                                         <label class="control-label custom-label" for="JointWalletAccountNo">Joint Wallet Account No</label>
-                                                        <input type="text" class="form-control" :class="{'is-invalid' : errors.has('JointWalletAccountNo') }" name="JointWalletAccountNo" v-on:change="SerachJointWalletAccount" v-model="form.JointWalletAccountNo" v-validate="'required'" :disabled="editmode">
+                                                        <input type="text" class="form-control" :class="{'is-invalid' : errors.has('JointWalletAccountNo') }" name="JointWalletAccountNo" v-on:change="serachJointWalletAccount" v-model="form.JointWalletAccountNo" v-validate="'required'" :disabled="editmode">
                                                         <!-- <select class="custom-select"  disabled>
                                                             <option value=""></option>
                                                         </select> -->
@@ -351,7 +351,7 @@
             </tab-content>-->
             <!--./ End E-Wallet Account Setup Step 3-->
             <!-- E-Wallet Account Setup Step 4 -->
-            <tab-content title="Designated Bank Account's" :before-change="ValidateFourthStep">
+            <tab-content title="Designated Bank Account's" :before-change="validateFourthStep">
                 <div class="box">
                     <!-- <div class="card shadow-custom"> -->
                         <div class="single-report mb-xs-30">
@@ -372,14 +372,14 @@
                                                 <!-- Name of Bank -->
                                                 <div class="form-group">
                                                     <label class="control-label custom-label" for="bank_name">Name of Bank</label>
-                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('bank_name') } "  name="bank_name" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.bank_name" placeholder="Name Of Bank">
+                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('bank_name') } "  name="bank_name" v-validate="'required'" type="text" v-on:change="validateFourthStep" v-model="key.bank_name" placeholder="Name Of Bank">
                                                         <has-error :form="form" field="bank_name"></has-error>
                                                         <p class="text-danger bg-white" v-if="errors.has('bank_name')">{{errors.first('bank_name')}}</p>
                                                 </div>
                                                 <!-- Branch -->
                                                 <div class="form-group">
                                                     <label class="control-label custom-label" for="Branch">Branch</label>
-                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('Branch') } "  name="Branch" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.Branch" placeholder="Branch">
+                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('Branch') } "  name="Branch" v-validate="'required'" type="text" v-on:change="validateFourthStep" v-model="key.Branch" placeholder="Branch">
                                                         <has-error :form="form" field="Branch"></has-error>
                                                         <p class="text-danger bg-white" v-if="errors.has('Branch')">{{errors.first('Branch')}}</p>
                                                 </div>
@@ -387,7 +387,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label custom-label" for="account_type">Account Type</label>
                                                     <!-- <input class="form-control" :class="{ 'is-invalid': errors.has('WalletType') } "  name="WalletType" v-validate="'required'" type="text" v-model="form.WalletType" placeholder="Account Type"> -->
-                                                    <select class="custom-select" :class="{ 'is-invalid': errors.has('account_type') } "  name="account_type" v-validate="'required'" v-on:change="ValidateFourthStep" v-model="key.account_type">
+                                                    <select class="custom-select" :class="{ 'is-invalid': errors.has('account_type') } "  name="account_type" v-validate="'required'" v-on:change="validateFourthStep" v-model="key.account_type">
                                                             <option value="" selected disabled>Select</option>
                                                             <option>Credit</option>
                                                             <option>Prepaid</option>
@@ -398,14 +398,14 @@
                                                 <!-- Account Name -->
                                                 <div class="form-group">
                                                     <label class="control-label custom-label" for="WalletAccountName">Account Name</label>
-                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('account_name') } "  name="account_name" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.account_name" placeholder="Account Name">
+                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('account_name') } "  name="account_name" v-validate="'required'" type="text" v-on:change="validateFourthStep" v-model="key.account_name" placeholder="Account Name">
                                                         <has-error :form="form" field="account_name"></has-error>
                                                         <p class="text-danger bg-white" v-if="errors.has('account_name')">{{errors.first('account_name')}}</p>
                                                 </div>
                                                 <!-- Account No -->
                                                 <div class="form-group">
                                                     <label class="control-label custom-label" for="account_no">Account No</label>
-                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('account_no') } "  name="account_no" v-validate="'required'" type="text" v-on:change="ValidateFourthStep" v-model="key.account_no" placeholder="Account No">
+                                                    <input class="form-control" :class="{ 'is-invalid': errors.has('account_no') } "  name="account_no" v-validate="'required'" type="text" v-on:change="validateFourthStep" v-model="key.account_no" placeholder="Account No">
                                                         <has-error :form="form" field="account_no"></has-error>
                                                         <p class="text-danger bg-white" v-if="errors.has('account_no')">{{errors.first('account_no')}}</p>
                                                 </div>
@@ -759,7 +759,7 @@
                 </div>
                 <div class="wizard-footer-right">
                 <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" id="nextTab" :disabled="errors.items.length>0" class="wizard-footer-right" :style="props.fillButtonStyle">Next <span class="ti-arrow-right"></span></wizard-button>
-                <wizard-button v-else @click.native="StoreWalletAccount()" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">  {{props.isLastStep ? 'Done' : 'Next'}} <span class="ti-saves"></span></wizard-button>
+                <wizard-button v-else @click.native="storeWalletAccount()" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">  {{props.isLastStep ? 'Done' : 'Next'}} <span class="ti-saves"></span></wizard-button>
                 </div>
             </template>
             <!-- ./ End Form Wizzard Footer Template -->
@@ -869,8 +869,9 @@ export default {
         }
     },
     methods: {
-        datatable(){
-            setTimeout(function(){
+        datatable() {
+            setTimeout(function()
+            {
                 let table = $('#service_matrix').DataTable({
                     // "searching": false,
                     //"sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
@@ -890,7 +891,7 @@ export default {
         /**
          * @ Validate First Step 
          **/
-        ValidateFirstStep(){
+        validateFirstStep() {
             // if(this.form.emailaddress != null){
             //     if(this.step == 1){
             //         this.errors.clear()
@@ -903,7 +904,7 @@ export default {
             //         return false;
             //     }
             // }
-            if(this.form.username == null){
+            if(this.form.username == null) {
                 toast.fire({
                     type: 'info',
                     title: 'Please fill required fields'
@@ -917,7 +918,7 @@ export default {
                 this.step = 0;
                 return false;
             }
-            else if(this.form.kyc_form == null){
+            else if(this.form.kyc_form == null) {
                  toast.fire({
                     type: 'info',
                     title: 'KYC Form is Required',
@@ -932,7 +933,7 @@ export default {
                 this.step = 0;
                 return false;
             }
-            else if(this.form.valid_id == null){
+            else if(this.form.valid_id == null) {
                  toast.fire({
                     type: 'info',
                     title: 'Valid ID is Required',
@@ -955,7 +956,7 @@ export default {
         /**
          * @ Validate Second Step 
          **/
-        ValidateSecondStep(){
+        validateSecondStep() {
             if(this.form.WalletAccountType != null && this.form.WalletType != null && this.form.Wallettitle != null){
                 this.errors.clear()
                 $('#nextTab').removeAttr('disabled')
@@ -980,7 +981,7 @@ export default {
         /**
          * @ Validate Fourth Step 
          **/
-        ValidateFourthStep(){
+        validateFourthStep() {
             // /var i;
             //for (i = 0; i < this.BankAccount.length; i++) {
                 if(this.BankAccount[0].bank_name != null && this.BankAccount[0].Branch != null && this.BankAccount[0].account_type != null && this.BankAccount[0].account_name != null && this.BankAccount[0].account_no != null){
@@ -1009,11 +1010,11 @@ export default {
 
         },
         /**
-         * @ ValidateWalletAccountDetails 
+         * @ validateWalletAccountDetails 
          **/
-        ValidateWalletAccountDetails(){
+        validateWalletAccountDetails() {
             // console.log('asdfs')
-            if(this.form.WalletAccountNoDetails == null){
+            if(this.form.WalletAccountNoDetails == null) {
                 toast.fire({
                     type: 'info',
                     title: 'Please fill required fields'
@@ -1034,8 +1035,8 @@ export default {
         /**
          *@ Search For Account ESS ID 
          **/
-        SearchESSID(){
-            if(!this.form.username){
+        searchESSID() {
+            if(!this.form.username) {
                 if(this.step == 1){
                     this.form.clear()
                     this.form.reset()
@@ -1046,11 +1047,11 @@ export default {
                 let ess_id = (this.editmode ? this.$route.params.id :  this.form.username);
                 axios.get('/api/account/' + ess_id)
                 .then(response => {
-                    if(response.data.length > 0 && this.form.username != null){
+                    if(response.data.length > 0 && this.form.username != null) {
                         this.step = 1;
                         this.errors.clear()
                         $('#nextTab').removeAttr('disabled')
-                        this.GenerateAccountNo()
+                        this.generateAccountNo()
                         this.account = response.data;
                         /**
                          * @ Fill Form 
@@ -1088,12 +1089,12 @@ export default {
         /**
          * @ Edit Wallet Account 
          **/
-        EditWalletAccount(){
+        editWalletAccount() {
             /**
              * @ Check if the params is not empty then editmode = true 
              **/
             let ess_id = this.$route.params.id;
-            if(ess_id != null){
+            if(ess_id != null) {
                 this.editmode = true;
                 this.form.username = ess_id;
             }
@@ -1101,8 +1102,8 @@ export default {
         /**
          * @ Generate Account No 
          **/ 
-        GenerateAccountNo(){
-            if(!this.editmode){
+        generateAccountNo() {
+            if(!this.editmode) {
                 axios.get('/api/GenerateAccountNo')
                 .then(response => {
                     this.form.WalletAccountNo = response.data
@@ -1115,7 +1116,7 @@ export default {
         /**
          * @ Store Wallet Account 
          **/
-        StoreWalletAccount(){
+        storeWalletAccount() {
             swal.fire({
                 title: 'Are you sure you want to save?',
                 type: 'info',
@@ -1181,7 +1182,7 @@ export default {
                     formData.append('joint_wallet_account_no', this.form.JointWalletAccountNo)
                     formData.append('CMSCreditAccountNo', this.form.CMSCreditAccountNo)
                     axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-                    axios.post((this.editmode ? '/api/walletaccount/UpdateWalletAccount' : 'api/walletaccount/StoreWalletAccount'), formData, {
+                    axios.post((this.editmode ? '/api/walletaccount/updateWalletAccount' : 'api/walletaccount/storeWalletAccount'), formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                             'X-CSRF-TOKEN': this.csrf_token
@@ -1220,15 +1221,15 @@ export default {
         /**
          * @ Get Wallet Account Type 
          **/
-        GetWalletAccountType(){
-            axios.get('/api/walletaccount/GetAllWalletAccountType').then(({ data}) => (this.walletAccountTypes = data));
+        getWalletAccountType() {
+            axios.get('/api/walletaccount/showWalletAccountTypes').then(({ data}) => (this.walletAccountTypes = data));
         },
         /**
          * @ Get Wallet Account Details 
          **/
-        GetWalletAccountDetails(){
-            //axios.get('api/walletaccount/GetWalletAccountDetails/'+ this.form.username).then(({ data}) => (console.log(data)));
-            axios.get('/api/walletaccount/GetWalletAccountDetails/'+ this.$route.params.id)
+        showWalletAccountDetails() {
+            //axios.get('api/walletaccount/showWalletAccountDetails/'+ this.form.username).then(({ data}) => (console.log(data)));
+            axios.get('/api/walletaccount/showWalletAccountDetails/'+ this.$route.params.id)
             .then(res => {
                 //console.log(res)
                 this.form.WalletAccountType = res.data[0]['wallet_account_type'];
@@ -1268,7 +1269,7 @@ export default {
                 this.form.WalletAccountNoDetails = res.data[0]['WalletAccountNoDetails'];
                 this.form.WalletAccountNameDetails = res.data[0]['WalletAccountNameDetails'];
                 this.form.JointWalletAccountNo = res.data[0]['joint_wallet_account_no'];
-                this.SerachJointWalletAccount(res.data[0]['joint_wallet_account_no'])
+                this.serachJointWalletAccount(res.data[0]['joint_wallet_account_no'])
                 this.form.WalletAccountNo = res.data[0]['wan'];
                 this.form.Wallettitle = res.data[0]['wallet_title']
                 
@@ -1277,9 +1278,9 @@ export default {
                 console.log(err)
             })
         },
-        GetWalletBankAccounts(){
+        showWalletBankAccount() {
             this.BankAccount.splice(0, 1)
-            axios.get('/api/walletaccount/GetWalletBankAccount/'+ this.$route.params.id)
+            axios.get('/api/walletaccount/showWalletBankAccount/'+ this.$route.params.id)
             .then(res => {
                 var i;
                 for (i = 0; i < res.data.length; i++) {
@@ -1302,14 +1303,14 @@ export default {
         /**
          * @ Get Kyc Form File 
          **/
-        GetKycForm(){
+        getKycForm() {
             let photo = (this.form.photo.length > 200) ? this.form.photo : "img/profile/"+ this.form.photo ;
             return photo; 
         },
         /**
          * @ Get Kyc Form File 
          **/
-        uploadKycForm(e){
+        uploadKycForm(e) {
             e.preventDefault()
             this.form.kyc_form = this.$refs.file.files[0];
             this.errors.clear()
@@ -1321,7 +1322,7 @@ export default {
         /**
          * Upload Valid Id 
          **/
-        uploadValidId(e){
+        uploadValidId(e) {
             e.preventDefault()
             this.form.valid_id = this.$refs.valid_id.files[0];
             this.errors.clear()
@@ -1332,29 +1333,29 @@ export default {
         /**
          * @ Get Services 
          **/
-        GetServices(){
-            if(this.editmode == false){
+        getServices() {
+            if(this.editmode == false) {
                 axios.get('api/walletaccount/showservicematrix').then(({ data }) => (this.Services = data));
             }
         },
         /**
          * @ Get Service Matrix Config For Update 
          **/
-        Getsmc(){
-            if(this.editmode == true){
-                axios.get('/api/walletaccount/GetServiceMatrixConfig/'+ this.$route.params.id).then(({ data }) => (this.Services = data));
+        getsmc() {
+            if(this.editmode == true) {
+                axios.get('/api/walletaccount/showServiceMatrixConfig/'+ this.$route.params.id).then(({ data }) => (this.Services = data));
             }
         },
         /**
          * @ Check Wallet Account Type 
          **/
-        CheckWalletAccountType(){
+        checkWalletAccountType() {
             // Check if Prepaid User
-            if(this.form.WalletAccountType == 5){
+            if(this.form.WalletAccountType == 5) {
                 return false;
             }
             // Check if Credit User
-            if(this.form.WalletAccountType == 8){
+            if(this.form.WalletAccountType == 8) {
                 return false;
             }
             return true;
@@ -1379,8 +1380,8 @@ export default {
         removeElement(index) {
             this.BankAccount.splice(index, 1);
         },
-        searchAccountNo(){
-            axios.get('/api/walletaccount/SearchWalletAccountNo/' + this.form.WalletAccountNoDetails)
+        searchAccountNo() {
+            axios.get('/api/walletaccount/searchWalletAccountNo/' + this.form.WalletAccountNoDetails)
             .then(res => {
                 console.log(res)
                 if(res){
@@ -1414,8 +1415,8 @@ export default {
         /**
          * @ Search Joint Wallet Account 
          **/
-        SerachJointWalletAccount($jwan = null){
-            axios.get('/api/walletaccount/SearchWalletJointAccount/' + this.form.JointWalletAccountNo)
+        serachJointWalletAccount($jwan = null) {
+            axios.get('/api/walletaccount/searchWalletJointAccount/' + this.form.JointWalletAccountNo)
             .then(res => {
                 console.log(res)
                 this.form.JointWalletType = res.data[0].wallet_type;
@@ -1430,17 +1431,17 @@ export default {
 
     created() {
         if(this.editmode == false){
-            this.GetWalletAccountType();
-            this.EditWalletAccount()
-            this.SearchESSID()
+            this.getWalletAccountType();
+            this.editWalletAccount()
+            this.searchESSID()
             this.datatable()
-            this.GetServices()
+            this.getServices()
         }
        
         if(this.editmode == true){
-            this.GetWalletAccountDetails()
-            this.GetWalletBankAccounts()
-            this.Getsmc()
+            this.showWalletAccountDetails()
+            this.showWalletBankAccount()
+            this.getsmc()
         }
         
     },
