@@ -126,7 +126,7 @@ DB_HOST_THIRD=127.0.0.1
 DB_PORT_THIRD=3306
 DB_DATABASE_THIRD=e-wallet-transactions
 DB_USERNAME_THIRD=root
-DB_PASSWORD_THIRD=essdev2019
+DB_PASSWORD_THIRD=admin
 
 # For vue js Local and Production Mode
 MIX_APP_ENV=local

@@ -78,7 +78,7 @@ class ServiceMatrixRepository
                          'service_matrix.branch_all',
                          'service_matrix.branch_some',
                          'service_matrix.agent_all',
-                         'service_matrix.agent_some',
+                         'service_matrix.agent_some'
                      )
                      ->paginate(10);
         return $services;
@@ -118,7 +118,7 @@ class ServiceMatrixRepository
                                 'wallet_service_matrix_config.branch_all',
                                 'wallet_service_matrix_config.branch_some',
                                 'wallet_service_matrix_config.agent_all',
-                                'wallet_service_matrix_config.agent_some',
+                                'wallet_service_matrix_config.agent_some'
                             )
                             ->where('wallet_service_matrix_config.wallet_account_id' , '=', $wallet_account_id->id)
                             ->get();
@@ -149,7 +149,7 @@ class ServiceMatrixRepository
                         'service_matrix.branch_all',
                         'service_matrix.branch_some',
                         'service_matrix.agent_all',
-                        'service_matrix.agent_some',
+                        'service_matrix.agent_some'
                     )
                     ->orWhere('servicetypedetails.st_name', 'LIKE', '%'.$query.'%')
                     ->orWhere('wservice.service_name', 'LIKE', '%'.$query.'%')
