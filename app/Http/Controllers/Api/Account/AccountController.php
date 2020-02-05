@@ -47,6 +47,6 @@ class AccountController extends Controller
      **/ 
     public function GenerateAccountNo(Request $request)
     {
-        return response()->json($this->accountRepository->generate_account_no());
+        return response()->json($this->accountRepository->generateAccountNo());
     }
 }

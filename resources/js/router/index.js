@@ -179,7 +179,7 @@ const routes = [
       path: '/approval',
       component: require('../components/approval/Approval').default,
       name: 'Approval',
-      beforeEnter: requireLogin,
+      beforeEnter: (requireLogin,checkMerchant),
     },
     {
       path: '/put-money',
@@ -225,6 +225,28 @@ const routes = [
       }
     }
     next(true);
+  }
+
+  /**
+   * @ Route Guard for Merchant 
+   **/
+  function checkMerchant(to, from, next) {
+    axios.get('/api/auth-gate')
+        .then(res => {
+          switch (res.data.wallet_account_type) {
+            // Admin user
+            case 1:
+              res.data.wallet_account_type === 1;
+              next(true);
+              break;
+            // Admin Redeem
+            case 2:
+              res.data.wallet_account_type === 2;
+              next(true);
+              break;
+          }
+        })
+        .catch(err => console.log(err))
   }
 
   /**
