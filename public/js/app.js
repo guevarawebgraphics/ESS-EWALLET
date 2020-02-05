@@ -95418,7 +95418,7 @@ var routes = [{
   path: '/approval',
   component: __webpack_require__(/*! ../components/approval/Approval */ "./resources/js/components/approval/Approval.vue")["default"],
   name: 'Approval',
-  beforeEnter: requireLogin
+  beforeEnter: (requireLogin, checkMerchant)
 }, {
   path: '/put-money',
   component: __webpack_require__(/*! ../components/Transactions/PutMoney */ "./resources/js/components/Transactions/PutMoney.vue")["default"],
@@ -95465,6 +95465,30 @@ function checkAdmin(to, from, next) {
   }
 
   next(true);
+}
+/**
+ * @ Route Guard for Merchant 
+ **/
+
+
+function checkMerchant(to, from, next) {
+  axios.get('/api/auth-gate').then(function (res) {
+    switch (res.data.wallet_account_type) {
+      // Admin user
+      case 1:
+        res.data.wallet_account_type === 1;
+        next(true);
+        break;
+      // Admin Redeem
+
+      case 2:
+        res.data.wallet_account_type === 2;
+        next(true);
+        break;
+    }
+  })["catch"](function (err) {
+    return console.log(err);
+  });
 }
 /**
  * @ Route Guard for Prepaid Merchant 
