@@ -88,13 +88,13 @@ Getting Started
 git clone http://mmsilvano@192.168.0.250:9090/scm/ess2/e-wallet.git .
 git checkout develop
 cp .env.example .env
-php artisan key:generate
 composer install
+php artisan key:generate
 composer dump-autoload
 npm install
 php artisan key:generate
-php artisan passport:install
 php artisan migrate
+php artisan passport:install
 php artisan db:seed
 php artisan serve
 
@@ -136,18 +136,34 @@ For any further concerns regarding the project please contact the project owner.
 ## To the Future Developer of this project good luck.
 
 # ######################################################################################################
-# Accounts For ESS Project
+# Accounts For ESS Project                                                                             #
+#                                                                                                      #
+# #### Gmail #######                                                                                   #
+# username: essample@gmail.com                                                                         #
+# password: @dmin123                                                                                   #
+#                                                                                                      #
+# #### Mailtrap #######                                                                                #
+# For Testing Email in Local Development                                                               #
+# use Gmail logged in                                                                                  #
+# username: esssample@gmail.com                                                                        #
+# password: @dmin123                                                                                   #
+#                                                                                                      #
+# ### Trello #####                                                                                     #
+# username: esssample@gmail.com                                                                        #
+# password: @dmindev                                                                                   #
+# ######################################################################################################
 
-# #### Gmail #######
-# username: essample@gmail.com
-# password: @dmin123
 
-# #### Mailtrap #######
-# For Testing Email in Local Development
-# use Gmail logged in
-# username: esssample@gmail.com
-# password: @dmin123
 
-# ### Trello #####
-# username: esssample@gmail.com
-# password: @dmindev
+# #############################################################################################################
+# Tutorial for Creating another module                                                                        #
+# SOLID Design (SRP)                                                                                          #
+# PSR-2 style                                                                                                 #
+# All Database changes should be created in migrations (php artisan make:migration create_test_table)         #
+# make controller for Api (php artisan make:controller Api/ModuleFolder/Modulename)                           #
+# make repository for controller (php artisan make:repository RepsitoryFolder/RepositoryName)                 #
+# make model (php artisan make:model Models/ModelFoler/ModelName)                                             #
+# make request (php artisan make:request RequestFolder/RequestName)                                           #
+# Vue Js Create Component open resources/js/components create module ModuleFolder/ModuleName                  #
+# and register it to the Vue Router resources/js/router/index.js check the bottom part of the code for guards #  
+# #############################################################################################################
