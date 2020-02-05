@@ -659,7 +659,7 @@ class WalletAccountRepository
                                         'wallet_service_matrix_config.branch_all',
                                         'wallet_service_matrix_config.branch_some',
                                         'wallet_service_matrix_config.agent_all',
-                                        'wallet_service_matrix_config.agent_some',
+                                        'wallet_service_matrix_config.agent_some'
                                     )
                                     ->where('wallet_service_matrix_config.wallet_account_id', '=', $wallet_account->id)
                                     ->get();
@@ -833,12 +833,12 @@ class WalletAccountRepository
                          'service_grouping.group_description',
                          'service_matrix.admin_all',
                          'service_matrix.admin_some',
-                         'service_matrix.merchant_all',
+                         'service_matrix.merchant_allP',
                          'service_matrix.merchant_some',
                          'service_matrix.branch_all',
                          'service_matrix.branch_some',
                          'service_matrix.agent_all',
-                         'service_matrix.agent_some',
+                         'service_matrix.agent_some'
                      )
                      ->get();
         return $services;

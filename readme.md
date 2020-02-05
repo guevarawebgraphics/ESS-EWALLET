@@ -88,13 +88,13 @@ Getting Started
 git clone http://mmsilvano@192.168.0.250:9090/scm/ess2/e-wallet.git .
 git checkout develop
 cp .env.example .env
-php artisan key:generate
 composer install
+php artisan key:generate
 composer dump-autoload
 npm install
 php artisan key:generate
-php artisan passport:install
 php artisan migrate
+php artisan passport:install
 php artisan db:seed
 php artisan serve
 
@@ -126,7 +126,7 @@ DB_HOST_THIRD=127.0.0.1
 DB_PORT_THIRD=3306
 DB_DATABASE_THIRD=e-wallet-transactions
 DB_USERNAME_THIRD=root
-DB_PASSWORD_THIRD=essdev2019
+DB_PASSWORD_THIRD=admin
 
 # For vue js Local and Production Mode
 MIX_APP_ENV=local
