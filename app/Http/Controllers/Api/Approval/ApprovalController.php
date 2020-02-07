@@ -27,12 +27,19 @@ class ApprovalController extends Controller
         $this->approval = $ApprovalRepository;
     }
 
+    /**
+     * @ show approval transaction 
+     **/
     public function showApprovalTransaction()
     {
-        $approvalTransaction = $this->approval->showApprovalTransaction();
-        return response()->json($approvalTransaction);
+        return response()->json($this->approval->showApprovalTransaction());
     }
 
+
+    /**
+     * @ search approval transaction
+     * @param query 
+     **/
     public function searchApprovalTransaction($query)
     {
         return response()->json($this->approval->searchApprovalTransaction($query));

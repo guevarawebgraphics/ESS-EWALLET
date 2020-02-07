@@ -236,12 +236,13 @@ const routes = [
           switch (res.data.wallet_account_type) {
             // Admin user
             case 1:
-              res.data.wallet_account_type === 1;
+              res.wallet_account_type === 1;
+              console.log(res)
               next(true);
               break;
             // Admin Redeem
             case 2:
-              res.data.wallet_account_type === 2;
+              res.wallet_account_type === 2;
               next(true);
               break;
           }
