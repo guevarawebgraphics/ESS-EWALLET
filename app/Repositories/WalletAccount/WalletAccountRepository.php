@@ -716,6 +716,7 @@ class WalletAccountRepository
                                         'wallet_account.wallet_title',
                                         'wallet_account_types.wallet_account_type as wat'
                                     )
+                                    ->whereIn('wallet_account.wallet_account_type', [1, 2])
                                     //->where('wallet_account.created_by', '=', auth('api')->user()->id)
                                     ->paginate(10);
         return $list_of_wallet_account;
