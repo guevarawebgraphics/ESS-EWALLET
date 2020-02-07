@@ -187,6 +187,13 @@ const routes = [
       name: 'PutMoney',
       beforeEnter: requireLogin,
     },
+    /******************************ServiceRates****************************/
+    {
+      path: '/ServiceRates', 
+      component: require('../components/ServiceRates/ServiceRates.vue').default, 
+      name: 'Service Rates',
+      beforeEnter: requireLogin
+    },
     /** List Services */
     /**
      *@ Return Error 404 Page 
