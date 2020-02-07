@@ -81,7 +81,7 @@ class AccountRepository
                                 'refcitymun.citymunDesc',
                                 'refcitymun.citymunCode',
                                 'refbrgy.brgyDesc',
-                                'refbrgy.id as refbrgy_id',
+                                'refbrgy.id as refbrgy_id'
                                 )
                             ->where('ess_basetable.ess_id', '=', $essid)
                             ->get();
@@ -161,7 +161,7 @@ class AccountRepository
                             'refcitymun.citymunDesc',
                             'refcitymun.citymunCode',
                             'refbrgy.brgyDesc',
-                            'refbrgy.id as refbrgy_id',
+                            'refbrgy.id as refbrgy_id'
                             )
                         ->where('employer_and_employee.ess_id', '=', $essid)
                         ->where('employer_and_employee.employer_id', '=', $user->employer_id)
@@ -248,7 +248,7 @@ class AccountRepository
             function($key) {
                 // Add a (-) after every fourth character in the key
                 return join('-', str_split($key, 3));
-            },
+            }
         );
 
         return $account_no;
