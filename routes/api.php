@@ -317,6 +317,21 @@ Route::prefix('service_gateway')->group(function(){
  });
 
 
+/**
+* Services Rates Module
+*/
+Route::prefix('servicerates')->group(function(){
+    Route::get('/showAllServiceRates',[
+        'uses' => 'Api\\ServiceRates\ServiceRatesController@showAllServiceRates'
+    ]); 
+    Route::post('/storeServiceRates',[
+        'uses' => 'Api\\ServiceRates\ServiceRatesController@storeServiceRates'
+    ]); 
+    Route::post('/updateServiceRates',[
+        'uses' => 'Api\\ServiceRates\ServiceRatesController@updateServiceRates'
+    ]); 
+});
+
  // Gate
  Route::get('/auth-gate', [
     'uses' => 'Api\Gate\GateController@gate'
