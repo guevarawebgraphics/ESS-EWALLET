@@ -156,7 +156,7 @@ For any further concerns regarding the project please contact the project owner.
 
 
 # #############################################################################################################
-# Tutorial for Creating another module                                                                        #
+# Guide for Creating another module                                                                           #
 # SOLID Design (SRP)                                                                                          #
 # PSR-2 style                                                                                                 #
 # All Database changes should be created in migrations (php artisan make:migration create_test_table)         #

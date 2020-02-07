@@ -24,18 +24,20 @@ class ApprovalRepository
 
     /**
      * @ search approval 
+     * @param query
+     * @return approval
      **/
     public function searchApprovalTransaction($query)
     {
         $approval = Prefund::orWhere('prefund_amount', 'LIKE', '%'.$query.'%')
-                    ->orWhere('name_of_bank', 'LIKE', '%'.$query.'%')
-                    ->orWhere('branch', 'LIKE', '%'.$query.'%')
-                    ->orWhere('account_type', 'LIKE', '%'.$query.'%')
-                    ->orWhere('account_name', 'LIKE', '%'.$query.'%')
-                    ->orWhere('account_no', 'LIKE', '%'.$query.'%')
-                    ->orWhere('transaction_type', 'LIKE', '%'.$query.'%')
-                    ->latest()
-                    ->paginate(10);
+            ->orWhere('name_of_bank', 'LIKE', '%'.$query.'%')
+            ->orWhere('branch', 'LIKE', '%'.$query.'%')
+            ->orWhere('account_type', 'LIKE', '%'.$query.'%')
+            ->orWhere('account_name', 'LIKE', '%'.$query.'%')
+            ->orWhere('account_no', 'LIKE', '%'.$query.'%')
+            ->orWhere('transaction_type', 'LIKE', '%'.$query.'%')
+            ->latest()
+            ->paginate(10);
         return $approval;
     }
 }
