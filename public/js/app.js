@@ -3191,8 +3191,7 @@ __webpack_require__.r(__webpack_exports__);
 
         if (result.value) {
           axios.post('api/servicematrix/storeServiceMatrix', _this2.Services).then(function (response) {
-            console.log(response);
-
+            // console.log(response)
             _this2.$Progress.increase(10);
 
             _this2.$Progress.finish(); // $("#service_matrix").DataTable().destroy()
@@ -3227,8 +3226,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('api/servicematrix/ServiceMatrixConfig').then(function (_ref2) {
         var data = _ref2.data;
         return _this4.Services = data;
-      })["catch"](function (err) {
-        console.log(err);
+      })["catch"](function (err) {// console.log(err)
       });
     },
     debounceSearch: function debounceSearch(event) {
@@ -3261,9 +3259,8 @@ __webpack_require__.r(__webpack_exports__);
     } else {
       this.mode = 0;
       this.getServices();
-    }
+    } // console.log(this.$route.name)
 
-    console.log(this.$route.name);
   }
 });
 
@@ -62604,8 +62601,7 @@ var render = function() {
                                   attrs: {
                                     disabled: _vm.mode == 1,
                                     type: "checkbox",
-                                    name: "admin_all[]",
-                                    id: "admin_all"
+                                    name: "admin_all[]"
                                   },
                                   domProps: {
                                     checked: Array.isArray(sm.admin_all)
@@ -62660,8 +62656,7 @@ var render = function() {
                                   attrs: {
                                     disabled: _vm.mode == 1,
                                     type: "checkbox",
-                                    name: "admin_some[]",
-                                    id: "admin_some"
+                                    name: "admin_some[]"
                                   },
                                   domProps: {
                                     checked: Array.isArray(sm.admin_some)
@@ -62716,8 +62711,7 @@ var render = function() {
                                   attrs: {
                                     disabled: _vm.mode == 1,
                                     type: "checkbox",
-                                    name: "merchant_all[]",
-                                    id: "merchant_all"
+                                    name: "merchant_all[]"
                                   },
                                   domProps: {
                                     checked: Array.isArray(sm.merchant_all)
@@ -62772,8 +62766,7 @@ var render = function() {
                                   attrs: {
                                     disabled: _vm.mode == 1,
                                     type: "checkbox",
-                                    name: "merchant_some[]",
-                                    id: "merchant_some"
+                                    name: "merchant_some[]"
                                   },
                                   domProps: {
                                     checked: Array.isArray(sm.merchant_some)
@@ -62828,8 +62821,7 @@ var render = function() {
                                   attrs: {
                                     disabled: _vm.mode == 1,
                                     type: "checkbox",
-                                    name: "branch_all[]",
-                                    id: "branch_all"
+                                    name: "branch_all[]"
                                   },
                                   domProps: {
                                     checked: Array.isArray(sm.branch_all)
@@ -62884,8 +62876,7 @@ var render = function() {
                                   attrs: {
                                     disabled: _vm.mode == 1,
                                     type: "checkbox",
-                                    name: "branch_some[]",
-                                    id: "branch_some"
+                                    name: "branch_some[]"
                                   },
                                   domProps: {
                                     checked: Array.isArray(sm.branch_some)
@@ -62940,8 +62931,7 @@ var render = function() {
                                   attrs: {
                                     disabled: _vm.mode == 1,
                                     type: "checkbox",
-                                    name: "agent_all[]",
-                                    id: "agent_all"
+                                    name: "agent_all[]"
                                   },
                                   domProps: {
                                     checked: Array.isArray(sm.agent_all)
@@ -62996,8 +62986,7 @@ var render = function() {
                                   attrs: {
                                     disabled: _vm.mode == 1,
                                     type: "checkbox",
-                                    name: "agent_some[]",
-                                    id: "agent_some"
+                                    name: "agent_some[]"
                                   },
                                   domProps: {
                                     checked: Array.isArray(sm.agent_some)
@@ -74493,7 +74482,7 @@ var render = function() {
                                                 )
                                               },
                                               attrs: {
-                                                type: "text",
+                                                type: "number",
                                                 "aria-describedby": "emailHelp",
                                                 placeholder:
                                                   "Enter Service Code",
@@ -78113,21 +78102,6 @@ var staticRenderFns = [
             _c("span"),
             _vm._v(" "),
             _c("span")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "search-box pull-left" }, [
-            _c("form", { attrs: { action: "#" } }, [
-              _c("input", {
-                attrs: {
-                  type: "text",
-                  name: "search",
-                  placeholder: "Search...",
-                  required: ""
-                }
-              }),
-              _vm._v(" "),
-              _c("i", { staticClass: "ti-search" })
-            ])
           ])
         ])
       ])
@@ -78355,27 +78329,12 @@ var render = function() {
                   1
                 ),
                 _vm._v(" "),
-                _c(
-                  "li",
-                  [
-                    _c(
-                      "router-link",
-                      {
-                        attrs: { to: "/ServiceRates", "aria-expanded": "true" }
-                      },
-                      [
-                        _c("i", { staticClass: "ti-wallet text-blue" }),
-                        _c("span", [_vm._v("Service Rates")])
-                      ]
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
                 _vm._m(1),
                 _vm._v(" "),
+                _vm._m(2),
+                _vm._v(" "),
                 _c("li", [
-                  _vm._m(2),
+                  _vm._m(3),
                   _vm._v(" "),
                   _c("ul", { staticClass: "collapse" }, [
                     _c(
@@ -78424,7 +78383,7 @@ var render = function() {
           _vm._v(" "),
           _vm.user.user_type_id !== 1
             ? _c("ul", { staticClass: "metismenu", attrs: { id: "menu" } }, [
-                _vm._m(3),
+                _vm._m(4),
                 _vm._v(" "),
                 _c(
                   "li",
@@ -78446,9 +78405,9 @@ var render = function() {
                   1
                 ),
                 _vm._v(" "),
-                _vm._m(4),
-                _vm._v(" "),
                 _vm._m(5),
+                _vm._v(" "),
+                _vm._m(6),
                 _vm._v(" "),
                 _c(
                   "li",
@@ -78480,6 +78439,17 @@ var staticRenderFns = [
       _c("a", { attrs: { href: "#dashboard", "aria-expanded": "true" } }, [
         _c("i", { staticClass: "ti-bell text-blue" }),
         _c("span", [_vm._v("Notification Template")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("a", { attrs: { href: "#dashboard", "aria-expanded": "true" } }, [
+        _c("i", { staticClass: "ti-wallet text-blue" }),
+        _c("span", [_vm._v("Service Rates")])
       ])
     ])
   },

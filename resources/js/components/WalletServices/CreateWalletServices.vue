@@ -46,7 +46,7 @@
                                 </div> 
                                 <div class="form-group">
                                   <label for="exampleInputEmail1">Service Code:</label>
-                                  <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('service_code')}" aria-describedby="emailHelp" placeholder="Enter Service Code" v-model="form.service_code" name="service_code"  v-validate="'required'" :disabled="this.method_name == 'joint'">
+                                  <input type="number" class="form-control" :class="{ 'is-invalid': errors.has('service_code')}" aria-describedby="emailHelp" placeholder="Enter Service Code" v-model="form.service_code" name="service_code"  v-validate="'required'" :disabled="this.method_name == 'joint'">
                                   <p class="alert text-danger bg-white" v-if="errors.has('service_code')"> {{errors.first('service_code')}} </p>
                                 </div> 
                                 <div class="form-group">

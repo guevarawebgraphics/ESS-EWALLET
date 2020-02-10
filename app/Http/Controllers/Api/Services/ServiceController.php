@@ -34,7 +34,7 @@ class ServiceController extends Controller
     /**
      * For inserting Service , Wallet Details and Service & Service Type ID
      */
-    public function InsertService(ServiceValidate $request)
+    public function storeService(ServiceValidate $request)
     {
         $InsertService = $this->services->storeService($request);
         return response()->json($InsertService);    
@@ -60,7 +60,7 @@ class ServiceController extends Controller
      */
     public function fillServiceType(Request $request,$service_type_code)
     {
-        $fill_service_type = $this->services->FillServiceTypeMethod($service_type_code);
+        $fill_service_type = $this->services->fillServiceType($service_type_code);
         return response()->json($fill_service_type);
     } 
     /**
