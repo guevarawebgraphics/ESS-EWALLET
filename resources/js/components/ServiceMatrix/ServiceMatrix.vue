@@ -3,19 +3,28 @@
         <!-- Box -->
         <div class="box ptb--100">
             <!-- Form -->
-            <form @submit.prevent="SaveChanges()">
+            <form @submit.prevent="saveChanges()">
                 <!-- Card -->
                 <div class="card shadow-custom">
                     <!-- Card Body -->
                     <div class="card-body">
                         <!-- Row Table -->
                         <div class="form-group row">
-                            <!-- Cold lg 6 -->
+                            <!-- Cold lg 12 -->
                             <div class="col-md-12">
-                                <div class="header-title">Services Matrix Setup</div>
+                                <div class="header-title text-center">Services Matrix Setup</div>
+                                <hr>
+                                <div class="float-right">
+                                    <div class="search-box">
+                                        <form action="#">
+                                            <input class="form-control mb-3" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account Types..." required>
+                                            <i class="ti-search"></i>
+                                        </form>
+                                    </div>
+                                </div>
                                 <div class="data-tables datatable-dark">
                                     <!-- Table -->
-                                    <table class="table table-hover table-bordered text-center" id="service_matrix">
+                                    <table class="table table-hover table-bordered table-striped text-center" id="service_matrix">
                                         <thead class="text-capitalize">
                                             <tr class="th-table">
                                                  <th colspan="3"><h3>Service Matrix</h3></th>
@@ -41,7 +50,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="sm in Services" :key="sm.id">
+                                            <tr v-for="sm in Services.data" :key="sm.id">
                                                 <td>{{sm.st_name}}</td>
                                                 <td>{{sm.service_name}}</td>
                                                 <td>{{sm.group_description}}</td>
@@ -74,18 +83,21 @@
                                                         <label class="custom-control-label" v-if="sm.agent == false" v-bind:for="'agent' + sm.id">SOME</label>
                                                     </div>
                                                 </td> -->
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="admin_all[]" class="form-check-input" v-model="sm.admin_all" id="admin_all"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" id="admin_some"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" id="merchant_all"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some" id="merchant_some"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" id="branch_all"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" id="branch_some"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" id="agent_all"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" id="agent_some"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="admin_all[]" class="form-check-input" v-model="sm.admin_all"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" ></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" ></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" ></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" ></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" ></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" ></td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <!-- ./ Table -->
+                                    <div class="text-center" v-if="this.Services.data == 0">
+                                        <label>No Results found</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -98,6 +110,22 @@
                         </div>
                         <!-- ./ Row button -->
                     </div>
+                    <!-- Card Footer -->
+                    <div class="card-footer bg-white">
+                        <!-- Pagination Length -->
+                        <div class="float-left">
+                            {{ (Services.next_page_url == null && Services.prev_page_url == null) ? '' : 'Total ' + Services.to }}
+                            {{ (Services.next_page_url == null && Services.prev_page_url == null) ? '' : 'of ' + Services.total }}
+                        </div>
+                        <!-- Pagination -->
+                        <!-- <pagination class="float-right" :data="WalletAccount" @pagination-change-page="getResults"></pagination> -->
+                        <pagination class="float-right mb-3" :data="Services" @pagination-change-page="getResults">
+                            <span slot="prev-nav"><i class="ti-angle-left"></i> Previous</span>
+                            <span slot="next-nav">Next <i class="ti-angle-right"></i></span>
+                        </pagination>
+                        <!-- Pagination -->
+                    </div>
+                    <!-- ./ Card Footer -->
                 </div>
                 <!-- ./ Card -->
             </form>
@@ -111,6 +139,9 @@
 export default {
     data(){
         return {
+            message: null,
+            typing: null,
+            debounce: null,
             mode: 0,
             currentUser: window.user.user_type_id,
             Services: {},
@@ -127,7 +158,7 @@ export default {
         }
     },
     methods: {
-        datatable(){
+        datatable() {
             setTimeout(function(){
                 let table = $('#service_matrix').DataTable({
                     // "searching": false,
@@ -142,7 +173,13 @@ export default {
                 });
             }, 1000);
         },
-        SaveChanges(){
+        getResults(page = 1) {
+            axios.get(`/api/servicematrix/showServices?page=${page}`)
+                .then(response => {
+                    this.Services = response.data;
+                });
+        },
+        saveChanges() {
             swal.fire({
                 title: 'Are you sure?',
                 text: "Save Service Matrix Configuration Setup",
@@ -154,13 +191,14 @@ export default {
             }).then((result) => {
                 this.$Progress.start()
                 if (result.value) {
-                    axios.post('api/servicematrix/StoreServiceMatrix', this.Services)
+                    axios.post('api/servicematrix/storeServiceMatrix', this.Services)
                     .then((response) => {
+                        // console.log(response)
                         this.$Progress.increase(10)
                         this.$Progress.finish()
-                        $("#service_matrix").DataTable().destroy()
-                        this.datatable();
-                        this.GetServices();
+                        // $("#service_matrix").DataTable().destroy()
+                        // this.datatable();
+                        this.getServices();
                         toast.fire({
                             type: 'success',
                             title: 'Saved!'
@@ -179,30 +217,50 @@ export default {
                 }
             })
         },
-        GetServices(){
-            axios.get('api/servicematrix/GetServices').then(({ data }) => (this.Services = data));
+        getServices() {
+            axios.get('api/servicematrix/showServices').then(({ data }) => (this.Services = data));
         },
-        GetServiceMatrixConfig(){
+        getServiceMatrixConfig() {
             axios.get('api/servicematrix/ServiceMatrixConfig')
                 .then(({ data }) => (this.Services = data))
                 .catch(err => {
-                    console.log(err)
+                    // console.log(err)
                 })
-        }
+        },
+        debounceSearch(event) {
+            this.message = null
+            this.typing = 'You are typing'
+            clearTimeout(this.debounce)
+            this.debounce = setTimeout(() => {
+                this.typing = null
+                this.message = event.target.value
+                //console.log(this.message)
+                if(this.message !== "") {
+                    axios.get(`/api/servicematrix/searchServiceMatrix/${this.message}`)
+                    .then(response => {
+                        this.Services = response.data;
+                    })
+                    .catch(err => console.log(err))
+                }
+                else {
+                    this.getServices()
+                }
+            }, 600)
+        },
     },
-    created(){
-        this.datatable();
+    created() {
+        // this.datatable();
         if(this.currentUser === 3){
             this.mode = 1;
-            this.GetServiceMatrixConfig()
+            this.getServiceMatrixConfig()
         }
         else {
             this.mode = 0;
-            this.GetServices();
+            this.getServices();
         }
         
         
-        console.log(this.$route.name)
+        // console.log(this.$route.name)
     }
 }
 </script>

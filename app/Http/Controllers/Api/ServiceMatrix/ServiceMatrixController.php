@@ -22,7 +22,8 @@ class ServiceMatrixController extends Controller
      * @param ServiceMatrixRepository $ServiceMatrixRepository
      * @ Constructor
      **/
-    public function __construct(ServiceMatrixRepository $ServiceMatrixRepository){
+    public function __construct(ServiceMatrixRepository $ServiceMatrixRepository)
+    {
         $this->ServiceMatrix = $ServiceMatrixRepository;
         $this->middleware('auth:api');
     }
@@ -30,26 +31,34 @@ class ServiceMatrixController extends Controller
     /**
      * @ Store Service Matrix
      **/
-    public function StoreServiceMatrix(Request $request){
-        $service_matrix = $this->ServiceMatrix->StoreServiceMatrix($request->all());
-
-        return response()->json($service_matrix);
+    public function storeServiceMatrix(Request $request)
+    {
+        return response()->json($this->ServiceMatrix->storeServiceMatrix($request->all()));
     }
 
      /**
      * @ Get Services 
      **/
-    public function GetServices(){
-        $Services = $this->ServiceMatrix->GetServices();
-        return response()->json($Services);
+    public function showServices()
+    {
+        return response()->json($this->ServiceMatrix->showServices());
     }
 
     /**
      * @ Get Service Matrix Config 
      **/
-    public function GetServiceMatrixConfig(){
-        $ServiceMatrix = $this->ServiceMatrix->GetServiceMatrix();
-        return response()->json($ServiceMatrix);
+    public function getServiceMatrixConfig()
+    {
+        return response()->json($this->ServiceMatrix->getServiceMatrix());
+    }
+
+    /**
+     * @ search service matrix setup
+     * @return  ServiceMatrix
+     **/
+    public function searchServiceMatrix($query)
+    {
+        return response()->json($this->ServiceMatrix->searchServiceMatrix($query));
     }
 
 

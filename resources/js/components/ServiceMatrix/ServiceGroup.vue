@@ -1,7 +1,7 @@
 <template>
     <div id="serviceGroup">
         <!-- Box -->
-        <div class="box col-md-8 offset-md-2 ptb--100">
+        <div class="box col-md-12 ptb--100">
             <!-- Card -->
             <div class="card shadow-custom">
                 <!-- Card Body -->
@@ -9,13 +9,21 @@
                     <!-- Row Table -->
                     <div class="form-group row">
                         <!-- Col lg 6 -->
-                        <div class="col-md-8 offset-md-2">
+                        <div class="col-md-12">
                             <div class="header-title text-center">Service Group</div>
                             <hr>
-                            <button type="button" class="btn btn-primary btn-sm mb-3" @click="openModal">Create New <i class="ti-pencil-alt text-white"></i></button>
+                            <button type="button" class="btn btn-primary btn-sm float-left mb-3" @click="openModal">Create New <i class="ti-pencil-alt text-white"></i></button>
+                            <div class="float-right">
+                                <div class="search-box">
+                                    <form action="#">
+                                        <input class="form-control" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account Types..." required>
+                                        <i class="ti-search"></i>
+                                    </form>
+                                </div>
+                            </div>
                             <div class="data-tables datatable-dark">
                                 <!-- Table -->
-                                <table class="table table-hover table-striped text-center" id="service_group_table">
+                                <table class="table table-hover table-striped table-bordered text-center" id="service_group_table">
                                     <thead class="text-capitalize">
                                         <tr class="th-table">
                                             <th>Group Code</th>
@@ -24,7 +32,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="sg in serviceGroups" :key="sg.id">
+                                        <tr v-for="sg in serviceGroups.data" :key="sg.id">
                                             <td>{{ sg.group_code}}</td>
                                             <td>{{ sg.group_description }}</td>
                                             <td>
@@ -37,6 +45,9 @@
                                     </tbody>
                                 </table>
                                 <!-- ./ Table -->
+                                <div class="text-center" v-if="this.serviceGroups.data == 0">
+                                    <label>No Results found</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -47,6 +58,22 @@
                     <!-- ./Row Button -->
                 </div>
                 <!-- ./ Card body -->
+                <!-- Card Footer -->
+                <div class="card-footer bg-white">
+                    <!-- Pagination Length -->
+                    <div class="float-left">
+                        {{ (serviceGroups.next_page_url == null && serviceGroups.prev_page_url == null) ? '' : 'Total ' + serviceGroups.to }}
+                        {{ (serviceGroups.next_page_url == null && serviceGroups.prev_page_url == null) ? '' : 'of ' + serviceGroups.total }}
+                    </div>
+                    <!-- Pagination -->
+                    <!-- <pagination class="float-right" :data="WalletAccount" @pagination-change-page="getResults"></pagination> -->
+                    <pagination class="float-right mb-3" :data="serviceGroups" @pagination-change-page="getResults">
+                        <span slot="prev-nav"><i class="ti-angle-left"></i> Previous</span>
+                        <span slot="next-nav">Next <i class="ti-angle-right"></i></span>
+                    </pagination>
+                    <!-- Pagination -->
+                </div>
+                <!-- ./ Card Footer -->
             </div>
             <!-- ./ Card -->
         </div>
@@ -110,6 +137,9 @@ $(document).ready(function() {
 export default {
     data() {
         return {
+            message: null,
+            typing: null,
+            debounce: null,
             editmode: false,
             serviceGroups: {},
             form: new Form({
@@ -136,8 +166,14 @@ export default {
                 });
             }, 1000);
         },
+        getResults(page = 1) {
+            axios.get(`/api/servicematrix/showAllService?page=${page}`)
+                .then(response => {
+                    this.serviceGroups = response.data;
+                });
+        },
         get_service_group(){
-            axios.get("api/servicematrix/GetAllService").then(({ data }) => (this.serviceGroups = data));  
+            axios.get("api/servicematrix/showAllService").then(({ data }) => (this.serviceGroups = data));  
            
         },
         editServiceGroup(sg){
@@ -152,15 +188,15 @@ export default {
             $('#modalClose').attr('disabled', true)
             $('#Spinner').removeAttr('hidden')
             this.$Progress.start()
-            this.form.put('api/servicematrix/UpdateServiceGroup/'+this.form.id)
+            this.form.put('api/servicematrix/updateServiceGroup/'+this.form.id)
             .then((response) => {
                 this.$Progress.increase(10)
                 this.$Progress.finish()
                  $('#serviceGroupModal').modal('hide')
                 $(document.body).removeAttr('class')
-                $("#service_group_table").DataTable().destroy()
+                //$("#service_group_table").DataTable().destroy()
                 this.get_service_group()
-                this.datatable()
+                //this.datatable()
                 $('#btnUpdate').removeAttr('disabled')
                 $('#modalClose').removeAttr('disabled')
                 $('#Spinner').attr('hidden', true)
@@ -182,15 +218,15 @@ export default {
             $('#modalClose').attr('disabled', true)
             $('#saveSpinner').removeAttr('hidden')
             this.$Progress.start()
-            this.form.post('api/servicematrix/StoreServiceGroup')
+            this.form.post('api/servicematrix/storeServiceGroup')
             .then((response) => {
                 this.$Progress.increase(10)
                 this.$Progress.finish()
                 $('#serviceGroupModal').modal('hide')
                 $(document.body).removeAttr('class')
-                $("#service_group_table").DataTable().destroy()
+                // $("#service_group_table").DataTable().destroy()
                 this.get_service_group()
-                this.datatable()
+                // this.datatable()
                 $('#btnSave').removeAttr('disabled')
                 $('#modalClose').removeAttr('disabled')
                 $('#saveSpinner').attr('hidden', true)
@@ -214,9 +250,28 @@ export default {
             this.form.reset();
             $('#serviceGroupModal').modal('show');
         },
+        debounceSearch(event) {
+            this.message = null
+            this.typing = 'You are typing'
+            clearTimeout(this.debounce)
+            this.debounce = setTimeout(() => {
+                this.typing = null
+                this.message = event.target.value
+                //console.log(this.message)
+                if(this.message !== "") {
+                    axios.get(`/api/servicematrix/searchServiceGroup/${this.message}`)
+                    .then(response => {
+                        this.serviceGroups = response.data;
+                    })
+                    .catch(err => console.log(err))
+                }
+                else {
+                    this.get_service_group()
+                }
+            }, 600)
+        },
     },
     created() {
-        this.datatable();
         this.get_service_group();
     }
 }

@@ -1,17 +1,28 @@
 <template>
   <div class="wallet-accounts">
-    <div class="box col-md-8 offset-md-2 ptb--100">
+    <div class="box col-md-12 ptb--100">
         <div class="card shadow-custom">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
+                        <router-link class="btn btn-primary btn-sm float-left mb-3" to="/createwalletaccount">Create Wallet Account <i class="ti-pencil-alt"></i></router-link>
+                        <div class="float-right">
+                            <div class="search-box">
+                                <form action="#">
+                                    <input class="form-control" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account..." required>
+                                    <i class="ti-search"></i>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
                         <div class="col-md-4">
                         </div>
-                            <h4 class="header-title mt-3 text-center">Wallet Accounts</h4>
+                            <!-- <h4 class="header-title mt-3 text-center">Wallet Accounts</h4> -->
                             <hr>
-                            <router-link class="btn btn-primary btn-sm float-left mb-3" to="/createwalletaccount">Create Wallet Account <i class="ti-pencil-alt"></i></router-link>
+                            <!-- <router-link class="btn btn-primary btn-sm float-left mb-3" to="/createwalletaccount">Create Wallet Account <i class="ti-pencil-alt"></i></router-link> -->
                             <div class="data-tables datatable-dark">
-                            <table class="table table-hover table-striped text-center" id="table_id">
+                            <table class="table table-hover table-bordered table-striped text-center" id="table_id">
                             <thead>
                                 <tr class="th-table">
                                     <th>Wallet Type</th>
@@ -24,7 +35,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="wa in WalletAccount" :key="wa.id">
+                                <tr v-for="wa in WalletAccount.data" :key="wa.id">
                                     <!-- <td><router-link :to="{ name: '/test', params: { id: 1 }}" :key="$route.fullPath">User</router-link></td> -->
                                     <td>{{wa.wallet_type}}</td>
                                     <td>{{wa.wallet_account_type}}</td>
@@ -43,9 +54,28 @@
                             </tbody>
                             </table>
                         </div>
+                        <div class="text-center" v-if="this.WalletAccount.data == 0">
+                            <label>No Results found</label>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- Card Footer -->
+            <div class="card-footer bg-white">
+                <!-- Pagination Length -->
+                <div class="float-left">
+                      {{ (WalletAccount.next_page_url == null && WalletAccount.prev_page_url == null) ? '' : 'Total ' + WalletAccount.to }}
+                      {{ (WalletAccount.next_page_url == null && WalletAccount.prev_page_url == null) ? '' : 'of ' + WalletAccount.total }}
+                </div>
+                <!-- Pagination -->
+                <!-- <pagination class="float-right" :data="WalletAccount" @pagination-change-page="getResults"></pagination> -->
+                <pagination class="float-right" :data="WalletAccount" @pagination-change-page="getResults">
+                    <span slot="prev-nav">&lt; Previous</span>
+                    <span slot="next-nav">Next &gt;</span>
+                </pagination>
+                <!-- Pagination -->
+            </div>
+            <!-- ./ Card Footer -->
         </div>
     </div>
       <!-- Primary table start -->
@@ -59,24 +89,26 @@
 export default {
     data() {
         return {
+            message: null,
+            typing: null,
+            debounce: null,
             editmode: false,
-            WalletAccount : [],
+            editmode: false,
+            WalletAccount : {},
         }
     },
     methods: {
+        getResults(page = 1) {
+            axios.get(`api/walletaccount/showAllWalletAccount?page=${page}`)
+                .then(response => {
+                    this.WalletAccount = response.data;
+                });
+        },
         loadWalletAccounts() {
-            // axios({
-            //     method: 'get',
-            //     url: 'http://127.0.0.1:8080/api/users',
-            //     dataType: 'json',
-            //     contentType: 'application/json',
-            //     secure: true,
-            //     headers: {
-            //     "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3MTM4MDE4NywiZXhwIjoxNTcxNDY2NTg3LCJuYmYiOjE1NzEzODAxODcsImp0aSI6Ikw5WnNXbXhkdFdLYm9pR1IiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.S4k-b9vxwPtwbEBONyT1yxvK5-LYyrzGq0r5C0GJBsk',
-            //     },
-            // })
-            // .then(({ data }) => (this.users = data));
-            axios.get('api/walletaccount/GetAllWalletAccount').then(({ data}) => (this.WalletAccount = data));
+            axios.get('api/walletaccount/showAllWalletAccount')
+            .then(response => {
+                this.WalletAccount = response.data;
+            });
         },
         datatable() {
             setTimeout(function(){
@@ -92,13 +124,33 @@ export default {
                 });
             },1000);
         },
-        editWalletAccount(ess_id){
+        editWalletAccount(ess_id) {
             this.$router.push('/updatewalletaccount/' + ess_id)
+        },
+        debounceSearch(event) {
+            this.message = null
+            this.typing = 'You are typing'
+            clearTimeout(this.debounce)
+            this.debounce = setTimeout(() => {
+                this.typing = null
+                this.message = event.target.value
+                //console.log(this.message)
+                if(this.message !== "") {
+                    axios.get(`api/walletaccount/searchWalletAccount/${this.message}`)
+                    .then(response => {
+                        this.WalletAccount = response.data;
+                    })
+                    .catch(err => console.log(err))
+                }
+                else {
+                    this.loadWalletAccounts()
+                }
+            }, 600)
         }
     },
     mounted() {
         this.loadWalletAccounts();
-        this.datatable();
+        //this.datatable();
        
     }
 }

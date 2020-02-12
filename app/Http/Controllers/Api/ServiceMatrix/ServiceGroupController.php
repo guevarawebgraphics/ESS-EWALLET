@@ -27,7 +27,8 @@ class ServiceGroupController extends Controller
      * @param ServiceGroupRepository $ServiceGroupRepository
      * @ Constructor 
      **/
-    public function __construct(ServiceGroupRepository $ServiceGroupRepository){
+    public function __construct(ServiceGroupRepository $ServiceGroupRepository)
+    {
         $this->ServiceGroup = $ServiceGroupRepository;
         $this->middleware('auth:api');
     }
@@ -35,29 +36,33 @@ class ServiceGroupController extends Controller
     /**
      * Get All Service group 
      **/
-    public function GetAllService(){
-        $service_group = $this->ServiceGroup->GetAllService();
-        return response()->json($service_group);
+    public function showAllService()
+    {
+        return response()->json($this->ServiceGroup->showAllService());
     }
     /**
      * @ Store Service Group 
      **/
-    public function StoreServiceGroup(StoreServiceGroup $request){
-        $service_group = $this->ServiceGroup->StoreServiceGroup($request);
-
-        return response()->json([
-            'status' => 'success'
-        ]);
+    public function storeServiceGroup(StoreServiceGroup $request){
+        $service_group = $this->ServiceGroup->storeServiceGroup($request);
+        return response()->json(['status' => 'success']);
     }
 
     /**
      * @ Update Service Group
+     * @param id
      **/
-    public function UpdateServiceGroup(UpdateServiceGroup $request, $id){
-        $service_group = $this->ServiceGroup->UpdateServiceGroup($request, $id);
+    public function updateServiceGroup(UpdateServiceGroup $request, $id)
+    {
+        $service_group = $this->ServiceGroup->updateServiceGroup($request, $id);
+        return response()->json(['status' => 'success']);
+    }
 
-        return response()->json([
-            'status' => 'success'
-        ]);
+    /**
+     * @ search service group 
+     **/
+    public function searchServiceGroup($query)
+    {
+        return response()->json($this->ServiceGroup->searchServiceGroup($query));
     }
 }

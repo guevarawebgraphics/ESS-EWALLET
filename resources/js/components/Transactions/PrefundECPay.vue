@@ -28,7 +28,7 @@
                                                         <!-- Prefund Amount-->
                                                         <div class="form-group row">
                                                             <label class="control-label custom-label" for="prefundAmount">Prefund Amount: </label>
-                                                            <input type="number" class="form-control" :class="{ 'is-invalid': errors.has('prefundAmount') } " v-model="form.prefundAmount" name="prefundAmount" v-validate="'required'" id="prefundAmount">
+                                                            <input type="number" class="form-control" :class="{ 'is-invalid': errors.has('prefundAmount') } " v-model="form.prefundAmount" name="prefundAmount" v-validate="'required'" id="prefundAmount" min="0">
                                                             <has-error :form="form" field="prefundAmount"></has-error>
                                                             <p class="text-danger bg-white" v-if="errors.has('prefundAmount')">{{errors.first('prefundAmount')}}</p>
                                                         </div>
@@ -118,6 +118,7 @@ export default {
                 accountName: '',
                 accountNo: '',
                 depositSlip: '',
+                walletId: this.$route.params.wi
             })
         }
     },
@@ -145,6 +146,7 @@ export default {
                             formData.append('accountType', this.form.accountType)
                             formData.append('accountName', this.form.accountName)
                             formData.append('accountNo', this.form.accountNo)
+                            formData.append('walletId', this.form.walletId)
                             axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
                             axios.post('/api/transaction/storeprefund', formData, {
                                 headers: {
@@ -166,7 +168,7 @@ export default {
                                     this.$validator.reset()
                                     this.DepositSlipName = null
                                 }
-                                console.log(res)
+                                //console.log(res)
                                 $('#submitSpinner').attr('hidden', true)
                             })
                             .catch(err => {

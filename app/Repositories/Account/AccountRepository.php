@@ -22,7 +22,8 @@ class AccountRepository
     /**
      * @ constructor 
      **/
-    public function __construct(){
+    public function __construct()
+    {
         // ESS Connection
         $this->connection = DB::connection('mysql2');
     }
@@ -32,7 +33,8 @@ class AccountRepository
      * @ mysq2 (ESS Database)
      * @ Get All Account
      */
-    public function GellAllAccount($essid){
+    public function showAccountViaEssId($essid)
+    {
         $user = auth('api')->user();
         /**
          * @ check 
@@ -79,7 +81,7 @@ class AccountRepository
                                 'refcitymun.citymunDesc',
                                 'refcitymun.citymunCode',
                                 'refbrgy.brgyDesc',
-                                'refbrgy.id as refbrgy_id',
+                                'refbrgy.id as refbrgy_id'
                                 )
                             ->where('ess_basetable.ess_id', '=', $essid)
                             ->get();
@@ -159,7 +161,7 @@ class AccountRepository
                             'refcitymun.citymunDesc',
                             'refcitymun.citymunCode',
                             'refbrgy.brgyDesc',
-                            'refbrgy.id as refbrgy_id',
+                            'refbrgy.id as refbrgy_id'
                             )
                         ->where('employer_and_employee.ess_id', '=', $essid)
                         ->where('employer_and_employee.employer_id', '=', $user->employer_id)
@@ -221,15 +223,16 @@ class AccountRepository
      * @ Generate Wallet Account No
      * @return WalletAccountNo
      **/
-    public function generate_account_no(){
-        $account_no = $this->generate_no();
+    public function generateAccountNo()
+    {
+        $account_no = $this->generateNo();
 
         /**
          * @ Check if there is existing Wallet Account No 
          * @ Generate a new one if already exists
          **/
-        while (wallet_account::where('ess_id', $account_no)->count() > 0){
-            $account_no = $this->generate_no();
+        while (wallet_account::where('ess_id', $account_no)->count() > 0) {
+            $account_no = $this->generateNo();
         }
 
         return $account_no;
@@ -237,14 +240,15 @@ class AccountRepository
 
     /**
      * @ Generate No
-     * @return generate_no
+     * @return generateNo
      **/
-    public function generate_no(){
+    public function generateNo()
+    {
         $account_no = Keygen::length(9)->numeric()->generate(
             function($key) {
                 // Add a (-) after every fourth character in the key
                 return join('-', str_split($key, 3));
-            },
+            }
         );
 
         return $account_no;
