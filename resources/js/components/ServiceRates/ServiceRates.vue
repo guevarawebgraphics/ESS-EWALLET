@@ -20,6 +20,9 @@
                 </li>
             </ul>
 
+        <div class="text-center" v-if="ServiceRates.data === undefined">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
+        </div>
 
 
         <!-- Service Rate -->

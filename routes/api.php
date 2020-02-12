@@ -177,7 +177,11 @@ Route::prefix('service')->group(function(){
     
     Route::get('/getserviceslist',[
         'uses' => 'Api\\Services\ServiceController@showService'
-    ]); 
+    ]);
+    
+    Route::get('/searchservicelist/{query}',[
+        'uses' => 'Api\\Services\ServiceController@searchListOfServices'
+    ]);
     
     Route::post('/storeService',[
         'uses' => 'Api\\Services\ServiceController@storeService' 

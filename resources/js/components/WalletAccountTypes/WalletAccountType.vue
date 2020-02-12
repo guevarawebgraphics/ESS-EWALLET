@@ -11,7 +11,7 @@
                         <div class="col-md-12">
                             <div class="float-right">
                                 <div class="search-box float-left">
-                                    <form action="#">
+                                    <form action="#" @keydown.prevent.enter.self>
                                         <input class="form-control" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account Types..." required>
                                         <i class="ti-search"></i>
                                     </form>
@@ -54,6 +54,10 @@
                             </div>
                             <div class="text-center" v-if="this.walletAccountTypes.data == 0">
                                 <label>No Results found</label>
+                            </div>
+
+                            <div class="text-center" v-if="walletAccountTypes.data === undefined">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
                             </div>
                         </div>
                         <!-- ./ Col -->

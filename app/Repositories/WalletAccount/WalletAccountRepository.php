@@ -828,7 +828,7 @@ class WalletAccountRepository
                 'service_matrix.service_id',
                 'wservice.service_name',
                 'servicetypedetails.st_name',
-                'service_grouping.group_description',
+                'service_grouping.group_description'
                //  'service_matrix.admin_all',
                //  'service_matrix.admin_some',
                //  'service_matrix.merchant_allP',

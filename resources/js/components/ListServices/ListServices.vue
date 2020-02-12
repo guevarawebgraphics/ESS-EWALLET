@@ -10,7 +10,7 @@
                         <hr>
                         <div class="float-right">
                             <div class="search-box float-left">
-                                <form action="#">
+                                <form action="#" @keydown.prevent.enter.self>
                                     <input class="form-control" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account Types..." required>
                                     <i class="ti-search"></i>
                                 </form>
@@ -41,6 +41,7 @@
                                         <td>{{ s.rname }}</td>
                                         <td>
                                             <router-link :to="{ name: 'Prefund EC Pay', params: { wi: s.rwan } }" para class="btn btn-primary btn-xs"> Transact</router-link> 
+                                            <router-link :to="{ name: 'PutMoney', params: { wi: s.rwan } }" para class="btn btn-primary btn-xs"> Put Money</router-link> 
                                         </td>   
                                     </tr>  
                                 </tbody>
