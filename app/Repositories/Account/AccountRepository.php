@@ -128,6 +128,44 @@ class AccountRepository
                     return $employee;
 
                 }
+
+                /**
+                 * if Sub Admin or Others
+                **/
+                if($check->user_type_id) {
+                    $employer = $this->connection
+                        ->table('ess_basetable')
+                        ->join('users', 'ess_basetable.ess_id', '=', 'users.username')
+                        //->join('employee', 'employer_and_employee.employer_id', 'employee.id')
+                        ->join('employer', 'employer.id', 'users.employer_id')
+                        ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')
+                        ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
+                        ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id') 
+                        ->select(
+                            'users.username',
+                            'employer.business_name',
+                            'employer.accountname',
+                            'employer.tin',
+                            'employer.sss',
+                            'employer.phic',
+                            'employer.contact_email as email_add',
+                            'employer.address_unit',
+                            'employer.address_country',
+                            'employer.address_town',
+                            'employer.address_cityprovince',
+                            'employer.address_barangay',
+                            'employer.address_zipcode',
+                            'refprovince.provDesc',
+                            'refprovince.provCode',
+                            'refcitymun.citymunDesc',
+                            'refcitymun.citymunCode',
+                            'refbrgy.brgyDesc',
+                            'refbrgy.id as refbrgy_id'
+                            )
+                        ->where('ess_basetable.ess_id', '=', $essid)
+                        ->get();
+                    return $employer;
+                }
             }
              /**
               * @  check if employer
