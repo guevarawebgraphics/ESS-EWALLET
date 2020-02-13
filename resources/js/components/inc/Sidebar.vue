@@ -29,7 +29,7 @@
                             <router-link to="/servicegatewaylist" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Prepaid Service Gateway</span></router-link>
                         </li>
                         <li>
-                            <router-link to="/ServiceRates" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Rates</span></router-link>
+                            <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Service Rates</span></a>
                         </li>
                         <li>
                             <a href="#dashboard" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Admin Reports</span></a>
