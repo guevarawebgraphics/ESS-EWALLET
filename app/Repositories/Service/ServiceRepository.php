@@ -469,7 +469,6 @@ class ServiceRepository
                             'services.wallet_condition',
                             'wallet_account.wallet_account_no as rwan',
                             'wallet_account.wallet_account_name as rname'
-
                         )
                         ->orWhere('services.service_code', 'LIKE', '%'.$query.'%')
                         ->orWhere('services.service_name', 'LIKE', '%'.$query.'%')
@@ -478,7 +477,8 @@ class ServiceRepository
                         ->orWhere('services.service_code', 'LIKE', '%'.$query.'%')
                         ->orWhere('wallet_account.wallet_account_no', 'LIKE', '%'.$query.'%')
                         ->orWhere('wallet_account.wallet_account_name', 'LIKE', '%'.$query.'%')
-                        ->paginate(10);
+                        ->get();
+                        // ->paginate(10);
         return $listServices;
     }
 
