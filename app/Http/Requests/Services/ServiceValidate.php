@@ -34,5 +34,6 @@ class ServiceValidate extends FormRequest
             'ir_wallet_acc_name' => 'required',
         //  'service_template' => 'required',
         ];
+        
     }
 }
