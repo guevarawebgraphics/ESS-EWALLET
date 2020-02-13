@@ -43,6 +43,6 @@ class CreateAccountBalancesLedgerTable extends Migration
      */
     public function down()
     {
-        Schema::conneciton('mysql3')->dropIfExists('account_balances_ledger');
+        Schema::connection('mysql3')->dropIfExists('account_balances_ledger');
     }
 }

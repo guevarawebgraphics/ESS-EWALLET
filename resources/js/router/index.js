@@ -51,6 +51,7 @@ const routes = [
     { 
       path: '/servicetypes', 
       component: require('../components/WalletServiceTypes/ServiceTypeTable.vue').default, 
+      name: 'Wallet Service Types',
       beforeEnter: (requireLogin, checkAdmin)
     }, 
     { 
@@ -140,7 +141,8 @@ const routes = [
      */
     {
       path:'/servicegatewaylist',
-      component: require('../components/ServiceGateway/ServiceGatewayTable.vue').default, 
+      component: require('../components/ServiceGateway/ServiceGatewayTable.vue').default,
+      name: 'Prepaid Service Gateway', 
       beforeEnter: (requireLogin, checkAdmin)
     },
     /******************************Employer************************/
@@ -182,7 +184,7 @@ const routes = [
       beforeEnter: (requireLogin,checkMerchant),
     },
     {
-      path: '/put-money',
+      path: '/put-money/:wi',
       component: require('../components/Transactions/PutMoney').default,
       name: 'PutMoney',
       beforeEnter: requireLogin,

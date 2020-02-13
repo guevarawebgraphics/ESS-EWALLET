@@ -16,10 +16,13 @@
                     <a class="btn btn-primary btn-xs" href="#EditServiceRates" @click="editServiceRates(items)">
                         <i class="fa fa-edit blue"></i>
                         <span>Update</span>
-                    </a>
+                    </a> 
                 </li>
             </ul>
 
+        <div class="text-center" v-if="ServiceRates.data === undefined">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
+        </div>
 
 
         <!-- Service Rate -->
@@ -107,7 +110,7 @@ export default {
             this.form.fill(items)
         },
         updateServiceRates(){
-            $('#btnUpdate').attr('disabled', true)
+            $( '#btnUpdate').attr('disabled', true)
             $('#modalClose').attr('disabled', true)
             $('#Spinner').removeAttr('hidden')
             this.$Progress.start()
@@ -133,9 +136,8 @@ export default {
                 $('#btnUpdate').removeAttr('disabled')
                 $('#modalClose').removeAttr('disabled')
                 $('#Spinner').attr('hidden', true)
-            })
+            }) 
         },
-
         storeServiceRates(){
             $('#btnSave').attr('disabled', true)
             $('#modalClose').attr('disabled', true)
@@ -147,9 +149,7 @@ export default {
                 this.$Progress.finish()
                 $('#ServiceRateModal').modal('hide')
                 $(document.body).removeAttr('class')
-                // $("#service_group_table").DataTable().destroy()
                 this.showServiceRates()
-                // this.datatable()
                 $('#btnSave').removeAttr('disabled')
                 $('#modalClose').removeAttr('disabled')
                 $('#saveSpinner').attr('hidden', true)

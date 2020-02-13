@@ -8,9 +8,9 @@
                 <router-link to="/createservice/create" class="btn btn-primary btn-sm float-left mr-3">Create Solo Services <i class="ti-pencil-alt"></i></router-link>  
                 <router-link to="/createjointservice" class="btn btn-primary btn-sm float-left">Create Joint Services <i class="ti-pencil-alt"></i></router-link> 
                 <div class="float-right">
-                    <div class="search-box">
+                    <div class="search-box" @keydown.prevent.enter.self>
                         <form action="#">
-                            <input class="form-control" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account Types..." required>
+                            <input class="form-control" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Services List..." required>
                             <i class="ti-search"></i>
                         </form>
                     </div>
@@ -20,7 +20,7 @@
                 <div class="col -md-12">
                     <div class="card-body">
                         <div class="data-tables datatable-dark">
-                        <table class="table table-hover table-striped table-bordered table-responsive text-center" id="table-services">
+                        <table class="table table-hover table-striped table-bordered text-center" id="table-services">
                         <thead>
                             <tr class="th-table">
                                 <th>Service Code</th>
@@ -33,7 +33,7 @@
                             </tr>  
                         </thead>
                         <tbody>
-                            <tr v-for="s in Services" :key="s.service_name"> 
+                            <tr v-for="s in Services" :key="s.id"> 
                                 <td> 
                                     <p>
                                     {{s.service_code}}  
@@ -79,6 +79,15 @@
                             </tbody>
                         </table> 
                         </div>
+
+                        <div class="text-center" v-if="Services == 0">
+                            <label>No Results found</label>
+                        </div>
+
+                        <div class="text-center" v-if="Services.length === undefined">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -145,42 +154,22 @@ export default {
             this.debounce = setTimeout(() => {
                 this.typing = null
                 this.message = event.target.value
-                //console.log(this.message)
                 if(this.message !== "") {
-                    axios.get(`api/service_type/searchservicetype/${this.message}`)
+                    axios.get(`/api/service/searchservicelist/${this.message}`)
                     .then(response => {
-                        this.services = response.data;
+                        this.Services = response.data;
                     })
                     .catch(err => console.log(err))
+                   
                 }
                 else {
                     this.showServices()
                 }
             }, 600)
         }
-        /*
-        // Sir Manuel :
-        showServiceType(id,wallet_condition){ 
-            if(wallet_condition == 'solo'){ 
-                axios.get('/api/service/getservicetypecode/'+id+'/solo')
-                .then(res => {
-                    this.st_code_get.push({"id": id, "st_code": res.data.st_code})
-                    // this.$set(this.Services, id, {"st_code" : res.data.st_code})
-                })
-                            }) 
-                })
-
-            }
-            else {
-                return 'joint'
-            }
-         
-        }
-        */
  },
  created() {
     this.showServices()
-    // this.showDatatable() 
  }
 
 }

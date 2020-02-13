@@ -8,7 +8,7 @@
                         <router-link class="btn btn-primary btn-sm float-left mb-3" to="/createwalletaccount">Create Wallet Account <i class="ti-pencil-alt"></i></router-link>
                         <div class="float-right">
                             <div class="search-box">
-                                <form action="#">
+                                <form action="#" @keydown.prevent.enter.self>
                                     <input class="form-control" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account..." required>
                                     <i class="ti-search"></i>
                                 </form>
@@ -56,6 +56,10 @@
                         </div>
                         <div class="text-center" v-if="this.WalletAccount.data == 0">
                             <label>No Results found</label>
+                        </div>
+
+                        <div class="text-center" v-if="WalletAccount.data === undefined">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
                         </div>
                     </div>
                 </div>

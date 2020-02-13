@@ -16,7 +16,7 @@
                                 <hr>
                                 <div class="float-right">
                                     <div class="search-box">
-                                        <form action="#">
+                                        <form action="#" @keydown.prevent.enter.self>
                                             <input class="form-control mb-3" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account Types..." required>
                                             <i class="ti-search"></i>
                                         </form>
@@ -83,20 +83,24 @@
                                                         <label class="custom-control-label" v-if="sm.agent == false" v-bind:for="'agent' + sm.id">SOME</label>
                                                     </div>
                                                 </td> -->
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="admin_all[]" class="form-check-input" v-model="sm.admin_all" id="admin_all"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" id="admin_some"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" id="merchant_all"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some" id="merchant_some"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" id="branch_all"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" id="branch_some"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" id="agent_all"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" id="agent_some"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="admin_all[]" class="form-check-input" v-model="sm.admin_all"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" ></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" ></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some"></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" ></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" ></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" ></td>
+                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" ></td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <!-- ./ Table -->
                                     <div class="text-center" v-if="this.Services.data == 0">
                                         <label>No Results found</label>
+                                    </div>
+
+                                    <div class="text-center" v-if="Services.data === undefined">
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
                                     </div>
                                 </div>
                             </div>
@@ -193,7 +197,7 @@ export default {
                 if (result.value) {
                     axios.post('api/servicematrix/storeServiceMatrix', this.Services)
                     .then((response) => {
-                        console.log(response)
+                        // console.log(response)
                         this.$Progress.increase(10)
                         this.$Progress.finish()
                         // $("#service_matrix").DataTable().destroy()
@@ -224,7 +228,7 @@ export default {
             axios.get('api/servicematrix/ServiceMatrixConfig')
                 .then(({ data }) => (this.Services = data))
                 .catch(err => {
-                    console.log(err)
+                    // console.log(err)
                 })
         },
         debounceSearch(event) {
@@ -260,7 +264,7 @@ export default {
         }
         
         
-        console.log(this.$route.name)
+        // console.log(this.$route.name)
     }
 }
 </script>
