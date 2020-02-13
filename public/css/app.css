@@ -43,7 +43,24 @@
 }
 
 #main-content {
-  background-color: #F3F8FB;
+  background-color: #0077B5;
+  background-image: url(/images/undraw_transfer_money_rywa.svg?af0e13463dc2f00b0c93d3acaca1b287);
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
+.icon-background {
+  background-color: #0077B5 !important;
+}
+
+/*Media Queries*/
+
+@media only screen and (max-width: 987px) {
+  #main-content {
+    background-image: url("");
+    background-position: center;
+    transition: background-image 0.2s ease-in-out;
+  }
 }
 
 /*!

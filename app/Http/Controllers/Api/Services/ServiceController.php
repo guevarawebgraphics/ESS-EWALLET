@@ -26,80 +26,92 @@ class ServiceController extends Controller
      * @param ServiceRepository $ServiceRepository
      * @ Contructor 
      **/
-    public function __construct(ServiceRepository $ServiceRepository){
+    public function __construct(ServiceRepository $ServiceRepository)
+    {
         $this->services =  $ServiceRepository; 
         $this->middleware('auth:api');
     }
     /**
      * For inserting Service , Wallet Details and Service & Service Type ID
      */
-    public function InsertService(ServiceValidate $request){
-        $InsertService = $this->services->InsertServiceMethod($request);
+    public function storeService(ServiceValidate $request)
+    {
+        $InsertService = $this->services->storeService($request);
         return response()->json($InsertService);    
     } 
     /**
      * For Updating Services , Wallet Details etc.
      */
-    public function UpdateService(ServiceValidate $request){
-        $UpdateService = $this->services->UpdateServiceMethod($request);
+    public function updateService(ServiceValidate $request)
+    {
+        $UpdateService = $this->services->updateServiceMethod($request);
         return response()->json($UpdateService);    
     }
     /**
      * For Inserting Joint Services 
      */
-    public function InsertJointService(JointValidate $request){
-        $InsertJointService = $this->services->InsertJointServices($request);
+    public function storetJointServices(JointValidate $request)
+    {
+        $InsertJointService = $this->services->storetJointServices($request);
         return response()->json($InsertJointService);
     }
     /**
      * For getting Service Name using service code 
      */
-    public function fillServiceType(Request $request,$service_type_code){
-        $fill_service_type = $this->services->FillServiceTypeMethod($service_type_code);
+    public function fillServiceType(Request $request,$service_type_code)
+    {
+        $fill_service_type = $this->services->fillServiceType($service_type_code);
         return response()->json($fill_service_type);
     } 
     /**
      * Fill principal redeem account name
      */
-    public function FillPrWalletMethod($pr_wallet_acc_no){
-        $fill_pr_account_name = $this->services->FillPrAccountNameMethod($pr_wallet_acc_no);
+    public function fillPrWallet($pr_wallet_acc_no)
+    {
+        $fill_pr_account_name = $this->services->fillPrAccountName($pr_wallet_acc_no);
         return response()->json($fill_pr_account_name);
     } 
-    public function FillIrWalletMethod($ir_wallet_acc_no){
-        $fill_ir_account_name = $this->services->FillIrAccountNameMethod($ir_wallet_acc_no);
+    public function fillIrWallet($ir_wallet_acc_no)
+    {
+        $fill_ir_account_name = $this->services->fillIrAccountName($ir_wallet_acc_no);
         return response()->json($fill_ir_account_name);
     }
     /**
      * Get service table
      */
-    public function GetService(){
-        $get_services = $this->services->GetAllServices();
-        return response()->json($get_services);
+    public function showService()
+    {
+        return response()->json($this->services->showServices());
     }
-    public function GetServiceDetails($service_id){
-        $get_service_details = $this->services->GetServiceDetails($service_id);
+    public function getServiceDetails($service_id)
+    {
+        $get_service_details = $this->services->getServiceDetails($service_id);
         return response()->json($get_service_details);
     }
-    public function GetWalletDetails($id){
-        $get_wallet_details = $this->services->GetWalletDetails($id);
+    public function getWalletDetails($id)
+    {
+        $get_wallet_details = $this->services->getWalletDetails($id);
         return response()->json($get_wallet_details);
     }
-    public function GetVSDR($service_id){
-        $get_vsdr = $this->services->GetVSDR($service_id);
+    public function getVSDR($service_id)
+    {
+        $get_vsdr = $this->services->getVSDR($service_id);
         return response()->json($get_vsdr);
     }
     /**
      * Get Joint Services
      */
-    public function GetJointServicesList($id){
-        $get_list_services = $this->services->JointServiceslist($id);
+    public function getJointServicesList($id)
+    {
+        $get_list_services = $this->services->jointServiceslist($id);
         return response()->json($get_list_services);
     }
     /**
      * Identifies which Service Type Code of this ID
      */
-    public function GetServiceTypeCode($id,$wallet_condition){
-        $get_service_type_code = $this->services->GetServiceTypeCode($id,$wallet_condition);
+    public function getServiceTypeCode($id,$wallet_condition)
+    {
+        $get_service_type_code = $this->services->getServiceTypeCode($id,$wallet_condition);
         return response()->json($get_service_type_code);
     }
 
@@ -107,9 +119,19 @@ class ServiceController extends Controller
      * @ List Services 
      * @return JSON($list_services)
      **/
-    public function ListServices(){
-        $list_services = $this->services->ListOfServices();
+    public function showListServices()
+    {
+        $list_services = $this->services->showListOfServices();
         return response()->json($list_services);
+    }
+
+    /**
+     * @ List Services 
+     * @return searchListofServices
+     **/
+    public function searchListOfServices($query)
+    {
+        return response()->json($this->services->searchListOfServices($query));
     }
 
 }

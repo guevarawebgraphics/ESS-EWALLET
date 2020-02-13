@@ -24,8 +24,8 @@ class ServiceGateway extends FormRequest
     public function rules()
     {
         return [
-            'gateway_code' => 'required',
-            'gateway_name' => 'required',
+            // /'gateway_code' => 'required',
+            'gateway_name' => 'required|unique:service_gateway',
         ];
     }
 }
