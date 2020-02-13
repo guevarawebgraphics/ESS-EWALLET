@@ -10,7 +10,7 @@
                 <router-link class="btn btn-primary float-left btn-xs" to="/createservicetype">Create New Service Type <i class="ti-pencil-alt"></i></router-link>
                 <div class="float-right">
                     <div class="search-box">
-                        <form action="#">
+                        <form action="#" @keydown.prevent.enter.self>
                             <input class="form-control" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account Types..." required>
                             <i class="ti-search"></i>
                         </form>
@@ -40,6 +40,11 @@
                         <div class="text-center" v-if="this.services.data == 0">
                             <label>No Results found</label>
                         </div>
+
+                        <div class="text-center" v-if="services.data === undefined">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
+                        </div>
+
                         </div>
                     </div>
                     <!-- Card Footer -->
@@ -123,7 +128,7 @@
         }
         },
         created(){ 
-            this.loadServices(); 
+            this.loadServices();
             // this.loadDataTable();
         }
     }

@@ -11,7 +11,7 @@
                     <button type="button" class="btn btn-primary btn-xs float-left mb-3" @click="openModal">Create New <i class="ti-pencil-alt text-white"></i></button>
                     <div class="float-right">
                         <div class="search-box">
-                            <form action="#">
+                            <form action="#" @keydown.prevent.enter.self>
                                 <input class="form-control" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account Types..." required>
                                 <i class="ti-search"></i>
                             </form>
@@ -42,6 +42,10 @@
                     <div class="text-center" v-if="this.ServiceGateway.data == 0">
                         <label>No Results found</label>
                     </div>
+                    <div class="text-center" v-if="ServiceGateway.data === undefined">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
+                    </div>
+
                     <!-- Card Footer -->
                     <div class="card-footer bg-white">
                         <!-- Pagination Length -->

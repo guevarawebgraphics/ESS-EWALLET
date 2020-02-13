@@ -2012,6 +2012,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2526,6 +2527,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2691,6 +2696,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -3130,6 +3139,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3275,6 +3288,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
 //
 //
 //
@@ -3919,6 +3935,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -5819,6 +5839,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     var _ref;
@@ -6826,6 +6850,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -8327,6 +8356,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * This module is related with other modules to be completed.
@@ -8386,11 +8424,11 @@ __webpack_require__.r(__webpack_exports__);
       clearTimeout(this.debounce);
       this.debounce = setTimeout(function () {
         _this2.typing = null;
-        _this2.message = event.target.value; //console.log(this.message)
+        _this2.message = event.target.value;
 
         if (_this2.message !== "") {
-          axios.get("api/service_type/searchservicetype/".concat(_this2.message)).then(function (response) {
-            _this2.services = response.data;
+          axios.get("/api/service/searchservicelist/".concat(_this2.message)).then(function (response) {
+            _this2.Services = response.data;
           })["catch"](function (err) {
             return console.log(err);
           });
@@ -8399,28 +8437,9 @@ __webpack_require__.r(__webpack_exports__);
         }
       }, 600);
     }
-    /*
-    // Sir Manuel :
-    showServiceType(id,wallet_condition){ 
-        if(wallet_condition == 'solo'){ 
-            axios.get('/api/service/getservicetypecode/'+id+'/solo')
-            .then(res => {
-                this.st_code_get.push({"id": id, "st_code": res.data.st_code})
-                // this.$set(this.Services, id, {"st_code" : res.data.st_code})
-            })
-                        }) 
-            })
-          }
-        else {
-            return 'joint'
-        }
-     
-    }
-    */
-
   },
   created: function created() {
-    this.showServices(); // this.showDatatable() 
+    this.showServices();
   }
 });
 
@@ -61142,20 +61161,46 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "float-right" }, [
               _c("div", { staticClass: "search-box float-left" }, [
-                _c("form", { attrs: { action: "#" } }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      name: "search",
-                      placeholder: "Search Wallet Account Types...",
-                      required: ""
-                    },
-                    on: { input: _vm.debounceSearch }
-                  }),
-                  _vm._v(" "),
-                  _c("i", { staticClass: "ti-search" })
-                ])
+                _c(
+                  "form",
+                  {
+                    attrs: { action: "#" },
+                    on: {
+                      keydown: function($event) {
+                        if (
+                          !$event.type.indexOf("key") &&
+                          _vm._k(
+                            $event.keyCode,
+                            "enter",
+                            13,
+                            $event.key,
+                            "Enter"
+                          )
+                        ) {
+                          return null
+                        }
+                        $event.preventDefault()
+                        if ($event.target !== $event.currentTarget) {
+                          return null
+                        }
+                      }
+                    }
+                  },
+                  [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        name: "search",
+                        placeholder: "Search Wallet Account Types...",
+                        required: ""
+                      },
+                      on: { input: _vm.debounceSearch }
+                    }),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "ti-search" })
+                  ]
+                )
               ])
             ])
           ]),
@@ -61202,6 +61247,21 @@ var render = function() {
                                 }
                               },
                               [_vm._v(" Transact")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "btn btn-primary btn-xs",
+                                attrs: {
+                                  to: {
+                                    name: "PutMoney",
+                                    params: { wi: s.rwan }
+                                  },
+                                  para: ""
+                                }
+                              },
+                              [_vm._v(" Put Money")]
                             )
                           ],
                           1
@@ -61761,20 +61821,46 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "float-right" }, [
               _c("div", { staticClass: "search-box" }, [
-                _c("form", { attrs: { action: "#" } }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      name: "search",
-                      placeholder: "Search Wallet Account Types...",
-                      required: ""
-                    },
-                    on: { input: _vm.debounceSearch }
-                  }),
-                  _vm._v(" "),
-                  _c("i", { staticClass: "ti-search" })
-                ])
+                _c(
+                  "form",
+                  {
+                    attrs: { action: "#" },
+                    on: {
+                      keydown: function($event) {
+                        if (
+                          !$event.type.indexOf("key") &&
+                          _vm._k(
+                            $event.keyCode,
+                            "enter",
+                            13,
+                            $event.key,
+                            "Enter"
+                          )
+                        ) {
+                          return null
+                        }
+                        $event.preventDefault()
+                        if ($event.target !== $event.currentTarget) {
+                          return null
+                        }
+                      }
+                    }
+                  },
+                  [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        name: "search",
+                        placeholder: "Search Wallet Account Types...",
+                        required: ""
+                      },
+                      on: { input: _vm.debounceSearch }
+                    }),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "ti-search" })
+                  ]
+                )
               ])
             ]),
             _vm._v(" "),
@@ -61826,6 +61912,19 @@ var render = function() {
               this.ServiceGateway.data == 0
                 ? _c("div", { staticClass: "text-center" }, [
                     _c("label", [_vm._v("No Results found")])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.ServiceGateway.data === undefined
+                ? _c("div", { staticClass: "text-center" }, [
+                    _c("span", {
+                      staticClass: "spinner-border spinner-border-sm",
+                      attrs: {
+                        role: "status",
+                        "aria-hidden": "true",
+                        id: "updateSpinner"
+                      }
+                    })
                   ])
                 : _vm._e(),
               _vm._v(" "),
@@ -62153,20 +62252,46 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "float-right" }, [
                 _c("div", { staticClass: "search-box" }, [
-                  _c("form", { attrs: { action: "#" } }, [
-                    _c("input", {
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        name: "search",
-                        placeholder: "Search Wallet Account Types...",
-                        required: ""
-                      },
-                      on: { input: _vm.debounceSearch }
-                    }),
-                    _vm._v(" "),
-                    _c("i", { staticClass: "ti-search" })
-                  ])
+                  _c(
+                    "form",
+                    {
+                      attrs: { action: "#" },
+                      on: {
+                        keydown: function($event) {
+                          if (
+                            !$event.type.indexOf("key") &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
+                            )
+                          ) {
+                            return null
+                          }
+                          $event.preventDefault()
+                          if ($event.target !== $event.currentTarget) {
+                            return null
+                          }
+                        }
+                      }
+                    },
+                    [
+                      _c("input", {
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          name: "search",
+                          placeholder: "Search Wallet Account Types...",
+                          required: ""
+                        },
+                        on: { input: _vm.debounceSearch }
+                      }),
+                      _vm._v(" "),
+                      _c("i", { staticClass: "ti-search" })
+                    ]
+                  )
                 ])
               ]),
               _vm._v(" "),
@@ -62218,6 +62343,19 @@ var render = function() {
                 this.serviceGroups.data == 0
                   ? _c("div", { staticClass: "text-center" }, [
                       _c("label", [_vm._v("No Results found")])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.serviceGroups.data === undefined
+                  ? _c("div", { staticClass: "text-center" }, [
+                      _c("span", {
+                        staticClass: "spinner-border spinner-border-sm",
+                        attrs: {
+                          role: "status",
+                          "aria-hidden": "true",
+                          id: "updateSpinner"
+                        }
+                      })
                     ])
                   : _vm._e()
               ])
@@ -62547,20 +62685,46 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "float-right" }, [
                     _c("div", { staticClass: "search-box" }, [
-                      _c("form", { attrs: { action: "#" } }, [
-                        _c("input", {
-                          staticClass: "form-control mb-3",
-                          attrs: {
-                            type: "text",
-                            name: "search",
-                            placeholder: "Search Wallet Account Types...",
-                            required: ""
-                          },
-                          on: { input: _vm.debounceSearch }
-                        }),
-                        _vm._v(" "),
-                        _c("i", { staticClass: "ti-search" })
-                      ])
+                      _c(
+                        "form",
+                        {
+                          attrs: { action: "#" },
+                          on: {
+                            keydown: function($event) {
+                              if (
+                                !$event.type.indexOf("key") &&
+                                _vm._k(
+                                  $event.keyCode,
+                                  "enter",
+                                  13,
+                                  $event.key,
+                                  "Enter"
+                                )
+                              ) {
+                                return null
+                              }
+                              $event.preventDefault()
+                              if ($event.target !== $event.currentTarget) {
+                                return null
+                              }
+                            }
+                          }
+                        },
+                        [
+                          _c("input", {
+                            staticClass: "form-control mb-3",
+                            attrs: {
+                              type: "text",
+                              name: "search",
+                              placeholder: "Search Wallet Account Types...",
+                              required: ""
+                            },
+                            on: { input: _vm.debounceSearch }
+                          }),
+                          _vm._v(" "),
+                          _c("i", { staticClass: "ti-search" })
+                        ]
+                      )
                     ])
                   ]),
                   _vm._v(" "),
@@ -63035,6 +63199,19 @@ var render = function() {
                       ? _c("div", { staticClass: "text-center" }, [
                           _c("label", [_vm._v("No Results found")])
                         ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.Services.data === undefined
+                      ? _c("div", { staticClass: "text-center" }, [
+                          _c("span", {
+                            staticClass: "spinner-border spinner-border-sm",
+                            attrs: {
+                              role: "status",
+                              "aria-hidden": "true",
+                              id: "updateSpinner"
+                            }
+                          })
+                        ])
                       : _vm._e()
                   ])
                 ])
@@ -63266,6 +63443,19 @@ var render = function() {
           ])
         ])
       }),
+      _vm._v(" "),
+      _vm.ServiceRates.data === undefined
+        ? _c("div", { staticClass: "text-center" }, [
+            _c("span", {
+              staticClass: "spinner-border spinner-border-sm",
+              attrs: {
+                role: "status",
+                "aria-hidden": "true",
+                id: "updateSpinner"
+              }
+            })
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "div",
@@ -64708,20 +64898,46 @@ var render = function() {
             _c("div", { staticClass: "col-md-12" }, [
               _c("div", { staticClass: "float-right" }, [
                 _c("div", { staticClass: "search-box float-left" }, [
-                  _c("form", { attrs: { action: "#" } }, [
-                    _c("input", {
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        name: "search",
-                        placeholder: "Search Wallet Account Types...",
-                        required: ""
-                      },
-                      on: { input: _vm.debounceSearch }
-                    }),
-                    _vm._v(" "),
-                    _c("i", { staticClass: "ti-search" })
-                  ])
+                  _c(
+                    "form",
+                    {
+                      attrs: { action: "#" },
+                      on: {
+                        keydown: function($event) {
+                          if (
+                            !$event.type.indexOf("key") &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
+                            )
+                          ) {
+                            return null
+                          }
+                          $event.preventDefault()
+                          if ($event.target !== $event.currentTarget) {
+                            return null
+                          }
+                        }
+                      }
+                    },
+                    [
+                      _c("input", {
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          name: "search",
+                          placeholder: "Search Wallet Account Types...",
+                          required: ""
+                        },
+                        on: { input: _vm.debounceSearch }
+                      }),
+                      _vm._v(" "),
+                      _c("i", { staticClass: "ti-search" })
+                    ]
+                  )
                 ])
               ])
             ]),
@@ -64798,6 +65014,19 @@ var render = function() {
               this.walletAccountTypes.data == 0
                 ? _c("div", { staticClass: "text-center" }, [
                     _c("label", [_vm._v("No Results found")])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.walletAccountTypes.data === undefined
+                ? _c("div", { staticClass: "text-center" }, [
+                    _c("span", {
+                      staticClass: "spinner-border spinner-border-sm",
+                      attrs: {
+                        role: "status",
+                        "aria-hidden": "true",
+                        id: "updateSpinner"
+                      }
+                    })
                   ])
                 : _vm._e()
             ])
@@ -71313,20 +71542,46 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "float-right" }, [
                   _c("div", { staticClass: "search-box" }, [
-                    _c("form", { attrs: { action: "#" } }, [
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          name: "search",
-                          placeholder: "Search Wallet Account...",
-                          required: ""
-                        },
-                        on: { input: _vm.debounceSearch }
-                      }),
-                      _vm._v(" "),
-                      _c("i", { staticClass: "ti-search" })
-                    ])
+                    _c(
+                      "form",
+                      {
+                        attrs: { action: "#" },
+                        on: {
+                          keydown: function($event) {
+                            if (
+                              !$event.type.indexOf("key") &&
+                              _vm._k(
+                                $event.keyCode,
+                                "enter",
+                                13,
+                                $event.key,
+                                "Enter"
+                              )
+                            ) {
+                              return null
+                            }
+                            $event.preventDefault()
+                            if ($event.target !== $event.currentTarget) {
+                              return null
+                            }
+                          }
+                        }
+                      },
+                      [
+                        _c("input", {
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            name: "search",
+                            placeholder: "Search Wallet Account...",
+                            required: ""
+                          },
+                          on: { input: _vm.debounceSearch }
+                        }),
+                        _vm._v(" "),
+                        _c("i", { staticClass: "ti-search" })
+                      ]
+                    )
                   ])
                 ])
               ],
@@ -71403,6 +71658,19 @@ var render = function() {
               this.WalletAccount.data == 0
                 ? _c("div", { staticClass: "text-center" }, [
                     _c("label", [_vm._v("No Results found")])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.WalletAccount.data === undefined
+                ? _c("div", { staticClass: "text-center" }, [
+                    _c("span", {
+                      staticClass: "spinner-border spinner-border-sm",
+                      attrs: {
+                        role: "status",
+                        "aria-hidden": "true",
+                        id: "updateSpinner"
+                      }
+                    })
                   ])
                 : _vm._e()
             ])
@@ -73825,20 +74093,46 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "float-right" }, [
               _c("div", { staticClass: "search-box" }, [
-                _c("form", { attrs: { action: "#" } }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      name: "search",
-                      placeholder: "Search Wallet Account Types...",
-                      required: ""
-                    },
-                    on: { input: _vm.debounceSearch }
-                  }),
-                  _vm._v(" "),
-                  _c("i", { staticClass: "ti-search" })
-                ])
+                _c(
+                  "form",
+                  {
+                    attrs: { action: "#" },
+                    on: {
+                      keydown: function($event) {
+                        if (
+                          !$event.type.indexOf("key") &&
+                          _vm._k(
+                            $event.keyCode,
+                            "enter",
+                            13,
+                            $event.key,
+                            "Enter"
+                          )
+                        ) {
+                          return null
+                        }
+                        $event.preventDefault()
+                        if ($event.target !== $event.currentTarget) {
+                          return null
+                        }
+                      }
+                    }
+                  },
+                  [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        name: "search",
+                        placeholder: "Search Wallet Account Types...",
+                        required: ""
+                      },
+                      on: { input: _vm.debounceSearch }
+                    }),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "ti-search" })
+                  ]
+                )
               ])
             ])
           ],
@@ -73899,6 +74193,19 @@ var render = function() {
                 this.services.data == 0
                   ? _c("div", { staticClass: "text-center" }, [
                       _c("label", [_vm._v("No Results found")])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.services.data === undefined
+                  ? _c("div", { staticClass: "text-center" }, [
+                      _c("span", {
+                        staticClass: "spinner-border spinner-border-sm",
+                        attrs: {
+                          role: "status",
+                          "aria-hidden": "true",
+                          id: "updateSpinner"
+                        }
+                      })
                     ])
                   : _vm._e()
               ])
@@ -77362,22 +77669,42 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "float-right" }, [
-              _c("div", { staticClass: "search-box" }, [
-                _c("form", { attrs: { action: "#" } }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      name: "search",
-                      placeholder: "Search Wallet Account Types...",
-                      required: ""
-                    },
-                    on: { input: _vm.debounceSearch }
-                  }),
-                  _vm._v(" "),
-                  _c("i", { staticClass: "ti-search" })
-                ])
-              ])
+              _c(
+                "div",
+                {
+                  staticClass: "search-box",
+                  on: {
+                    keydown: function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      $event.preventDefault()
+                      if ($event.target !== $event.currentTarget) {
+                        return null
+                      }
+                    }
+                  }
+                },
+                [
+                  _c("form", { attrs: { action: "#" } }, [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        name: "search",
+                        placeholder: "Search Wallet Services List...",
+                        required: ""
+                      },
+                      on: { input: _vm.debounceSearch }
+                    }),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "ti-search" })
+                  ])
+                ]
+              )
             ])
           ],
           1
@@ -77391,7 +77718,7 @@ var render = function() {
                   "table",
                   {
                     staticClass:
-                      "table table-hover table-striped table-bordered table-responsive text-center",
+                      "table table-hover table-striped table-bordered text-center",
                     attrs: { id: "table-services" }
                   },
                   [
@@ -77400,7 +77727,7 @@ var render = function() {
                     _c(
                       "tbody",
                       _vm._l(_vm.Services, function(s) {
-                        return _c("tr", { key: s.service_name }, [
+                        return _c("tr", { key: s.id }, [
                           _c("td", [
                             _c("p", [
                               _vm._v(
@@ -77575,7 +77902,26 @@ var render = function() {
                     )
                   ]
                 )
-              ])
+              ]),
+              _vm._v(" "),
+              _vm.Services == 0
+                ? _c("div", { staticClass: "text-center" }, [
+                    _c("label", [_vm._v("No Results found")])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.Services.length === undefined
+                ? _c("div", { staticClass: "text-center" }, [
+                    _c("span", {
+                      staticClass: "spinner-border spinner-border-sm",
+                      attrs: {
+                        role: "status",
+                        "aria-hidden": "true",
+                        id: "updateSpinner"
+                      }
+                    })
+                  ])
+                : _vm._e()
             ])
           ])
         ])
@@ -78328,12 +78674,27 @@ var render = function() {
                   1
                 ),
                 _vm._v(" "),
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        attrs: { to: "/ServiceRates", "aria-expanded": "true" }
+                      },
+                      [
+                        _c("i", { staticClass: "ti-wallet text-blue" }),
+                        _c("span", [_vm._v("Service Rates")])
+                      ]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
                 _vm._m(1),
                 _vm._v(" "),
-                _vm._m(2),
-                _vm._v(" "),
                 _c("li", [
-                  _vm._m(3),
+                  _vm._m(2),
                   _vm._v(" "),
                   _c("ul", { staticClass: "collapse" }, [
                     _c(
@@ -78382,7 +78743,7 @@ var render = function() {
           _vm._v(" "),
           _vm.user.user_type_id !== 1
             ? _c("ul", { staticClass: "metismenu", attrs: { id: "menu" } }, [
-                _vm._m(4),
+                _vm._m(3),
                 _vm._v(" "),
                 _c(
                   "li",
@@ -78404,9 +78765,9 @@ var render = function() {
                   1
                 ),
                 _vm._v(" "),
-                _vm._m(5),
+                _vm._m(4),
                 _vm._v(" "),
-                _vm._m(6),
+                _vm._m(5),
                 _vm._v(" "),
                 _c(
                   "li",
@@ -78438,17 +78799,6 @@ var staticRenderFns = [
       _c("a", { attrs: { href: "#dashboard", "aria-expanded": "true" } }, [
         _c("i", { staticClass: "ti-bell text-blue" }),
         _c("span", [_vm._v("Notification Template")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [
-      _c("a", { attrs: { href: "#dashboard", "aria-expanded": "true" } }, [
-        _c("i", { staticClass: "ti-wallet text-blue" }),
-        _c("span", [_vm._v("Service Rates")])
       ])
     ])
   },
@@ -95960,6 +96310,7 @@ var routes = [{
 {
   path: '/servicetypes',
   component: __webpack_require__(/*! ../components/WalletServiceTypes/ServiceTypeTable.vue */ "./resources/js/components/WalletServiceTypes/ServiceTypeTable.vue")["default"],
+  name: 'Wallet Service Types',
   beforeEnter: (requireLogin, checkAdmin)
 }, {
   path: '/editservicetype/:id',
@@ -96041,6 +96392,7 @@ var routes = [{
 {
   path: '/servicegatewaylist',
   component: __webpack_require__(/*! ../components/ServiceGateway/ServiceGatewayTable.vue */ "./resources/js/components/ServiceGateway/ServiceGatewayTable.vue")["default"],
+  name: 'Prepaid Service Gateway',
   beforeEnter: (requireLogin, checkAdmin)
 },
 /******************************Employer************************/
@@ -96078,7 +96430,7 @@ var routes = [{
   name: 'Approval',
   beforeEnter: (requireLogin, checkMerchant)
 }, {
-  path: '/put-money',
+  path: '/put-money/:wi',
   component: __webpack_require__(/*! ../components/Transactions/PutMoney */ "./resources/js/components/Transactions/PutMoney.vue")["default"],
   name: 'PutMoney',
   beforeEnter: requireLogin
