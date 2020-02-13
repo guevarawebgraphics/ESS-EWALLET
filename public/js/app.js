@@ -7484,7 +7484,20 @@ __webpack_require__.r(__webpack_exports__);
         limit_per_day: 0,
         limit_per_month: 0,
         limit_per_year: 0
-      })
+      }),
+      wallet_type_err: 'Wallet Type is required',
+      servicetype_code_err: 'Service Type Code is required',
+      servicetype_name_err: 'Service Type Name is required',
+      service_code_err: 'Service Code is required',
+      service_name_err: 'Service Name is required',
+      service_desc_err: 'Service Description is required',
+      service_gateway_err: 'Service Gateway is required',
+      service_group_err: 'Service Group is required',
+      pr_wallet_acc_no_err: 'Principal Redeem Wallet Account No is required',
+      pr_wallet_acc_name_err: 'Principal Redeem Wallet Account Name is required',
+      ir_wallet_acc_no_err: 'Income Redeem Wallet Account No is required',
+      ir_wallet_acc_name_err: 'Income Redeem Wallet Account Name is required',
+      service_template_err: 'Service Template is required'
     };
   },
   methods: {
@@ -74551,9 +74564,7 @@ var render = function() {
                                                     _vm._v(
                                                       " " +
                                                         _vm._s(
-                                                          _vm.errors.first(
-                                                            "wallet_type"
-                                                          )
+                                                          _vm.wallet_type_err
                                                         ) +
                                                         " "
                                                     )
@@ -74639,9 +74650,7 @@ var render = function() {
                                                     _vm._v(
                                                       " " +
                                                         _vm._s(
-                                                          _vm.errors.first(
-                                                            "servicetype_code"
-                                                          )
+                                                          _vm.servicetype_code_err
                                                         ) +
                                                         " "
                                                     )
@@ -74724,9 +74733,7 @@ var render = function() {
                                                     _vm._v(
                                                       " " +
                                                         _vm._s(
-                                                          _vm.errors.first(
-                                                            "servicetype_name"
-                                                          )
+                                                          _vm.servicetype_name_err
                                                         ) +
                                                         " "
                                                     )
@@ -74809,9 +74816,7 @@ var render = function() {
                                                     _vm._v(
                                                       " " +
                                                         _vm._s(
-                                                          _vm.errors.first(
-                                                            "service_code"
-                                                          )
+                                                          _vm.service_code_err
                                                         ) +
                                                         " "
                                                     )
@@ -74894,9 +74899,7 @@ var render = function() {
                                                     _vm._v(
                                                       " " +
                                                         _vm._s(
-                                                          _vm.errors.first(
-                                                            "service_name"
-                                                          )
+                                                          _vm.service_name_err
                                                         ) +
                                                         " "
                                                     )
@@ -74984,9 +74987,7 @@ var render = function() {
                                                     _vm._v(
                                                       " " +
                                                         _vm._s(
-                                                          _vm.errors.first(
-                                                            "service_description"
-                                                          )
+                                                          _vm.service_desc_err
                                                         ) +
                                                         " "
                                                     )
@@ -75109,9 +75110,7 @@ var render = function() {
                                                     _vm._v(
                                                       " " +
                                                         _vm._s(
-                                                          _vm.errors.first(
-                                                            "service_gateway"
-                                                          )
+                                                          _vm.service_gateway_err
                                                         ) +
                                                         " "
                                                     )
@@ -75235,9 +75234,7 @@ var render = function() {
                                                     _vm._v(
                                                       " " +
                                                         _vm._s(
-                                                          _vm.errors.first(
-                                                            "service_group"
-                                                          )
+                                                          _vm.service_group_err
                                                         ) +
                                                         " "
                                                     )
@@ -75335,9 +75332,7 @@ var render = function() {
                                                     _vm._v(
                                                       " " +
                                                         _vm._s(
-                                                          _vm.errors.first(
-                                                            "pr_wallet_acc_no"
-                                                          )
+                                                          _vm.pr_wallet_acc_no_err
                                                         ) +
                                                         " "
                                                     )
@@ -75425,9 +75420,7 @@ var render = function() {
                                                     _vm._v(
                                                       " " +
                                                         _vm._s(
-                                                          _vm.errors.first(
-                                                            "pr_wallet_acc_name"
-                                                          )
+                                                          _vm.pr_wallet_acc_name_err
                                                         ) +
                                                         " "
                                                     )
@@ -75516,9 +75509,7 @@ var render = function() {
                                                     _vm._v(
                                                       " " +
                                                         _vm._s(
-                                                          _vm.errors.first(
-                                                            "ir_wallet_acc_no"
-                                                          )
+                                                          _vm.ir_wallet_acc_no_err
                                                         ) +
                                                         " "
                                                     )
@@ -75606,9 +75597,7 @@ var render = function() {
                                                     _vm._v(
                                                       " " +
                                                         _vm._s(
-                                                          _vm.errors.first(
-                                                            "ir_wallet_acc_name"
-                                                          )
+                                                          _vm.ir_wallet_acc_name_err
                                                         ) +
                                                         " "
                                                     )
@@ -75747,9 +75736,7 @@ var render = function() {
                                                     _vm._v(
                                                       " " +
                                                         _vm._s(
-                                                          _vm.errors.first(
-                                                            "service_template"
-                                                          )
+                                                          _vm.service_template_err
                                                         ) +
                                                         " "
                                                     )
@@ -78659,27 +78646,12 @@ var render = function() {
                   1
                 ),
                 _vm._v(" "),
-                _c(
-                  "li",
-                  [
-                    _c(
-                      "router-link",
-                      {
-                        attrs: { to: "/ServiceRates", "aria-expanded": "true" }
-                      },
-                      [
-                        _c("i", { staticClass: "ti-wallet text-blue" }),
-                        _c("span", [_vm._v("Service Rates")])
-                      ]
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
                 _vm._m(1),
                 _vm._v(" "),
+                _vm._m(2),
+                _vm._v(" "),
                 _c("li", [
-                  _vm._m(2),
+                  _vm._m(3),
                   _vm._v(" "),
                   _c("ul", { staticClass: "collapse" }, [
                     _c(
@@ -78728,7 +78700,7 @@ var render = function() {
           _vm._v(" "),
           _vm.user.user_type_id !== 1
             ? _c("ul", { staticClass: "metismenu", attrs: { id: "menu" } }, [
-                _vm._m(3),
+                _vm._m(4),
                 _vm._v(" "),
                 _c(
                   "li",
@@ -78750,9 +78722,9 @@ var render = function() {
                   1
                 ),
                 _vm._v(" "),
-                _vm._m(4),
-                _vm._v(" "),
                 _vm._m(5),
+                _vm._v(" "),
+                _vm._m(6),
                 _vm._v(" "),
                 _c(
                   "li",
@@ -78784,6 +78756,17 @@ var staticRenderFns = [
       _c("a", { attrs: { href: "#dashboard", "aria-expanded": "true" } }, [
         _c("i", { staticClass: "ti-bell text-blue" }),
         _c("span", [_vm._v("Notification Template")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("a", { attrs: { href: "#dashboard", "aria-expanded": "true" } }, [
+        _c("i", { staticClass: "ti-wallet text-blue" }),
+        _c("span", [_vm._v("Service Rates")])
       ])
     ])
   },
