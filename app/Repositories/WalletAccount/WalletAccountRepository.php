@@ -327,7 +327,7 @@ class WalletAccountRepository
                 'redeem' => 'test',
                 'admin_all' => $data['admin_all'],
                 'admin_some' => $data['admin_some'],
-                'merchant_all' => $data['merchant_all'],
+                'merchant_all' => ($data['merchant_all'] ? $data['merchant_all'] : false),
                 'merchant_some' => $data['merchant_some'],
                 'branch_all' => $data['branch_all'],
                 'branch_some' => $data['branch_some'],
@@ -789,8 +789,6 @@ class WalletAccountRepository
                     'wallet_account.status')
                 ->where('wallet_account.created_by', '=', $user->id)
                 ->orderBy('wallet_account.created_at', 'DESC')
-                // ->get();
-                //->latest()
                 ->paginate(10);
         }
         else {
@@ -806,6 +804,7 @@ class WalletAccountRepository
                 ->orWhere('wallet_account.wallet_type', 'LIKE', "%".$query."%")
                 ->orWhere('wallet_account.wallet_account_no', 'LIKE', "%".$query."%")
                 ->orWhere('wallet_account.wallet_account_name', 'LIKE', "%".$query."%")
+                ->orWhere('wallet_account_types.wallet_account_type', 'LIKE', "%".$query."%")
                 //->orWhere('wallet_account.wallet_title', 'LIKE', "%".$query."%")
                 ->paginate(10);
         }

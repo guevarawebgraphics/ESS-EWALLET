@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card-body">
-                            <div class="data-tables datatable-dark">
+                            <div class="data-tables table-responsive datatable-dark">
                             <table class="table table-hover table-bordered table-striped text-center" id="table-service-type">
                             <thead>
                                 <tr class="th-table">
@@ -29,7 +29,7 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody :hidden="typing">
                                 <tr v-for="service in services.data" :key="service.id">
                                     <td>{{service.st_code}}</td>
                                     <td>{{service.st_name}}</td>
@@ -37,11 +37,11 @@
                                 </tr>
                             </tbody>
                             </table> 
-                        <div class="text-center" v-if="this.services.data == 0">
+                        <div class="text-center" v-if="this.services.data == 0 && !typing">
                             <label>No Results found</label>
                         </div>
 
-                        <div class="text-center" v-if="services.data === undefined">
+                        <div class="text-center" v-if="services.data === undefined || typing">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
                         </div>
 
@@ -74,8 +74,8 @@
     export default {
         data() {
             return {
-                message: null,
-                typing: null,
+                query: null,
+                typing: false,
                 debounce: null,
                 services: {},
             }
@@ -107,15 +107,15 @@
                 }, 1000);
         },
         debounceSearch(event) {
-            this.message = null
-            this.typing = 'You are typing'
+            this.query = null
+            this.typing = true
             clearTimeout(this.debounce)
             this.debounce = setTimeout(() => {
-                this.typing = null
-                this.message = event.target.value
-                //console.log(this.message)
-                if(this.message !== "") {
-                    axios.get(`api/service_type/searchservicetype/${this.message}`)
+                this.typing = false
+                this.query = event.target.value
+                //console.log(this.query)
+                if(this.query !== "") {
+                    axios.get(`api/service_type/searchservicetype/${this.query}`)
                     .then(response => {
                         this.services = response.data;
                     })

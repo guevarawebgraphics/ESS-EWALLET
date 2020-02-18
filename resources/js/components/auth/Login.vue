@@ -28,7 +28,9 @@
                             <has-error :form="form" field="password"></has-error>
                         </div>
                         <div class="submit-btn-area">
-                            <button id="form_submit" type="submit">Login <i class="ti-arrow-right"></i></button>
+                            <button id="form_submit" type="submit" :disabled="loading">Login <i class="ti-arrow-right" v-if="!loading"></i>                                
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner" v-if="loading"></span>
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -41,6 +43,7 @@
        data() {
            return {
                user: window.user,
+               loading: false,
                status: null,
                form: new Form({
                    username: '',
@@ -51,22 +54,30 @@
        },
 
        methods: {
-           login () {
+           login (e) {
+               e.preventDefault(e);
+               this.loading = true;
+               this.$Progress.start()
                this.form.post('/login')
                .then(({ data }) => { 
+                   this.$Progress.increase(10)
                    if(data.status != '401'){
+                       this.$Progress.finish()
                        console.log(data);
                        window.localStorage.setItem('user', JSON.stringify(this.form.username));
                     //    window.location.href = "/dashboard"
                        this.$router.go('/dashboard')
                    }
                    else {
+                       this.$Progress.fail()
                        console.clear()
                        $('#username').addClass('is-invalid')
                        this.status = data.status;
                    }
                 })
                 .catch((err) => {
+                    this.$Progress.fail()
+                    this.loading = false;
                     console.clear()
                 });
            }

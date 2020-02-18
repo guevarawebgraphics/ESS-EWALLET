@@ -55,36 +55,36 @@ class AccountRepository
                 **/
                 if($check->user_type_id == 3){
                     $employer = $this->connection
-                            ->table('ess_basetable')
-                            ->join('users', 'ess_basetable.ess_id', '=', 'users.username')
-                            //->join('employee', 'employer_and_employee.employer_id', 'employee.id')
-                            ->join('employer', 'employer.id', 'users.employer_id')
-                            ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')
-                            ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
-                            ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id') 
-                            ->select(
-                                'users.username',
-                                'employer.business_name',
-                                'employer.accountname',
-                                'employer.tin',
-                                'employer.sss',
-                                'employer.phic',
-                                'employer.contact_email as email_add',
-                                'employer.address_unit',
-                                'employer.address_country',
-                                'employer.address_town',
-                                'employer.address_cityprovince',
-                                'employer.address_barangay',
-                                'employer.address_zipcode',
-                                'refprovince.provDesc',
-                                'refprovince.provCode',
-                                'refcitymun.citymunDesc',
-                                'refcitymun.citymunCode',
-                                'refbrgy.brgyDesc',
-                                'refbrgy.id as refbrgy_id'
-                                )
-                            ->where('ess_basetable.ess_id', '=', $essid)
-                            ->get();
+                        ->table('ess_basetable')
+                        ->join('users', 'ess_basetable.ess_id', '=', 'users.username')
+                        //->join('employee', 'employer_and_employee.employer_id', 'employee.id')
+                        ->join('employer', 'employer.id', 'users.employer_id')
+                        ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')
+                        ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
+                        ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id') 
+                        ->select(
+                            'users.username',
+                            'employer.business_name',
+                            'employer.accountname',
+                            'employer.tin',
+                            'employer.sss',
+                            'employer.phic',
+                            'employer.contact_email as email_add',
+                            'employer.address_unit',
+                            'employer.address_country',
+                            'employer.address_town',
+                            'employer.address_cityprovince',
+                            'employer.address_barangay',
+                            'employer.address_zipcode',
+                            'refprovince.provDesc',
+                            'refprovince.provCode',
+                            'refcitymun.citymunDesc',
+                            'refcitymun.citymunCode',
+                            'refbrgy.brgyDesc',
+                            'refbrgy.id as refbrgy_id'
+                            )
+                        ->where('ess_basetable.ess_id', '=', $essid)
+                        ->get();
                     return $employer;
                 }
                 
@@ -93,38 +93,38 @@ class AccountRepository
                 **/ 
                 if($check->user_type_id == 4){
                     $employee = $this->connection
-                                ->table('ess_basetable')
-                                ->join('users', 'ess_basetable.ess_id', '=', 'users.username')
-                                ->join('employee_personal_information', 'ess_basetable.employee_info', '=', 'employee_personal_information.id')
-                                ->join('employer_and_employee', 'ess_basetable.ess_id', '=', 'employer_and_employee.ess_id')
-                                ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')
-                                ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
-                                ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
-                                ->join('employer', 'employer_and_employee.employer_id', '=', 'employer.id')   
-                                ->select(
-                                    'users.username',
-                                    'employee_personal_information.lastname',
-                                    'employee_personal_information.firstname',
-                                    'employee_personal_information.middlename',
-                                    'employee_personal_information.suffix',
-                                    'employee_personal_information.TIN as tin',
-                                    'employee_personal_information.SSSGSIS as sss',
-                                    'employee_personal_information.PHIC',
-                                    'employee_personal_information.email_add',
-                                    'employee_personal_information.birthdate',
-                                    'employee_personal_information.country',
-                                    'employee_personal_information.address_unit',
-                                    'refprovince.provDesc',
-                                    'refprovince.provCode',
-                                    'refcitymun.citymunDesc',
-                                    'refcitymun.citymunCode',
-                                    'refbrgy.brgyDesc',
-                                    'refbrgy.id as refbrgy_id',
-                                    'employer.business_name',
-                                    'employer.accountname'
-                                )
-                                ->where('ess_basetable.ess_id', '=', $essid)
-                                ->get();
+                        ->table('ess_basetable')
+                        ->join('users', 'ess_basetable.ess_id', '=', 'users.username')
+                        ->join('employee_personal_information', 'ess_basetable.employee_info', '=', 'employee_personal_information.id')
+                        ->join('employer_and_employee', 'ess_basetable.ess_id', '=', 'employer_and_employee.ess_id')
+                        ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')
+                        ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
+                        ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
+                        ->join('employer', 'employer_and_employee.employer_id', '=', 'employer.id')   
+                        ->select(
+                            'users.username',
+                            'employee_personal_information.lastname',
+                            'employee_personal_information.firstname',
+                            'employee_personal_information.middlename',
+                            'employee_personal_information.suffix',
+                            'employee_personal_information.TIN as tin',
+                            'employee_personal_information.SSSGSIS as sss',
+                            'employee_personal_information.PHIC',
+                            'employee_personal_information.email_add',
+                            'employee_personal_information.birthdate',
+                            'employee_personal_information.country',
+                            'employee_personal_information.address_unit',
+                            'refprovince.provDesc',
+                            'refprovince.provCode',
+                            'refcitymun.citymunDesc',
+                            'refcitymun.citymunCode',
+                            'refbrgy.brgyDesc',
+                            'refbrgy.id as refbrgy_id',
+                            'employer.business_name',
+                            'employer.accountname'
+                        )
+                        ->where('ess_basetable.ess_id', '=', $essid)
+                        ->get();
                     return $employee;
 
                 }
@@ -172,38 +172,38 @@ class AccountRepository
               **/
              if($check->user_type_id == 3){
                 $employer = $this->connection
-                        ->table('employer_and_employee')
-                        // /->table('ess_basetable')
-                        ->join('users', 'employer_and_employee.ess_id', '=', 'users.username')
-                        //->join('employee', 'employer_and_employee.employer_id', 'employee.id')
-                        ->join('employer', 'employer.id', 'users.employer_id')
-                        ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')
-                        ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
-                        ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id') 
-                        ->select(
-                            'users.username',
-                            'employer.business_name',
-                            'employer.accountname',
-                            'employer.tin',
-                            'employer.sss',
-                            'employer.phic',
-                            'employer.contact_email as email_add',
-                            'employer.address_unit',
-                            'employer.address_country',
-                            'employer.address_town',
-                            'employer.address_cityprovince',
-                            'employer.address_barangay',
-                            'employer.address_zipcode',
-                            'refprovince.provDesc',
-                            'refprovince.provCode',
-                            'refcitymun.citymunDesc',
-                            'refcitymun.citymunCode',
-                            'refbrgy.brgyDesc',
-                            'refbrgy.id as refbrgy_id'
-                            )
-                        ->where('employer_and_employee.ess_id', '=', $essid)
-                        ->where('employer_and_employee.employer_id', '=', $user->employer_id)
-                        ->get();
+                    ->table('employer_and_employee')
+                    // /->table('ess_basetable')
+                    ->join('users', 'employer_and_employee.ess_id', '=', 'users.username')
+                    //->join('employee', 'employer_and_employee.employer_id', 'employee.id')
+                    ->join('employer', 'employer.id', 'users.employer_id')
+                    ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')
+                    ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
+                    ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id') 
+                    ->select(
+                        'users.username',
+                        'employer.business_name',
+                        'employer.accountname',
+                        'employer.tin',
+                        'employer.sss',
+                        'employer.phic',
+                        'employer.contact_email as email_add',
+                        'employer.address_unit',
+                        'employer.address_country',
+                        'employer.address_town',
+                        'employer.address_cityprovince',
+                        'employer.address_barangay',
+                        'employer.address_zipcode',
+                        'refprovince.provDesc',
+                        'refprovince.provCode',
+                        'refcitymun.citymunDesc',
+                        'refcitymun.citymunCode',
+                        'refbrgy.brgyDesc',
+                        'refbrgy.id as refbrgy_id'
+                        )
+                    ->where('employer_and_employee.ess_id', '=', $essid)
+                    ->where('employer_and_employee.employer_id', '=', $user->employer_id)
+                    ->get();
                 return $employer;
              }
              
@@ -212,39 +212,39 @@ class AccountRepository
               **/ 
              if($check->user_type_id == 4){
                 $employee = $this->connection
-                            ->table('ess_basetable')
-                            ->join('users', 'ess_basetable.ess_id', '=', 'users.username')
-                            ->join('employee_personal_information', 'ess_basetable.employee_info', '=', 'employee_personal_information.id')
-                            ->join('employer_and_employee', 'ess_basetable.ess_id', '=', 'employer_and_employee.ess_id')
-                            ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')
-                            ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
-                            ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
-                            ->join('employer', 'employer_and_employee.employer_id', '=', 'employer.id')   
-                            ->select(
-                                'users.username',
-                                'employee_personal_information.lastname',
-                                'employee_personal_information.firstname',
-                                'employee_personal_information.middlename',
-                                'employee_personal_information.suffix',
-                                'employee_personal_information.TIN as tin',
-                                'employee_personal_information.SSSGSIS as sss',
-                                'employee_personal_information.PHIC',
-                                'employee_personal_information.email_add',
-                                'employee_personal_information.birthdate',
-                                'employee_personal_information.country',
-                                'employee_personal_information.address_unit',
-                                'refprovince.provDesc',
-                                'refprovince.provCode',
-                                'refcitymun.citymunDesc',
-                                'refcitymun.citymunCode',
-                                'refbrgy.brgyDesc',
-                                'refbrgy.id as refbrgy_id',
-                                'employer.business_name',
-                                'employer.accountname'
-                            )
-                            ->where('ess_basetable.ess_id', '=', $essid)
-                            ->where('employer_and_employee.employer_id', '=', $user->employer_id)
-                            ->get();
+                    ->table('ess_basetable')
+                    ->join('users', 'ess_basetable.ess_id', '=', 'users.username')
+                    ->join('employee_personal_information', 'ess_basetable.employee_info', '=', 'employee_personal_information.id')
+                    ->join('employer_and_employee', 'ess_basetable.ess_id', '=', 'employer_and_employee.ess_id')
+                    ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')
+                    ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
+                    ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
+                    ->join('employer', 'employer_and_employee.employer_id', '=', 'employer.id')   
+                    ->select(
+                        'users.username',
+                        'employee_personal_information.lastname',
+                        'employee_personal_information.firstname',
+                        'employee_personal_information.middlename',
+                        'employee_personal_information.suffix',
+                        'employee_personal_information.TIN as tin',
+                        'employee_personal_information.SSSGSIS as sss',
+                        'employee_personal_information.PHIC',
+                        'employee_personal_information.email_add',
+                        'employee_personal_information.birthdate',
+                        'employee_personal_information.country',
+                        'employee_personal_information.address_unit',
+                        'refprovince.provDesc',
+                        'refprovince.provCode',
+                        'refcitymun.citymunDesc',
+                        'refcitymun.citymunCode',
+                        'refbrgy.brgyDesc',
+                        'refbrgy.id as refbrgy_id',
+                        'employer.business_name',
+                        'employer.accountname'
+                    )
+                    ->where('ess_basetable.ess_id', '=', $essid)
+                    ->where('employer_and_employee.employer_id', '=', $user->employer_id)
+                    ->get();
                 return $employee;
 
              }
