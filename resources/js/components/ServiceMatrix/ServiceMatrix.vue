@@ -11,7 +11,7 @@
                         <!-- Row Table -->
                         <div class="form-group row">
                             <!-- Cold lg 12 -->
-                            <div class="col-md-12">
+                            <div class="col-md-12 table-responsive">
                                 <div class="header-title text-center">Services Matrix Setup</div>
                                 <hr>
                                 <div class="float-right">
@@ -49,7 +49,7 @@
                                                 <th>Some</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody :hidden="typing">
                                             <tr v-for="sm in Services.data" :key="sm.id">
                                                 <td>{{sm.st_name}}</td>
                                                 <td>{{sm.service_name}}</td>
@@ -83,23 +83,63 @@
                                                         <label class="custom-control-label" v-if="sm.agent == false" v-bind:for="'agent' + sm.id">SOME</label>
                                                     </div>
                                                 </td> -->
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="admin_all[]" class="form-check-input" v-model="sm.admin_all"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" ></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" ></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some"></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" ></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" ></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" ></td>
-                                                <td><input :key="sm.id" :disabled="mode == 1" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" ></td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox mr-4">
+                                                        <input class="custom-control-input" :key="sm.id" :disabled="mode == 1" :id="'admin_all' + sm.id" type="checkbox" name="admin_all[]" v-model="sm.admin_all">
+                                                        <label class="custom-control-label" :for="'admin_all' + sm.id"></label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox mr-4">
+                                                        <input class="custom-control-input" :key="sm.id" :disabled="mode == 1" :id="'admin_some' + sm.id" type="checkbox" name="admin_some[]" v-model="sm.admin_some">
+                                                        <label class="custom-control-label" :for="'admin_some' + sm.id"></label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox mr-4">
+                                                        <input class="custom-control-input" :key="sm.id" :disabled="mode == 1" :id="'merchant_all' + sm.id" type="checkbox" name="merchant_all[]"  v-model="sm.merchant_all" >
+                                                        <label class="custom-control-label" :for="'merchant_all' + sm.id"></label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox mr-4">
+                                                        <input class="custom-control-input" :key="sm.id" :disabled="mode == 1" :id="'merchant_some' + sm.id" type="checkbox" name="merchant_some[]" v-model="sm.merchant_some">
+                                                        <label class="custom-control-label" :for="'merchant_some' + sm.id"></label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox mr-4">
+                                                        <input class="custom-control-input" :key="sm.id" :disabled="mode == 1" :id="'branch_all' + sm.id" type="checkbox" name="branch_all[]" v-model="sm.branch_all" >
+                                                        <label class="custom-control-label" :for="'branch_all' + sm.id"></label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox mr-4">
+                                                        <input class="custom-control-input" :key="sm.id" :disabled="mode == 1" :id="'branch_some' + sm.id" type="checkbox" name="branch_some[]" v-model="sm.branch_some" >
+                                                        <label class="custom-control-label" :for="'branch_some' + sm.id"></label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox mr-4">
+                                                        <input class="custom-control-input" :key="sm.id" :disabled="mode == 1" :id="'agent_all' + sm.id" type="checkbox" name="agent_all[]" v-model="sm.agent_all" >
+                                                        <label class="custom-control-label" :for="'agent_all' + sm.id"></label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox mr-4">
+                                                        <input class="custom-control-input" :key="sm.id" :disabled="mode == 1" :id="'agent_some' + sm.id" type="checkbox" name="agent_some[]"  v-model="sm.agent_some" >
+                                                        <label class="custom-control-label" :for="'agent_some' + sm.id"></label>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <!-- ./ Table -->
-                                    <div class="text-center" v-if="this.Services.data == 0">
+                                    <div class="text-center" v-if="this.Services.data == 0 && !typing">
                                         <label>No Results found</label>
                                     </div>
 
-                                    <div class="text-center" v-if="Services.data === undefined">
+                                    <div class="text-center" v-if="Services.data === undefined || typing">
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
                                     </div>
                                 </div>
@@ -144,7 +184,7 @@ export default {
     data(){
         return {
             message: null,
-            typing: null,
+            typing: false,
             debounce: null,
             mode: 0,
             currentUser: window.user.user_type_id,
@@ -233,10 +273,10 @@ export default {
         },
         debounceSearch(event) {
             this.message = null
-            this.typing = 'You are typing'
+            this.typing = true
             clearTimeout(this.debounce)
             this.debounce = setTimeout(() => {
-                this.typing = null
+                this.typing = false
                 this.message = event.target.value
                 //console.log(this.message)
                 if(this.message !== "") {

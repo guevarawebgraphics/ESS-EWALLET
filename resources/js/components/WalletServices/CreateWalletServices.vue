@@ -32,32 +32,32 @@
                                   <option value="prepaid/credit"> Prepaid/Credit </option> 
                                   <option value="admin"> Admin </option>
                                   </select> 
-                                  <p class="alert text-danger bg-white" v-if="errors.has('wallet_type')"> {{errors.first('wallet_type')}} </p> 
+                                  <p class="alert text-danger bg-white" v-if="errors.has('wallet_type')"> {{ wallet_type_err }} </p> 
                                 </div>   
                                 <div class="form-group">
                                   <label for="exampleInputEmail1">Service Type Code:</label>
                                   <input type="number" class="form-control" :class="{ 'is-invalid': errors.has('servicetype_code')}" v-on:change="showServiceTypeDetails" v-model="form.servicetype_code" aria-describedby="emailHelp" placeholder="Enter Service Type Code" name="servicetype_code"  v-validate="'required'" :disabled="this.method_name == 'joint'">
-                                  <p class="alert text-danger bg-white" v-if="errors.has('servicetype_code')"> {{errors.first('servicetype_code')}} </p> 
+                                  <p class="alert text-danger bg-white" v-if="errors.has('servicetype_code')"> {{ servicetype_code_err }} </p> 
                                 </div>  
                                 <div class="form-group">
                                   <label for="exampleInputEmail1">Service Type Name:</label>
                                   <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('servicetype_name')}" aria-describedby="emailHelp" placeholder="Enter Service Type Name" v-model="form.servicetype_name" name="servicetype_name"  v-validate="'required'" readonly>
-                                  <p class="alert text-danger bg-white" v-if="errors.has('servicetype_name')"> {{errors.first('servicetype_name')}} </p>
+                                  <p class="alert text-danger bg-white" v-if="errors.has('servicetype_name')"> {{ servicetype_name_err }} </p>
                                 </div> 
                                 <div class="form-group">
                                   <label for="exampleInputEmail1">Service Code:</label>
                                   <input type="number" class="form-control" :class="{ 'is-invalid': errors.has('service_code')}" aria-describedby="emailHelp" placeholder="Enter Service Code" v-model="form.service_code" name="service_code"  v-validate="'required'" :disabled="this.method_name == 'joint'">
-                                  <p class="alert text-danger bg-white" v-if="errors.has('service_code')"> {{errors.first('service_code')}} </p>
+                                  <p class="alert text-danger bg-white" v-if="errors.has('service_code')"> {{ service_code_err }} </p>
                                 </div> 
                                 <div class="form-group">
                                   <label for="exampleInputEmail1">Service Name:</label>
                                   <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('service_name')}" aria-describedby="emailHelp" placeholder="Enter Service Name" v-model="form.service_name" name="service_name"  v-validate="'required'" :disabled="this.method_name == 'joint'">
-                                  <p class="alert text-danger bg-white" v-if="errors.has('service_name')"> {{errors.first('service_name')}} </p>
+                                  <p class="alert text-danger bg-white" v-if="errors.has('service_name')"> {{ service_name_err }} </p>
                                 </div>
                                 <div class="form-group">
                                   <label for="exampleInputEmail1">Service Description:</label>
                                   <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('service_description')}" aria-describedby="emailHelp" placeholder="Enter Service Description" v-model="form.service_description" name="service_description"  v-validate="'required'" :disabled="this.method_name == 'joint'">
-                                  <p class="alert text-danger bg-white" v-if="errors.has('service_description')"> {{errors.first('service_description')}} </p>
+                                  <p class="alert text-danger bg-white" v-if="errors.has('service_description')"> {{ service_desc_err }} </p>
                                 </div>
                                 <div class="form-group">
                                   <label for="exampleInputEmail1">Service Gateway:</label>
@@ -65,7 +65,7 @@
                                   <option disabled>Please select one</option>
                                   <option v-bind:value="sg.id" v-for="sg in ServiceGateway.data" :key="sg.id">{{sg.gateway_name}}</option>
                                   </select>
-                                  <p class="alert text-danger bg-white" v-if="errors.has('service_gateway')"> {{errors.first('service_gateway')}} </p>
+                                  <p class="alert text-danger bg-white" v-if="errors.has('service_gateway')"> {{ service_gateway_err }} </p>
                                 </div> 
                                 <div class="form-group">
                                   <label for="exampleInputEmail1">Service Group:</label>
@@ -73,7 +73,7 @@
                                   <option disabled >Please select one</option>
                                   <option v-bind:value="g.id" v-for="g in ServiceGroups.data" :key="g.id"> {{g.group_description}}</option>
                                   </select>
-                                  <p class="alert text-danger bg-white" v-if="errors.has('service_group')"> {{errors.first('service_group')}} </p>
+                                  <p class="alert text-danger bg-white" v-if="errors.has('service_group')"> {{ service_group_err }} </p>
                                 </div>
                               </div> 
                               <div class="col-sm-6"> 
@@ -81,22 +81,22 @@
                                 <div class="form-group">
                                   <label for="exampleInputEmail1">Principal Redeem Wallet Account No:</label>
                                   <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('pr_wallet_acc_no')}" v-on:change="showPRWallletAccountName" aria-describedby="emailHelp" placeholder="Enter Principal Redeem Wallet Account No:"  v-model="form.pr_wallet_acc_no" name="pr_wallet_acc_no"  v-validate="'required'" :disabled="this.method_name == 'joint'">
-                                  <p class="alert text-danger bg-white" v-if="errors.has('pr_wallet_acc_no')"> {{errors.first('pr_wallet_acc_no')}} </p>
+                                  <p class="alert text-danger bg-white" v-if="errors.has('pr_wallet_acc_no')"> {{ pr_wallet_acc_no_err }} </p>
                                 </div>
                                 <div class="form-group">
                                   <label for="exampleInputEmail1">Principal Redeem Wallet Account Name:</label>
                                   <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('pr_wallet_acc_name')}" aria-describedby="emailHelp" placeholder="Enter Principal Redeem Wallet Account Name" v-model="form.pr_wallet_acc_name" name="pr_wallet_acc_name"  v-validate="'required'" readonly>
-                                  <p class="alert text-danger bg-white" v-if="errors.has('pr_wallet_acc_name')"> {{errors.first('pr_wallet_acc_name')}} </p>
+                                  <p class="alert text-danger bg-white" v-if="errors.has('pr_wallet_acc_name')"> {{ pr_wallet_acc_name_err }} </p>
                                 </div> 
                                 <div class="form-group">
                                   <label for="exampleInputEmail1">Income Reddem Wallet Account No:</label>
                                   <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('ir_wallet_acc_no')}"  v-on:change="showIRWalletName" aria-describedby="emailHelp" placeholder="Enter Income Reddem Wallet Account No"  v-model="form.ir_wallet_acc_no" name="ir_wallet_acc_no"  v-validate="'required'" :disabled="this.method_name == 'joint'">
-                                <p class="alert text-danger bg-white" v-if="errors.has('ir_wallet_acc_no')"> {{errors.first('ir_wallet_acc_no')}} </p>
+                                <p class="alert text-danger bg-white" v-if="errors.has('ir_wallet_acc_no')"> {{ ir_wallet_acc_no_err }} </p>
                                 </div> 
                                 <div class="form-group">
                                   <label for="exampleInputEmail1">Income Reddem Wallet Account Name:</label>
                                   <input type="text" class="form-control" :class="{ 'is-invalid': errors.has('ir_wallet_acc_name')}" aria-describedby="emailHelp" placeholder="Enter Income Reddem Wallet Account Name" v-model="form.ir_wallet_acc_name" name="ir_wallet_acc_name" v-validate="'required'" readonly>
-                                  <p class="alert text-danger bg-white" v-if="errors.has('ir_wallet_acc_name')"> {{errors.first('ir_wallet_acc_name')}} </p>
+                                  <p class="alert text-danger bg-white" v-if="errors.has('ir_wallet_acc_name')"> {{ ir_wallet_acc_name_err }} </p>
                                 </div> 
                                     <!-- 
                                 <div class="form-group">
@@ -116,7 +116,7 @@
                               
                                   </div>
                                   </div> 
-                                  <p class="alert text-danger bg-white" v-if="errors.has('service_template') && method_name === 'create'"> {{errors.first('service_template')}} </p>
+                                  <p class="alert text-danger bg-white" v-if="errors.has('service_template') && method_name === 'create'"> {{ service_template_err }} </p>
                                 </div>
                       
                               </div>
@@ -480,6 +480,20 @@ data() {
       limit_per_month : 0,
       limit_per_year: 0,
     }),
+    wallet_type_err : 'Wallet Type is required',
+    servicetype_code_err : 'Service Type Code is required',
+    servicetype_name_err : 'Service Type Name is required',
+    service_code_err : 'Service Code is required',
+    service_name_err: 'Service Name is required',
+    service_desc_err : 'Service Description is required',
+    service_gateway_err : 'Service Gateway is required',
+    service_group_err : 'Service Group is required',
+    pr_wallet_acc_no_err : 'Principal Redeem Wallet Account No is required',
+    pr_wallet_acc_name_err : 'Principal Redeem Wallet Account Name is required',
+    ir_wallet_acc_no_err : 'Income Redeem Wallet Account No is required',
+    ir_wallet_acc_name_err : 'Income Redeem Wallet Account Name is required',
+    service_template_err : 'Service Template is required',
+    
   }
 },
 methods:{

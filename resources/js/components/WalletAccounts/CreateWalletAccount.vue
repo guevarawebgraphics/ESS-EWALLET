@@ -33,21 +33,21 @@
                                             <p class="text-danger bg-white" v-if="errors.has('username')">{{errors.first('username')}}</p>
                                         </div>
                                         <!-- Lastname -->
-                                        <div class="form-group">
+                                        <div class="form-group" :hidden="!form.lastname">
                                             <label class="control-label custom-label" for="lastname">Lastname</label>
                                             <input class="form-control" :class="{ 'is-invalid': form.errors.has('lastname') }" name="lastname" v-validate="'required'" v-model="form.lastname" type="text" placeholder="Lastname" disabled>
                                             <has-error :form="form" field="lastname"></has-error>
                                             <p class="text-danger bg-white" v-if="errors.has('lastname')">{{errors.first('lastname')}}</p>
                                         </div>
                                         <!-- Firstname -->
-                                        <div class="form-group">
+                                        <div class="form-group" :hidden="!form.firstname">
                                             <label class="control-label custom-label" for="firstname">Firstname</label>
                                             <input class="form-control" :class="{ 'is-invalid': form.errors.has('firstname') }" name="firstname" v-validate="'required'" v-model="form.firstname" type="text" placeholder="Firstname" disabled>
                                             <has-error :form="form" field="firstname"></has-error>
                                             <p class="text-danger bg-white" v-if="errors.has('firstname')">{{errors.first('firstname')}}</p>
                                         </div>
                                         <!-- Middlename -->
-                                        <div class="form-group">
+                                        <div class="form-group" :hidden="!form.middlename">
                                             <label class="control-label custom-label" for="middlename">Middlename</label>
                                             <input class="form-control" :class="{ 'is-invalid': form.errors.has('middlename') }" name="middlename" v-validate="'required'" v-model="form.middlename" type="text" placeholder="Middlename" disabled>
                                             <has-error :form="form" field="middlename"></has-error>
@@ -233,7 +233,7 @@
 
                                             </div>
                                             <!--Joint Column-->
-                                            <div class="col-md-8 offset-md-2" :hidden="checkWalletAccountType()">
+                                            <div class="col-md-8 offset-md-1" :hidden="checkWalletAccountType()">
                                                 <hr>
                                                 <h4>Joint Wallet Account</h4>
                                                     <!-- Joint Wallet Type -->
@@ -436,7 +436,7 @@
             </tab-content>
             <!-- ./ End E-Wallet Account Setup 4 -->
             <!-- E-Wallet Account Setup 5 -->
-            <tab-content title="Amount Limits">
+            <tab-content title="Amount Limits" v-if="form.WalletAccountType !== 1 && form.WalletAccountType !== 2">
                 <!-- Box -->
                 <div class="box col-md-8 offset-md-2">
                     <div class="single-report mb-xs-30">
@@ -538,7 +538,7 @@
             </tab-content>
             <!-- ./ E-Wallet Account Setup 5 -->
              <!-- E-Wallet Account Setup 6 -->
-            <tab-content title="Limits No. Of Transactions">
+            <tab-content title="Limits No. Of Transactions" v-if="form.WalletAccountType !== 1 && form.WalletAccountType !== 2">
                 <!-- Box -->
                 <div class="box col-md-8 offset-md-2">
                     <div class="single-report mb-xs-30">
@@ -645,7 +645,7 @@
             </tab-content>
             <!-- ./ E-Wallet Account Setup 6  -->
              <!-- E-Wallet Account Setup 7 -->
-            <tab-content title="Service Matrix Setup">
+            <tab-content title="Service Matrix Setup" v-if="form.WalletAccountType !== 1 && form.WalletAccountType !== 2">
                 <!-- Box -->
                 <div class="box col-md-12">
                     <div class="single-report mb-xs-30">
@@ -658,7 +658,7 @@
                                         <!-- Row Table -->
                                     <div class="row">
                                         <!-- col-md-12 -->
-                                        <div class="">
+                                        <div class="col-md-12 table-responsive">
                                             <div class="header-title">Services Matrix Setup</div>
                                             <hr>
                                             <div class="data-tables datatable-dark">
@@ -667,7 +667,6 @@
                                                     <thead class="text-capitalize">
                                                         <tr class="th-table">
                                                             <th colspan="3"><h3>Service Matrix</h3></th>
-                                                            <!-- <th>Applies To:</th> -->
                                                             <th colspan="2">Admin</th>
                                                             <th colspan="2">Merchant</th>
                                                             <th colspan="2">Branch</th>
@@ -677,7 +676,6 @@
                                                             <th>Service Type</th>
                                                             <th>Service Name</th>
                                                             <th>Group</th>
-                                                            <!-- <th>Inc. Redeem</th> -->
                                                             <th>All</th>
                                                             <th>Some</th>
                                                             <th>All</th>
@@ -694,43 +692,54 @@
                                                             <td>{{sm.st_name}}</td>
                                                             <td>{{sm.service_name}}</td>
                                                             <td>{{sm.group_description}}</td>
-                                                            <!-- <td>Test</td> -->
-                                                            <td><input :key="sm.id" type="checkbox" name="admin_all[]" class="form-check-input" v-model="sm.admin_all" ></td>
-                                                            <td><input :key="sm.id" type="checkbox" name="admin_some[]" class="form-check-input" v-model="sm.admin_some" ></td>
-                                                            <td><input :key="sm.id" type="checkbox" name="merchant_all[]" class="form-check-input" v-model="sm.merchant_all" ></td>
-                                                            <td><input :key="sm.id" type="checkbox" name="merchant_some[]" class="form-check-input" v-model="sm.merchant_some" ></td>
-                                                            <td><input :key="sm.id" type="checkbox" name="branch_all[]" class="form-check-input" v-model="sm.branch_all" ></td>
-                                                            <td><input :key="sm.id" type="checkbox" name="branch_some[]" class="form-check-input" v-model="sm.branch_some" ></td>
-                                                            <td><input :key="sm.id" type="checkbox" name="agent_all[]" class="form-check-input" v-model="sm.agent_all" ></td>
-                                                            <td><input :key="sm.id" type="checkbox" name="agent_some[]" class="form-check-input" v-model="sm.agent_some" ></td>
-                                                            <!-- <td>
-                                                                <div class="custom-control custom-switch">
-                                                                    <input :key="sm.id" type="checkbox" v-model="sm.admin" name="admin[]" class="custom-control-input" v-bind:id="'admin' + sm.id">
-                                                                    <label class="custom-control-label" v-if="sm.admin == true" v-bind:for="'admin' + sm.id">ALL</label>
-                                                                    <label class="custom-control-label" v-if="sm.admin == false" v-bind:for="'admin' + sm.id">SOME</label>
+                                                            <td>
+                                                                <div class="custom-control custom-checkbox mr-4">
+                                                                    <input class="custom-control-input" :key="sm.id" type="checkbox" :id="'admin_all' + sm.id" name="admin_all[]"  v-model="sm.admin_all" >
+                                                                    <label class="custom-control-label" :for="'admin_all' + sm.id"></label>
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <div class="custom-control custom-switch">
-                                                                    <input :key="sm.id" type="checkbox" v-model="sm.merchant" name="merchant[]" class="custom-control-input" v-bind:id="'merchant' + sm.id">
-                                                                    <label class="custom-control-label" v-if="sm.merchant == true" v-bind:for="'merchant' + sm.id">ALL</label>
-                                                                    <label class="custom-control-label" v-if="sm.merchant == false" v-bind:for="'merchant' + sm.id">SOME</label>
+                                                                <div class="custom-control custom-checkbox mr-4">
+                                                                    <input class="custom-control-input" :key="sm.id" type="checkbox" :id="'admin_some' + sm.id" name="admin_some[]"  v-model="sm.admin_some" >
+                                                                    <label class="custom-control-label" :for="'admin_some' + sm.id"></label>
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <div class="custom-control custom-switch">
-                                                                    <input :key="sm.id" type="checkbox" v-model="sm.branch" name="branch[]" class="custom-control-input" v-bind:id="'branch' + sm.id">
-                                                                    <label class="custom-control-label" v-if="sm.branch == true" v-bind:for="'branch' + sm.id">ALL</label>
-                                                                    <label class="custom-control-label" v-if="sm.branch == false" v-bind:for="'branch' + sm.id">SOME</label>
+                                                                <div class="custom-control custom-checkbox mr-4">
+                                                                    <input class="custom-control-input" :key="sm.id" type="checkbox" :id="'merchant_all' + sm.id" name="merchant_all[]"  v-model="sm.merchant_all" >
+                                                                    <label class="custom-control-label" :for="'merchant_all' + sm.id"></label>
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <div class="custom-control custom-switch">
-                                                                    <input :key="sm.id" type="checkbox" v-model="sm.agent" name="agent[]" class="custom-control-input" v-bind:id="'agent' + sm.id">
-                                                                    <label class="custom-control-label" v-if="sm.agent == true" v-bind:for="'agent' + sm.id">ALL</label>
-                                                                    <label class="custom-control-label" v-if="sm.agent == false" v-bind:for="'agent' + sm.id">SOME</label>
+                                                                <div class="custom-control custom-checkbox mr-4">
+                                                                    <input class="custom-control-input" :key="sm.id" type="checkbox" :id="'merchant_some' + sm.id" name="merchant_some[]"  v-model="sm.merchant_some" >
+                                                                    <label class="custom-control-label" :for="'merchant_some' + sm.id"></label>
                                                                 </div>
-                                                            </td> -->
+                                                            </td>
+                                                            <td>
+                                                                <div class="custom-control custom-checkbox mr-4">
+                                                                    <input class="custom-control-input" :key="sm.id" type="checkbox" :id="'branch_all' + sm.id" name="branch_all[]" v-model="sm.branch_all" >
+                                                                    <label class="custom-control-label" :for="'branch_all' + sm.id"></label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="custom-control custom-checkbox mr-4">
+                                                                    <input class="custom-control-input" :key="sm.id" type="checkbox" name="branch_some[]" :id="'branch_some' + sm.id" v-model="sm.branch_some" >
+                                                                    <label class="custom-control-label" :for="'branch_some' + sm.id"></label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="custom-control custom-checkbox mr-4">
+                                                                    <input class="custom-control-input" :key="sm.id" type="checkbox" :id="'agent_all' + sm.id" name="agent_all[]" v-model="sm.agent_all" >
+                                                                    <label class="custom-control-label" :for="'agent_all' + sm.id"></label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="custom-control custom-checkbox mr-4">
+                                                                    <input class="custom-control-input" :key="sm.id" type="checkbox" :id="'agent_some' + sm.id" name="agent_some[]" v-model="sm.agent_some" >
+                                                                    <label class="custom-control-label" :for="'agent_some' + sm.id"></label>
+                                                                </div>
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -1434,7 +1443,7 @@ export default {
             this.getWalletAccountType();
             this.editWalletAccount()
             this.searchESSID()
-            this.datatable()
+            // this.datatable()
             this.getServices()
         }
        

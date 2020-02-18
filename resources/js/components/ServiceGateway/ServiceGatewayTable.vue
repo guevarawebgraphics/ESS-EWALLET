@@ -17,7 +17,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="data-tables datatable-dark">
+                    <div class="data-tables table-responsive datatable-dark">
                     <table class="table table-hover table-striped table-bordered text-center" id="table-service-gateway">
                     <thead>
                         <tr class="th-table">
@@ -26,7 +26,7 @@
                             <th>Action</th>
                         </tr>  
                     </thead>
-                    <tbody>
+                    <tbody :hidden="typing">
                         <tr v-for="sw in ServiceGateway.data" :key="sw.id"> 
                             <td>{{sw.gateway_code}}</td> 
                             <td>{{sw.gateway_name}}</td>
@@ -39,10 +39,10 @@
                         </tr> 
                     </tbody>
                     </table> 
-                    <div class="text-center" v-if="this.ServiceGateway.data == 0">
+                    <div class="text-center" v-if="this.ServiceGateway.data == 0 && !typing">
                         <label>No Results found</label>
                     </div>
-                    <div class="text-center" v-if="ServiceGateway.data === undefined">
+                    <div class="text-center" v-if="ServiceGateway.data === undefined || typing">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
                     </div>
 
@@ -117,8 +117,8 @@
 export default {
 data() {
     return{
-        message: null,
-        typing: null,
+        query: null,
+        typing: false,
         debounce: null,
         editmode : false,
         ServiceGateway : {},
@@ -231,15 +231,15 @@ methods: {
            })
         },
         debounceSearch(event) {
-            this.message = null
-            this.typing = 'You are typing'
+            this.query = null
+            this.typing = true
             clearTimeout(this.debounce)
             this.debounce = setTimeout(() => {
-                this.typing = null
-                this.message = event.target.value
-                //console.log(this.message)
-                if(this.message !== "") {
-                    axios.get(`/api/service_gateway/searchServiceGateway/${this.message}`)
+                this.typing = false
+                this.query = event.target.value
+                //console.log(this.query)
+                if(this.query !== "") {
+                    axios.get(`/api/service_gateway/searchServiceGateway/${this.query}`)
                     .then(response => {
                         this.ServiceGateway = response.data;
                     })
