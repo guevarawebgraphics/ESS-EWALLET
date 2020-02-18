@@ -21,7 +21,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="data-tables datatable-dark">
+                            <div class="data-tables table-responsive datatable-dark">
                                 <!-- Table -->
                                 <table class="table table-hover table-striped table-bordered text-center" id="service_group_table">
                                     <thead class="text-capitalize">
@@ -31,7 +31,7 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody :hidden="typing">
                                         <tr v-for="sg in serviceGroups.data" :key="sg.id">
                                             <td>{{ sg.group_code}}</td>
                                             <td>{{ sg.group_description }}</td>
@@ -45,11 +45,11 @@
                                     </tbody>
                                 </table>
                                 <!-- ./ Table -->
-                                <div class="text-center" v-if="this.serviceGroups.data == 0">
+                                <div class="text-center" v-if="this.serviceGroups.data == 0 && !typing">
                                     <label>No Results found</label>
                                 </div>
 
-                                <div class="text-center" v-if="serviceGroups.data === undefined">
+                                <div class="text-center" v-if="serviceGroups.data === undefined || typing">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
                                 </div>
                             </div>
@@ -142,7 +142,7 @@ export default {
     data() {
         return {
             message: null,
-            typing: null,
+            typing: false,
             debounce: null,
             editmode: false,
             serviceGroups: {},
@@ -256,10 +256,10 @@ export default {
         },
         debounceSearch(event) {
             this.message = null
-            this.typing = 'You are typing'
+            this.typing = true
             clearTimeout(this.debounce)
             this.debounce = setTimeout(() => {
-                this.typing = null
+                this.typing = false
                 this.message = event.target.value
                 //console.log(this.message)
                 if(this.message !== "") {

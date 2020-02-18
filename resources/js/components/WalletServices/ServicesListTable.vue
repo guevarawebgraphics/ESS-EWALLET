@@ -6,7 +6,7 @@
                 <h4 class="header-title mt-3 text-center">E-Wallet Services </h4>   
                 <hr>
                 <router-link to="/createservice/create" class="btn btn-primary btn-sm float-left mr-3">Create Solo Services <i class="ti-pencil-alt"></i></router-link>  
-                <router-link to="/createjointservice" class="btn btn-primary btn-sm float-left">Create Joint Services <i class="ti-pencil-alt"></i></router-link> 
+                <router-link to="/createjointservice" class="btn btn-primary btn-wallet btn-sm float-left">Create Joint Services <i class="ti-pencil-alt"></i></router-link> 
                 <div class="float-right">
                     <div class="search-box" @keydown.prevent.enter.self>
                         <form action="#">
@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col -md-12">
                     <div class="card-body">
-                        <div class="data-tables datatable-dark">
+                        <div class="data-tables table-responsive datatable-dark">
                         <table class="table table-hover table-striped table-bordered text-center" id="table-services">
                         <thead>
                             <tr class="th-table">
@@ -103,7 +103,7 @@ export default {
  */
  data() {
     return {
-        message: null,
+        query: null,
         typing: null,
         debounce: null,
         Services : {},
@@ -148,14 +148,14 @@ export default {
                 }
         },
         debounceSearch(event) {
-            this.message = null
+            this.query = null
             this.typing = 'You are typing'
             clearTimeout(this.debounce)
             this.debounce = setTimeout(() => {
                 this.typing = null
-                this.message = event.target.value
-                if(this.message !== "") {
-                    axios.get(`/api/service/searchservicelist/${this.message}`)
+                this.query = event.target.value
+                if(this.query !== "") {
+                    axios.get(`/api/service/searchservicelist/${this.query}`)
                     .then(response => {
                         this.Services = response.data;
                     })
