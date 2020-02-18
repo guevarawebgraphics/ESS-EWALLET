@@ -6,6 +6,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <router-link class="btn btn-primary btn-sm float-left mb-3" to="/createwalletaccount">Create Wallet Account <i class="ti-pencil-alt"></i></router-link>
+                        <router-link class="btn btn-secondary btn-wallet btn-sm float-left mb-3 ml-2" to="/walletaccounttype">Wallet Account Type <i class="ti-pencil-alt"></i></router-link>
                         <div class="float-right">
                             <div class="search-box">
                                 <form action="#" @keydown.prevent.enter.self>
@@ -21,7 +22,7 @@
                             <!-- <h4 class="header-title mt-3 text-center">Wallet Accounts</h4> -->
                             <hr>
                             <!-- <router-link class="btn btn-primary btn-sm float-left mb-3" to="/createwalletaccount">Create Wallet Account <i class="ti-pencil-alt"></i></router-link> -->
-                            <div class="data-tables datatable-dark">
+                            <div class="data-tables datatable-dark table-responsive">
                             <table class="table table-hover table-bordered table-striped text-center" id="table_id">
                             <thead>
                                 <tr class="th-table">
@@ -34,7 +35,7 @@
                                     <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody :hidden="typing">
                                 <tr v-for="wa in WalletAccount.data" :key="wa.id">
                                     <!-- <td><router-link :to="{ name: '/test', params: { id: 1 }}" :key="$route.fullPath">User</router-link></td> -->
                                     <td>{{wa.wallet_type}}</td>
@@ -54,11 +55,11 @@
                             </tbody>
                             </table>
                         </div>
-                        <div class="text-center" v-if="this.WalletAccount.data == 0">
+                        <div class="text-center" v-if="this.WalletAccount.data == 0 && !typing">
                             <label>No Results found</label>
                         </div>
 
-                        <div class="text-center" v-if="WalletAccount.data === undefined">
+                        <div class="text-center" v-if="WalletAccount.data === undefined || typing">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
                         </div>
                     </div>
@@ -93,8 +94,8 @@
 export default {
     data() {
         return {
-            message: null,
-            typing: null,
+            query: null,
+            typing: false,
             debounce: null,
             editmode: false,
             editmode: false,
@@ -132,15 +133,15 @@ export default {
             this.$router.push('/updatewalletaccount/' + ess_id)
         },
         debounceSearch(event) {
-            this.message = null
-            this.typing = 'You are typing'
+            this.query = null
+            this.typing = true
             clearTimeout(this.debounce)
             this.debounce = setTimeout(() => {
-                this.typing = null
-                this.message = event.target.value
-                //console.log(this.message)
-                if(this.message !== "") {
-                    axios.get(`api/walletaccount/searchWalletAccount/${this.message}`)
+                this.typing = false
+                this.query = event.target.value
+                //console.log(this.query)
+                if(this.query !== "") {
+                    axios.get(`api/walletaccount/searchWalletAccount/${this.query}`)
                     .then(response => {
                         this.WalletAccount = response.data;
                     })

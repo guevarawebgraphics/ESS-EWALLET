@@ -36,7 +36,8 @@ export default {
         }
     },
     methods: {
-        logout(){
+        logout(e){
+            e.preventDefault(e)
             axios.post('/logout')
             .then(res => {
                 //window.localStorage.removeItem('user');

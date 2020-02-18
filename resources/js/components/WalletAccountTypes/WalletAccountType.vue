@@ -22,7 +22,7 @@
                         <div class="col-md-12">
                             <!-- <div class="header-title text-center">Wallet Account Types</div> -->
                             <hr>
-                            <div class="data-tables datatable-dark">
+                            <div class="data-tables datatable-dark table-responsive">
                                 <!-- Table -->
                                 <table class="table table-hover table-bordered table-striped text-center" id="wallet_account_types">
                                     <thead>
@@ -31,32 +31,32 @@
                                             <th>Wallet Account Type</th>
                                             <th>Wallet Type</th>
                                             <th>Status</th>
-                                            <th>Action</th>
+                                            <!-- <th>Action</th> -->
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody :hidden="typing">
                                         <tr v-for="wat in walletAccountTypes.data" :key="wat.id">
                                             <td>{{ wat.type_code}}</td>
                                             <td>{{ wat.wallet_account_type}}</td>
                                             <td>{{ wat.wallet_type }}</td>
                                             <td v-if="wat.status == 1"><div class="badge badge-primary">Active</div></td>
                                             <td v-if="wat.status == 0"><div class="badge badge-info">Disabled</div></td>
-                                            <td>
+                                            <!-- <td>
                                                 <a class="btn btn-primary btn-xs" href="#EditServiceGroup" @click="editWalletAccountType(wat)">
                                                     <i class="fa fa-edit blue"></i>
                                                     <span>Update</span>
                                                 </a>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
                                 <!-- ./ Table -->
                             </div>
-                            <div class="text-center" v-if="this.walletAccountTypes.data == 0">
+                            <div class="text-center" v-if="this.walletAccountTypes.data == 0 && !typing">
                                 <label>No Results found</label>
                             </div>
 
-                            <div class="text-center" v-if="walletAccountTypes.data === undefined">
+                            <div class="text-center" v-if="walletAccountTypes.data === undefined || typing">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
                             </div>
                         </div>
@@ -111,12 +111,12 @@
                         </div>
                         <div class="form-group">
                             <label class="custom-label" for="wallet_account_type">Wallet Account Type</label>
-                            <input type="text" v-model="form.wallet_account_type"  class="form-control" :class="{ 'is-invalid': form.errors.has('wallet_account_type') }" name="wallet_account_type"  placeholder="Wallet Account Type">
+                            <input type="text" v-model="form.wallet_account_type"  class="form-control" :class="{ 'is-invalid': form.errors.has('wallet_account_type') }" name="wallet_account_type"  placeholder="Wallet Account Type" disabled="true">
                             <has-error :form="form" field="wallet_account_type"></has-error>
                         </div>
                         <div v-if="editmode" class="form-group">
                             <label class="custom-label" for="status">Status</label>
-                            <select v-model="form.status" class="custom-select">
+                            <select v-model="form.status" class="custom-select" disabled="true">
                                 <option selected value="" disabled>Select Status</option>
                                 <option value="1">Active</option>
                                 <option value="0">Disabled</option>
@@ -124,7 +124,7 @@
                         </div>
                         <div class="form-group">
                             <label for="wallet_type" class="custom-label">Wallet Type</label>
-                            <select v-model="form.wallet_type" class="custom-select">
+                            <select v-model="form.wallet_type" class="custom-select" disabled="true">
                                 <option selected value="" disabled>Select Wallet Type</option>
                                 <option value="Admin" v-if="form.wallet_type == 'Admin'">Admin</option>
                                 <option value="Credit">Credit</option>
@@ -153,8 +153,8 @@
 export default {
     data() {
         return {
-            message: null,
-            typing: null,
+            query: null,
+            typing: false,
             debounce: null,
             editmode: false,
             walletAccountTypes: {},
@@ -260,15 +260,15 @@ export default {
             })
         },
         debounceSearch(event) {
-            this.message = null
-            this.typing = 'You are typing'
+            this.query = null
+            this.typing = true
             clearTimeout(this.debounce)
             this.debounce = setTimeout(() => {
-                this.typing = null
-                this.message = event.target.value
-                //console.log(this.message)
-                if(this.message !== "") {
-                    axios.get(`api/walletaccount/searchWalletAccountType/${this.message}`)
+                this.typing = false
+                this.query = event.target.value
+                //console.log(this.query)
+                if(this.query !== "") {
+                    axios.get(`api/walletaccount/searchWalletAccountType/${this.query}`)
                     .then(response => {
                         this.walletAccountTypes = response.data;
                     })
