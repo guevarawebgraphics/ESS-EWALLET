@@ -80,7 +80,7 @@
                         </table> 
                         </div>
 
-                        <div class="text-center" v-if="Services == 0">
+                        <div class="text-center" v-if="Services.data == 0">
                             <label>No Results found</label>
                         </div>
 
@@ -178,7 +178,7 @@ export default {
                 this.typing = null
                 this.query = event.target.value
                 if(this.query !== "") {
-                    axios.get(`/api/service/searchservicelist/${this.query}`)
+                    axios.get(`/api/service/searchservice/${this.query}`)
                     .then(response => {
                         this.Services = response.data;
                     })

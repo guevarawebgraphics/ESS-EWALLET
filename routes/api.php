@@ -182,6 +182,10 @@ Route::prefix('service')->group(function(){
     Route::get('/searchservicelist/{query}',[
         'uses' => 'Api\\Services\ServiceController@searchListOfServices'
     ]);
+
+    Route::get('/searchservice/{query}',[
+        'uses' => 'Api\\Services\ServiceController@searchServiceList'
+    ]);
     
     Route::post('/storeService',[
         'uses' => 'Api\\Services\ServiceController@storeService' 
