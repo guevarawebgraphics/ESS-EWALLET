@@ -67,7 +67,7 @@ class WalletAccountController extends Controller
     public function updateWalletAccount(UpdateWalletAccount $request)
     {
         $WalletAccount = $this->WalletAccount->updateWalletAccount($request);
-        return response()->json(['status' => 'success']);
+        return response()->json(['status' => $WalletAccount]);
     }
 
     /**
@@ -163,7 +163,7 @@ class WalletAccountController extends Controller
      * @ Search Wallet Account 
      **/
     public function showServiceMatrix()
-     {
+    {
         return response()->json($this->WalletAccount->showServiceMatrix());
     }
 

@@ -263,11 +263,11 @@ class WalletAccountRepository
         // Store Wallet ammount limits config
         $wallet_amount_limits_config = wallet_amount_limits_config::create([
             'wallet_account_id' => $wallet_account->id,
-            'amount_limit' => $this->checkValue($wallet_account_data->amount_limit),
-            'am_per_transaction' => $this->checkValue($wallet_account_data->am_per_transaction),
-            'am_per_day' => $this->checkValue($wallet_account_data->am_per_day),
-            'am_per_month' => $this->checkValue($wallet_account_data->am_per_month),
-            'am_per_year' => $this->checkValue($wallet_account_data->am_per_year),
+            'amount_limit' => ($wallet_account_data->amount_limit ? true : false),
+            'am_per_transaction' => ($wallet_account_data->am_per_transaction ? true : false),
+            'am_per_day' => ($wallet_account_data->am_per_day ? true : false),
+            'am_per_month' => ($wallet_account_data->am_per_month ? true : false),
+            'am_per_year' => ($wallet_account_data->am_per_year ? true : false),
             'created_by' => $user->id,
             'updated_by' => $user->id,
             'created_at' => Carbon::now(),
@@ -325,14 +325,14 @@ class WalletAccountRepository
                 'wallet_account_id' => $wallet_account->id,
                 'service_id' => $data['service_id'],
                 'redeem' => 'test',
-                'admin_all' => $data['admin_all'],
-                'admin_some' => $data['admin_some'],
-                'merchant_all' => ($data['merchant_all'] ? $data['merchant_all'] : false),
-                'merchant_some' => $data['merchant_some'],
-                'branch_all' => $data['branch_all'],
-                'branch_some' => $data['branch_some'],
-                'agent_all' => $data['agent_all'],
-                'agent_some' => $data['agent_some'],
+                'admin_all' => (empty($data['admin_all']) ? 0 : $data['admin_all']),
+                'admin_some' => (empty($data['admin_some']) ? 0 : $data['admin_some']),
+                'merchant_all' => (empty($data['merchant_all']) ? 0: $data['merchant_all']),
+                'merchant_some' => (empty($data['merchant_some']) ? 0 : $data['merchant_some']),
+                'branch_all' => (empty($data['branch_all']) ? 0 : $data['branch_all']),
+                'branch_some' => (empty($data['branch_some']) ? 0 : $data['branch_some']),
+                'agent_all' => (empty($data['agent_all']) ? 0 : $data['agent_all']),
+                'agent_some' => (empty($data['agent_some']) ? 0 : $data['agent_some']),
                 'created_by' => $user->id,
                 'updated_by' => $user->id,
                 'created_at' => Carbon::now(),
@@ -439,41 +439,40 @@ class WalletAccountRepository
 
         $BankAccount = json_decode($wallet_account_data->BankAccount, true);
         foreach($BankAccount as $data) {
-                    
-                    // Create if ID is not exists
-                    if(empty($data['id'])){
-                        // Store to Wallet Bank Account
-                        $wallet_account_bank = wallet_bank_account::create([
-                            'wallet_account_id' => $wallet_id->id,
-                            'branch' => $data['Branch'],
-                            'bank_name' => $data['bank_name'],
-                            'account_type' => $data['account_type'],
-                            'account_name' => $data['account_name'],
-                            'account_no' => $data['account_no'],
-                            'default' => $data['default'],
-                            'status' => $data['status'],
-                            'created_by' => $user->id,
-                            'updated_by' => $user->id,
-                            'created_at' => Carbon::now(),
-                            'updated_at' => Carbon::now()
-                        ]);
-                    }
-                    else {
-                        // Update to Wallet Bank Account
-                            $wallet_account_bank = wallet_bank_account::where('id', '=', $data['id'])
-                                ->where('wallet_account_id', '=', $wallet_id->id)
-                                ->update([
-                                'branch' => $data['Branch'],
-                                'bank_name' => $data['bank_name'],
-                                'account_type' => $data['account_type'],
-                                'account_name' => $data['account_name'],
-                                'account_no' => $data['account_no'],
-                                'default' => $data['default'],
-                                'status' => $data['status'],
-                                'updated_by' => $user->id,
-                                'updated_at' => Carbon::now()
-                        ]);
-                    }
+            // Create if ID is not exists
+            if(empty($data['id'])){
+                // Store to Wallet Bank Account
+                $wallet_account_bank = wallet_bank_account::create([
+                    'wallet_account_id' => $wallet_id->id,
+                    'branch' => $data['Branch'],
+                    'bank_name' => $data['bank_name'],
+                    'account_type' => $data['account_type'],
+                    'account_name' => $data['account_name'],
+                    'account_no' => $data['account_no'],
+                    'default' => $data['default'],
+                    'status' => $data['status'],
+                    'created_by' => $user->id,
+                    'updated_by' => $user->id,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
+            }
+            else {
+                // Update to Wallet Bank Account
+                $wallet_account_bank = wallet_bank_account::where('id', '=', $data['id'])
+                    ->where('wallet_account_id', '=', $wallet_id->id)
+                    ->update([
+                    'branch' => $data['Branch'],
+                    'bank_name' => $data['bank_name'],
+                    'account_type' => $data['account_type'],
+                    'account_name' => $data['account_name'],
+                    'account_no' => $data['account_no'],
+                    'default' => $data['default'],
+                    'status' => $data['status'],
+                    'updated_by' => $user->id,
+                    'updated_at' => Carbon::now()
+                ]);
+            }
         }
         // Update Wallet Account Details
         $wallet_account_details = wallet_account_details::where('wallet_account_id', '=', $wallet_id->id)
@@ -489,11 +488,11 @@ class WalletAccountRepository
         // Update Wallet ammount limits config
         $wallet_amount_limits_config = wallet_amount_limits_config::where('wallet_account_id', '=', $wallet_id->id)
             ->update([
-                'amount_limit' => $this->checkValue($wallet_account_data->amount_limit),
-                'am_per_transaction' => $this->checkValue($wallet_account_data->am_per_transaction),
-                'am_per_day' => $this->checkValue($wallet_account_data->am_per_day),
-                'am_per_month' => $this->checkValue($wallet_account_data->am_per_month),
-                'am_per_year' => $this->checkValue($wallet_account_data->am_per_year),
+                'amount_limit' => ($wallet_account_data->amount_limit ? true : false),
+                'am_per_transaction' => ($wallet_account_data->am_per_transaction ? true : false),
+                'am_per_day' => ($wallet_account_data->am_per_day ? true : false),
+                'am_per_month' => ($wallet_account_data->am_per_month ? true : false),
+                'am_per_year' => ($wallet_account_data->am_per_year ? true : false),
                 'updated_by' => $user->id,
                 'updated_at' => Carbon::now()
             ]);
@@ -830,7 +829,7 @@ class WalletAccountRepository
                 'service_grouping.group_description'
                //  'service_matrix.admin_all',
                //  'service_matrix.admin_some',
-               //  'service_matrix.merchant_allP',
+               //  'service_matrix.merchant_all',
                //  'service_matrix.merchant_some',
                //  'service_matrix.branch_all',
                //  'service_matrix.branch_some',
@@ -853,7 +852,7 @@ class WalletAccountRepository
      **/
     public function checkValue($value)
     {
-        if($value == 'true'){
+        if($value === 'true'){
             return true;
         }
         else{
