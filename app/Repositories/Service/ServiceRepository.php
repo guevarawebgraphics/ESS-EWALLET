@@ -609,7 +609,7 @@ class ServiceRepository
         ->orWhere('services.service_code', 'LIKE', '%'.$query.'%')
         ->orWhere('wallet_account.wallet_account_no', 'LIKE', '%'.$query.'%')
         ->orWhere('wallet_account.wallet_account_name', 'LIKE', '%'.$query.'%')
-        ->paginate(10);
+        ->paginate();
         return $listServices;
     }
 
