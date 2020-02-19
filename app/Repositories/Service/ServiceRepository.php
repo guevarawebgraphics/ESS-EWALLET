@@ -3,20 +3,31 @@
 namespace App\Repositories\Service;
 
 use DB; 
+
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 /**
  * Models
  */
 use App\Models\Services\WService;
+
 use App\Models\Services\WDetails;
+
 use App\Models\Services\ServiceAndServiceType;
+
 use App\Models\Services\ServiceAmountLimit;
+
 use App\Models\Services\ServiceTransactionLimit;
+
 use App\Models\ServiceMatrix\ServiceMatrix;
+
 use App\Models\Services\Services;
+
 use App\Models\Services\ServicesBaseTable; 
+
 use App\Models\Services\ValuesSourceDestinationRates; 
+
 use App\Models\Services\JointService;
+
 use App\Models\Services\ServiceTypeDetailsBasetable;
 
 
@@ -114,7 +125,7 @@ class ServiceRepository
          * For Uploading Service Template
          */ 
         $service_template = null;
-        if($service_data->service_template !== 'empty') {
+        if ($service_data->service_template !== 'empty') {
             $filename_with_extension_app = $service_data->service_template->getClientOriginalName();
             $file_name = pathinfo($filename_with_extension_app, PATHINFO_FILENAME);
             $service_template = time().'_'.$file_name.'.'.$service_data->service_template->getClientOriginalExtension();
@@ -151,48 +162,50 @@ class ServiceRepository
          * Inserting Service 
          */
         $insert_services = Services::create([
-                    'service_code' => $service_data->service_code ,
-                    'service_name' => $service_data->service_name,
-                    'service_description' => $service_data->service_description,
-                    's_wallet_type' =>  $service_data->wallet_type,
-                    'wallet_condition' => $service_data->service_condition, 
-        ]);         // Get Service Details Id
+            'service_code' => $service_data->service_code ,
+            'service_name' => $service_data->service_name,
+            'service_description' => $service_data->service_description,
+            's_wallet_type' =>  $service_data->wallet_type,
+            'wallet_condition' => $service_data->service_condition, 
+        ]);         
+        // Get Service Details Id
         $GetServiceDetailsId = $this->connection
-                                ->table('servicetypedetails')
-                                ->select('id')
-                                ->where('st_code', '=', $service_data->servicetype_code)
-                                ->first();        // Store Service Type Details Basetable
+            ->table('servicetypedetails')
+            ->select('id')
+            ->where('st_code', '=', $service_data->servicetype_code)
+            ->first();        // Store Service Type Details Basetable
         $StoreServiceTypeDetailsBasetable = ServiceTypeDetailsBasetable::create([
-                                'services_id' => $insert_services->id,
-                                'service_type_details_id' => $GetServiceDetailsId->id
+            'services_id' => $insert_services->id,
+            'service_type_details_id' => $GetServiceDetailsId->id
         ]);
         /**
          * Insert Service Base Table
          */
         $insert_services_basetable = ServicesBaseTable::create([ 
-                'service_id' => $insert_services->id, 
-                'service_type_id' => $service_data->service_type_id,
-                'wallet_condition_id' => null,
-                'pr_details_id' => $service_data->pr_wallet_id ,
-                'ir_details_id' =>  $service_data->ir_wallet_id,
-                'service_gateway_id' => $service_data->service_gateway,
-                'service_group_id' => $service_data->service_group_id,
-                'assign_approver_id' => '1',
-                'service_template' => $service_template, 
-                'require_approver' => true, 
-        ]);  
+            'service_id' => $insert_services->id, 
+            'service_type_id' => $service_data->service_type_id,
+            'wallet_condition_id' => null,
+            'pr_details_id' => $service_data->pr_wallet_id ,
+            'ir_details_id' =>  $service_data->ir_wallet_id,
+            'service_gateway_id' => $service_data->service_gateway,
+            'service_group_id' => $service_data->service_group_id,
+            'assign_approver_id' => '1',
+            'service_template' => $service_template, 
+            'require_approver' => true, 
+        ]); 
+
         /**
          * Inserting service matrix for retrieving the primary key of service 
          */
         $service_matrix = ServiceMatrix::create([
             'service_id' => $insert_services->id,
             'created_by' => '1',
-            'updated_by' => '1',        ]); 
+            'updated_by' => '1',        
+        ]); 
         
         /**
          * Inserting into service_amount_limit
          */
-         
         $service_amount_limit = ServiceAmountLimit::create([ 
             'service_id_amount'=> $insert_services->id,
             'limit_minimum'=> $service_data->limit_minimum,
@@ -200,21 +213,23 @@ class ServiceRepository
             'amount_per_day' => $service_data->amount_per_day, 
             'amount_per_month' => $service_data->amount_per_month,
             'amount_per_year' => $service_data->amount_per_year
-        ]);        /**
+        ]);
+        
+        /**
          * Inserting into service_transaction_limit
          */
-        
         $service_transaction_limit = ServiceTransactionLimit::create([
             'service_id_transaction' => $insert_services->id,
             'limit_per_day' => $service_data->limit_per_day,
             'limit_per_month' => $service_data->limit_per_month,
             'limit_per_year' => $service_data->limit_per_year
-        ]); 
+        ]);
+
         /**
          * Insert rows in the table (values,source wallet, initiator wallet, rates table) 
          */
         $sd_values = json_decode($service_data->sd_values, true);
-        foreach($sd_values as $data){
+        foreach ($sd_values as $data) {
             $store = ValuesSourceDestinationRates::create([
                 'service_id' => $insert_services->id,
                 'service_value' => $data['service_value'],
@@ -223,6 +238,7 @@ class ServiceRepository
                 'service_rate_table' => $data['service_rate_table']
             ]);
         } 
+
         /**
          * Inserting into service_and_servicetype table
          */
@@ -244,12 +260,12 @@ class ServiceRepository
          */
         $service_template = null; 
         $existing_service_template = $this->connection->table('services_basetable')
-                                        ->where('service_id','=',$service_data->service_id)
-                                        ->first();
+            ->where('service_id','=',$service_data->service_id)
+            ->first();
         $get_service_template =  $existing_service_template->service_template;
         
-        if($service_data->service_template !== 'empty') { 
-            if($service_data->service_template !== $get_service_template){
+        if ($service_data->service_template !== 'empty') { 
+            if ($service_data->service_template !== $get_service_template){
                 $filename_with_extension_app = $service_data->service_template->getClientOriginalName();
                 $file_name = pathinfo($filename_with_extension_app, PATHINFO_FILENAME);
                 $service_template = time().'_'.$file_name.'.'.$service_data->service_template->getClientOriginalExtension();
@@ -271,7 +287,7 @@ class ServiceRepository
          * Insert rows in the table (values,source wallet, initiator wallet, rates table) 
          */
         $sd_values = json_decode($service_data->sd_values, true);
-        foreach($sd_values as $data) {
+        foreach ($sd_values as $data) {
             $store = ValuesSourceDestinationRates::create([
                 'service_id' => $service_data->service_id,
                 'service_value' => $data['service_value'],
@@ -340,12 +356,12 @@ class ServiceRepository
             'wallet_condition' => 'joint', 
         ]); 
         // Store Service Type Details Basetable
-            $StoreServiceTypeDetailsBasetable = ServiceTypeDetailsBasetable::create([
-                'services_id' => $insert_services->id,
-                'joint_services_id' => $insert_services->id,
+        $StoreServiceTypeDetailsBasetable = ServiceTypeDetailsBasetable::create([
+            'services_id' => $insert_services->id,
+            'joint_services_id' => $insert_services->id,
         ]);
     
-        foreach($service_data->joint_services as $data){
+        foreach ($service_data->joint_services as $data) {
             $store = JointService::create([
                 'main_service_id' => $insert_services->id,
                 'joint_service_id' => $data['service_id'],
@@ -360,59 +376,61 @@ class ServiceRepository
     public function fillServiceType($service_type_code)
     {
         $service_type = DB::connection('mysql')
-                ->table('servicetypedetails')
-                ->where('st_code', '=', $service_type_code)
-                ->first();
+            ->table('servicetypedetails')
+            ->where('st_code', '=', $service_type_code)
+            ->first();
         return $service_type;
     }
     public function fillPrAccountName($pr_wallet_acc_no)
     {
         $account_name = DB::connection('mysql')
-                                ->table('wallet_account')
-                                ->where('wallet_account_no','=',$pr_wallet_acc_no)
-                                ->first();
+            ->table('wallet_account')
+            ->where('wallet_account_no','=',$pr_wallet_acc_no)
+            ->first();
         return $account_name;
     }
     /**
      * For searching/filling IR Account details
      * @param ir_wallet_account_no
      */
-    public function fillIrAccountName($ir_wallet_acc_no){
+    public function fillIrAccountName($ir_wallet_acc_no)
+    {
         $account_name = DB::connection('mysql')
-                                ->table('wallet_account')
-                                ->where('wallet_account_no','=',$ir_wallet_acc_no)
-                                ->first();
+            ->table('wallet_account')
+            ->where('wallet_account_no','=',$ir_wallet_acc_no)
+            ->first();
         return $account_name;
     }
     /**
      * Get services table
      * @return Services
      */
-    public function showServices(){
-
+    public function showServices()
+    {
         $Services = [];
         /**
          * @ Get all Data From Service Type Details Basetable 
          **/
         $getservices_table = $this->connection
-                        ->table('service_type_details_basetable')
-                        ->join('services', 'service_type_details_basetable.services_id', '=', 'services.id')
-                        ->get(); 
+            ->table('service_type_details_basetable')
+            ->join('services', 'service_type_details_basetable.services_id', '=', 'services.id')
+            ->get(); 
+
         /**
          * @ Get Service With Details 
          **/
         $get_service_with_details = $this->connection
-        ->table('service_type_details_basetable')
+            ->table('service_type_details_basetable')
             ->leftJoin('services as test', 'service_type_details_basetable.joint_services_id', '=', 'test.id')
             ->join('services', 'service_type_details_basetable.services_id', '=', 'services.id')
-        ->paginate(10); 
+            ->paginate(10); 
 
         // $get_service_with_details = $this->connection
-        //                 ->table('service_type_details_basetable')
-        //                     ->join('services', 'service_type_details_basetable.services_id', '=', 'services.id')
-        //                     ->join('servicetypedetails', 'service_type_details_basetable.service_type_details_id', '=', 'servicetypedetails.id')
-        //                 ->get(); 
-        foreach($get_service_with_details as $test1) {
+            // ->table('service_type_details_basetable')
+            //     ->join('services', 'service_type_details_basetable.services_id', '=', 'services.id')
+            //     ->join('servicetypedetails', 'service_type_details_basetable.service_type_details_id', '=', 'servicetypedetails.id')
+            // ->get(); 
+        foreach ($get_service_with_details as $test1) {
             array_push($Services, $test1);
         }
         
@@ -420,14 +438,13 @@ class ServiceRepository
          * @ Get Service with joint Service 
          **/
         $get_service_with_joint = $this->connection
-                        ->table('service_type_details_basetable')
-                        ->join('services', 'service_type_details_basetable.joint_services_id', '=', 'services.id')
-                        ->get(); 
+            ->table('service_type_details_basetable')
+            ->join('services', 'service_type_details_basetable.joint_services_id', '=', 'services.id')
+            ->get(); 
 
-        foreach($get_service_with_joint as $test2) {
+        foreach ($get_service_with_joint as $test2) {
             array_push($Services, $test2);
         }
-    
         return $get_service_with_details;
     }
 
@@ -438,21 +455,21 @@ class ServiceRepository
     public function showListOfServices()
     {
         $listServices = $this->connection
-                        ->table('services')
-                        ->join('services_basetable', 'services.id', '=', 'services_basetable.service_id')
-                        ->join('wallet_account', 'services_basetable.pr_details_id', '=', 'wallet_account.id')
-                        ->select(
-                            'services.id',
-                            'services.service_code',
-                            'services.service_name',
-                            'services.service_description',
-                            'services.s_wallet_type',
-                            'services.wallet_condition',
-                            'wallet_account.wallet_account_no as rwan',
-                            'wallet_account.wallet_account_name as rname'
+            ->table('services')
+            ->join('services_basetable', 'services.id', '=', 'services_basetable.service_id')
+            ->join('wallet_account', 'services_basetable.pr_details_id', '=', 'wallet_account.id')
+            ->select(
+                'services.id',
+                'services.service_code',
+                'services.service_name',
+                'services.service_description',
+                'services.s_wallet_type',
+                'services.wallet_condition',
+                'wallet_account.wallet_account_no as rwan',
+                'wallet_account.wallet_account_name as rname'
 
-                        )
-                        ->paginate(10);
+            )
+            ->paginate(10);
         return $listServices;
     }
 
@@ -463,28 +480,28 @@ class ServiceRepository
     public function searchListOfServices($query)
     {
         $listServices = $this->connection
-                        ->table('services')
-                        ->join('services_basetable', 'services.id', '=', 'services_basetable.service_id')
-                        ->join('wallet_account', 'services_basetable.pr_details_id', '=', 'wallet_account.id')
-                        ->select(
-                            'services.id',
-                            'services.service_code',
-                            'services.service_name',
-                            'services.service_description',
-                            'services.s_wallet_type',
-                            'services.wallet_condition',
-                            'wallet_account.wallet_account_no as rwan',
-                            'wallet_account.wallet_account_name as rname'
-                        )
-                        ->orWhere('services.service_code', 'LIKE', '%'.$query.'%')
-                        ->orWhere('services.service_name', 'LIKE', '%'.$query.'%')
-                        ->orWhere('services.service_description', 'LIKE', '%'.$query.'%')
-                        ->orWhere('services.s_wallet_type', 'LIKE', '%'.$query.'%')
-                        ->orWhere('services.service_code', 'LIKE', '%'.$query.'%')
-                        ->orWhere('wallet_account.wallet_account_no', 'LIKE', '%'.$query.'%')
-                        ->orWhere('wallet_account.wallet_account_name', 'LIKE', '%'.$query.'%')
-                        ->get();
-                        // ->paginate(10);
+            ->table('services')
+            ->join('services_basetable', 'services.id', '=', 'services_basetable.service_id')
+            ->join('wallet_account', 'services_basetable.pr_details_id', '=', 'wallet_account.id')
+            ->select(
+                'services.id',
+                'services.service_code',
+                'services.service_name',
+                'services.service_description',
+                'services.s_wallet_type',
+                'services.wallet_condition',
+                'wallet_account.wallet_account_no as rwan',
+                'wallet_account.wallet_account_name as rname'
+            )
+            ->orWhere('services.service_code', 'LIKE', '%'.$query.'%')
+            ->orWhere('services.service_name', 'LIKE', '%'.$query.'%')
+            ->orWhere('services.service_description', 'LIKE', '%'.$query.'%')
+            ->orWhere('services.s_wallet_type', 'LIKE', '%'.$query.'%')
+            ->orWhere('services.service_code', 'LIKE', '%'.$query.'%')
+            ->orWhere('wallet_account.wallet_account_no', 'LIKE', '%'.$query.'%')
+            ->orWhere('wallet_account.wallet_account_name', 'LIKE', '%'.$query.'%')
+            ->get();
+            // ->paginate(10);
         return $listServices;
     }
 
@@ -495,14 +512,14 @@ class ServiceRepository
     public function getServiceDetails($service_id)
     {
         $service_details = $this->connection
-                          ->table('services')
-                          ->join('services_basetable','services.id','services_basetable.service_id') 
-                          ->join('servicetypedetails','servicetypedetails.id','services_basetable.service_type_id')
-                          ->join('service_gateway','service_gateway.id','services_basetable.service_gateway_id')
-                          ->join('service_amount_limit','service_amount_limit.service_id_amount','services.id') 
-                          ->join('service_transaction_limit','service_transaction_limit.service_id_transaction','services.id')
-                          ->where('services.id','=',$service_id)
-                          ->get();
+            ->table('services')
+            ->join('services_basetable','services.id','services_basetable.service_id') 
+            ->join('servicetypedetails','servicetypedetails.id','services_basetable.service_type_id')
+            ->join('service_gateway','service_gateway.id','services_basetable.service_gateway_id')
+            ->join('service_amount_limit','service_amount_limit.service_id_amount','services.id') 
+            ->join('service_transaction_limit','service_transaction_limit.service_id_transaction','services.id')
+            ->where('services.id','=',$service_id)
+            ->get();
         return $service_details;
     }   
 
@@ -514,10 +531,10 @@ class ServiceRepository
     public function getWalletDetails($id)
     {
         $wallet_details = $this->connection
-                         ->table('wallet_account')
-                         ->where('id','=',$id) 
-                         ->select('id','wallet_account_no','wallet_account_name')
-                         ->get();
+            ->table('wallet_account')
+            ->where('id','=',$id) 
+            ->select('id','wallet_account_no','wallet_account_name')
+            ->get();
         return $wallet_details; 
     }
 
@@ -528,10 +545,10 @@ class ServiceRepository
     public function getVSDR($service_id)
     {
         $vsdr = $this->connection
-                         ->table('sd_wallet_service_set_up')
-                         ->where('service_id','=',$service_id)
-                         ->select('id','service_value','service_source_wallet','service_destination_wallet','service_rate_table')
-                         ->get();
+            ->table('sd_wallet_service_set_up')
+            ->where('service_id','=',$service_id)
+            ->select('id','service_value','service_source_wallet','service_destination_wallet','service_rate_table')
+            ->get();
         return $vsdr;
     }
 
@@ -539,12 +556,13 @@ class ServiceRepository
      * @ Joint service List
      * @return list_joint_services 
      **/
-    public function jointServiceslist($id){
+    public function jointServiceslist($id)
+    {
         $list_joint_services = $this->connection
-                        ->table('joint_services') 
-                        ->join('services','services.id','=','joint_services.main_service_id')
-                        ->where('joint_services.main_service_id','=', $id)
-                        ->get();
+            ->table('joint_services') 
+            ->join('services','services.id','=','joint_services.main_service_id')
+            ->where('joint_services.main_service_id','=', $id)
+            ->get();
         return $list_joint_services;
     } 
 
@@ -554,15 +572,14 @@ class ServiceRepository
      **/
     public function getServiceTypeCode($id,$wallet_condition)
     {
-        if($wallet_condition === "solo") {
+        if ($wallet_condition === "solo") {
             $service_type_code = $this->connection 
-                                ->table('services_basetable')
-                                ->Join('servicetypedetails','servicetypedetails.id','=','services_basetable.service_type_id') 
-                                ->where('services_basetable.service_id','=',$id)
-                                ->select('st_code')
-                                ->first();
+                ->table('services_basetable')
+                ->Join('servicetypedetails','servicetypedetails.id','=','services_basetable.service_type_id') 
+                ->where('services_basetable.service_id','=',$id)
+                ->select('st_code')
+                ->first();
         }
-    
         return $service_type_code;
     }
 
@@ -571,7 +588,29 @@ class ServiceRepository
      **/
     public function searchService($query)
     {
-        
+        $listServices = $this->connection
+        ->table('services')
+        ->join('services_basetable', 'services.id', '=', 'services_basetable.service_id')
+        ->join('wallet_account', 'services_basetable.pr_details_id', '=', 'wallet_account.id')
+        ->select(
+            'services.id',
+            'services.service_code',
+            'services.service_name',
+            'services.service_description',
+            'services.s_wallet_type',
+            'services.wallet_condition',
+            'wallet_account.wallet_account_no as rwan',
+            'wallet_account.wallet_account_name as rname'
+        )
+        ->orWhere('services.service_code', 'LIKE', '%'.$query.'%')
+        ->orWhere('services.service_name', 'LIKE', '%'.$query.'%')
+        ->orWhere('services.service_description', 'LIKE', '%'.$query.'%')
+        ->orWhere('services.s_wallet_type', 'LIKE', '%'.$query.'%')
+        ->orWhere('services.service_code', 'LIKE', '%'.$query.'%')
+        ->orWhere('wallet_account.wallet_account_no', 'LIKE', '%'.$query.'%')
+        ->orWhere('wallet_account.wallet_account_name', 'LIKE', '%'.$query.'%')
+        ->paginate(10);
+        return $listServices;
     }
 
 }

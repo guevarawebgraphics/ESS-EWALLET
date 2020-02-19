@@ -8515,7 +8515,7 @@ __webpack_require__.r(__webpack_exports__);
         _this3.query = event.target.value;
 
         if (_this3.query !== "") {
-          axios.get("/api/service/searchservicelist/".concat(_this3.query)).then(function (response) {
+          axios.get("/api/service/searchservice/".concat(_this3.query)).then(function (response) {
             _this3.Services = response.data;
           })["catch"](function (err) {
             return console.log(err);
@@ -78905,7 +78905,7 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm.Services == 0
+              _vm.Services.data == 0
                 ? _c("div", { staticClass: "text-center" }, [
                     _c("label", [_vm._v("No Results found")])
                   ])
