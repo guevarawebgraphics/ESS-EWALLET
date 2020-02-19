@@ -17,7 +17,7 @@
                             <router-link to="/walletaccounttype" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Account Types</span></router-link>
                         </li> -->
                         <li>
-                            <router-link to="/walletaccounts" aria-expanded="true"><i class="ti-wallet text-blue"></i><span>Wallet Accounts</span></router-link>
+                            <router-link to="/walletaccounts" aria-expanded="true"><i class="ti-user text-blue"></i><span>Wallet Accounts</span></router-link>
                         </li>
                         <li>
                             <a href="javascript:void(0)" aria-expanded="true">

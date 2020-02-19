@@ -24,7 +24,7 @@ class StoreWalletAccount extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|max:255|unique:wallet_account,ess_id',
+            'username' => 'required|max:255',
             'WalletType' => 'required|max:255',
             'WalletAccountType' => 'required|max:255',
             'WalletAccountNo' => 'required|max:255',

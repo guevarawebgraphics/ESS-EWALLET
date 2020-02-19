@@ -43,9 +43,10 @@ class ServiceGroupController extends Controller
     /**
      * @ Store Service Group 
      **/
-    public function storeServiceGroup(StoreServiceGroup $request){
-        $service_group = $this->ServiceGroup->storeServiceGroup($request);
-        return response()->json(['status' => 'success']);
+    public function storeServiceGroup(StoreServiceGroup $request)
+    {
+        $serviceGroup = $this->ServiceGroup->storeServiceGroup($request);
+        return response()->json(['status' => $serviceGroup]);
     }
 
     /**
@@ -54,8 +55,8 @@ class ServiceGroupController extends Controller
      **/
     public function updateServiceGroup(UpdateServiceGroup $request, $id)
     {
-        $service_group = $this->ServiceGroup->updateServiceGroup($request, $id);
-        return response()->json(['status' => 'success']);
+        $serviceGoup = $this->ServiceGroup->updateServiceGroup($request, $id);
+        return response()->json(['status' => $serviceGoup]);
     }
 
     /**
