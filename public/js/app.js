@@ -8428,6 +8428,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * This module is related with other modules to be completed.
@@ -8468,6 +8485,14 @@ __webpack_require__.r(__webpack_exports__);
         console.log("err");
       });
     },
+    getResults: function getResults() {
+      var _this2 = this;
+
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/api/service/getserviceslist?page=".concat(page)).then(function (response) {
+        _this2.Services = response.data;
+      });
+    },
     checksExistId: function checksExistId(id) {
       var joint_services = this.joint_services;
 
@@ -8480,23 +8505,23 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     debounceSearch: function debounceSearch(event) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.query = null;
       this.typing = 'You are typing';
       clearTimeout(this.debounce);
       this.debounce = setTimeout(function () {
-        _this2.typing = null;
-        _this2.query = event.target.value;
+        _this3.typing = null;
+        _this3.query = event.target.value;
 
-        if (_this2.query !== "") {
-          axios.get("/api/service/searchservicelist/".concat(_this2.query)).then(function (response) {
-            _this2.Services = response.data;
+        if (_this3.query !== "") {
+          axios.get("/api/service/searchservicelist/".concat(_this3.query)).then(function (response) {
+            _this3.Services = response.data;
           })["catch"](function (err) {
             return console.log(err);
           });
         } else {
-          _this2.showServices();
+          _this3.showServices();
         }
       }, 600);
     }
@@ -78699,7 +78724,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "tbody",
-                        _vm._l(_vm.Services, function(s) {
+                        _vm._l(_vm.Services.data, function(s) {
                           return _c("tr", { key: s.id }, [
                             _c("td", [
                               _c("p", [
@@ -78886,7 +78911,7 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _vm.Services.length === undefined
+              _vm.Services.data === undefined
                 ? _c("div", { staticClass: "text-center" }, [
                     _c("span", {
                       staticClass: "spinner-border spinner-border-sm",
@@ -78898,7 +78923,62 @@ var render = function() {
                     })
                   ])
                 : _vm._e()
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "card-footer bg-white" },
+              [
+                _c("div", { staticClass: "float-left" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(
+                        _vm.Services.next_page_url == null &&
+                          _vm.Services.prev_page_url == null
+                          ? ""
+                          : "Total " + _vm.Services.to
+                      ) +
+                      "\n                        " +
+                      _vm._s(
+                        _vm.Services.next_page_url == null &&
+                          _vm.Services.prev_page_url == null
+                          ? ""
+                          : "of " + _vm.Services.total
+                      ) +
+                      "\n                    "
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "pagination",
+                  {
+                    staticClass: "float-right",
+                    attrs: { data: _vm.Services },
+                    on: { "pagination-change-page": _vm.getResults }
+                  },
+                  [
+                    _c(
+                      "span",
+                      { attrs: { slot: "prev-nav" }, slot: "prev-nav" },
+                      [
+                        _c("i", { staticClass: "ti-angle-left" }),
+                        _vm._v(" Previous")
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { attrs: { slot: "next-nav" }, slot: "next-nav" },
+                      [
+                        _vm._v("Next "),
+                        _c("i", { staticClass: "ti-angle-right" })
+                      ]
+                    )
+                  ]
+                )
+              ],
+              1
+            )
           ])
         ])
       ])
@@ -94942,7 +95022,7 @@ function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _router_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router/index */ "./resources/js/router/index.js");
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var _router_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router/index */ "./resources/js/router/index.js");
 /* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vform */ "./node_modules/vform/dist/vform.common.js");
 /* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vform__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _Gate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Gate */ "./resources/js/Gate.js");
@@ -95006,7 +95086,12 @@ Vue.filter('substring', function (value) {
  * @ Check your .env if prod or local
  **/
 
-if (false) {}
+if (process.env.MIX_APP_ENV === 'prod') {
+  Vue.config.productionTip = false;
+  Vue.config.devtools = false;
+  Vue.config.debug = false;
+  Vue.config.silent = true;
+}
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -95034,6 +95119,7 @@ var app = new Vue({
   el: '#app',
   router: _router_index__WEBPACK_IMPORTED_MODULE_0__["default"]
 });
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
 
 /***/ }),
 
@@ -97551,9 +97637,9 @@ function checkPrepaidMerchant(to, from, next) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\e-wallet\resources\js\app.js */"./resources/js/app.js");
-__webpack_require__(/*! C:\xampp\htdocs\e-wallet\resources\sass\app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\e-wallet\resources\sass\ewallet.scss */"./resources/sass/ewallet.scss");
+__webpack_require__(/*! C:\xampp\htdocs\ess_ewallet\resources\js\app.js */"./resources/js/app.js");
+__webpack_require__(/*! C:\xampp\htdocs\ess_ewallet\resources\sass\app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\ess_ewallet\resources\sass\ewallet.scss */"./resources/sass/ewallet.scss");
 
 
 /***/ })

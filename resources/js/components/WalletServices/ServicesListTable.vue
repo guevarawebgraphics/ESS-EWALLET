@@ -33,7 +33,7 @@
                             </tr>  
                         </thead>
                         <tbody>
-                            <tr v-for="s in Services" :key="s.id"> 
+                            <tr v-for="s in Services.data" :key="s.id"> 
                                 <td> 
                                     <p>
                                     {{s.service_code}}  
@@ -84,11 +84,28 @@
                             <label>No Results found</label>
                         </div>
 
-                        <div class="text-center" v-if="Services.length === undefined">
+                        <div class="text-center" v-if="Services.data === undefined">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
                         </div>
 
                     </div>
+
+                    <!-- Card Footer -->
+                    <div class="card-footer bg-white">
+                        <!-- Pagination Length -->
+                        <div class="float-left">
+                            {{ (Services.next_page_url == null && Services.prev_page_url == null) ? '' : 'Total ' + Services.to }}
+                            {{ (Services.next_page_url == null && Services.prev_page_url == null) ? '' : 'of ' + Services.total }}
+                        </div>
+                        <!-- Pagination -->
+                        <!-- <pagination class="float-right" :data="WalletAccount" @pagination-change-page="getResults"></pagination> -->
+                        <pagination class="float-right" :data="Services" @pagination-change-page="getResults">
+                            <span slot="prev-nav"><i class="ti-angle-left"></i> Previous</span>
+                            <span slot="next-nav">Next <i class="ti-angle-right"></i></span>
+                        </pagination>
+                        <!-- Pagination -->
+                    </div>
+                    <!-- ./ Card Footer -->
                 </div>
             </div>
         </div>
@@ -139,6 +156,12 @@ export default {
             .catch(() => {
                 console.log("err");
             })
+        },
+         getResults(page = 1) {
+            axios.get(`/api/service/getserviceslist?page=${page}`)
+                .then(response => {
+                    this.Services = response.data;
+                });
         },
         checksExistId(id){
                 const joint_services = this.joint_services

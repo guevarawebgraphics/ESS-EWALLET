@@ -402,10 +402,16 @@ class ServiceRepository
          * @ Get Service With Details 
          **/
         $get_service_with_details = $this->connection
-                        ->table('service_type_details_basetable')
-                            ->join('services', 'service_type_details_basetable.services_id', '=', 'services.id')
-                            ->join('servicetypedetails', 'service_type_details_basetable.service_type_details_id', '=', 'servicetypedetails.id')
-                        ->get(); 
+        ->table('service_type_details_basetable')
+            ->leftJoin('services as test', 'service_type_details_basetable.joint_services_id', '=', 'test.id')
+            ->join('services', 'service_type_details_basetable.services_id', '=', 'services.id')
+        ->paginate(10); 
+
+        // $get_service_with_details = $this->connection
+        //                 ->table('service_type_details_basetable')
+        //                     ->join('services', 'service_type_details_basetable.services_id', '=', 'services.id')
+        //                     ->join('servicetypedetails', 'service_type_details_basetable.service_type_details_id', '=', 'servicetypedetails.id')
+        //                 ->get(); 
         foreach($get_service_with_details as $test1) {
             array_push($Services, $test1);
         }
@@ -422,7 +428,7 @@ class ServiceRepository
             array_push($Services, $test2);
         }
     
-        return $Services;
+        return $get_service_with_details;
     }
 
     /**
