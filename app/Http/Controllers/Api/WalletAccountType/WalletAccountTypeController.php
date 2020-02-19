@@ -66,7 +66,7 @@ class WalletAccountTypeController extends Controller
     {
         $wallet_account_type = $this->walletAccountRepository->updateWalletAccountType($request);
 
-        return response()->json(['status' => 'success']);
+        return response()->json(['status' => $wallet_account_type]);
     }
 
     /**

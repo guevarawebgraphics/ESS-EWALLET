@@ -459,8 +459,8 @@
                                                         <div class="form-check custom-control custom-checkbox"> 
                                                             <input v-model="form.amount_limit" type="checkbox" class="form-check-input" name="amount_limit" id="amount_limit"> 
                                                             <label class="form-check-label custom-label" for="amount_limit">
-                                                                Amount Limit (minimum and maximum) of wallet balance at any givin time Minimum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_minimum" name="am_minimum" value="0">
-                                                                Maximum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_maximum" name="am_maximum" value="200000">
+                                                                Amount Limit (minimum and maximum) of wallet balance at any givin time Minimum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_minimum" name="am_minimum" value="0" :disabled="!form.amount_limit">
+                                                                Maximum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_maximum" name="am_maximum" value="200000" :disabled="!form.amount_limit">
                                                             </label>
                                                         </div>
                                                     </div>
@@ -470,10 +470,10 @@
                                                 <li class="list-group-item">
                                                     <div class="form-group row">
                                                         <div class="form-check custom-control custom-checkbox"> 
-                                                            <input v-model="form.am_per_transaction" name="am_per_transaction" type="checkbox" class="form-check-input" id="exampleCheck2"> 
-                                                            <label class="form-check-label custom-label" for="exampleCheck2">
-                                                                Amount Limit (minimum and maximum) per transaction: <input class="custom-limit-input" type="number" min="0" v-model="form.am_transaction_minimun" name="am_transaction_minimun" value="0">
-                                                                Maximum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_transaction_maximum" name="am_transaction_maximum" value="200000">
+                                                            <input v-model="form.am_per_transaction" name="am_per_transaction" type="checkbox" class="form-check-input" id="am_per_transaction"> 
+                                                            <label class="form-check-label custom-label" for="am_per_transaction">
+                                                                Amount Limit (minimum and maximum) per transaction: <input class="custom-limit-input" type="number" min="0" v-model="form.am_transaction_minimun" name="am_transaction_minimun" value="0" :disabled="!form.am_per_transaction">
+                                                                Maximum Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_transaction_maximum" name="am_transaction_maximum" value="200000" :disabled="!form.am_per_transaction">
                                                             </label>
                                                         </div>
                                                     </div>
@@ -483,10 +483,10 @@
                                                 <li class="list-group-item">
                                                     <div class="form-group row">
                                                         <div class="form-check custom-control custom-checkbox"> 
-                                                            <input v-model="form.am_per_day" name="am_per_day" type="checkbox" class="form-check-input" id="exampleCheck3"> 
-                                                            <label class="form-check-label custom-label" for="exampleCheck3">
-                                                                Limit of total transaction amount per day Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_day_minimum" name="am_day_minimum" value="0">
-                                                                Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_day_maximum" name="am_day_maximum" value="200000">
+                                                            <input v-model="form.am_per_day" name="am_per_day" type="checkbox" class="form-check-input" id="am_per_day"> 
+                                                            <label class="form-check-label custom-label" for="am_per_day">
+                                                                Limit of total transaction amount per day Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_day_minimum" name="am_day_minimum" value="0" :disabled="!form.am_per_day">
+                                                                Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_day_maximum" name="am_day_maximum" value="200000" :disabled="!form.am_per_day">
                                                             </label>
                                                         </div>
                                                     </div>
@@ -496,10 +496,10 @@
                                                 <li class="list-group-item">
                                                     <div class="form-group row">
                                                         <div class="form-check custom-control custom-checkbox"> 
-                                                            <input v-model="form.am_per_month" name="am_per_month" type="checkbox" class="form-check-input" id="exampleCheck4"> 
-                                                            <label class="form-check-label custom-label" for="exampleCheck4">
-                                                                Limit of total transaction amount per month Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_month_minimum" name="am_month_minimum" value="0">
-                                                                Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_month_maximum" name="am_month_maximum" value="200000">
+                                                            <input v-model="form.am_per_month" name="am_per_month" type="checkbox" class="form-check-input" id="am_per_month"> 
+                                                            <label class="form-check-label custom-label" for="am_per_month">
+                                                                Limit of total transaction amount per month Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_month_minimum" name="am_month_minimum" value="0" :disabled="!form.am_per_month">
+                                                                Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_month_maximum" name="am_month_maximum" value="200000" :disabled="!form.am_per_month">
                                                             </label>
                                                         </div>
                                                     </div>
@@ -509,10 +509,10 @@
                                                 <li class="list-group-item">
                                                     <div class="form-group row">
                                                         <div class="form-check custom-control custom-checkbox"> 
-                                                            <input v-model="form.am_per_year" name="am_per_year" type="checkbox" class="form-check-input" id="exampleCheck5"> 
-                                                            <label class="form-check-label custom-label" for="exampleCheck5">
-                                                                Limit of total transaction amount per year Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_year_minimum" name="am_year_minimum" value="0">
-                                                                Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_year_maximum" name="am_year_maximum" value="200000">
+                                                            <input v-model="form.am_per_year" name="am_per_year" type="checkbox" class="form-check-input" id="am_per_year"> 
+                                                            <label class="form-check-label custom-label" for="am_per_year">
+                                                                Limit of total transaction amount per year Maximum Debit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_year_minimum" name="am_year_minimum" value="0" :disabled="!form.am_per_year">
+                                                                Maximum Credit Amount: <input class="custom-limit-input" type="number" min="0" v-model="form.am_year_maximum" name="am_year_maximum" value="200000" :disabled="!form.am_per_year">
                                                             </label>
                                                         </div>
                                                     </div>
@@ -561,7 +561,7 @@
                                                         <div class="form-check custom-control custom-checkbox"> 
                                                             <input v-model="form.c_lm_per_day" type="checkbox" class="form-check-input" name="lm_per_day"> 
                                                             <label class="form-check-label custom-label" for="lm_per_day">
-                                                                Limit no. of transactions per day Maximum No. of Transactions: <input class="custom-limit-input" type="number" min="0" v-model="form.lm_per_day" name="c_lm_per_day" value="0">
+                                                                Limit no. of transactions per day Maximum No. of Transactions: <input class="custom-limit-input" type="number" min="0" v-model="form.lm_per_day" name="c_lm_per_day" value="0" :disabled="!form.c_lm_per_day">
                                                             </label>
                                                         </div>
                                                     </div>
@@ -573,7 +573,7 @@
                                                         <div class="form-check custom-control custom-checkbox"> 
                                                             <input v-model="form.c_lm_per_month" type="checkbox" class="form-check-input" name="lm_per_month"> 
                                                             <label class="form-check-label custom-label" for="lm_per_month">
-                                                                Limit no. of transactions per month Maximum No. of Transactions: <input class="custom-limit-input" type="number" min="0"  v-model="form.lm_per_month" name="c_lm_per_month" value="0">
+                                                                Limit no. of transactions per month Maximum No. of Transactions: <input class="custom-limit-input" type="number" min="0"  v-model="form.lm_per_month" name="c_lm_per_month" value="0" :disabled="!form.c_lm_per_month">
                                                             </label>
                                                         </div>
                                                     </div>
@@ -585,7 +585,7 @@
                                                         <div class="form-check custom-control custom-checkbox"> 
                                                             <input v-model="form.c_lm_per_year" type="checkbox" class="form-check-input" name="lm_per_year" > 
                                                             <label class="form-check-label custom-label" for="lm_per_year">
-                                                                Limit no. of transactions per year Maximum No. of Transactions: <input class="custom-limit-input" min="0" v-model="form.lm_per_year" type="number" name="c_lm_per_year" id="c_lm_per_year" value="0">
+                                                                Limit no. of transactions per year Maximum No. of Transactions: <input class="custom-limit-input" min="0" v-model="form.lm_per_year" type="number" name="c_lm_per_year" id="c_lm_per_year" value="0" :disabled="!form.c_lm_per_year">
                                                             </label>
                                                         </div>
                                                     </div>
@@ -598,7 +598,7 @@
                                                         <div class="form-check custom-control custom-checkbox"> 
                                                             <input v-model="form.c_allow_negative_balance" type="checkbox" class="form-check-input" name="allow_negative_balance"> 
                                                             <label class="form-check-label custom-label" for="allow_negative_balance">
-                                                                Allow negative Balance Maximum negative Balance: <input class="custom-limit-input" type="number" v-model="form.allow_negative_balance" name="c_allow_negative_balance" id="c_allow_negative_balance" value="0">
+                                                                Allow negative Balance Maximum negative Balance: <input class="custom-limit-input" type="number" v-model="form.allow_negative_balance" name="c_allow_negative_balance" id="c_allow_negative_balance" value="0" :disabled="!form.c_allow_negative_balance">
                                                             </label>
                                                         </div>
                                                     </div>
