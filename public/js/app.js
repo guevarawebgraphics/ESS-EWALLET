@@ -69223,7 +69223,9 @@ var render = function() {
                                                             type: "number",
                                                             min: "0",
                                                             name: "am_minimum",
-                                                            value: "0"
+                                                            value: "0",
+                                                            disabled: !_vm.form
+                                                              .amount_limit
                                                           },
                                                           domProps: {
                                                             value:
@@ -69271,7 +69273,9 @@ var render = function() {
                                                             type: "number",
                                                             min: "0",
                                                             name: "am_maximum",
-                                                            value: "200000"
+                                                            value: "200000",
+                                                            disabled: !_vm.form
+                                                              .amount_limit
                                                           },
                                                           domProps: {
                                                             value:
@@ -69339,7 +69343,7 @@ var render = function() {
                                                         name:
                                                           "am_per_transaction",
                                                         type: "checkbox",
-                                                        id: "exampleCheck2"
+                                                        id: "am_per_transaction"
                                                       },
                                                       domProps: {
                                                         checked: Array.isArray(
@@ -69417,7 +69421,8 @@ var render = function() {
                                                         staticClass:
                                                           "form-check-label custom-label",
                                                         attrs: {
-                                                          for: "exampleCheck2"
+                                                          for:
+                                                            "am_per_transaction"
                                                         }
                                                       },
                                                       [
@@ -69444,7 +69449,9 @@ var render = function() {
                                                             min: "0",
                                                             name:
                                                               "am_transaction_minimun",
-                                                            value: "0"
+                                                            value: "0",
+                                                            disabled: !_vm.form
+                                                              .am_per_transaction
                                                           },
                                                           domProps: {
                                                             value:
@@ -69493,7 +69500,9 @@ var render = function() {
                                                             min: "0",
                                                             name:
                                                               "am_transaction_maximum",
-                                                            value: "200000"
+                                                            value: "200000",
+                                                            disabled: !_vm.form
+                                                              .am_per_transaction
                                                           },
                                                           domProps: {
                                                             value:
@@ -69559,7 +69568,7 @@ var render = function() {
                                                       attrs: {
                                                         name: "am_per_day",
                                                         type: "checkbox",
-                                                        id: "exampleCheck3"
+                                                        id: "am_per_day"
                                                       },
                                                       domProps: {
                                                         checked: Array.isArray(
@@ -69635,7 +69644,7 @@ var render = function() {
                                                         staticClass:
                                                           "form-check-label custom-label",
                                                         attrs: {
-                                                          for: "exampleCheck3"
+                                                          for: "am_per_day"
                                                         }
                                                       },
                                                       [
@@ -69662,7 +69671,9 @@ var render = function() {
                                                             min: "0",
                                                             name:
                                                               "am_day_minimum",
-                                                            value: "0"
+                                                            value: "0",
+                                                            disabled: !_vm.form
+                                                              .am_per_day
                                                           },
                                                           domProps: {
                                                             value:
@@ -69711,7 +69722,9 @@ var render = function() {
                                                             min: "0",
                                                             name:
                                                               "am_day_maximum",
-                                                            value: "200000"
+                                                            value: "200000",
+                                                            disabled: !_vm.form
+                                                              .am_per_day
                                                           },
                                                           domProps: {
                                                             value:
@@ -69778,7 +69791,7 @@ var render = function() {
                                                       attrs: {
                                                         name: "am_per_month",
                                                         type: "checkbox",
-                                                        id: "exampleCheck4"
+                                                        id: "am_per_month"
                                                       },
                                                       domProps: {
                                                         checked: Array.isArray(
@@ -69855,7 +69868,7 @@ var render = function() {
                                                         staticClass:
                                                           "form-check-label custom-label",
                                                         attrs: {
-                                                          for: "exampleCheck4"
+                                                          for: "am_per_month"
                                                         }
                                                       },
                                                       [
@@ -69882,7 +69895,9 @@ var render = function() {
                                                             min: "0",
                                                             name:
                                                               "am_month_minimum",
-                                                            value: "0"
+                                                            value: "0",
+                                                            disabled: !_vm.form
+                                                              .am_per_month
                                                           },
                                                           domProps: {
                                                             value:
@@ -69931,7 +69946,9 @@ var render = function() {
                                                             min: "0",
                                                             name:
                                                               "am_month_maximum",
-                                                            value: "200000"
+                                                            value: "200000",
+                                                            disabled: !_vm.form
+                                                              .am_per_month
                                                           },
                                                           domProps: {
                                                             value:
@@ -69998,7 +70015,7 @@ var render = function() {
                                                       attrs: {
                                                         name: "am_per_year",
                                                         type: "checkbox",
-                                                        id: "exampleCheck5"
+                                                        id: "am_per_year"
                                                       },
                                                       domProps: {
                                                         checked: Array.isArray(
@@ -70074,7 +70091,7 @@ var render = function() {
                                                         staticClass:
                                                           "form-check-label custom-label",
                                                         attrs: {
-                                                          for: "exampleCheck5"
+                                                          for: "am_per_year"
                                                         }
                                                       },
                                                       [
@@ -70101,7 +70118,9 @@ var render = function() {
                                                             min: "0",
                                                             name:
                                                               "am_year_minimum",
-                                                            value: "0"
+                                                            value: "0",
+                                                            disabled: !_vm.form
+                                                              .am_per_year
                                                           },
                                                           domProps: {
                                                             value:
@@ -70150,7 +70169,9 @@ var render = function() {
                                                             min: "0",
                                                             name:
                                                               "am_year_maximum",
-                                                            value: "200000"
+                                                            value: "200000",
+                                                            disabled: !_vm.form
+                                                              .am_per_year
                                                           },
                                                           domProps: {
                                                             value:
@@ -70377,7 +70398,10 @@ var render = function() {
                                                               min: "0",
                                                               name:
                                                                 "c_lm_per_day",
-                                                              value: "0"
+                                                              value: "0",
+                                                              disabled: !_vm
+                                                                .form
+                                                                .c_lm_per_day
                                                             },
                                                             domProps: {
                                                               value:
@@ -70553,7 +70577,10 @@ var render = function() {
                                                               min: "0",
                                                               name:
                                                                 "c_lm_per_month",
-                                                              value: "0"
+                                                              value: "0",
+                                                              disabled: !_vm
+                                                                .form
+                                                                .c_lm_per_month
                                                             },
                                                             domProps: {
                                                               value:
@@ -70731,7 +70758,10 @@ var render = function() {
                                                                 "c_lm_per_year",
                                                               id:
                                                                 "c_lm_per_year",
-                                                              value: "0"
+                                                              value: "0",
+                                                              disabled: !_vm
+                                                                .form
+                                                                .c_lm_per_year
                                                             },
                                                             domProps: {
                                                               value:
@@ -70916,7 +70946,10 @@ var render = function() {
                                                                 "c_allow_negative_balance",
                                                               id:
                                                                 "c_allow_negative_balance",
-                                                              value: "0"
+                                                              value: "0",
+                                                              disabled: !_vm
+                                                                .form
+                                                                .c_allow_negative_balance
                                                             },
                                                             domProps: {
                                                               value:
@@ -79547,7 +79580,7 @@ var render = function() {
                         }
                       },
                       [
-                        _c("i", { staticClass: "ti-wallet text-blue" }),
+                        _c("i", { staticClass: "ti-user text-blue" }),
                         _c("span", [_vm._v("Wallet Accounts")])
                       ]
                     )
@@ -96038,15 +96071,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!************************************************************************!*\
   !*** ./resources/js/components/WalletAccounts/CreateWalletAccount.vue ***!
   \************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CreateWalletAccount_vue_vue_type_template_id_64a2c4d3_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateWalletAccount.vue?vue&type=template&id=64a2c4d3&scoped=true& */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=template&id=64a2c4d3&scoped=true&");
 /* harmony import */ var _CreateWalletAccount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateWalletAccount.vue?vue&type=script&lang=js& */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _CreateWalletAccount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _CreateWalletAccount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _CreateWalletAccount_vue_vue_type_style_index_0_id_64a2c4d3_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateWalletAccount.vue?vue&type=style&index=0&id=64a2c4d3&scoped=true&lang=css& */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=style&index=0&id=64a2c4d3&scoped=true&lang=css&");
+/* empty/unused harmony star reexport *//* harmony import */ var _CreateWalletAccount_vue_vue_type_style_index_0_id_64a2c4d3_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateWalletAccount.vue?vue&type=style&index=0&id=64a2c4d3&scoped=true&lang=css& */ "./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=style&index=0&id=64a2c4d3&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -96078,7 +96110,7 @@ component.options.__file = "resources/js/components/WalletAccounts/CreateWalletA
 /*!*************************************************************************************************!*\
   !*** ./resources/js/components/WalletAccounts/CreateWalletAccount.vue?vue&type=script&lang=js& ***!
   \*************************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
