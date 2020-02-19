@@ -19,8 +19,8 @@ class ServiceGroupRepository
     public function showAllService()
     {
         $service_group = ServiceGroup::select('id', 'group_code', 'group_description')
-                            ->latest()
-                            ->paginate(10);
+            ->latest()
+            ->paginate(10);
         return $service_group;
     }
 
@@ -32,7 +32,7 @@ class ServiceGroupRepository
     {
         $user = auth('api')->user();
         $service_group = ServiceGroup::create([
-            'group_code' => $this->generate_group_code(),
+            'group_code' => $this->generateGroupCode(),
             'group_description' => $servicedata->group_description,
             'created_by' => $user->id,
             'updated_by' => $user->id
@@ -65,10 +65,10 @@ class ServiceGroupRepository
     public function searchServiceGroup($query)
     {
         $service_group = ServiceGroup::select('id', 'group_code', 'group_description')
-                            ->orWhere('group_code', 'LIKE', '%'.$query.'%')
-                            ->orWhere('group_description', 'LIKE', '%'.$query.'%')
-                            ->latest()
-                            ->paginate();
+            ->orWhere('group_code', 'LIKE', '%'.$query.'%')
+            ->orWhere('group_description', 'LIKE', '%'.$query.'%')
+            ->latest()
+            ->paginate();
         return $service_group;
     }
 
@@ -83,15 +83,16 @@ class ServiceGroupRepository
       * @ Generate Group Code
       * @return 
       */
-      public function generate_group_code(){
-        $group_no = $this->generate_no();
+      public function generateGroupCode()
+      {
+        $group_no = $this->generateNo();
 
         /**
          * @ Check if thereis existing group code
          * @ generate a new one if already exists 
          **/
-        while(ServiceGroup::where('group_code', '=', $group_no)->count() > 0){
-            $group_no = $this->generate_no();
+        while(ServiceGroup::where('group_code', '=', $group_no)->count() > 0) {
+            $group_no = $this->generateNo();
         }
         
         return $group_no;
@@ -101,7 +102,8 @@ class ServiceGroupRepository
        * @ Generate No
        * @return generate_no 
        **/
-      public function generate_no(){
+      public function generateNo()
+      {
           $group_no = Keygen::length(8)->numeric()->prefix('SGC-', false)->generate();
 
           return $group_no;
