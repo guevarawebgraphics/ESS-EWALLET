@@ -13,7 +13,7 @@
                             <hr>
                             <div class="float-right">
                                 <div class="search-box">
-                                    <form action="#">
+                                    <form action="#" @keydown.prevent.enter.self>
                                         <input class="form-control mb-3" @input="debounceSearch" type="text" name="search" placeholder="Search Wallet Account..." required>
                                         <i class="ti-search"></i>
                                     </form>
@@ -66,6 +66,9 @@
                                 <!-- ./Table -->
                             <div class="text-center" v-if="this.transactionRequest.data == 0">
                                 <label>No Results found</label>
+                            </div>
+                            <div class="text-center" v-if="transactionRequest.data === undefined">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="updateSpinner"></span>
                             </div>
                             </div>
                         </div>
