@@ -2284,6 +2284,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -8542,6 +8547,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
 //
 //
 //
@@ -61676,20 +61684,46 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "float-right" }, [
                 _c("div", { staticClass: "search-box" }, [
-                  _c("form", { attrs: { action: "#" } }, [
-                    _c("input", {
-                      staticClass: "form-control mb-3",
-                      attrs: {
-                        type: "text",
-                        name: "search",
-                        placeholder: "Search Wallet Account...",
-                        required: ""
-                      },
-                      on: { input: _vm.debounceSearch }
-                    }),
-                    _vm._v(" "),
-                    _c("i", { staticClass: "ti-search" })
-                  ])
+                  _c(
+                    "form",
+                    {
+                      attrs: { action: "#" },
+                      on: {
+                        keydown: function($event) {
+                          if (
+                            !$event.type.indexOf("key") &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
+                            )
+                          ) {
+                            return null
+                          }
+                          $event.preventDefault()
+                          if ($event.target !== $event.currentTarget) {
+                            return null
+                          }
+                        }
+                      }
+                    },
+                    [
+                      _c("input", {
+                        staticClass: "form-control mb-3",
+                        attrs: {
+                          type: "text",
+                          name: "search",
+                          placeholder: "Search Wallet Account...",
+                          required: ""
+                        },
+                        on: { input: _vm.debounceSearch }
+                      }),
+                      _vm._v(" "),
+                      _c("i", { staticClass: "ti-search" })
+                    ]
+                  )
                 ])
               ]),
               _vm._v(" "),
@@ -61773,6 +61807,19 @@ var render = function() {
                 this.listofwalletaccount.data == 0
                   ? _c("div", { staticClass: "text-center" }, [
                       _c("label", [_vm._v("No Results found")])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.listofwalletaccount.data === undefined
+                  ? _c("div", { staticClass: "text-center" }, [
+                      _c("span", {
+                        staticClass: "spinner-border spinner-border-sm",
+                        attrs: {
+                          role: "status",
+                          "aria-hidden": "true",
+                          id: "updateSpinner"
+                        }
+                      })
                     ])
                   : _vm._e()
               ])
@@ -79056,20 +79103,46 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "float-right" }, [
                 _c("div", { staticClass: "search-box" }, [
-                  _c("form", { attrs: { action: "#" } }, [
-                    _c("input", {
-                      staticClass: "form-control mb-3",
-                      attrs: {
-                        type: "text",
-                        name: "search",
-                        placeholder: "Search Wallet Account...",
-                        required: ""
-                      },
-                      on: { input: _vm.debounceSearch }
-                    }),
-                    _vm._v(" "),
-                    _c("i", { staticClass: "ti-search" })
-                  ])
+                  _c(
+                    "form",
+                    {
+                      attrs: { action: "#" },
+                      on: {
+                        keydown: function($event) {
+                          if (
+                            !$event.type.indexOf("key") &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
+                            )
+                          ) {
+                            return null
+                          }
+                          $event.preventDefault()
+                          if ($event.target !== $event.currentTarget) {
+                            return null
+                          }
+                        }
+                      }
+                    },
+                    [
+                      _c("input", {
+                        staticClass: "form-control mb-3",
+                        attrs: {
+                          type: "text",
+                          name: "search",
+                          placeholder: "Search Wallet Account...",
+                          required: ""
+                        },
+                        on: { input: _vm.debounceSearch }
+                      }),
+                      _vm._v(" "),
+                      _c("i", { staticClass: "ti-search" })
+                    ]
+                  )
                 ])
               ]),
               _vm._v(" "),
@@ -79145,6 +79218,19 @@ var render = function() {
                 this.transactionRequest.data == 0
                   ? _c("div", { staticClass: "text-center" }, [
                       _c("label", [_vm._v("No Results found")])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.transactionRequest.data === undefined
+                  ? _c("div", { staticClass: "text-center" }, [
+                      _c("span", {
+                        staticClass: "spinner-border spinner-border-sm",
+                        attrs: {
+                          role: "status",
+                          "aria-hidden": "true",
+                          id: "updateSpinner"
+                        }
+                      })
                     ])
                   : _vm._e()
               ])
